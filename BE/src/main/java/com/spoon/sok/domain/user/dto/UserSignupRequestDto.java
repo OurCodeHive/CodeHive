@@ -11,4 +11,6 @@ public class UserSignupRequestDto {
     private String password;
 
     private String nickname;
+
+    private String auth_code;
 }
