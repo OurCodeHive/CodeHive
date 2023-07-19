@@ -2,6 +2,7 @@ package com.spoon.sok.domain.user.controller;
 
 import com.spoon.sok.domain.user.dto.UserRequestDto;
 import com.spoon.sok.domain.user.dto.UserSignupRequestDto;
+import com.spoon.sok.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public boolean signup(@RequestBody UserSignupRequestDto requestDto) {
+    public ResponseEntity<?> signup(@RequestBody UserSignupRequestDto requestDto) {
         return userService.signup(requestDto);
     }
 
