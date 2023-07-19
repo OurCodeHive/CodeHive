@@ -1,6 +1,7 @@
 package com.spoon.sok.domain.user.entity;
 
 
+import com.spoon.sok.domain.user.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.Date;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "users_id")
     private Long id;
 
     @Column(name = "email")
@@ -42,9 +43,5 @@ public class User {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date leave_at; // 탈퇴일
-
-    private enum UserStatus {
-        NORMAL, FORCELEAVE, STOP, CUMULATIVE_REPORT
-    }
 
 }
