@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Dashboard } from "../components/Dashboard";
-import NotFound from "../views/NotFound";
+import NotFound from "../pages/NotFound";
 
 
 const AppRouter = () => {
@@ -9,8 +9,8 @@ const AppRouter = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={Dashboard}></Route>
-          <Route path="*" element={NotFound}></Route>
+          {/* <Route path="/" element={Dashboard}></Route> */}
+          {/* <Route path="*" element={NotFound}></Route> */}
         </Routes>
       </BrowserRouter>
     </>
