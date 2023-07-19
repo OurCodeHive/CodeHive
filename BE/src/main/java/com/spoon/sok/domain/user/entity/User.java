@@ -1,13 +1,16 @@
 package com.spoon.sok.domain.user.entity;
 
 
+import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.user.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Entity
@@ -36,12 +39,21 @@ public class User {
     private UserStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created_at; // 가입일
+    private Date createdAt; // 가입일
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date modifyed_at; // 최근 수정일
+    private Date modifyedAt; // 최근 수정일
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date leave_at; // 탈퇴일
+    private Date leaveAt; // 탈퇴일
+
+    @OneToMany(mappedBy = "users")
+    private List<Report> reportList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users")
+    private List<StudyInfo> studyInfoList = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "users")
+//    private List<UserStudy> orders = new ArrayList<>();
 
 }
