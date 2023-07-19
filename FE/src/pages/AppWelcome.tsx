@@ -1,6 +1,8 @@
 import React from 'react';
 import style from "../res/css/module/AppWelcome.module.css"
 
+import video from '../res/video/Welcome.mp4'
+// import "../res/video/Welcome.mp4"
 function Welcome() {
     return (
         <>
@@ -13,8 +15,9 @@ function Welcome() {
         </div> */}
         <h2>hello</h2>
         <video className={style.video} autoPlay muted>
-            <source src="../res/video/Welcome.mp4" type="video/mp4"/>
+            <source src={video} type="video/mp4"/>
         </video>
+
         <button>here!</button>
         
         {/* <img src="../public/contents/CodeHiveMainPic.png" alt="" /> */}
