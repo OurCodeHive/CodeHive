@@ -18,7 +18,7 @@ function Welcome() {
             <source src={video} type="video/mp4"/>
         </video>
 
-        <button>here!</button>
+        <button className={style.enter_login}>here!</button>
         
         {/* <img src="../public/contents/CodeHiveMainPic.png" alt="" /> */}
         </>
