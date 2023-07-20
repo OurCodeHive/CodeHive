@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import style from '../res/css/module/AppLogin.module.css'
 import logo from "../res/img/CodeHive_Logo.png"
 function AppLogin() {
