@@ -5,6 +5,7 @@ import com.spoon.sok.domain.user.dto.UserSignupRequestDto;
 import com.spoon.sok.domain.user.entity.User;
 import com.spoon.sok.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
@@ -33,7 +35,7 @@ public class UserService {
             return new ResponseEntity<Map<String, Object>>(result, status);
         }
 
-        if (!user.get().getPassword().equals(requestDto.getEmail())) {
+        if (!user.get().getPassword().equals(requestDto.getPassword())) {
             result.put("status", 400);
             result.put("message", "비밀번호가 일치하지 않습니다.");
             status = HttpStatus.BAD_REQUEST;

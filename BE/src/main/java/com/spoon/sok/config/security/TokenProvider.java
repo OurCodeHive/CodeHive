@@ -1,4 +1,4 @@
-package com.spoon.sok.config;
+package com.spoon.sok.config.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

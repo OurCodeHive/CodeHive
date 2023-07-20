@@ -1,4 +1,4 @@
-package com.spoon.sok.config;
+package com.spoon.sok.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
