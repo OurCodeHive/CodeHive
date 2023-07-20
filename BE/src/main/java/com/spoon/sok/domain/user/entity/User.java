@@ -52,8 +52,4 @@ public class User {
 
     @OneToMany(mappedBy = "users")
     private List<StudyInfo> studyInfoList = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "users")
-//    private List<UserStudy> orders = new ArrayList<>();
-
 }

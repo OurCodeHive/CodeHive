@@ -34,6 +34,6 @@ public class Report {
     @JoinColumn(name = "users_id", nullable = false)
     private User users; // 신고한 사람
 
-    @Column(name = "black_user_id")
-    private Long balck_user_id;
+    @Column(name = "black_user_nickname")
+    private String blackNickName; // 신고 당한 사람
 }
