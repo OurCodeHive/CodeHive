@@ -17,7 +17,7 @@ function Welcome() {
         <video className={style.video} autoPlay muted>
             <source src={video} type="video/mp4"/>
         </video>
-
+        <div></div>
         <button className={style.enter_login}>here!</button>
         
         {/* <img src="../public/contents/CodeHiveMainPic.png" alt="" /> */}
