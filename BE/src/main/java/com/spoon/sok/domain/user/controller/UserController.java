@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
     @PostMapping("/login/user")
     public ResponseEntity<?> login(@RequestBody UserRequestDto requestDto) {
         return userService.login(requestDto);
