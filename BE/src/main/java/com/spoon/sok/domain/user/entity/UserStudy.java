@@ -13,7 +13,6 @@ import java.util.Date;
 @Table(name = "USER_STUDY")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserStudy {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "studyinfo_id")
