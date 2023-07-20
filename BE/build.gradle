@@ -52,10 +52,6 @@ dependencies {
 
 	// mongodb
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-
-	// SpringBoot mailService
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-
 }
 
 tasks.named('test') {

@@ -47,10 +47,6 @@ public class UserService {
         return new ResponseEntity<Map<String, Object>>(result, status);
     }
 
-//    public ResponseEntity<?> sendEmail() {
-//
-//    }
-//
 //    public ResponseEntity<?> signup(UserSignupRequestDto requestDto) {
 //        Map<String, Object> result = new HashMap<>();
 //        HttpStatus status;

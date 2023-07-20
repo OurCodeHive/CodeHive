@@ -32,11 +32,6 @@ public class UserController {
 ////    public ResponseEntity<?> changePassword(@RequestBody UserRequestDto requestDto) {
 ////        return userService.changePassword(requestDto);
 ////    }
-////
-////    @GetMapping("/email/auth")
-////    public ResponseEntity<?> sendEmail(@RequestParam("email") String email) {
-//        return userService.sendEmail();
-//    }
 //
 //    @PostMapping("/logout")
 //    public ResponseEntity<?> logout() {
