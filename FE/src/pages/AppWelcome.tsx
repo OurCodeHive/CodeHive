@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import style from "../res/css/module/AppWelcome.module.css"
 
 import video from '../res/video/Welcome.mp4'

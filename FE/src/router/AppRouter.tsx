@@ -7,6 +7,7 @@ import AppWelcome from "../pages/AppWelcome";
 import IDE from "../tempIDE/AppIDE";
 import RTC from "../tempOpenvidu/OpenviduComp";
 import DOC from "../tempDoc/AppDoc";
+import AppLogin from "../pages/AppLogin";
 
 
 const AppRouter = () => {
@@ -17,7 +18,7 @@ const AppRouter = () => {
           {/* <Route path="/" element={Dashboard}></Route> */}
           {/* <Route path="*" element={NotFound}></Route> */}
           <Route path="/" element={<AppWelcome/>}></Route>
-          {/* <Route path="/login" element={<AppLogin/>}></Route> */}
+          <Route path="/login" element={<AppLogin/>}></Route>
           <Route path="/ide/:id" element={ <IDE/> }></Route>
           <Route path="/rtc" element={ <RTC/> }></Route>
           <Route path="/doc/:id" element={ <DOC/> }></Route>
