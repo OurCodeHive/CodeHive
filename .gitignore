@@ -3,7 +3,8 @@
 # FRONT
 # dependencies
 FE/node_modules
-
+FE/server/node_modules
+dist
 # testing
 FE/coverage
 
