@@ -3,14 +3,10 @@ package com.spoon.sok.domain.email.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Getter
 @NoArgsConstructor
-public class EmailAuthCodeRequestDto {
+public class EmailAuthVerifyDto {
     private String email;
 
-    private String code;
-
-    private LocalDateTime limitTime;
+    private String authCode;
 }
