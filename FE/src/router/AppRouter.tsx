@@ -3,11 +3,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import { Dashboard } from "../components/Dashboard";
 // import NotFound from "../pages/NotFound";
 // import AppDashBoard from "../pages/AppDashBoard";
-import AppWelcome from "../pages/AppWelcome";
-import IDE from "../tempIDE/AppIDE";
-import RTC from "../tempOpenvidu/OpenviduComp";
-import DOC from "../tempDoc/AppDoc";
-import AppLogin from "../pages/AppLogin";
+import AppWelcome from "@/pages/AppWelcome";
+import IDE from "@/tempIDE/AppIDE";
+import RTC from "@/tempOpenvidu/OpenviduComp";
+import DOC from "@/tempDoc/AppDoc";
+import AppLogin from "@/pages/AppLogin";
 
 
 const AppRouter = () => {
