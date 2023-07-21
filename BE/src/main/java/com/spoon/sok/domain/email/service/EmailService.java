@@ -22,7 +22,7 @@ public class EmailService {
     private final JavaMailSender emailSender;
     private final SpringTemplateEngine templateEngine;
 
-    //    private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final EmailRepository emailRepository;
 
     public ResponseEntity<?> sendAuthEmail(String email) throws MessagingException {
@@ -37,15 +37,15 @@ public class EmailService {
             return new ResponseEntity<Map<String, Object>>(result, status);
         }
 
-//        Optional<User> user = userRepository.findByEmail(email);
-//
-//        if (user.isEmpty()) {
-//            result.put("status", 400);
-//            result.put("message", "이미 가입한 이메일 입니다.");
-//            status = HttpStatus.BAD_REQUEST;
-//
-//            return new ResponseEntity<Map<String, Object>>(result, status);
-//        }
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if (user.isEmpty()) {
+            result.put("status", 400);
+            result.put("message", "이미 가입한 이메일 입니다.");
+            status = HttpStatus.BAD_REQUEST;
+
+            return new ResponseEntity<Map<String, Object>>(result, status);
+        }
 
         String code = createCode();
 
