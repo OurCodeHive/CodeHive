@@ -2,13 +2,13 @@
 import style from '../res/css/module/AppLogin.module.css'
 
 import Login from '../components/Login/Login';
-import Signin from '../components/Login/Signin';
+import Signup from '../components/Login/Signup';
 function AppLogin() {
     return (
     <>
     <div className={style.signin_background}>
         {/* <Login></Login> */}
-        <Signin></Signin>
+        <Signup></Signup>
     </div>
         
         </>
