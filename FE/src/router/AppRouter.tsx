@@ -8,7 +8,7 @@ import IDE from "@/tempIDE/AppIDE";
 import RTC from "@/tempOpenvidu/OpenviduComp";
 import DOC from "@/tempDoc/AppDoc";
 import AppLogin from "@/pages/AppLogin";
-
+import AppNotFound from "@/error/AppNotFound";
 
 const AppRouter = () => {
   return (
@@ -22,6 +22,7 @@ const AppRouter = () => {
           <Route path="/ide/:id" element={ <IDE/> }></Route>
           <Route path="/rtc" element={ <RTC/> }></Route>
           <Route path="/doc/:id" element={ <DOC/> }></Route>
+          <Route path="/*" element={<AppNotFound/>}/>
         </Routes>
       </BrowserRouter>
     </>
