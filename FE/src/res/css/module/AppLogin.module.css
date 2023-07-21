@@ -26,12 +26,12 @@
   /* justify-content: center; */
   align-items: center;
 }
-h1 {
+.login_title {
   padding-top: 10%;
   text-align: center;
   margin-bottom: 60px;
   font-size: 32px;
-  color: #000;
+  color: #fff
 }
 body::before {
   position: absolute;
@@ -94,11 +94,25 @@ body::before {
     border-radius: 15px;
     cursor: pointer;
 }
-/* .google {
-    background: #FFF;
+.btn_area .google {
+    background: #ffffffe2;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.google img {
+  /* flex: 1; */
+  width: 27px;
+  margin-right: 7px;
+}
+.google span {
+  /* flex: 7; */
+}
+/* .google div {
+  flex: 7;
 } */
-.caption {
-
+.caption { 
     margin: auto;
     width: 60%;
     display: flex;
