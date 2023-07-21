@@ -15,13 +15,13 @@ function Welcome() {
 
         </div> */}
         
-        {/* <video className={style.video} autoPlay muted>
+        <video className={style.video} autoPlay muted>
             <source src={video} type="video/mp4"/>
-        </video> */}
+        </video>
         <div></div>
         <button onClick={()=>navigate("/login")} className={style.enter_login}>here!</button>
-        
-        <img src="../public/contents/CodeHiveMainPic.png" alt="" />
+{/*         
+        <img src="../public/contents/CodeHiveMainPic.png" alt="" /> */}
         </>
     );
 }
