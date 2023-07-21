@@ -13,10 +13,11 @@ function Welcome() {
             <img src="../public/contents/ScrollText.png" alt="" />
 
         </div> */}
-        <h2>hello</h2>
+        
         <video className={style.video} autoPlay muted>
             <source src={video} type="video/mp4"/>
         </video>
+        {/* <h1>hello</h1> */}
         <div></div>
         <button className={style.enter_login}>here!</button>
         
