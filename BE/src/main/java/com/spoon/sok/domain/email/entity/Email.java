@@ -12,7 +12,7 @@ public class Email {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "email_auth_id")
-    private String id;
+    private Long id;
 
     private String email;
 
