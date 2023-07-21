@@ -1,4 +1,5 @@
-import AppRouter from "./router/AppRouter";
+import "@/res/css/common/import.css";
+import AppRouter from "@/router/AppRouter";
 
 function App() {
   return <AppRouter />;
