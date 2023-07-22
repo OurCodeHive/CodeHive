@@ -227,7 +227,9 @@ class VoiceCallComp extends Component {
     const myUserName = this.state.myUserName;
 
     return (
-      <div className="container">
+      <div className="container" style={{
+        display:"none"
+      }}>
         {this.state.session !== undefined ? (
           <div id="session">
             <div id="session-header">

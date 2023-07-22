@@ -19,9 +19,11 @@ import styled from "styled-components";
 import Quill from "quill";
 import QuillCursors from "quill-cursors";
 
-import saveButton from "@/components/IDE/downlode";
-
 import VoiceComp from '@/components/voiceCall/VoiceCallComp';
+import JoinUserList from '@/components/voiceCall/JoinUserListComp';
+import IDEHeader from '@/components/IDE/IDEHeader';
+import IDETerminal from '@/components/IDE/IDETerminal';
+
 
 function getRandomColor() {
 	return "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -212,23 +214,23 @@ function Code() {
 
   }, [])
 
-  useEffect(() => {
-    attachQuillRefs();
-    const provider = new WebsocketProvider(url, docxId, docxDoc);
-    const ytext = docxDoc.getText("quill");
+  // useEffect(() => {
+  //   attachQuillRefs();
+  //   const provider = new WebsocketProvider(url, docxId, docxDoc);
+  //   const ytext = docxDoc.getText("quill");
     
-    provider.awareness.on('change', changes => {
-      Array.from(provider.awareness.getStates().values());
-    });
+  //   provider.awareness.on('change', changes => {
+  //     Array.from(provider.awareness.getStates().values());
+  //   });
 
-    provider.awareness.setLocalStateField("user", {
-      name: "민성",
-      color: getRandomColor(),
-    });
+  //   provider.awareness.setLocalStateField("user", {
+  //     name: "민성",
+  //     color: getRandomColor(),
+  //   });
 
-    const binding = new QuillBinding(ytext, quillRef, provider.awareness);
+  //   const binding = new QuillBinding(ytext, quillRef, provider.awareness);
     
-  }, []);
+  // }, []);
 
   const attachQuillRefs = () => {
     if (typeof reactQuillRef.getEditor !== "function") return;
@@ -255,16 +257,7 @@ function Code() {
       userOnly: true,
     },
   };
-
-  function saveMemo() {
-    let ns = new XMLSerializer();
-    let korean = `<meta charset="utf-8" />`;
-    let targetString = ns.serializeToString(
-      document.querySelector(".ql-editor")
-    );
-    // console.log(targetString);
-    return korean + targetString;
-  }
+  
   function saveCode() {
     let name = window.prompt("저장할 이름을 입력해 주세요");
     // 현재 취소해도 다운받아짐;;
@@ -280,55 +273,78 @@ function Code() {
     element.click();
   }
 
+  function showChat() {
+    alert("showChat");
+  }
+
+  function comfile() {
+    let code = CodeDoc.getText('codemirror');
+    // 컴파일 서버로 데이터 전송
+    console.log(code);
+    alert(code);
+  }
 
 
   return(
-    <>
-      <button
-        onClick={() => {
-          saveButton(saveMemo(), "코드");
-        }}
-      >다운로드</button>
-      <div>
-        <VoiceComp mySessionId={codeId} myUserName={"민성"} />
-      </div>
-      <MouseBox
-        style={{
-          width: "25%",
-          height: "93.2vh",
-          color: "#A18DC6",
-          backgroundColor: "#222326",
-        }}
-      >
-        <ReactQuill
+    <div style={{
+      backgroundColor:"#222326",
+      height: "100vh",
+    }}>
+      <IDEHeader saveCode={saveCode}/>
+      {/* <VoiceComp mySessionId={codeId} myUserName={"민성"} /> */}
+      <div style={{ display:"flex" }}>
+        <MouseBox
           style={{
-            height: "85vh",
+            width: "25%",
+            height: "93.8vh",
+            color: "#A18DC6",
             backgroundColor: "#222326",
           }}
-          ref={(el) => {
-            reactQuillRef = el;
+        >
+          <ReactQuill
+            style={{
+              height: "87vh",
+            }}
+            ref={(el) => { reactQuillRef = el; }}
+            modules={modulesRef}
+            theme={"snow"}
+          />
+        </MouseBox>
+        <div
+          style={{
+            // position: "absolute",
+            width: "60%",
+            // top: "3.3vh",
+            // left: "25%",
+            height: "93.8vh",
+            paddingBottom:"40px",
           }}
-          modules={modulesRef}
-          theme={"snow"}
-        />
-      </MouseBox>
-      <div
-        style={{
-          height:"96.7vh",
-          position: "absolute",
-          width: "60%",
-          top: "0px",
-          left: "25%",
-          height: "96vh",
-        }}
-      className="code-editor" ref={editorRef}>
-      <button
-        onClick={() => {
-          saveCode()
-        }}
-      >소스 코드저장</button>
+        className="code-editor" ref={editorRef}>
+        </div>
+        <div style={{
+          width:"15%",
+          color:"GrayText",
+          flexDiretion:"column",
+          backgroundColor:"#222326"
+        }}>
+        <JoinUserList/>
+        </div>
       </div>
-    </>
+      <IDETerminal comfile={comfile}/>
+      <img src='https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/icon.png'
+        onClick={() => {
+          showChat();
+        }}
+        style={{
+          position: "absolute",
+          zIndex:"2",
+          right:"5vh",
+          bottom:"4vh",
+          width:"50px",
+        }}
+      >
+      </img>
+    </div>
   )
 }
 
