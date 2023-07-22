@@ -5,7 +5,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Entity
@@ -39,4 +41,8 @@ public class StudyInfo {
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "users_id", nullable = false)
 //    private User users; // 스터디 그룹의 장
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
+    @JoinColumn(name = "study_appointment_id")
+    private List<StudyAppointment> meetingList = new ArrayList<>();
 }
