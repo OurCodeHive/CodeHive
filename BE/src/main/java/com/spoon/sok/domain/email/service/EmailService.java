@@ -41,7 +41,7 @@ public class EmailService {
 
         Optional<User> user = userRepository.findByEmail(email);
 
-        if (user.isEmpty()) {
+        if (!user.isEmpty()) {
             result.put("status", 400);
             result.put("message", "이미 가입한 이메일 입니다.");
             status = HttpStatus.BAD_REQUEST;
