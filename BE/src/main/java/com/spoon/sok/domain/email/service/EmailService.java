@@ -3,6 +3,8 @@ package com.spoon.sok.domain.email.service;
 import com.spoon.sok.domain.email.dto.EmailAuthVerifyDto;
 import com.spoon.sok.domain.email.entity.Email;
 import com.spoon.sok.domain.email.repository.EmailRepository;
+import com.spoon.sok.domain.user.entity.User;
+import com.spoon.sok.domain.user.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
