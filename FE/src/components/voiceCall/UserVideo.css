@@ -123,21 +123,6 @@ input.btn {
 	color: #ccc;
 }
 
-.openvidu-logo {
-	height: 35px;
-	float: right;
-	margin: 12px 0;
-	-webkit-transition: all 0.1s ease-in-out;
-	-moz-transition: all 0.1s ease-in-out;
-	-o-transition: all 0.1s ease-in-out;
-	transition: all 0.1s ease-in-out;
-}
-
-.openvidu-logo:hover {
-	-webkit-filter: grayscale(0.5);
-	filter: grayscale(0.5);
-}
-
 .demo-logo {
 	margin: 0;
 	height: 22px;
