@@ -27,11 +27,11 @@ public class UserController {
         return userService.signup(requestDto);
     }
 
-//    @GetMapping("/check/{nickname}")
-//    public boolean checkNickname(@PathVariable String nickname) {
-//        return userService.checkNickname(nickname);
-//    }
-//
+    @GetMapping("/check/{nickname}")
+    public boolean checkNickname(@PathVariable String nickname) {
+        return userService.checkNickname(nickname);
+    }
+
 ////    @PostMapping("/find/password")
 ////    public ResponseEntity<?> changePassword(@RequestBody UserRequestDto requestDto) {
 ////        return userService.changePassword(requestDto);

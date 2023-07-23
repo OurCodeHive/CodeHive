@@ -115,4 +115,14 @@ public class UserService {
 
         return new ResponseEntity<Map<String, Object>>(result, status);
     }
+
+    public boolean checkNickname(String nickname) {
+        Optional<User> checkUser = userRepository.findByNickname(nickname);
+
+        if (checkUser.isEmpty()) {
+            return true;
+        } else {
+             return false;
+        }
+    }
 }

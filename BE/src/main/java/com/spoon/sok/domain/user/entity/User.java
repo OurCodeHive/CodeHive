@@ -24,10 +24,13 @@ public class User {
     @Column(name = "users_id")
     private Long id;
 
+    @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String password;
 
+    @Column(unique = true)
     private String nickname;
 
     @Column(name = "social_login")
