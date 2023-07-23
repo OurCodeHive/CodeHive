@@ -1,5 +1,6 @@
 package com.spoon.sok.domain.user.controller;
 
+import com.spoon.sok.domain.user.dto.UserChangePasswordRequestDto;
 import com.spoon.sok.domain.user.dto.UserRequestDto;
 import com.spoon.sok.domain.user.dto.UserSignupRequestDto;
 import com.spoon.sok.domain.user.service.UserService;
@@ -32,11 +33,11 @@ public class UserController {
         return userService.checkNickname(nickname);
     }
 
-////    @PostMapping("/find/password")
-////    public ResponseEntity<?> changePassword(@RequestBody UserRequestDto requestDto) {
-////        return userService.changePassword(requestDto);
-////    }
-//
+    @PostMapping("/find/password")
+    public ResponseEntity<?> changePassword(@RequestBody UserChangePasswordRequestDto requestDto) {
+        return userService.changePassword(requestDto);
+    }
+
 //    @PostMapping("/logout")
 //    public ResponseEntity<?> logout() {
 //        return userService.logout();

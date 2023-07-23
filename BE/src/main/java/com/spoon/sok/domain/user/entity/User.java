@@ -63,4 +63,8 @@ public class User {
         this.status = status;
         this.createdAt = createdAt;
     }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
 }

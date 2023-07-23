@@ -2,6 +2,7 @@ package com.spoon.sok.domain.user.service;
 
 import com.spoon.sok.domain.email.entity.Email;
 import com.spoon.sok.domain.email.repository.EmailRepository;
+import com.spoon.sok.domain.user.dto.UserChangePasswordRequestDto;
 import com.spoon.sok.domain.user.dto.UserRequestDto;
 import com.spoon.sok.domain.user.dto.UserSignupRequestDto;
 import com.spoon.sok.domain.user.entity.User;
@@ -27,11 +28,11 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UserService {
 
-//    @Value("${jwt.secret}")
-//    private String secretKey;
-//
-//    @Value(("${jwt.token-validity-in-seconds}"))
-//    private long expireTimeMs;
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    @Value(("${jwt.token-validity-in-seconds}"))
+    private long expireTimeMs;
 
     private final UserRepository userRepository;
     private final EmailRepository emailRepository;
@@ -41,7 +42,7 @@ public class UserService {
         HttpStatus status;
 
         Optional<User> user = userRepository.findByEmail(requestDto.getEmail());
-//        String jwtToken = JwtTokenUtil.createToken(user.get().getEmail(), secretKey, expireTimeMs);
+        String jwtToken = JwtTokenUtil.createToken(user.get().getEmail(), secretKey, expireTimeMs);
 
         if (user.isEmpty()) {
             result.put("status", 400);
@@ -59,7 +60,7 @@ public class UserService {
             return new ResponseEntity<Map<String, Object>>(result, status);
         }
 
-//        result.put("access_token", jwtToken);
+        result.put("access_token", jwtToken);
         status = HttpStatus.OK;
 
         return new ResponseEntity<Map<String, Object>>(result, status);
@@ -90,9 +91,9 @@ public class UserService {
             return new ResponseEntity<Map<String, Object>>(result, status);
         }
 
-        Optional<Email> email = emailRepository.findByAuthCode(requestDto.getAuthCode());
+        Optional<Email> emailCode = emailRepository.findByAuthCode(requestDto.getAuthCode());
 
-        if (email.isEmpty()) {
+        if (emailCode.isEmpty()) {
             result.put("status", 400);
             result.put("message", "이메일 인증 코드를 확인할 수 없습니다.");
             status = HttpStatus.BAD_REQUEST;
@@ -124,5 +125,38 @@ public class UserService {
         } else {
              return false;
         }
+    }
+
+    @Transactional
+    public ResponseEntity<?> changePassword(UserChangePasswordRequestDto requestDto) {
+        Map<String, Object> result = new HashMap<>();
+        HttpStatus status;
+
+        Optional<User> user = userRepository.findByEmail(requestDto.getEmail());
+
+        if (user.get().getSocialLogin() == 1) {
+            result.put("status", 400);
+            result.put("message", "소셜 로그인 계정 입니다.");
+            status = HttpStatus.BAD_REQUEST;
+
+            return new ResponseEntity<Map<String, Object>>(result, status);
+        }
+
+        Optional<Email> emailCode = emailRepository.findByAuthCode(requestDto.getAuthCode());
+
+        if (emailCode.isEmpty()) {
+            result.put("status", 400);
+            result.put("message", "이메일 인증 코드를 확인할 수 없습니다.");
+            status = HttpStatus.BAD_REQUEST;
+
+            return new ResponseEntity<Map<String, Object>>(result, status);
+        }
+
+        user.get().updatePassword(requestDto.getNewPassword());
+
+        result.put("message", "비밀번호 변경이 완료되었습니다.");
+        status = HttpStatus.OK;
+
+        return new ResponseEntity<Map<String, Object>>(result, status);
     }
 }
