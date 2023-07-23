@@ -20,10 +20,11 @@ import Quill from "quill";
 import QuillCursors from "quill-cursors";
 
 import VoiceComp from '@/components/voiceCall/VoiceCallComp';
-import JoinUserList from '@/components/voiceCall/JoinUserListComp';
+// import JoinUserList from '@/components/voiceCall/JoinUserListComp';
 import IDEHeader from '@/components/IDE/IDEHeader';
 import IDETerminal from '@/components/IDE/IDETerminal';
-
+import { useState } from "react";
+import ChatComp from '@/components/chat/ChatFrameComp';
 
 function getRandomColor() {
 	return "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -53,6 +54,7 @@ const ivory = '#abb2bf',
 const materialPalenightTheme = EditorView.theme(
   {
     '&': {
+      fontSize:"13px",
       height: "100%",
       color: white,
       backgroundColor: background
@@ -150,9 +152,11 @@ const MouseBox = styled.div`
   .ql-container.ql-snow {
     border-radius: 0 0 5px 5px;
     border: 0px;
+    color:#A18DC6;
   }
   .ql-editor strong {
     font-weight: bold;
+    color:#A18DC6;
   }
   .q1-cursor {
     opacity: 1 !important;
@@ -166,6 +170,11 @@ const MouseBox = styled.div`
   }
   .ql-editor {
     height: 95vh;
+    font-size:15px;
+    color:#A18DC6;
+  }
+  h1{
+    color:#A18DC6;
   }
 `;
 
@@ -175,17 +184,22 @@ function Code() {
   let { id } = useParams();
   const codeId = id + "code";
   const docxId = id + "docx";
-  const CodeDoc = new Y.Doc();
+  let CodeDoc = new Y.Doc();
   const url = import.meta.env.VITE_YJS;
 
   let reactQuillRef = null;
   const docxDoc = new Y.Doc();
   Quill.register("modules/cursors", QuillCursors);
 
+  let [language, setLanguage] = useState("Python");
+  let [codeHeight, setCodeHeight] = useState("93.3vh");
+  let [code, setCode] = useState("");
+  let [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     const provider = new WebsocketProvider(url, codeId, CodeDoc);
     const ytext = CodeDoc.getText('codemirror');
+    setCode(ytext);
     provider.awareness.setLocalStateField('user', {
       name: sessionStorage.getItem("loginUser"),
       color: getRandomColor(),
@@ -260,8 +274,17 @@ function Code() {
   
   function saveCode() {
     let name = window.prompt("저장할 이름을 입력해 주세요");
-    // 현재 취소해도 다운받아짐;;
-    let fileName = presentTime() + name + '.py';
+    if (name === ""){
+      return
+    }
+    if (name === null){
+      return
+    }
+    let extension = ".py"
+    if (language === "Java") {
+      extension = ".java"
+    }
+    let fileName = presentTime() + name + extension;
     let output = CodeDoc.getText('codemirror');
     const element = document.createElement('a');
     const file = new Blob([output], {
@@ -273,17 +296,17 @@ function Code() {
     element.click();
   }
 
-  function showChat() {
-    alert("showChat");
+  function toggleChat() {
+    setShowChat(!showChat);
   }
 
-  function comfile() {
-    let code = CodeDoc.getText('codemirror');
-    // 컴파일 서버로 데이터 전송
-    console.log(code);
-    alert(code);
+  function consoleUp() {
+    setCodeHeight("80vh");
   }
 
+  function consoleDown() {
+    setCodeHeight("93.3vh");
+  }
 
   return(
     <div style={{
@@ -291,7 +314,7 @@ function Code() {
       height: "100vh",
     }}>
       <IDEHeader saveCode={saveCode}/>
-      {/* <VoiceComp mySessionId={codeId} myUserName={"민성"} /> */}
+      <VoiceComp mySessionId={codeId} myUserName={"민성" + getRandomColor()} />
       <div style={{ display:"flex" }}>
         <MouseBox
           style={{
@@ -316,10 +339,24 @@ function Code() {
             width: "60%",
             // top: "3.3vh",
             // left: "25%",
-            height: "93.8vh",
-            paddingBottom:"40px",
+            height: codeHeight,
+            paddingBottom:"70px",
           }}
         className="code-editor" ref={editorRef}>
+        <button
+          style={{
+            color:"wheat",
+            backgroundColor:"#222326",
+            border:"none"
+          }}
+          onClick={() => {
+            if (language == "Python") {
+              setLanguage("Java")
+            } else {
+              setLanguage("Python")
+            }
+          }}
+        >{language}🔄</button>
         </div>
         <div style={{
           width:"15%",
@@ -327,13 +364,13 @@ function Code() {
           flexDiretion:"column",
           backgroundColor:"#222326"
         }}>
-        <JoinUserList/>
+        {/* <JoinUserList/> */}
         </div>
       </div>
-      <IDETerminal comfile={comfile}/>
-      <img src='https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/icon.png'
+      <IDETerminal code={code} up={consoleUp} down={consoleDown}/>
+      <img src='https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/chat.png'
         onClick={() => {
-          showChat();
+          toggleChat();
         }}
         style={{
           position: "absolute",
@@ -344,6 +381,12 @@ function Code() {
         }}
       >
       </img>
+      {
+        showChat? 
+        <ChatComp />:
+        null
+      }
+      
     </div>
   )
 }

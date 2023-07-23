@@ -1,38 +1,21 @@
 import { atom } from "recoil";
+// import { recoilPersist } from 'recoil-persist';
+
+// session storage save
+// const { persistAtom } = recoilPersist({
+//   key: 'voiceJoinUser',
+//   storage: sessionStorage,
+// });
 
 
 export const voiceJoinUserState = atom({
   key: 'voiceJoinUser',
   default:[
     { 
-      name: "민성",
-      mike: true,
-      sound: true,
-    },
-    { 
-      name : "다영",
-      mike: true,
-      sound: true,
-    },
-    { 
-      name : "정민",
-      mike: true,
-      sound: true,
-    },
-    { 
-      name : "하영", 
-      mike: true,
-      sound: true,
-    },
-    { 
-      name: "강호",
-      mike: true,
-      sound: true,
-    },
-    { 
-      name: "민식",
+      name: "init",
       mike: true,
       sound: true,
     },
   ],
+  // effects_UNSTABLE: [persistAtom],
 })

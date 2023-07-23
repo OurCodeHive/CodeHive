@@ -1,19 +1,25 @@
-import { useRecoilValue } from 'recoil';
-import { voiceJoinUserState } from '@/atom/voiceUserAtom';
+function JoinUser(props:any) {
 
-function JoinUserList() {
-
-  let userInfo :any = useRecoilValue(voiceJoinUserState);
+  let userList = props.user;
+  userList.sort();
+  
   return (
     <>
-      {
-        userInfo.map((item:any, index:number) => {
-          return <p key={index}>{item.name}</p>
-        })
-      }
+      <div style={{
+        position:"absolute",
+        color:"wheat",
+        fontSize:"16px",
+        right:"17vh"
+      }}>
+        {
+          userList.map((item:any, index:number) => {
+            return <p key={index}>{item}</p>
+          })
+        }
+      </div>
     </>
   )
 }
 
 
-export default JoinUserList
+export default JoinUser;

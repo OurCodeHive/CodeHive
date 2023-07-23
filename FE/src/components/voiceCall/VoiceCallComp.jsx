@@ -3,6 +3,7 @@ import { OpenVidu } from 'openvidu-browser';
 import axios from 'axios';
 import React, { Component } from 'react';
 import UserVideoComponent from './UserVideoComponent';
+import JoinUser from './JoinUserListComp';
 
 const APPLICATION_SERVER_URL = import.meta.env.VITE_RTC;
 
@@ -27,10 +28,10 @@ class VoiceCallComp extends Component {
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+
   }
 
   componentDidMount() {
-    console.log(this.state)
     this.joinSession();
     window.addEventListener('beforeunload', this.onbeforeunload);
   }
@@ -72,6 +73,14 @@ class VoiceCallComp extends Component {
         subscribers: subscribers,
       });
     }
+    let pub = this.state.publisher;
+    // console.log("현재 남아 있는 유저");
+    // console.log("------------------------------------------------------------------");
+    // console.log(pub.stream.connection.data);
+    // for (let sub of subscribers) {
+    //   console.log(sub.stream.connection.data);
+    // }
+    // console.log("------------------------------------------------------------------");
   }
 
   joinSession() {
@@ -222,57 +231,52 @@ class VoiceCallComp extends Component {
   }
 
   render() {
-    
-    const mySessionId = this.state.mySessionId;
-    const myUserName = this.state.myUserName;
+   
+    let list = [];
 
+    const subscribers = this.state.subscribers;
+    const pub = this.state.publisher;
+    if (pub === undefined) {
+    } else {
+      list.push(JSON.parse(pub.stream.connection.data).clientData);
+    }
+    if (subscribers === undefined) {
+    } else {
+      for (let sub of subscribers) {
+        list.push(JSON.parse(sub.stream.connection.data).clientData);
+      }
+    }
     return (
-      <div className="container" style={{
-        display:"none"
-      }}>
-        {this.state.session !== undefined ? (
-          <div id="session">
-            <div id="session-header">
-              {/* <h1 id="session-title">{mySessionId}</h1>
-              <input
-                className="btn btn-large btn-danger"
-                type="button"
-                id="buttonLeaveSession"
-                onClick={this.leaveSession}
-                value="나가기"
-              /> */}
-              {/* <input
-                className="btn btn-large btn-success"
-                type="button"
-                id="buttonSwitchCamera"
-                onClick={this.switchCamera}
-                value="Switch Camera"
-              /> */}
-            </div>
-            {this.state.mainStreamManager !== undefined ? (
-              //  null 
-              <div id="main-video" className="col-md-6">
-                <UserVideoComponent streamManager={this.state.mainStreamManager} />
-              </div>
-            ) : null}
-            <div id="video-container" className="col-md-6">
-              {this.state.publisher !== undefined ? (
-                null
-                // <div className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(this.state.publisher)}>
-                //   <UserVideoComponent
-                //     streamManager={this.state.publisher} />
-                // </div>
-              ) : null}
-              {this.state.subscribers.map((sub, i) => (
-                <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(sub)}>
-                  <span>{sub.id}</span>
-                  <UserVideoComponent streamManager={sub} />
+      <>
+        <JoinUser user={list}/> 
+        <div style={{
+          display:"none"
+        }}>
+          {this.state.session !== undefined ? (
+            <div>
+              {this.state.mainStreamManager !== undefined ? (
+                <div>
+                  <UserVideoComponent streamManager={this.state.mainStreamManager} />
                 </div>
-              ))}
+              ) : null}
+              <div>
+                {this.state.publisher !== undefined ? (
+                  // null
+                  <div className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(this.state.publisher)}>
+                    <UserVideoComponent
+                      streamManager={this.state.publisher} />
+                  </div>
+                ) : null}
+                {this.state.subscribers.map((sub, i) => (
+                  <div key={i} className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(sub)}>
+                    <UserVideoComponent streamManager={sub} />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ) : null}
-      </div>
+          ) : null}
+        </div>
+      </>
     );
   }
 
