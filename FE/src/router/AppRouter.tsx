@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppWelcome from "@/pages/AppWelcome";
 import IDE from "@/pages/AppIDE";
 import AppLogin from "@/pages/AppLogin";
-
+import AppNotFound from "@/error/AppNotFound";
 
 const AppRouter = () => {
   return (
@@ -18,6 +18,7 @@ const AppRouter = () => {
           <Route path="/" element={<AppWelcome/>}></Route>
           <Route path="/login" element={<AppLogin/>}></Route>
           <Route path="/ide/:id" element={ <IDE/> }></Route>
+          <Route path="/*" element={<AppNotFound/>}/>
         </Routes>
       </BrowserRouter>
     </>
