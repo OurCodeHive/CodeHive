@@ -1,5 +1,6 @@
 package com.spoon.sok.domain.study.controller;
 
+import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
 import com.spoon.sok.domain.study.entity.StudyAppointment;
 import com.spoon.sok.domain.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class StudyController {
 
     @GetMapping("calendar/study")
     public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("nickname") String nickname) {
-        List<StudyAppointment> studyMeetingList = studyService.getStudyMeeting(nickname);
+        List<StudyAppointmentDTO> studyMeetingList = studyService.getStudyMeeting(nickname);
 
         Map<String, Object> response = new HashMap<>();
 

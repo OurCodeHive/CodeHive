@@ -43,6 +43,5 @@ public class StudyInfo {
 //    private User users; // 스터디 그룹의 장
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
-    @JoinColumn(name = "study_appointment_id")
     private List<StudyAppointment> meetingList = new ArrayList<>();
 }

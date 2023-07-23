@@ -18,6 +18,9 @@ public class StudyAppointment {
     @Column(name = "study_appointment_id")
     private Long id;
 
+    @Column(name = "study_appointment_title")
+    private String title;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date meetingAt; // 회의 날짜
 
