@@ -3,17 +3,18 @@ import { OpenVidu } from 'openvidu-browser';
 import axios from 'axios';
 import React, { Component } from 'react';
 import UserVideoComponent from './UserVideoComponent';
+import JoinUser from './JoinUserListComp';
 
-const APPLICATION_SERVER_URL = "http://localhost:8080/";
+const APPLICATION_SERVER_URL = import.meta.env.VITE_RTC;
 
-class OpenviduComp extends Component {
+class VoiceCallComp extends Component {
   constructor(props) {
     super(props);
 
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
-      mySessionId: 'A',
-      myUserName: 'B201 : ' + Math.floor(Math.random() * 100),
+      mySessionId: this.props.mySessionId,
+      myUserName: this.props.myUserName,
       session: undefined,
       mainStreamManager: undefined,  // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
       publisher: undefined,
@@ -27,9 +28,11 @@ class OpenviduComp extends Component {
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+
   }
 
   componentDidMount() {
+    this.joinSession();
     window.addEventListener('beforeunload', this.onbeforeunload);
   }
 
@@ -70,6 +73,14 @@ class OpenviduComp extends Component {
         subscribers: subscribers,
       });
     }
+    let pub = this.state.publisher;
+    // console.log("현재 남아 있는 유저");
+    // console.log("------------------------------------------------------------------");
+    // console.log(pub.stream.connection.data);
+    // for (let sub of subscribers) {
+    //   console.log(sub.stream.connection.data);
+    // }
+    // console.log("------------------------------------------------------------------");
   }
 
   joinSession() {
@@ -81,7 +92,7 @@ class OpenviduComp extends Component {
 
     this.setState(
       {
-          session: this.OV.initSession(),
+        session: this.OV.initSession(),
       },
       () => {
         var mySession = this.state.session;
@@ -178,8 +189,8 @@ class OpenviduComp extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: 'SessionA',
-      myUserName: 'Participant' + Math.floor(Math.random() * 100),
+      mySessionId: this.props.mySessionId,
+      myUserName: this.props.myUserName,
       mainStreamManager: undefined,
       publisher: undefined
     });
@@ -220,88 +231,52 @@ class OpenviduComp extends Component {
   }
 
   render() {
-    
-    const mySessionId = this.state.mySessionId;
-    const myUserName = this.state.myUserName;
+   
+    let list = [];
 
+    const subscribers = this.state.subscribers;
+    const pub = this.state.publisher;
+    if (pub === undefined) {
+    } else {
+      list.push(JSON.parse(pub.stream.connection.data).clientData);
+    }
+    if (subscribers === undefined) {
+    } else {
+      for (let sub of subscribers) {
+        list.push(JSON.parse(sub.stream.connection.data).clientData);
+      }
+    }
     return (
-      <div className="container">
-        {this.state.session === undefined ? (
-          <div id="join">
-            <div id="join-dialog" className="jumbotron vertical-center">
-              <h1>스터디 참가</h1>
-              <form className="form-group" onSubmit={this.joinSession}>
-                <p>
-                  <label>이름: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="userName"
-                    value={myUserName}
-                    onChange={this.handleChangeUserName}
-                    required
-                  />
-                </p>
-                <p>
-                  <label> 방번호: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="sessionId"
-                    value={mySessionId}
-                    onChange={this.handleChangeSessionId}
-                    required
-                  />
-                </p>
-                <p className="text-center">
-                  <input className="btn btn-lg btn-success" name="commit" type="submit" value="스터디 입장" />
-                </p>
-              </form>
-            </div>
-          </div>
-        ) : null}
-
-        {this.state.session !== undefined ? (
-          <div id="session">
-            <div id="session-header">
-              <h1 id="session-title">{mySessionId}</h1>
-              <input
-                className="btn btn-large btn-danger"
-                type="button"
-                id="buttonLeaveSession"
-                onClick={this.leaveSession}
-                value="나가기"
-              />
-              {/* <input
-                className="btn btn-large btn-success"
-                type="button"
-                id="buttonSwitchCamera"
-                onClick={this.switchCamera}
-                value="Switch Camera"
-              /> */}
-            </div>
-            {this.state.mainStreamManager !== undefined ? (
-              <div id="main-video" className="col-md-6">
-                <UserVideoComponent streamManager={this.state.mainStreamManager} />
-              </div>
-            ) : null}
-            <div id="video-container" className="col-md-6">
-              {this.state.publisher !== undefined ? (
-                <div className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(this.state.publisher)}>
-                  <UserVideoComponent
-                    streamManager={this.state.publisher} />
+      <>
+        <JoinUser user={list}/> 
+        <div style={{
+          display:"none"
+        }}>
+          {this.state.session !== undefined ? (
+            <div>
+              {this.state.mainStreamManager !== undefined ? (
+                <div>
+                  <UserVideoComponent streamManager={this.state.mainStreamManager} />
                 </div>
               ) : null}
-              {this.state.subscribers.map((sub, i) => (
-                <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(sub)}>
-                  <span>{sub.id}</span>
-                  <UserVideoComponent streamManager={sub} />
-                </div>
-              ))}
+              <div>
+                {this.state.publisher !== undefined ? (
+                  // null
+                  <div className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(this.state.publisher)}>
+                    <UserVideoComponent
+                      streamManager={this.state.publisher} />
+                  </div>
+                ) : null}
+                {this.state.subscribers.map((sub, i) => (
+                  <div key={i} className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(sub)}>
+                    <UserVideoComponent streamManager={sub} />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ) : null}
-      </div>
+          ) : null}
+        </div>
+      </>
     );
   }
 
@@ -342,4 +317,4 @@ class OpenviduComp extends Component {
 }
 
 
-export default OpenviduComp;
+export default VoiceCallComp;
