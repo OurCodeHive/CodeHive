@@ -35,7 +35,10 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         log.info("프리핸들: {}", request.getHeader("Authorization"));
-        log.info("키 : {}", secretKey);
+
+        if (request.getHeader("Authorization") == null) { // token이 없으면 바로 false
+            return false;
+        }
 
         try {
             JwtTokenUtil.isExpired(request.getHeader("Authorization"), secretKey);
