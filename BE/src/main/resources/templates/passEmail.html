@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div style="position: absolute; width: 500px; height: 408px; top: 75px; font-size: 18px; margin-left: 20px">
+    <h1>비밀번호 찾기 인증코드</h1>
+    <hr>
+    <h3>비밀번호 찾기를 위한 인증번호 입니다.</h3>
+    <br>
+    <span>본 메일은 본인 확인을 위해 자동으로 발송되는 메일입니다.</span>
+    <br>
+    <span>아래의 인증번호를 확인하여 인증을 완료해주세요.</span>
+    <br> <br>
+    <span style="font-size: 14px; color: #868e96; font-weight: bold">인증번호</span>
+    <div style="margin-top: 20px; margin-bottom: 20px;">
+        <input th:value="${code}" style="font-size:48px; height:50px; width:500px; background-color:#f8f8f8; border:none" readonly="">
+    </div>
+</div>
+</body>
+</html>
