@@ -24,4 +24,7 @@ public class StudyService {
         return studyRepository.findByNicknameStudyMeetings(1);
     }
 
+    public List<StudyAppointmentDTO> getTodayStudyMeeting(String today, String email) {
+        return studyRepository.findByTodayStudyMettings(today, email);
+    }
 }

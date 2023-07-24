@@ -25,4 +25,16 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
                    "JOIN STUDY_APPOINTMENT sa ON si.studyinfo_id = sa.studyinfo_id " +
                    "WHERE u.users_id = :nickname", nativeQuery = true)
     List<StudyAppointmentDTO> findByNicknameStudyMeetings(@Param("nickname") int nickname);
+
+    @Query(value = "SELECT sa.created_at as createdAt, " +
+                          "sa.end_at as endAt, " +
+                          "sa.meeting_at as meetingAt, " +
+                          "sa.study_appointment_title as title, " +
+                          "sa.study_appointment_id as studyappointmentId, " +
+                          "sa.studyinfo_id as studyinfoId " +
+            "FROM USERS u " +
+            "JOIN STUDY_INFO si ON u.email = :email " +
+            "JOIN STUDY_APPOINTMENT sa ON si.studyinfo_id = sa.studyinfo_id " +
+            "WHERE u.email = :email AND sa.meeting_at = :today", nativeQuery = true)
+    List<StudyAppointmentDTO> findByTodayStudyMettings(String today, String email);
 }
