@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -97,7 +98,10 @@ public class StudyController {
     }
 
     @PostMapping("study")
-    public void makeStudyGroup(@RequestBody StudyCreationDto studyCreationDto) {
+    public void makeStudyGroup(@RequestBody StudyCreationDto studyCreationDto, HttpServletRequest request){
+//                               @RequestParam("profileImage") MultipartFile file) {
+        String email = JwtTokenUtil.getEmail(request.getHeader("Authorization"), secretKey);
         studyService.setStudyGroup(studyCreationDto);
+//        studyService.setStudyGroupProfileImage(file.getOriginalFilename(), file.getSize());
     }
 }

@@ -34,6 +34,9 @@ public class StudyInfo {
     @Column(name = "profileimage")
     private String profileImage;
 
+    @Column(name = "enter_name")
+    private String enterName;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt; // 스터디 그룹 생성일
 

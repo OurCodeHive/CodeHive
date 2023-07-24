@@ -41,14 +41,23 @@ public class StudyService {
         return studyRepository.findByNicknameAndTitle(nickname, title);
     }
 
+    @Transactional
     public void setStudyGroup(StudyCreationDto studyCreationDto) {
 
         // 웹 IDE 접속하기 위한 10글자 문자열 생성
         studyCreationDto.setEnterName(UUID.randomUUID().toString().substring(0, 9));
 
-        // 스터디 그룹의 대표이미지 1장을 s3로 업로드
-
-        studyRepository.saveStudyGroup(studyCreationDto);
+        studyRepository.saveStudyGroup("1",
+                                       studyCreationDto.getTitle(),
+                                       studyCreationDto.getDescription(),
+                                       studyCreationDto.getEnterName(),
+                                       studyCreationDto.getStartAt(),
+                                       studyCreationDto.getEndAt());
         return;
+    }
+
+    @Transactional
+    public void setStudyGroupProfileImage(String originalFileName, String fileSize) {
+
     }
 }

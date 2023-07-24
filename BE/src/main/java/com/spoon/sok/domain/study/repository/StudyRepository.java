@@ -6,9 +6,11 @@ import com.spoon.sok.domain.study.dto.StudyInfoDto;
 import com.spoon.sok.domain.study.entity.StudyAppointment;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
@@ -59,5 +61,15 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "JOIN STUDY_INFO si ON u.nickname = ?1 AND si.title LIKE %?2%", nativeQuery = true)
     List<StudyInfoDto> findByNicknameAndTitle(String nickname, String title);
 
-//    void saveStudyGroup(StudyCreationDto studyCreationDto);
+    @Modifying
+    @Query(value = "INSERT INTO study_info (users_id, title, description, enter_name, created_at, end_at) " +
+            "VALUES (:userId, :title, :description, :enterName, :startAt, :endAt)", nativeQuery = true)
+    void saveStudyGroup(@Param("userId") String userId,
+                        @Param("title") String title,
+                        @Param("description") String description,
+                        @Param("enterName") String enterName,
+                        @Param("startAt") Date startAt,
+                        @Param("endAt") Date endAt);
+
+
 }
