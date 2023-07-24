@@ -31,9 +31,12 @@ public class JwtInterceptor implements HandlerInterceptor {
         this.userRepository = userRepository;
     }
 
-    @Override
+    @Overrides
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
+        String url = request.getRequestURI();
+        if (url.contains("swagger") || url.contains("api-docs") || url.contains("webjars")) {
+            return true;
+        }
         log.info("프리핸들: {}", request.getHeader("Authorization"));
         log.info("키 : {}", secretKey);
 
