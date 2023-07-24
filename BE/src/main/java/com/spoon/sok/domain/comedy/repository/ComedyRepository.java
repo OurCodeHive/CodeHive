@@ -1,6 +1,5 @@
 package com.spoon.sok.domain.comedy.repository;
 
-import com.spoon.sok.domain.comedy.dto.ComedyDTO;
 import com.spoon.sok.domain.comedy.entity.CodingLiterature;
 import org.springframework.data.jpa.repository.JpaRepository;
 
