@@ -10,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -93,4 +90,16 @@ public class StudyController {
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
+//
+//    @PostMapping("study")
+//    public ResponseEntity<Map<String, Object>> searchStudyGroup(@RequestBody requestDto) {
+//        List<StudyInfoDto> userStudyGroupList = studyService.searchUserStudyGroup(nickname, title);
+//
+//        Map<String, Object> response = new HashMap<>();
+//
+//        response.put("status", 200);
+//        response.put("search", userStudyGroupList);
+//
+//        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+//    }
 }
