@@ -1,6 +1,7 @@
 package com.spoon.sok.domain.study.controller;
 
 import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
+import com.spoon.sok.domain.study.dto.StudyCreationDto;
 import com.spoon.sok.domain.study.dto.StudyInfoDto;
 import com.spoon.sok.domain.study.service.StudyService;
 import com.spoon.sok.util.JwtTokenUtil;
@@ -94,16 +95,9 @@ public class StudyController {
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
-//
-//    @PostMapping("study")
-//    public ResponseEntity<Map<String, Object>> searchStudyGroup(@RequestBody requestDto) {
-//        List<StudyInfoDto> userStudyGroupList = studyService.searchUserStudyGroup(nickname, title);
-//
-//        Map<String, Object> response = new HashMap<>();
-//
-//        response.put("status", 200);
-//        response.put("search", userStudyGroupList);
-//
-//        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-//    }
+
+    @PostMapping("study")
+    public void makeStudyGroup(@RequestBody StudyCreationDto studyCreationDto) {
+        studyService.setStudyGroup(studyCreationDto);
+    }
 }

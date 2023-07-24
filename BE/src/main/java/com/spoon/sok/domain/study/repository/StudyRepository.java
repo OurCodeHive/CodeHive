@@ -1,6 +1,7 @@
 package com.spoon.sok.domain.study.repository;
 
 import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
+import com.spoon.sok.domain.study.dto.StudyCreationDto;
 import com.spoon.sok.domain.study.dto.StudyInfoDto;
 import com.spoon.sok.domain.study.entity.StudyAppointment;
 import com.spoon.sok.domain.study.entity.StudyInfo;
@@ -57,4 +58,6 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "FROM USERS U " +
             "JOIN STUDY_INFO si ON u.nickname = ?1 AND si.title LIKE %?2%", nativeQuery = true)
     List<StudyInfoDto> findByNicknameAndTitle(String nickname, String title);
+
+//    void saveStudyGroup(StudyCreationDto studyCreationDto);
 }
