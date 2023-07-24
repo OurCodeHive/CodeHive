@@ -76,7 +76,20 @@ public class StudyController {
         Map<String, Object> response = new HashMap<>();
 
         response.put("status", 200);
-        response.put("today", userStudyGroupList);
+        response.put("study_list", userStudyGroupList);
+
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("study/search")
+    public ResponseEntity<Map<String, Object>> searchStudyGroup(@RequestParam("nickname") String nickname,
+                                                                @RequestParam("title") String title) {
+        List<StudyInfoDto> userStudyGroupList = studyService.searchUserStudyGroup(nickname, title);
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("status", 200);
+        response.put("search", userStudyGroupList);
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }

@@ -12,9 +12,6 @@ import java.util.List;
 
 public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
 
-    // 현재 branch 차이로 User가 없음.
-    // "JOIN STUDY_INFO si ON u.users_id = si.users_id "
-    // (@Param("nickname") int nickname); -> nickname이 아닌 usersId
     @Query(value = "SELECT sa.created_at as createdAt, " +
                           "sa.end_at as endAt, " +
                           "sa.meeting_at as meetingAt, " +
@@ -45,4 +42,9 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
                    "JOIN STUDY_INFO si ON u.nickname = :nickname", nativeQuery = true)
     List<StudyInfoDto> findByNicknameStudyInfos(String nickname);
 
+    @Query(value = "SELECT si.studyinfo_id as studyinfoId, " +
+            "si.title as title " +
+            "FROM USERS U " +
+            "JOIN STUDY_INFO si ON u.nickname = ?1 AND si.title LIKE %?2%", nativeQuery = true)
+    List<StudyInfoDto> findByNicknameAndTitle(String nickname, String title);
 }

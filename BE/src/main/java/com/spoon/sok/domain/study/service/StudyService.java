@@ -20,8 +20,6 @@ public class StudyService {
     private final StudyRepository studyRepository;
 
     public List<StudyAppointmentDTO> getStudyMeeting(String nickname) {
-        log.info("StudyService입니다. {} ", nickname);
-//        int userId = userRepository.findById(nickname);
         return studyRepository.findByNicknameStudyMeetings(nickname);
     }
 
@@ -31,5 +29,9 @@ public class StudyService {
 
     public List<StudyInfoDto> getUserStudyGroup(String nickname) {
         return studyRepository.findByNicknameStudyInfos(nickname);
+    }
+
+    public List<StudyInfoDto> searchUserStudyGroup(String nickname, String title) {
+        return studyRepository.findByNicknameAndTitle(nickname, title);
     }
 }
