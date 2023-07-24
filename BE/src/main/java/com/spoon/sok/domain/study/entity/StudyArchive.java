@@ -5,19 +5,23 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Getter
-@Entity
-@Table(name = "STUDY_NOTICE")
+@Setter
+@Table(name = "STUDY_ARCHIVE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StudyNotice {
+public class StudyArchive {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "studyboard_id") // 공지사항키
+    @Column(name = "studyarchive_id") // 스터디 자료키
     private Long id;
+
+    @Temporal(TemporalType.DATE) // 스터디 자료 등록일자
+    private Date uploadAt;
 
     @Column(name = "title") // 스터디 제목
     private String title;
@@ -25,14 +29,11 @@ public class StudyNotice {
     @Column(name = "content") // 스터디 내용
     private String content;
 
-    @Temporal(TemporalType.DATE)
-    private Date createdAt; // 스터디 공지사항 등록일자
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyinfo_id", nullable = false) // 스터디 정보키
     private StudyInfo studyInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false) // 스터디 그룹장(공지사항 작성자)
+    @JoinColumn(name = "user_id", nullable = false) // 유저키
     private User user;
 }
