@@ -1,4 +1,10 @@
 package com.spoon.sok.domain.study.dto;
 
-public class StudyInfoDto {
+import java.util.Date;
+
+public interface StudyInfoDto {
+
+    Long getStudyinfoId();
+
+    String getTitle();
 }

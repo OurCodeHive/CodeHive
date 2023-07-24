@@ -1,6 +1,7 @@
 package com.spoon.sok.domain.study.controller;
 
 import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
+import com.spoon.sok.domain.study.dto.StudyInfoDto;
 import com.spoon.sok.domain.study.service.StudyService;
 import com.spoon.sok.util.JwtTokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,6 +65,18 @@ public class StudyController {
             response.put("today", todayMeetingList);
             response.put("message", "오늘 예정된 스터디가 없습니다.");
         }
+
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("study")
+    public ResponseEntity<Map<String, Object>> getStudyGroup(@RequestParam("nickname") String nickname) {
+        List<StudyInfoDto> userStudyGroupList = studyService.getUserStudyGroup(nickname);
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("status", 200);
+        response.put("today", userStudyGroupList);
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }

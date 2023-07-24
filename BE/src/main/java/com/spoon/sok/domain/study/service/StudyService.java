@@ -1,6 +1,7 @@
 package com.spoon.sok.domain.study.service;
 
 import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
+import com.spoon.sok.domain.study.dto.StudyInfoDto;
 import com.spoon.sok.domain.study.entity.StudyAppointment;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,10 @@ public class StudyService {
     }
 
     public List<StudyAppointmentDTO> getTodayStudyMeeting(String today, String email) {
-        return studyRepository.findByTodayStudyMettings(today, email);
+        return studyRepository.findByTodayStudyMeetings(today, email);
+    }
+
+    public List<StudyInfoDto> getUserStudyGroup(String nickname) {
+        return studyRepository.findByNicknameStudyInfos(nickname);
     }
 }

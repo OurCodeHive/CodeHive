@@ -1,6 +1,7 @@
 package com.spoon.sok.domain.study.repository;
 
 import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
+import com.spoon.sok.domain.study.dto.StudyInfoDto;
 import com.spoon.sok.domain.study.entity.StudyAppointment;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,5 +37,12 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "JOIN STUDY_INFO si ON u.email = :email " +
             "JOIN STUDY_APPOINTMENT sa ON si.studyinfo_id = sa.studyinfo_id " +
             "WHERE u.email = :email AND sa.meeting_at = :today", nativeQuery = true)
-    List<StudyAppointmentDTO> findByTodayStudyMettings(String today, String email);
+    List<StudyAppointmentDTO> findByTodayStudyMeetings(String today, String email);
+
+    @Query(value = "SELECT si.studyinfo_id as studyinfoId, " +
+                          "si.title as title " +
+                   "FROM USERS U " +
+                   "JOIN STUDY_INFO si ON u.nickname = :nickname", nativeQuery = true)
+    List<StudyInfoDto> findByNicknameStudyInfos(String nickname);
+
 }
