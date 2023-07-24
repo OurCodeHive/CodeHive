@@ -37,10 +37,20 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
     List<StudyAppointmentDTO> findByTodayStudyMeetings(String today, String email);
 
     @Query(value = "SELECT si.studyinfo_id as studyinfoId, " +
-                          "si.title as title " +
+                          "si.title as title, " +
+                          "0 as isEnd " +
                    "FROM USERS U " +
-                   "JOIN STUDY_INFO si ON u.nickname = :nickname", nativeQuery = true)
-    List<StudyInfoDto> findByNicknameStudyInfos(String nickname);
+                   "JOIN STUDY_INFO si ON u.nickname = :nickname " +
+                   "WHERE si.end_at >= CURRENT_DATE()", nativeQuery = true)
+    List<StudyInfoDto> findByNicknameStudyInfoProceeding(String nickname);
+
+    @Query(value = "SELECT si.studyinfo_id as studyinfoId, " +
+                          "si.title as title, " +
+                          "1 as isEnd " +
+            "FROM USERS U " +
+            "JOIN STUDY_INFO si ON u.nickname = :nickname " +
+            "WHERE si.end_at < CURRENT_DATE()", nativeQuery = true)
+    List<StudyInfoDto> findByNicknameStudyInfoClose(String nickname);
 
     @Query(value = "SELECT si.studyinfo_id as studyinfoId, " +
             "si.title as title " +

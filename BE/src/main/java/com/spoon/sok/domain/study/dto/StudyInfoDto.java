@@ -7,4 +7,6 @@ public interface StudyInfoDto {
     Long getStudyinfoId();
 
     String getTitle();
+
+    Integer getIsEnd();
 }

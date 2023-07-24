@@ -12,9 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -68,12 +66,18 @@ public class StudyController {
 
     @GetMapping("study")
     public ResponseEntity<Map<String, Object>> getStudyGroup(@RequestParam("nickname") String nickname) {
-        List<StudyInfoDto> userStudyGroupList = studyService.getUserStudyGroup(nickname);
+        List<StudyInfoDto> userStudyGroupProceedingList = studyService.getUserStudyGroupProceeding(nickname);
+        List<StudyInfoDto> userStudyGroupCloseList = studyService.getUserStudyGroupClose(nickname);
+
+        List<StudyInfoDto> mergedList = new ArrayList<>();
+
+        Collections.addAll(mergedList, userStudyGroupProceedingList.toArray(new StudyInfoDto[0]));
+        Collections.addAll(mergedList, userStudyGroupCloseList.toArray(new StudyInfoDto[0]));
 
         Map<String, Object> response = new HashMap<>();
 
         response.put("status", 200);
-        response.put("study_list", userStudyGroupList);
+        response.put("study_list", mergedList);
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }

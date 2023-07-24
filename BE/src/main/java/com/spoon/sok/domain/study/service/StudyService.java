@@ -27,8 +27,12 @@ public class StudyService {
         return studyRepository.findByTodayStudyMeetings(today, email);
     }
 
-    public List<StudyInfoDto> getUserStudyGroup(String nickname) {
-        return studyRepository.findByNicknameStudyInfos(nickname);
+    public List<StudyInfoDto> getUserStudyGroupProceeding(String nickname) {
+        return studyRepository.findByNicknameStudyInfoProceeding(nickname);
+    }
+
+    public List<StudyInfoDto> getUserStudyGroupClose(String nickname) {
+        return studyRepository.findByNicknameStudyInfoClose(nickname);
     }
 
     public List<StudyInfoDto> searchUserStudyGroup(String nickname, String title) {
