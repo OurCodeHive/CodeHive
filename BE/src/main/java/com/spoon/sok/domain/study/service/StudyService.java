@@ -21,7 +21,7 @@ public class StudyService {
     public List<StudyAppointmentDTO> getStudyMeeting(String nickname) {
         log.info("StudyService입니다. {} ", nickname);
 //        int userId = userRepository.findById(nickname);
-        return studyRepository.findByNicknameStudyMeetings(1);
+        return studyRepository.findByNicknameStudyMeetings(nickname);
     }
 
     public List<StudyAppointmentDTO> getTodayStudyMeeting(String today, String email) {
