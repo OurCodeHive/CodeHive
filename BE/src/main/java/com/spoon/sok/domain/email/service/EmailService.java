@@ -3,6 +3,8 @@ package com.spoon.sok.domain.email.service;
 import com.spoon.sok.domain.email.dto.EmailAuthVerifyDto;
 import com.spoon.sok.domain.email.entity.Email;
 import com.spoon.sok.domain.email.repository.EmailRepository;
+import com.spoon.sok.domain.user.entity.User;
+import com.spoon.sok.domain.user.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +41,7 @@ public class EmailService {
 
         Optional<User> user = userRepository.findByEmail(email);
 
-        if (user.isEmpty()) {
+        if (!user.isEmpty()) {
             result.put("status", 400);
             result.put("message", "이미 가입한 이메일 입니다.");
             status = HttpStatus.BAD_REQUEST;

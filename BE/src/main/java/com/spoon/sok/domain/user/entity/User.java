@@ -39,13 +39,13 @@
 //    @Enumerated(EnumType.STRING)
 //    private UserStatus status;
 //
-//    @Column(name="created_at")
+//    @Column(name = "created_at")
 //    private LocalDateTime createdAt;
 //
-//    @Column(name="modified_at")
+//    @Column(name = "modified_at")
 //    private LocalDateTime modifyedAt;
 //
-//    @Column(name="leave_at")
+//    @Column(name = "leave_at")
 //    private LocalDateTime leaveAt;
 //
 //    @OneToMany(mappedBy = "users")
@@ -55,7 +55,7 @@
 //    private List<StudyInfo> studyInfoList = new ArrayList<>();
 //
 //    @Builder
-//    public User (UserSignupRequestDto requestDto, int socialLogin, UserStatus status, LocalDateTime createdAt) {
+//    public User(UserSignupRequestDto requestDto, int socialLogin, UserStatus status, LocalDateTime createdAt) {
 //        this.email = requestDto.getEmail();
 //        this.password = requestDto.getPassword();
 //        this.nickname = requestDto.getNickname();

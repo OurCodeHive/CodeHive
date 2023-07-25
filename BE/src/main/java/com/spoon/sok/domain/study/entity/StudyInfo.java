@@ -1,12 +1,15 @@
 package com.spoon.sok.domain.study.entity;
 
-//import com.spoon.sok.domain.user.entity.User;
+
+import com.spoon.sok.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Entity
@@ -40,7 +43,10 @@ public class StudyInfo {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endAt; // 스터디 그룹 종료일
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "users_id", nullable = false)
-//    private User users; // 스터디 그룹의 장
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
+    private List<StudyAppointment> meetingList = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id", nullable = false)
+    private User users; // 스터디 그룹의 장
 }

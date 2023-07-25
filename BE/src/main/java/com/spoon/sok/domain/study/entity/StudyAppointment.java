@@ -18,16 +18,19 @@ public class StudyAppointment {
     @Column(name = "study_appointment_id")
     private Long id;
 
-    @Temporal(TemporalType.TIMESTAMP) // 회의날짜
-    private Date date;
-
-    @Temporal(TemporalType.TIMESTAMP) // 회의시작시간
-    private Date startTime;
-
-    @Temporal(TemporalType.TIMESTAMP) // 회의종료시간
-    private Date endTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyinfo_id", nullable = false)
     private StudyInfo studyInfo;
+
+    @Column(name = "study_appointment_title")
+    private String title;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date meetingAt; // 회의 날짜
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt; // 회의 시작 날짜
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endAt; // 회의 종료 시간
 }

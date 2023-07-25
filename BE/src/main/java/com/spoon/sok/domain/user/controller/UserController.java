@@ -1,7 +1,6 @@
 //package com.spoon.sok.domain.user.controller;
 //
 //import com.spoon.sok.domain.user.dto.UserChangePasswordRequestDto;
-//import com.spoon.sok.domain.user.dto.UserLoginResponseDto;
 //import com.spoon.sok.domain.user.dto.UserRequestDto;
 //import com.spoon.sok.domain.user.dto.UserSignupRequestDto;
 //import com.spoon.sok.domain.user.service.UserService;
