@@ -3,6 +3,7 @@ package com.spoon.sok.util;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilter {
     private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -23,7 +25,7 @@ public class JwtAuthenticationFilter extends GenericFilter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = resolveToken((HttpServletRequest) request);
 
-        System.out.println(token);
+        log.info("doFilter : {}", token);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             String isLogout = (String) redisTemplate.opsForValue().get(token);
@@ -40,7 +42,7 @@ public class JwtAuthenticationFilter extends GenericFilter {
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
-            System.out.println(bearerToken.substring(6));
+            log.info("resolveToken in doFilter : {}", bearerToken.substring(6));
             return bearerToken.substring(6);
         }
         return null;
