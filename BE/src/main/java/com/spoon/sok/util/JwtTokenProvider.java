@@ -1,9 +1,11 @@
 package com.spoon.sok.util;
 
 import com.spoon.sok.domain.user.dto.response.UserResponseDto;
+import com.spoon.sok.domain.user.repository.UserRepository;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,8 +30,10 @@ public class JwtTokenProvider {
     private static final String BEARER_TYPE = "Bearer";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;
-
     private final Key key;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -43,8 +47,14 @@ public class JwtTokenProvider {
 
         Long now = (new Date()).getTime();
 
+        log.info("generateToken getName : {}", authentication.getName());
+        log.info("generateToken users_id : {}", userRepository.findByEmail(authentication.getName()).get().getId());
+
+        Long userId = userRepository.findByEmail(authentication.getName()).get().getId();
+
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
+                .claim("users_id", String.valueOf(userId))
                 .claim(AUTHORITIES_KEY, authorites)
                 .setExpiration(new Date(now + ACCESS_TOKEN_EXPIRE_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
