@@ -26,9 +26,9 @@ public class WebConfig implements WebMvcConfigurer {
             "/api/email/**"
     };
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new JwtInterceptor(userRepository))
-                .excludePathPatterns(INTERCEPTOR_WHITE_LIST);
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(new JwtInterceptor(userRepository))
+//                .excludePathPatterns(INTERCEPTOR_WHITE_LIST);
+//    }
 }
