@@ -1,9 +1,10 @@
 package com.spoon.sok.domain.study.controller;
 
 import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
-import com.spoon.sok.domain.study.dto.StudyCreationDto;
 import com.spoon.sok.domain.study.dto.StudyInfoDto;
 import com.spoon.sok.domain.study.service.StudyService;
+import com.spoon.sok.util.JwtTokenProvider;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +24,12 @@ public class StudyController {
     @Value("${jwt.secret}")
     private String secretKey;
 
-
+    private final JwtTokenProvider jwtTokenProvider;
     private final StudyService studyService;
 
     @GetMapping("calendar/study")
-    public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("nickname") String nickname) {
-        List<StudyAppointmentDTO> studyMeetingList = studyService.getStudyMeeting(nickname);
+    public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("user") String userId) {
+        List<StudyAppointmentDTO> studyMeetingList = studyService.getStudyMeeting(userId);
 
         Map<String, Object> response = new HashMap<>();
 
@@ -44,25 +45,26 @@ public class StudyController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
-//    @GetMapping("today/study")
-//    public ResponseEntity<Map<String, Object>> getTodayStudyMeeting(@RequestParam("today") String today, HttpServletRequest request) {
-////        String email = JwtTokenUtil.getEmail(request.getHeader("Authorization"), secretKey);
-//
-////        List<StudyAppointmentDTO> todayMeetingList = studyService.getTodayStudyMeeting(today, email);
-//
-//        Map<String, Object> response = new HashMap<>();
-//
-//        if (todayMeetingList.size() != 0) {
-//            response.put("status", 200);
-//            response.put("today", todayMeetingList);
-//        } else {
-//            response.put("status", 200);
-//            response.put("today", todayMeetingList);
-//            response.put("message", "오늘 예정된 스터디가 없습니다.");
-//        }
-//
-//        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-//    }
+    @GetMapping("today/study")
+    public ResponseEntity<Map<String, Object>> getTodayStudyMeeting(@RequestParam("today") String today, HttpServletRequest request) {
+
+        Claims here = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
+
+        List<StudyAppointmentDTO> todayMeetingList = studyService.getTodayStudyMeeting(today, (String) here.get("users_id"));
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (todayMeetingList.size() != 0) {
+            response.put("status", 200);
+            response.put("today", todayMeetingList);
+        } else {
+            response.put("status", 200);
+            response.put("today", todayMeetingList);
+            response.put("message", "오늘 예정된 스터디가 없습니다.");
+        }
+
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
 
     @GetMapping("study")
     public ResponseEntity<Map<String, Object>> getStudyGroup(@RequestParam("nickname") String nickname) {
@@ -94,12 +96,4 @@ public class StudyController {
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
-
-//    @PostMapping("study")
-//    public void makeStudyGroup(@RequestBody StudyCreationDto studyCreationDto, HttpServletRequest request){
-////                               @RequestParam("profileImage") MultipartFile file) {
-//        String email = JwtTokenUtil.getEmail(request.getHeader("Authorization"), secretKey);
-//        studyService.setStudyGroup(studyCreationDto);
-////        studyService.setStudyGroupProfileImage(file.getOriginalFilename(), file.getSize());
-//    }
 }

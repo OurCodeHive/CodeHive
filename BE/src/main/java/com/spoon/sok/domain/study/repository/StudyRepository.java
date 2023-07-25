@@ -22,10 +22,10 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
                           "sa.study_appointment_id as studyappointmentId, " +
                           "sa.studyinfo_id as studyinfoId " +
                    "FROM USERS u " +
-                   "JOIN STUDY_INFO si ON u.nickname = :nickname " +
+                   "JOIN STUDY_INFO si ON u.users_id = :userId " +
                    "JOIN STUDY_APPOINTMENT sa ON si.studyinfo_id = sa.studyinfo_id " +
-                   "WHERE u.nickname = :nickname", nativeQuery = true)
-    List<StudyAppointmentDTO> findByNicknameStudyMeetings(@Param("nickname") String nickname);
+                   "WHERE u.users_id = :userId", nativeQuery = true)
+    List<StudyAppointmentDTO> findByNicknameStudyMeetings(@Param("userId") String userId);
 
     @Query(value = "SELECT sa.created_at as createdAt, " +
                           "sa.end_at as endAt, " +
@@ -34,10 +34,10 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
                           "sa.study_appointment_id as studyappointmentId, " +
                           "sa.studyinfo_id as studyinfoId " +
             "FROM USERS u " +
-            "JOIN STUDY_INFO si ON u.email = :email " +
+            "JOIN STUDY_INFO si ON u.users_id = :userId " +
             "JOIN STUDY_APPOINTMENT sa ON si.studyinfo_id = sa.studyinfo_id " +
-            "WHERE u.email = :email AND sa.meeting_at = :today", nativeQuery = true)
-    List<StudyAppointmentDTO> findByTodayStudyMeetings(String today, String email);
+            "WHERE u.users_id = :userId AND sa.meeting_at = :today", nativeQuery = true)
+    List<StudyAppointmentDTO> findByTodayStudyMeetings(String today, String userId);
 
     @Query(value = "SELECT si.studyinfo_id as studyinfoId, " +
                           "si.title as title, " +

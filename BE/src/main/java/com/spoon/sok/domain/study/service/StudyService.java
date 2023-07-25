@@ -21,12 +21,12 @@ public class StudyService {
 
     private final StudyRepository studyRepository;
 
-    public List<StudyAppointmentDTO> getStudyMeeting(String nickname) {
-        return studyRepository.findByNicknameStudyMeetings(nickname);
+    public List<StudyAppointmentDTO> getStudyMeeting(String userId) {
+        return studyRepository.findByNicknameStudyMeetings(userId);
     }
 
-    public List<StudyAppointmentDTO> getTodayStudyMeeting(String today, String email) {
-        return studyRepository.findByTodayStudyMeetings(today, email);
+    public List<StudyAppointmentDTO> getTodayStudyMeeting(String today, String userId) {
+        return studyRepository.findByTodayStudyMeetings(today, userId);
     }
 
     public List<StudyInfoDto> getUserStudyGroupProceeding(String nickname) {
