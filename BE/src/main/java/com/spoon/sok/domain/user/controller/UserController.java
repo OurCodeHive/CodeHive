@@ -17,6 +17,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
@@ -177,6 +178,9 @@ public class UserController {
 
             return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
         }
+
+        result.put("status", 200);
+        result.put("message", "로그아웃 완료");
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
