@@ -2,8 +2,15 @@ import ChatComp from "./ChatComp";
 import { useRef, useState, useEffect } from 'react';
 import style from "./ChatPage.module.css"
 import * as StompJs from '@stomp/stompjs';
+import axios from 'axios';
 
-function ChatFrameComp() {
+function ChatFrameComp(props) {
+
+  const client = useRef({});
+  const scrollRef = useRef();
+
+  let [chatList, setChatList] = useState([]);
+  let [chat, setChat] = useState("");
 
   function getDate() {
     let date = new Date();
@@ -15,23 +22,29 @@ function ChatFrameComp() {
     return String(year).substr(-2) + "-" + month.substr(-2) + "-" + day.substr(-2) + " "+ hour.substr(-2) + ":" + minute.substr(-2);
   }
 
-  // 채팅 데이터 받아오기
+  // 채팅 데이터, 현재 참여유저 받아오기 => 딕셔너리에 저장
   useEffect(() => {
+
+    const studyInfoId = props.id;
+    const url = "http://localhost:8080" + "/api/chat/" + studyInfoId;
+    
+    axios.get(url)
+    .then((result) => {
+      setChatList(result.data);
+    })
+    .then(() => {
+      connect();
+    })
+
+    return () => {
+      disconnect();
+    }
 
   }, [])
 
-  let temp = [
-    {
-      userName:"민성",
-      message:"안녕",
-      sendTime:"23-07-24 04:23"
-    },
-  ]
-
-  let [chatList, setChatList] = useState(temp);
-  let [chat, setChat] = useState("");
-  
-  const scrollRef = useRef();
+  let dic = {
+    1:"민성"
+  }
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior : 'smooth' });
@@ -39,26 +52,61 @@ function ChatFrameComp() {
   
   function handleSubmit(event) {
     event.preventDefault();
+
     if (chat === "") {
       return
     }
 
     const newChat = {
-      userName: "민성", // 실제로 pk받아서 스터디원이랑 조회 해야함 => 백에서
+      userId: 1,
+      studyRoomId: props.id,
       message: chat,
-      sendTime: getDate()
+      dateTime: getDate()
     }
 
-    const temp = [...chatList, newChat];
-    setChatList(temp);
+    publish(newChat);
     setChat("");
   }
 
   function handleChange(event) {
-
     setChat(event.target.value);
   }
   
+  function connect() {
+    client.current = new StompJs.Client({
+      brokerURL: import.meta.env.VITE_CHAT,
+      onConnect: () => {
+        subscribe();
+      },
+    });
+    client.current.activate();
+  };
+
+  function publish(chat) {
+    if (!client.current.connected) {
+      return;
+    }
+    client.current.publish({
+      destination: '/pub/chat',
+      body: JSON.stringify(chat),
+    });
+    setChat('');
+  };
+
+  function subscribe() {
+    client.current.subscribe('/sub/chat/' + props.id, (body) => {
+      const json_body = JSON.parse(body.body);
+      const message = json_body;
+      setChatList((chat_list) => [
+        ...chat_list, message
+      ]);
+    });
+  };
+  
+  function disconnect() {
+    client.current.deactivate();
+  };
+
   return(
     <>
       <div style={{
@@ -80,9 +128,10 @@ function ChatFrameComp() {
             width:"50vh",
           }}
         >
+
           <div className={style.container} style={{
             flexDirection: "row",
-            maxHeight:"65vh",
+            maxHeight:"63.5vh",
             width:"100%",
             overflowY: "auto"
           }}>
@@ -99,7 +148,7 @@ function ChatFrameComp() {
                         fontSize:"15px",
                         paddingLeft:"3px",
                       }}
-                    >{value.userName}&nbsp;&nbsp;&nbsp;{value.sendTime}</p>
+                    >{dic[value.userId]}&nbsp;&nbsp;&nbsp;{value.dateTime}</p>
                     <p
                       style={{
                         fontSize:"15px",
@@ -116,8 +165,6 @@ function ChatFrameComp() {
             }
           </div>
         </div>
-         
-
          <div className={style.messages}>
           <form className={style.send} onSubmit={(event) => handleSubmit(event)}>
             <input className={style.input} placeholder="메시지를 입력하세요" type={'text'} onChange={handleChange} value={chat} />

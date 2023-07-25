@@ -19,8 +19,8 @@ public class ChatController {
     private final ChatService chatService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getChatList(@PathVariable("id") Long userId) {
-        List<ChatDto> result = chatService.getStudyChatList(userId);
+    public ResponseEntity<?> getChatList(@PathVariable("id") Long studyInfoId) {
+        List<ChatDto> result = chatService.getStudyChatList(studyInfoId);
         return new ResponseEntity<List<ChatDto>>(result, HttpStatus.OK);
     }
 

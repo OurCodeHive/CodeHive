@@ -18,6 +18,7 @@ public class SocketController {
     @MessageMapping("/chat")
     public void sendMessage(ChatDto chatDto, SimpMessageHeaderAccessor accessor) {
         chatService.mongoInsert(chatDto);
+//        System.out.println(chatDto);
         simpMessagingTemplate.convertAndSend("/sub/chat/" + chatDto.getStudyRoomId(), chatDto);
     }
 

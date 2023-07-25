@@ -27,13 +27,19 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
-    public List<ChatDto> getStudyChatList(Long userId) {
+    public List<ChatDto> getStudyChatList(Long studyInfoId) {
 
-        List<ChatDto> chatList = new ArrayList<>();
+        List<ChatDto> result = new ArrayList<>();
+        List<Chat> chatList = chatRepository.findByStudyInfoId(studyInfoId);
 
-        for (ChatDto chatDto : chatList) {
-
+        for (Chat chat : chatList) {
+            ChatDto chatItem = new ChatDto();
+            chatItem.setStudyRoomId(chat.getStudyInfoId());
+            chatItem.setUserId(chat.getUserId());
+            chatItem.setMessage(chat.getMessage());
+            chatItem.setDateTime(chat.getTime());
+            result.add(chatItem);
         }
-        return chatList;
+        return result;
     }
 }

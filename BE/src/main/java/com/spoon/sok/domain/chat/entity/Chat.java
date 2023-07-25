@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.sql.Timestamp;
 
 @Getter
-@Document(collection = "chat_item")
+@Document(collection = "chat")
 @NoArgsConstructor
 @ToString
 public class Chat {

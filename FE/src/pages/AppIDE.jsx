@@ -361,7 +361,7 @@ function Code() {
       height: "100vh",
     }}>
       <IDEHeader saveCode={saveCode}/>
-      <VoiceComp mySessionId={codeId} myUserName={"민성" + getRandomColor()} />
+      {/* <VoiceComp mySessionId={codeId} myUserName={"민성" + getRandomColor()} /> */}
       <div style={{ display:"flex" }}>
         <MouseBox 
 
@@ -436,7 +436,7 @@ function Code() {
           // display:showChat,
           visibility:showChat,
         }}>
-          <ChatComp />
+          <ChatComp id={id}/>
         </div>
       
     </div>
