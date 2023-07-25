@@ -12,7 +12,7 @@ const Lnb: React.FC = () => {
             <div className={`col-12 mt50 ${LnbStyle.lnb_con}`}>
                 <a href="/" className={`col-12 tc ${LnbStyle.home_btn}`}><img src={HomeIcon} alt="홈 아이콘"/>Home</a>
                 <LnbList/>
-                <a href="/" className="col-12">New</a>
+                <button className={`col-12 ${LnbStyle.new_btn}`}>New</button>
             </div>
         </div>
     )
