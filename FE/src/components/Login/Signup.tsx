@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback} from 'react';
 import style from "../../res/css/module/Signin.module.css"
 import logo from "../../res/img/CodeHiveLogo.png"
 import Http from '../../api/http';
@@ -15,9 +15,23 @@ const Signup = () => {
     let[nicknameOk, setNicknameOk] = useState(false); 
     let [email] = useState("");
     let [password, setPassword] = useState("");
+    let [checkPw, setCheckPw] = useState("");
     let [nickname, setNickname] = useState("");
+    let[nickMsg, setNickMsg] = useState<string>("");
+    let [isInput, setIsInput] = useState<boolean>(false);
+    let [verify, setVerify] = useState<boolean>(false);
     
     let navigate = useNavigate();
+    const pwConfirm = useCallback((e : React.ChangeEvent<HTMLInputElement>)=>{
+        const curr = e.target.value;
+        console.log(password);
+        if(password === curr){
+            setVerify(true);
+        } else {
+            setVerify(false);
+        }
+    }, [password, checkPw])
+
     return (
         <div className={style.signin_background}>
         <section className={style.login_form}>
@@ -59,7 +73,27 @@ const Signup = () => {
                     )
                 : ""
             }        
-            
+            <div className={`${style.int_area}`}>
+                <input
+                    onFocus={()=>{setIsInput(true);console.log("true")}}
+                    onChange={pwConfirm}
+                    type="text"
+                    name="newpwcheck"
+                    id="newpwcheck"
+                    required
+                />
+                <label htmlFor='newpwcheck'>비밀번호 확인</label>
+                <span style={{visibility:"hidden"}}></span> 
+            </div>
+            {
+                    isInput?
+                    verify?
+                    <div style={{color : "#bcd806e0"}} className={style.verify_message}>비밀번호가 일치합니다.</div>
+                    :
+                    <div className={style.verify_message}>비밀번호가 일치하지 않습니다.</div>
+                    :
+                    ""
+                }
             <div className={`${style.int_area}`}>
                 <input
                     onChange={(e) => {
@@ -74,7 +108,7 @@ const Signup = () => {
                 <label htmlFor='nick'>닉네임 Nickname</label>
                 <span onClick={()=>{checkNickName(nickname)}}>중복체크</span>
             </div>
-                {
+                {/* {
                     inputNick?
                     nicknameOk?
                     <div className={style.verify_message}>사용 가능한 닉네임입니다.</div>
@@ -82,7 +116,8 @@ const Signup = () => {
                     <div className={style.verify_message}>이미 사용중인 닉네임입니다.</div>
                     :
                     ""
-                }
+                } */}
+                <div className={style.verify_message}>{nickMsg}</div>
          
         <div className={style.btn_area}>
             <button style={{fontWeight:"bold"}} type="submit">회원가입</button>
@@ -102,7 +137,15 @@ const Signup = () => {
 
     }
     function checkNickName(nickname : string){
+        //닉네임이 비어있으면 빈칸 출력
         setInputNick(true);
+        if(nickname===""){
+            setNickMsg("닉네임을 입력해주세요.");
+            return;
+        } 
+        setNickMsg("이미 사용중인 닉네임입니다.");
+        // setNickMsg("사용 가능한 닉네임입니다.");
+        
         // const tempNick = Http.get("/check/"+nickname);
         const url = import.meta.env.VITE_APP_SERVER + "check/" + nickname;
         axios.get(url)

@@ -9,6 +9,7 @@ import AppNotFound from "@/error/AppNotFound";
 import Signup from "@/components/Login/Signup";
 import Login from "@/components/Login/Login";
 import FindPassword from "@/components/Login/FindPassword";
+import ChangePassword from "@/components/Login/ChangePassword";
 
 const AppRouter = () => {
   return (
@@ -24,6 +25,7 @@ const AppRouter = () => {
 
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/findpassword" element={<FindPassword/>}/>
+          <Route path="/changepassword" element={<ChangePassword/>}/>
         </Routes>
       </BrowserRouter>
     </>
