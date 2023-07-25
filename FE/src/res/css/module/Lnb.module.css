@@ -1,2 +1,11 @@
 .lnb_wrap{height: 100vh; max-width: 340px; padding-left: 40px;}
-.lnb_con{}
+.lnb_con{background-color: rgba(0,0,0,0.08); padding: 20px 10px; border-radius: 50px; overflow: visible;}
+.lnb_con .home_btn{padding: 17px 10px; border-radius: 20px; overflow: hidden; background-color: #fff; font-size: 30px; font-size: 3.0rem; line-height: 36px; line-height: 3.6rem; font-weight: 700; letter-spacing: -0.02em;}
+.lnb_con .home_btn img{width: 30px; margin-right: 10px; vertical-align: middle; margin-bottom: 3px;}
+.lnb_con ul{margin-top: 30px;}
+.lnb_con .filter_con{display: flex; justify-content: space-between; align-items: center; font-size: 27px; font-size: 2.7rem; line-height: 33px; line-height: 3.3rem; font-weight: 700; letter-spacing: -0.02em;}
+.lnb_con .filter_con button{overflow: visible; position: relative; display: inline-block; cursor: pointer; border: 0px none; background-color: transparent; font-size: 0; line-height: 0; width: 25px; height: 25px; background-image: url('../../img/19x19_ffffff_search_icon.png'); background-size: 19px 19px; background-position: center center; background-repeat: no-repeat;}
+.lnb_con .filter_con .search_input_box{overflow: hidden; border-radius: 5px; font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 400; letter-spacing: -0.02em; color: #17181d; display: none; position: relative; width: 200px; background-color: red; position: absolute; top: 0; right: 0; padding: 17px 10px 10px; transform: translate(100%, -100%);}
+.lnb_con .filter_con .search_input_box::before{content: ""; position: absolute; left: 0; bottom: 0; width: 0; height: 0; border-bottom: 50px solid transparent; border-top: 50px solid transparent; border-left: 50px solid skyblue; border-right: 50px solid transparent;}
+.lnb_con .filter_con .search_input_box::after{content: "";}
+.lnb_con .filter_con button:hover .search_input_box{display: block;}

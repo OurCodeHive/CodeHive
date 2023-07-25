@@ -5,6 +5,7 @@
 */
 
 import http from './http';
+import { StudyType } from '@/type/StudyType';
 
 const api = http;
 
@@ -14,8 +15,9 @@ const api = http;
  * @param success 
  * @param fail 
  */
-async function getList(param: object, success: () => void, fail: () => void) {
-    await api.get(`/attraction/list`, { params: param }).then(success).catch(fail);
+const getList = async <T = StudyType>(param: object): Promise<T> => {
+    const result = await api.get<T>(`/attraction/list`, { params: param });
+    return result.data;
 }
 
 export {getList};

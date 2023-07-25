@@ -1,3 +1,5 @@
+import LnbStyle from "@/res/css/module/Lnb.module.css";
+
 const Filter = ( {searchKeyWord} : {searchKeyWord : (data: string) => void} ) => {
     let keyWord = "";
 
@@ -15,14 +17,14 @@ const Filter = ( {searchKeyWord} : {searchKeyWord : (data: string) => void} ) =>
     }
 
     return (
-        <div>
+        <div className={`col-12 ${LnbStyle.filter_con}`}>
             나의 스터디 목록
-            <div>
-                필터 버튼
-                <div className="col-12 search_box">
-                    <input type="text" onKeyDown={changeKeyWord} />
+            <button>필터 버튼
+                <div className={`col-12 ${LnbStyle.search_input_box}`}>
+                    <div className="mb7">스터디 제목 검색</div>
+                    <input type="text" onKeyDown={changeKeyWord} className="input_style_0" />
                 </div>
-            </div>
+            </button>
         </div>
     )
 };

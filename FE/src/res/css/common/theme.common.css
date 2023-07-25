@@ -1,0 +1,6 @@
+/*공통 input 스타일 정의*/
+.input_style_0{width: 100%; appearance: none; border: 0px none; overflow: hidden; border-radius: 8px; background-color: #fff; font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 400; letter-spacing: -0.02em; color: #17181d; outline: none;}
+.input_style_0:-moz-placeholder {color: #c9bfee;}
+.input_style_0:-ms-input-placeholder {color: #c9bfee;}
+.input_style_0::-moz-placeholder {color: #c9bfee;}
+.input_style_0::-webkit-input-placeholder {color: #c9bfee;}

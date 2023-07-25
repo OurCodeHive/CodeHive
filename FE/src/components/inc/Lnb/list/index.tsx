@@ -5,27 +5,22 @@ import LnbListItem from "./item/ListItem";
 import { StudyType } from "@/type/StudyType";
 
 const param = {userIdx : 1, keyWord : ""};
-
-let studyList: StudyType[] = [
-    {studyInfoId : 1, title : "테스트", end : 1}
-];
-/*await getList(param,({data}) => {
-    studyList = data.list;
-}, (error: any) => {
-    console.log(error);
-    alert('에러로 실패했습니다. 관리자에 문의해주세요.');
-});*/
+//const getStudyList = await getList(param);
+const getStudyList:Array<StudyType> = [{'studyInfoId' : 1, 'title' : "첫 스터디", 'end' : 1 }, {'studyInfoId' : 2, 'title' : "두번째 스터디", 'end' : 0 }];
 
 const List: React.FC = () => {
+    const [studyList, setStudyList] = useState(getStudyList);
     const searchKeyWord = (data: string) => {
-        console.log(data);
+        param.keyWord = data;
+        console.log(param);
+        //setStudyList([getStudyList]);
     }
     //리스트가 존재할 때
     if(studyList.length > 0){
         return (
             <ul className="col-12">
                 <LnbFilter searchKeyWord={searchKeyWord}/>
-                {studyList.map((item) => <LnbListItem key={item.studyInfoId} item={item} />)}
+                {studyList.map(item => <LnbListItem key={item.studyInfoId} item={item} />)}
             </ul>
         )    
     } else { //리스트가 존재하지 않을 때
