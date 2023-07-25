@@ -1,6 +1,6 @@
 package com.spoon.sok.domain.study.entity;
 
-import com.spoon.sok.domain.user.entity.User;
+//import com.spoon.sok.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -40,7 +40,7 @@ public class StudyInfo {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endAt; // 스터디 그룹 종료일
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id", nullable = false)
-    private User users; // 스터디 그룹의 장
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "users_id", nullable = false)
+//    private User users; // 스터디 그룹의 장
 }

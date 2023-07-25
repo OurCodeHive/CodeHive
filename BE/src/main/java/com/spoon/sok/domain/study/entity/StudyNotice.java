@@ -1,6 +1,6 @@
 package com.spoon.sok.domain.study.entity;
 
-import com.spoon.sok.domain.user.entity.User;
+//import com.spoon.sok.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class StudyNotice {
     @JoinColumn(name = "studyinfo_id", nullable = false) // 스터디 정보키
     private StudyInfo studyInfo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false) // 스터디 그룹장(공지사항 작성자)
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", nullable = false) // 스터디 그룹장(공지사항 작성자)
+//    private User user;
 }
