@@ -12,7 +12,7 @@ jar {
 }
 
 java {
-	sourceCompatibility = '17'
+	sourceCompatibility = "17"
 }
 
 configurations {
@@ -51,15 +51,34 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 	// mongodb
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
 	// SpringBoot mailService
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 	// Thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	// Spring Boot Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2', 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
+	// redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// com.sun.xml.bind
+	implementation 'com.sun.xml.bind:jaxb-impl:4.0.1'
+	implementation 'com.sun.xml.bind:jaxb-core:4.0.1'
+
+	// javax.xml.bind
+	implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+targetCompatibility = JavaVersion.VERSION_17
