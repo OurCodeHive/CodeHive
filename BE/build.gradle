@@ -12,7 +12,7 @@ jar {
 }
 
 java {
-	sourceCompatibility = '17'
+	sourceCompatibility = "17"
 }
 
 configurations {
@@ -63,3 +63,4 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+targetCompatibility = JavaVersion.VERSION_17
