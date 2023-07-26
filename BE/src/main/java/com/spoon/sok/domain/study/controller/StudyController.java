@@ -67,9 +67,9 @@ public class StudyController {
     }
 
     @GetMapping("study")
-    public ResponseEntity<Map<String, Object>> getStudyGroup(@RequestParam("nickname") String nickname) {
-        List<StudyInfoDto> userStudyGroupProceedingList = studyService.getUserStudyGroupProceeding(nickname);
-        List<StudyInfoDto> userStudyGroupCloseList = studyService.getUserStudyGroupClose(nickname);
+    public ResponseEntity<Map<String, Object>> getStudyGroup(@RequestParam("user") String userId) {
+        List<StudyInfoDto> userStudyGroupProceedingList = studyService.getUserStudyGroupProceeding(userId);
+        List<StudyInfoDto> userStudyGroupCloseList = studyService.getUserStudyGroupClose(userId);
 
         List<StudyInfoDto> mergedList = new ArrayList<>();
 

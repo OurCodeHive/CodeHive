@@ -22,19 +22,19 @@ public class StudyService {
     private final StudyRepository studyRepository;
 
     public List<StudyAppointmentDTO> getStudyMeeting(String userId) {
-        return studyRepository.findByNicknameStudyMeetings(userId);
+        return studyRepository.findByUserIdStudyMeetings(userId);
     }
 
     public List<StudyAppointmentDTO> getTodayStudyMeeting(String today, String userId) {
         return studyRepository.findByTodayStudyMeetings(today, userId);
     }
 
-    public List<StudyInfoDto> getUserStudyGroupProceeding(String nickname) {
-        return studyRepository.findByNicknameStudyInfoProceeding(nickname);
+    public List<StudyInfoDto> getUserStudyGroupProceeding(String userId) {
+        return studyRepository.findByUserIdStudyInfoProceeding(userId);
     }
 
-    public List<StudyInfoDto> getUserStudyGroupClose(String nickname) {
-        return studyRepository.findByNicknameStudyInfoClose(nickname);
+    public List<StudyInfoDto> getUserStudyGroupClose(String userId) {
+        return studyRepository.findByUserIdStudyInfoClose(userId);
     }
 
     public List<StudyInfoDto> searchUserStudyGroup(String nickname, String title) {
