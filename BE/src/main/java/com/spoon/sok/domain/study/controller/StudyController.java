@@ -1,6 +1,7 @@
 package com.spoon.sok.domain.study.controller;
 
 import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
+import com.spoon.sok.domain.study.dto.StudyCreationDto;
 import com.spoon.sok.domain.study.dto.StudyInfoDto;
 import com.spoon.sok.domain.study.service.StudyService;
 import com.spoon.sok.util.JwtTokenProvider;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @Slf4j
+@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/")
@@ -44,9 +46,9 @@ public class StudyController {
     @GetMapping("today/study")
     public ResponseEntity<Map<String, Object>> getTodayStudyMeeting(@RequestParam("today") String today, HttpServletRequest request) {
 
-        Claims here = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
+        Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
 
-        List<StudyAppointmentDTO> todayMeetingList = studyService.getTodayStudyMeeting(today, (String) here.get("users_id"));
+        List<StudyAppointmentDTO> todayMeetingList = studyService.getTodayStudyMeeting(today, (String) token.get("users_id"));
 
         Map<String, Object> response = new HashMap<>();
 
@@ -89,6 +91,19 @@ public class StudyController {
 
         response.put("status", 200);
         response.put("search", userStudyGroupList);
+
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("study")
+    public ResponseEntity<Map<String, Object>> setStudyGroup(
+            @RequestBody StudyCreationDto studyCreationDto, HttpServletRequest request) {
+
+        Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
+        studyCreationDto.setUsersId((String) token.get("users_id"));
+
+        studyService.setStudyGroup(studyCreationDto);
+        Map<String, Object> response = new HashMap<>();
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }

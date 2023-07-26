@@ -32,12 +32,12 @@ public class SecurityConfig {
                 .sessionManagement((sessionManagement) -> {
                     sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
-                .authorizeHttpRequests((authorizeRequests) -> {
-                    authorizeRequests.requestMatchers("/api/login/user", "/api/login/google", "/",
-                            "/api/signup", "/api/check/**", "/api/email/**", "/api/find/password").permitAll();
-                    authorizeRequests.requestMatchers("**").hasAuthority("ROLE_USER");
-                })
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
+//                .authorizeHttpRequests((authorizeRequests) -> {
+//                    authorizeRequests.requestMatchers("/api/login/user", "/api/login/google", "/",
+//                            "/api/signup", "/api/check/**", "/api/email/**", "/api/find/password").permitAll();
+//                    authorizeRequests.requestMatchers("**").hasAuthority("ROLE_USER");
+//                })
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
 //                .formLogin((formLogin) -> {
 //                    formLogin.loginPage("/api/login");
 //                })

@@ -45,9 +45,9 @@ public class StudyService {
     public void setStudyGroup(StudyCreationDto studyCreationDto) {
 
         // 웹 IDE 접속하기 위한 10글자 문자열 생성
-        studyCreationDto.setEnterName(UUID.randomUUID().toString().substring(0, 9));
+        studyCreationDto.setEnterName(UUID.randomUUID().toString().substring(0, 10));
 
-        studyRepository.saveStudyGroup("1",
+        studyRepository.saveStudyGroup(studyCreationDto.getUsersId(),
                                        studyCreationDto.getTitle(),
                                        studyCreationDto.getDescription(),
                                        studyCreationDto.getEnterName(),
@@ -56,8 +56,8 @@ public class StudyService {
         return;
     }
 
-    @Transactional
-    public void setStudyGroupProfileImage(String originalFileName, String fileSize) {
-
-    }
+//    @Transactional
+//    public void setStudyGroupProfileImage(String originalFileName, String fileSize) {
+//
+//    }
 }
