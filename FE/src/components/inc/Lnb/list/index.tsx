@@ -5,14 +5,14 @@ import LnbListItem from "./item/ListItem";
 import { StudyType } from "@/type/StudyType";
 
 const param = {nickName : ""};
-const originStudyList:Array<StudyType> = await getList(param) as Array<StudyType>;
-//const getStudyList:Array<StudyType> = [{'studyInfoId' : 1, 'title' : "첫 스터디", 'end' : 1 }, {'studyInfoId' : 2, 'title' : "두번째 스터디", 'end' : 0 }];
+//const originStudyList:Array<StudyType> = await getList(param) as Array<StudyType>;
+const originStudyList:Array<StudyType> = [{'studyInfoId' : 1, 'title' : "첫 스터디", 'end' : 1 }, {'studyInfoId' : 2, 'title' : "두번째 스터디", 'end' : 0 }];
 
 const List: React.FC = () => {
     const [studyList, setStudyList] = useState(originStudyList);
     const searchKeyWord = (data: string) => {
-        console.log(param);
-        //setStudyList([getStudyList]);
+        const searchStudyList:Array<StudyType> = originStudyList.filter((item) => {if(item.title.indexOf(data) > -1) return item;});
+        setStudyList(searchStudyList);
     }
     //리스트가 존재할 때
     if(studyList.length > 0){
