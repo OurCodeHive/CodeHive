@@ -45,7 +45,7 @@ const Login = () => {
                 console.log(err);
             }
           }
-
+        ///
         axios.post(url, user)
         .then((res) =>{
             console.log(res.data);
@@ -58,7 +58,7 @@ const Login = () => {
         }
         const config = {"Content-Type": 'application/json'};
         const url = import.meta.env.VITE_APP_SERVER + "login/google";
-        axios.post(url, user, config)
+        axios.post(url, user)
         .then((res) =>{
             console.log(res.data);
         })
