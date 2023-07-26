@@ -23,7 +23,6 @@ public class SecurityConfig {
     private final RedisTemplate redisTemplate;
 
     @Bean
-
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .httpBasic((httpBasic) -> {
@@ -34,7 +33,7 @@ public class SecurityConfig {
                     sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests((authorizeRequests) -> {
-                    authorizeRequests.requestMatchers("/api/login/user", "/api/login/google", "/api/reissue", "/",
+                    authorizeRequests.requestMatchers("/api/login/user", "/api/login/google", "/api/reissue", "/**",
                             "/api/signup", "/api/check/**", "/api/email/**", "/api/find/password").permitAll()
                             .anyRequest().authenticated();
 //                            .requestMatchers(HttpMethod.GET, "/api/calendar/study").authenticated();

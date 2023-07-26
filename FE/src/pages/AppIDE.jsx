@@ -26,6 +26,8 @@ import IDETerminal from '@/components/IDE/IDETerminal';
 import { useState } from "react";
 import ChatComp from '@/components/chat/ChatFrameComp';
 
+import style from "./AppIDE.module.css";
+
 function getRandomColor() {
 	return "#" + Math.floor(Math.random() * 16777215).toString(16);
 }
@@ -59,7 +61,29 @@ const materialPalenightTheme = EditorView.theme(
       color: white,
       backgroundColor: background
     },
-    '.cm-content': { caretColor: cursor },
+
+    '.cm-content': { 
+      
+      caretColor: cursor 
+    },
+
+    '.cm-content::-webkit-scrollbar': {
+      width: "10px",
+    },
+
+    '.cm-content::-webkit-scrollbar-thumb': {
+      backgroundColor: "#2f3542",
+      borderRadius: "10px",
+      backgroundClip: "padding-box",
+      border: "2px solid transparent"
+    },
+    
+    '.cm-content::-webkit-scrollbar-track': {
+      backgroundColor: "grey",
+      borderRadius: "10px",
+      boxShadow: "inset 0px 0px 5px white",
+    },
+    
     '&.cm-focused .cm-cursor': { borderLeftColor: cursor },
     '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': { backgroundColor: selection },
     '.cm-panels': { backgroundColor: darkBackground, color: white },
@@ -142,9 +166,26 @@ const materialPalenightHighlightStyle = HighlightStyle.define([
 ]);
 
 const MouseBox = styled.div`
+
   .ql-picker-label {
     color:#A18DC6;
   }
+
+  .ql-editor::-webkit-scrollbar {
+    width: 10px;
+  }
+  .ql-editor::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  .ql-editor::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
+
   .ql-toolbar.ql-snow {
     border-radius: 5px 5px 0px 0px;
     border: 0px;
@@ -194,7 +235,7 @@ function Code() {
   let [language, setLanguage] = useState("Python");
   let [codeHeight, setCodeHeight] = useState("93.3vh");
   let [code, setCode] = useState("");
-  let [showChat, setShowChat] = useState(false);
+  let [showChat, setShowChat] = useState("hidden");
 
   useEffect(() => {
     const provider = new WebsocketProvider(url, codeId, CodeDoc);
@@ -205,6 +246,7 @@ function Code() {
       color: getRandomColor(),
       colorLight: "#8acb8833",
     });
+    
     const state = EditorState.create({
       doc: ytext.toString(),
       extensions: [
@@ -228,23 +270,23 @@ function Code() {
 
   }, [])
 
-  // useEffect(() => {
-  //   attachQuillRefs();
-  //   const provider = new WebsocketProvider(url, docxId, docxDoc);
-  //   const ytext = docxDoc.getText("quill");
+  useEffect(() => {
+    attachQuillRefs();
+    const provider = new WebsocketProvider(url, docxId, docxDoc);
+    const ytext = docxDoc.getText("quill");
     
-  //   provider.awareness.on('change', changes => {
-  //     Array.from(provider.awareness.getStates().values());
-  //   });
+    provider.awareness.on('change', changes => {
+      Array.from(provider.awareness.getStates().values());
+    });
 
-  //   provider.awareness.setLocalStateField("user", {
-  //     name: "민성",
-  //     color: getRandomColor(),
-  //   });
+    provider.awareness.setLocalStateField("user", {
+      name: "민성",
+      color: getRandomColor(),
+    });
 
-  //   const binding = new QuillBinding(ytext, quillRef, provider.awareness);
+    const binding = new QuillBinding(ytext, quillRef, provider.awareness);
     
-  // }, []);
+  }, []);
 
   const attachQuillRefs = () => {
     if (typeof reactQuillRef.getEditor !== "function") return;
@@ -297,7 +339,12 @@ function Code() {
   }
 
   function toggleChat() {
-    setShowChat(!showChat);
+    console.log(showChat);
+    if (showChat === "hidden") {
+      setShowChat("visible");
+    } else {
+      setShowChat("hidden");
+    }
   }
 
   function consoleUp() {
@@ -313,20 +360,24 @@ function Code() {
       backgroundColor:"#222326",
       height: "100vh",
     }}>
-      <IDEHeader saveCode={saveCode}/>
-      <VoiceComp mySessionId={codeId} myUserName={"민성" + getRandomColor()} />
+      <IDEHeader saveCode={saveCode} id={id}/>
+      {/* <VoiceComp mySessionId={codeId} myUserName={"민성" + getRandomColor()} /> */}
       <div style={{ display:"flex" }}>
-        <MouseBox
+        <MouseBox 
+
           style={{
             width: "25%",
             height: "93.8vh",
             color: "#A18DC6",
             backgroundColor: "#222326",
+            paddingBottom:"5px",
           }}
         >
           <ReactQuill
+            className={style.container}
             style={{
               height: "87vh",
+              paddingBottom:"5px",
             }}
             ref={(el) => { reactQuillRef = el; }}
             modules={modulesRef}
@@ -342,7 +393,7 @@ function Code() {
             height: codeHeight,
             paddingBottom:"70px",
           }}
-        className="code-editor" ref={editorRef}>
+        ref={editorRef}>
         <button
           style={{
             color:"wheat",
@@ -367,7 +418,7 @@ function Code() {
         {/* <JoinUserList/> */}
         </div>
       </div>
-      <IDETerminal code={code} up={consoleUp} down={consoleDown}/>
+      <IDETerminal code={code} up={consoleUp} down={consoleDown} id={id}/>
       <img src='https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/chat.png'
         onClick={() => {
           toggleChat();
@@ -381,11 +432,12 @@ function Code() {
         }}
       >
       </img>
-      {
-        showChat? 
-        <ChatComp />:
-        null
-      }
+        <div style={{
+          // display:showChat,
+          visibility:showChat,
+        }}>
+          <ChatComp id={id}/>
+        </div>
       
     </div>
   )

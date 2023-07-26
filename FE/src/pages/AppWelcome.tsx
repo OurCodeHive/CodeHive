@@ -1,9 +1,10 @@
-// import React from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import style from "../res/css/module/AppWelcome.module.css"
-
 import video from '../res/video/Welcome.mp4'
 // import "../res/video/Welcome.mp4"
 function Welcome() {
+    let navigate = useNavigate();
     return (
         <>
         {/* <div className={style.frame}>
@@ -17,11 +18,10 @@ function Welcome() {
         <video className={style.video} autoPlay muted>
             <source src={video} type="video/mp4"/>
         </video>
-        {/* <h1>hello</h1> */}
         <div></div>
-        <button className={style.enter_login}>here!</button>
-        
-        {/* <img src="../public/contents/CodeHiveMainPic.png" alt="" /> */}
+        <button onClick={()=>navigate("/login")} className={style.enter_login}>here!</button>
+{/*         
+        <img src="../public/contents/CodeHiveMainPic.png" alt="" /> */}
         </>
     );
 }
