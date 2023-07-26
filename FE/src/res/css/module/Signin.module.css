@@ -1,6 +1,6 @@
 
 /* @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"); */
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap'); */
 * {
   margin: 0;
   padding: 0;
@@ -9,10 +9,12 @@
   box-sizing: border-box;
   font-family: "Poppins";
 }
+
+
 .login_form {
   -webkit-animation: fadein 2s;
 }
-@-webkit-keyframes fadein { /* Safari and Chrome */
+@-webkit-keyframes fadein { 
   from {
       opacity: 0;
   }
@@ -20,6 +22,8 @@
       opacity: 1;
   }
 }
+
+
 .signin_background {
   margin: auto;
   display: flex;
@@ -103,6 +107,10 @@ body::before {
     height: 40px;
     background-color:#ffd900c1;
     border-radius: 10px;
+    cursor: pointer;
+}
+.int_area span:hover{
+    background-color: #ffe137d6;
 }
 .int_area input:focus + label,
 .int_area input:valid + label {
@@ -158,6 +166,7 @@ body::before {
     width: 30%;
     margin: auto;
     margin-top: 50px;
+    cursor: pointer;
 }
 .verify_message {
     margin-left: 10px;
