@@ -4,14 +4,13 @@ import LnbFilter from "./item/Filter";
 import LnbListItem from "./item/ListItem";
 import { StudyType } from "@/type/StudyType";
 
-const param = {userIdx : 1, keyWord : ""};
-//const getStudyList = await getList(param);
-const getStudyList:Array<StudyType> = [{'studyInfoId' : 1, 'title' : "첫 스터디", 'end' : 1 }, {'studyInfoId' : 2, 'title' : "두번째 스터디", 'end' : 0 }];
+const param = {nickName : ""};
+const originStudyList:Array<StudyType> = await getList(param) as Array<StudyType>;
+//const getStudyList:Array<StudyType> = [{'studyInfoId' : 1, 'title' : "첫 스터디", 'end' : 1 }, {'studyInfoId' : 2, 'title' : "두번째 스터디", 'end' : 0 }];
 
 const List: React.FC = () => {
-    const [studyList, setStudyList] = useState(getStudyList);
+    const [studyList, setStudyList] = useState(originStudyList);
     const searchKeyWord = (data: string) => {
-        param.keyWord = data;
         console.log(param);
         //setStudyList([getStudyList]);
     }
