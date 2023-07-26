@@ -26,7 +26,7 @@ function ChatFrameComp(props) {
   useEffect(() => {
 
     const studyInfoId = props.id;
-    const url = "http://localhost:8080" + "/api/chat/" + studyInfoId;
+    const url = import.meta.env.VITE_RTC + "api/chat/" + studyInfoId;
     
     axios.get(url)
     .then((result) => {

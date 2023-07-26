@@ -360,7 +360,7 @@ function Code() {
       backgroundColor:"#222326",
       height: "100vh",
     }}>
-      <IDEHeader saveCode={saveCode}/>
+      <IDEHeader saveCode={saveCode} id={id}/>
       {/* <VoiceComp mySessionId={codeId} myUserName={"민성" + getRandomColor()} /> */}
       <div style={{ display:"flex" }}>
         <MouseBox 
@@ -418,7 +418,7 @@ function Code() {
         {/* <JoinUserList/> */}
         </div>
       </div>
-      <IDETerminal code={code} up={consoleUp} down={consoleDown}/>
+      <IDETerminal code={code} up={consoleUp} down={consoleDown} id={id}/>
       <img src='https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/chat.png'
         onClick={() => {
           toggleChat();

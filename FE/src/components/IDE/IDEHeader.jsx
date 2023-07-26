@@ -1,32 +1,78 @@
 import saveButton from "@/components/IDE/downlode";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import * as StompJs from '@stomp/stompjs';
 
-function IDEHeader(props:any) {
 
+function IDEHeader(props) {
+
+  const client = useRef({});
   let [notice, setNotice] = useState("게리맨더링 코드리뷰 중 입니다.");
   
   const navigate = useNavigate();
 
   function changeNotice() {
-    let value :any = window.prompt("공지사항을 입력해 주세요.");
-    if (value === ""){
+    let value = window.prompt("공지사항을 입력해 주세요.");
+    if (value === "") {
       return
     }
-    if (value === null){
+    if (value === null) {
       return
     }
-    console.log(value)
-    setNotice(value);
+    const message = {
+      userId:1,
+      studyRoomId:1,
+      notice: value,
+    }
+    publish(message);
   }
+
+  useEffect(() => {
+    connect();
+    return () => {
+      disconnect();
+    }
+  }, [])
 
   function saveMemo() {
     let ns = new XMLSerializer();
     let korean = `<meta charset="utf-8"/>`;
-    let html: any = document.querySelector(".ql-editor");
+    let html = document.querySelector(".ql-editor");
     let targetString = ns.serializeToString(html);
     return korean + targetString;
   }
+
+  function connect() {
+    client.current = new StompJs.Client({
+      brokerURL: import.meta.env.VITE_CHAT,
+      onConnect: () => {
+        subscribe();
+      },
+    });
+    client.current.activate();
+  };
+
+  function publish(notice) {
+    if (!client.current.connected) {
+      return;
+    }
+    client.current.publish({
+      destination: '/pub/notice',
+      body: JSON.stringify(notice),
+    });
+  };
+
+  function subscribe() {
+    client.current.subscribe('/sub/notice/' + props.id, (body) => {
+      const json_body = JSON.parse(body.body);
+      const message = json_body;
+      setNotice(message.notice)
+    });
+  };
+  
+  function disconnect() {
+    client.current.deactivate();
+  };
 
   return(
     <div style={{
