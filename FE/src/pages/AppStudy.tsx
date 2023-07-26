@@ -1,16 +1,12 @@
-import './App.css'
-import { BrowserRouter, Routes } from 'react-router-dom'
-// import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Lnb from "@/components/inc/Lnb";
+import StudyGroupView from "@/components/StudyGroup/View";
 
 function AppStudy() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          
-        </Routes>
-      </BrowserRouter>
-    </>
+    <div className="col-12">
+      <Lnb/>
+      <StudyGroupView/>
+    </div>
   )
 }
 
