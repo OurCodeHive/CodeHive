@@ -1,18 +1,17 @@
 package com.spoon.sok.domain.email.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Builder
 @Getter
 @Table(name = "EMAIL_AUTH")
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class Email {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
