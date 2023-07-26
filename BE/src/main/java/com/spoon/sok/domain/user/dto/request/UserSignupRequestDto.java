@@ -1,4 +1,4 @@
-package com.spoon.sok.domain.user.dto;
+package com.spoon.sok.domain.user.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +11,5 @@ public class UserSignupRequestDto {
     private String password;
 
     private String nickname;
-
-    private String authCode;
 }
+
