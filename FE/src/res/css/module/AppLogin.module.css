@@ -1,13 +1,25 @@
 
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"); */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 * {
   margin: 0;
   padding: 0;
   text-decoration: none;
   list-style: none;
   box-sizing: border-box;
+  font-family: "Poppins";
 }
-
+.login_form {
+  -webkit-animation: fadein 2s;
+}
+@-webkit-keyframes fadein { /* Safari and Chrome */
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
 .signin_background {
   margin: auto;
   display: flex;
@@ -26,12 +38,12 @@
   /* justify-content: center; */
   align-items: center;
 }
-h1 {
+.login_title {
   padding-top: 10%;
   text-align: center;
   margin-bottom: 60px;
   font-size: 32px;
-  color: #000;
+  color: #fff
 }
 body::before {
   position: absolute;
@@ -64,14 +76,14 @@ body::before {
     font-size: 18px;
     color: #fff;
     border: none;
-    border-bottom: 1px solid rgb(195, 195, 195);
+    border-bottom: 1px solid rgb(255, 255, 255);
 }
 .int_area label {
     position: absolute;
     left: 10px;
     top: 15px;
-    font-size: 16px;
-    color: rgb(195, 195, 195);
+    font-size: 14px;
+    color: rgb(205, 205, 205);
     transition: all 0.5s ease;
 }
 .int_area input:focus + label,
@@ -94,13 +106,21 @@ body::before {
     border-radius: 15px;
     cursor: pointer;
 }
-/* .google {
-    background: #FFF;
-} */
-.caption {
-
+.btn_area .google {
+    background: #ffffffe2;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.google img {
+  /* flex: 1; */
+  width: 27px;
+  margin-right: 7px;
+}
+.caption { 
     margin: auto;
-    width: 60%;
+    width: 80%;
     display: flex;
     margin-top: 20px;
     text-align: center;
@@ -108,9 +128,12 @@ body::before {
 }
 .caption a {
     flex: 1;
-    font-size: 15px;
+    font-size: 13px;
     color:#d9ff00e0;
     margin-bottom: 30px;
+}
+.caption a :nth-child(2){
+  margin-left: -10px;
 }
 .logo {
     display: block;
