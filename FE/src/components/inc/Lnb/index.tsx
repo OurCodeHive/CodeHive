@@ -13,7 +13,7 @@ const Lnb: React.FC = () => {
         PopupStatus : popupFlag,
         zIndex : 9999,
         maxWidth: 800,
-        PopupTitle : "스터디 등록",
+        PopupTitle : "스터디 만들기",
         ClosePopupProp : () => changePopupFlag(false),
         PopupContents : StudyInsert
     }

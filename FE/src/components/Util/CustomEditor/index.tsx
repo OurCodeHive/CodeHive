@@ -1,22 +1,31 @@
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
 import { useState } from "react";
-import { EditorState } from 'draft-js'
+import { EditorState, convertToRaw } from 'draft-js';
+import EditorStyle from "@/res/css/module/Editor.module.css";
 
-const CustomEditor = () => {
+const CustomEditor = ({resultInput} : {resultInput: React.RefObject<HTMLInputElement>}) => {
 	// EditorState.createEmpty() 로 초기값 설정
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty())
+  const editorToHtml = (editorState: EditorState) => {
+    return draftToHtml(convertToRaw(editorState.getCurrentContent()));
+  }
 
   const onEditorStateChange = (editorState: EditorState) => {
-      setEditorState(editorState)
+      setEditorState(editorState);
+      if(resultInput.current != null){
+        resultInput.current.value = editorToHtml(editorState);
+      }
+      
   }
     
 	return (
 		<Editor
           editorState={editorState}
-          wrapperClassName="wrapper-class"
-          toolbarClassName="toolbar-class"
-          editorClassName="editor-class"
+          wrapperClassName={`${EditorStyle.editor_wrapper}`}
+          toolbarClassName={`${EditorStyle.editor_toolbar_con}`}
+          editorClassName={`${EditorStyle.editor_con}`}
           onEditorStateChange={onEditorStateChange}
           placeholder="글을 쓰시오."
           toolbar={{
