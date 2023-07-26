@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -97,7 +98,7 @@ public class StudyController {
 
     @PostMapping("/study")
     public ResponseEntity<Map<String, Object>> setStudyGroup(
-            @RequestBody StudyCreationDto studyCreationDto, HttpServletRequest request) {
+            @RequestBody StudyCreationDto studyCreationDto, HttpServletRequest request, MultipartFile multipartFile) {
 
         Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
         studyCreationDto.setUsersId((String) token.get("users_id"));

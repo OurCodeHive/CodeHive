@@ -21,7 +21,7 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "sa.study_appointment_title as title, " +
             "sa.study_appointment_id as studyappointmentId, " +
             "sa.studyinfo_id as studyinfoId " +
-            "FROM users u " +
+            "FROM user_study u " +
             "JOIN study_info si ON u.users_id = :userId " +
             "JOIN study_appointment sa ON si.studyinfo_id = sa.studyinfo_id " +
             "WHERE u.users_id = :userId", nativeQuery = true)
@@ -33,10 +33,10 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "sa.study_appointment_title as title, " +
             "sa.study_appointment_id as studyappointmentId, " +
             "sa.studyinfo_id as studyinfoId " +
-            "FROM users u " +
-            "JOIN study_info si ON u.users_id = :userId " +
+            "FROM user_study us " +
+            "JOIN study_info si ON us.users_id = :userId " +
             "JOIN study_appointment sa ON si.studyinfo_id = sa.studyinfo_id " +
-            "WHERE u.users_id = :userId AND sa.meeting_at = :today", nativeQuery = true)
+            "WHERE us.users_id = :userId AND sa.meeting_at = :today", nativeQuery = true)
     List<StudyAppointmentDTO> findByTodayStudyMeetings(String today, String userId);
 
     @Query(value = "SELECT si.studyinfo_id as studyinfoId, " +
