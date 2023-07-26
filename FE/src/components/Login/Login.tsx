@@ -5,7 +5,7 @@ import logo from "../../res/img/CodeHiveLogo.png"
 import google from "../../res/img/googleLogo.png"
 import { useNavigate } from 'react-router-dom';
 import { PassThrough } from 'stream';
-import axios from 'axios';
+import axios, {AxiosError, AxiosResponse} from 'axios';
 const Login = () => {
     let [email, setEmail] = useState("")
     let [pw, setPw] = useState("");
@@ -20,14 +20,32 @@ const Login = () => {
         event.preventDefault();
         navigate("/findpassword");
     }
+    ////////////////////////////
     //로그인 클릭 시 실행되는 함수
+    ////////////////////////////
     function login(){
         const user = {
             "email" : email,
             "password" : pw
         }
-        const config = {"Content-Type": 'application/json'};
+        interface userData {
+            status : number,
+            message : string,
+            accessToken : string,
+            refreshToken : string
+        }
         const url = import.meta.env.VITE_APP_SERVER + "login/user";
+        async function doLogin(): Promise<userData | undefined> {
+            try {
+              ///
+              const response: AxiosResponse<userData> = await axios.post(url, user);
+              return response.data;
+            } catch (error) {
+                const err = error as AxiosError
+                console.log(err);
+            }
+          }
+
         axios.post(url, user)
         .then((res) =>{
             console.log(res.data);
@@ -40,7 +58,7 @@ const Login = () => {
         }
         const config = {"Content-Type": 'application/json'};
         const url = import.meta.env.VITE_APP_SERVER + "login/google";
-        axios.post(url, user)
+        axios.post(url, user, config)
         .then((res) =>{
             console.log(res.data);
         })
