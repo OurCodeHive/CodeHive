@@ -20,11 +20,14 @@ public class UserResponseDto {
 
     private TokenInfo tokenInfo;
 
+    private Long userId;
+
     private int responseCode;
 
     @Builder
-    public UserResponseDto(TokenInfo tokenInfo, int responseCode) {
+    public UserResponseDto(TokenInfo tokenInfo, Long userId, int responseCode) {
         this.tokenInfo = tokenInfo;
+        this.userId = userId;
         this.responseCode = responseCode;
     }
 

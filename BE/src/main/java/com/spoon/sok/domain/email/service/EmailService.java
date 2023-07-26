@@ -127,7 +127,7 @@ public class EmailService {
         Map<String, Object> result = new HashMap<>();
         HttpStatus status;
 
-        Optional<Email> verifyEmail = emailRepository.findByNewestCode(requestDto.getEmail(), requestDto.getAuthCode());
+        Optional<Email> verifyEmail = emailRepository.findByNewestCode(requestDto.getEmail());
 
         if (verifyEmail.isEmpty()) {
             result.put("status", 400);
@@ -147,6 +147,8 @@ public class EmailService {
 
         if (verifyEmail.get().getEmail().equals(requestDto.getEmail())
                 && verifyEmail.get().getAuthCode().equals(requestDto.getAuthCode())) {
+            verifyEmail.get().updateIsAuth(1);
+
             result.put("status", 200);
             result.put("message", "이메일 인증이 완료되었습니다.");
             status = HttpStatus.OK;

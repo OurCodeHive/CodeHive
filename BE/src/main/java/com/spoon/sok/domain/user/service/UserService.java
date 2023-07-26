@@ -34,9 +34,6 @@ import java.util.concurrent.TimeUnit;
 @Transactional(readOnly = true)
 public class UserService {
 
-    @Value("${jwt.secret}")
-    private String secretKey;
-
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
@@ -46,14 +43,18 @@ public class UserService {
     private final EmailRepository emailRepository;
 
     public UserResponseDto login(UserLoginRequestDto requestDto) {
-        Optional < User > user = userRepository.findByEmail(requestDto.getEmail());
-
-        if (user.isEmpty()) {
+        if (!requestDto.getEmail().contains("@")) {
             return UserResponseDto.builder().responseCode(1).build();
         }
 
-        if (!passwordEncoder.matches(requestDto.getPassword(), user.get().getPassword())) {
+        Optional<User> user = userRepository.findByEmail(requestDto.getEmail());
+
+        if (user.isEmpty()) {
             return UserResponseDto.builder().responseCode(2).build();
+        }
+
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.get().getPassword())) {
+            return UserResponseDto.builder().responseCode(3).build();
         }
 
         UsernamePasswordAuthenticationToken authenticationToken = requestDto.toAuthentication();
@@ -67,6 +68,7 @@ public class UserService {
 
         return UserResponseDto.builder()
                 .tokenInfo(tokenInfo)
+                .userId(user.get().getId())
                 .responseCode(0)
                 .build();
     }
@@ -112,9 +114,9 @@ public class UserService {
             return 2;
         }
 
-        Optional<Email> emailCode = emailRepository.findByAuthCode(requestDto.getAuthCode());
+        Optional<Email> email = emailRepository.findByNewestCode(requestDto.getEmail());
 
-        if (emailCode.isEmpty()) {
+        if (email.isEmpty() || email.get().getIsauth() != 1) {
             return 3;
         }
 
@@ -151,9 +153,9 @@ public class UserService {
             return 1;
         }
 
-        Optional<Email> emailCode = emailRepository.findByAuthCode(requestDto.getAuthCode());
+        Optional<Email> email = emailRepository.findByNewestCode(requestDto.getEmail());
 
-        if (emailCode.isEmpty()) {
+        if (email.isEmpty() || email.get().getIsauth() != 1) {
             return 2;
         }
 

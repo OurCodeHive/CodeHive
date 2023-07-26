@@ -9,7 +9,5 @@ public class UserChangePasswordRequestDto {
     private String email;
 
     private String newPassword;
-
-    private String authCode;
 }
 

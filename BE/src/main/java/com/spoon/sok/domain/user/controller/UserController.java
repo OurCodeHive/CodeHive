@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@RestController
 @CrossOrigin("*")
+@RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
@@ -35,10 +35,15 @@ public class UserController {
             switch (responseDto.getResponseCode()) {
                 case 1:
                     result.put("status", 400);
-                    result.put("message", "존재하지 않는 사용자입니다.");
+                    result.put("message", "이메일 형식이 올바르지 않습니다.");
 
                     return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
                 case 2:
+                    result.put("status", 400);
+                    result.put("message", "존재하지 않는 사용자입니다.");
+
+                    return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
+                case 3:
                     result.put("status", 400);
                     result.put("message", "비밀번호가 일치하지 않습니다.");
 
@@ -48,6 +53,7 @@ public class UserController {
 
         result.put("status", 200);
         result.put("message", "로그인 성공");
+        result.put("userId", responseDto.getUserId());
         result.put("accessToken", responseDto.getTokenInfo().getAccessToken());
         result.put("refreshToken", responseDto.getTokenInfo().getRefreshToken());
 
@@ -111,7 +117,7 @@ public class UserController {
                     return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
                 case 3:
                     result.put("status", 400);
-                    result.put("message", "이메일 인증 코드를 확인할 수 없습니다.");
+                    result.put("message", "이메일 인증 여부를 확인할 수 없습니다.");
 
                     return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
             }
@@ -155,7 +161,7 @@ public class UserController {
                     return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
                 case 2:
                     result.put("status", 400);
-                    result.put("message", "이메일 인증 코드를 확인할 수 없습니다.");
+                    result.put("message", "이메일 인증 여부를 확인할 수 없습니다.");
 
                     return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
             }

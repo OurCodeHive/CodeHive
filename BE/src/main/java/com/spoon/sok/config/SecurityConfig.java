@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -32,12 +33,13 @@ public class SecurityConfig {
                 .sessionManagement((sessionManagement) -> {
                     sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
-//                .authorizeHttpRequests((authorizeRequests) -> {
-//                    authorizeRequests.requestMatchers("/api/login/user", "/api/login/google", "/",
-//                            "/api/signup", "/api/check/**", "/api/email/**", "/api/find/password").permitAll();
-//                    authorizeRequests.requestMatchers("**").hasAuthority("ROLE_USER");
-//                })
-//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests((authorizeRequests) -> {
+                    authorizeRequests.requestMatchers("/api/login/user", "/api/login/google", "/api/reissue",
+                            "/api/signup", "/api/check/**", "/api/email/**", "/api/find/password").permitAll()
+                            .anyRequest().authenticated();
+//                            .requestMatchers(HttpMethod.GET, "/api/calendar/study").authenticated();
+                })
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
 //                .formLogin((formLogin) -> {
 //                    formLogin.loginPage("/api/login");
 //                })
