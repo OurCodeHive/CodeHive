@@ -1,9 +1,7 @@
 package com.spoon.sok.domain.study.repository;
 
 import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
-import com.spoon.sok.domain.study.dto.StudyCreationDto;
 import com.spoon.sok.domain.study.dto.StudyInfoDto;
-import com.spoon.sok.domain.study.entity.StudyAppointment;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -70,4 +68,14 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
                         @Param("enterName") String enterName,
                         @Param("startAt") Date startAt,
                         @Param("endAt") Date endAt);
+
+    @Query(value = "SELECT studyinfo_id from study_info where study_info.enter_name = :enterName", nativeQuery = true)
+    Long findByEnterName(@Param("enterName") String enterName);
+
+    @Modifying
+    @Query(value = "INSERT INTO user_study (studyinfo_id, users_id, status) " +
+            "VALUES (:studyinfo_id, :userId, :status)", nativeQuery = true)
+    void saveUserStudy(@Param("studyinfo_id") Long newStudy,
+                       @Param("userId") String userid,
+                       @Param("status") String status);
 }

@@ -4,6 +4,8 @@ import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
 import com.spoon.sok.domain.study.dto.StudyCreationDto;
 import com.spoon.sok.domain.study.dto.StudyInfoDto;
 import com.spoon.sok.domain.study.entity.StudyAppointment;
+import com.spoon.sok.domain.study.entity.StudyInfo;
+import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,16 +50,14 @@ public class StudyService {
         studyCreationDto.setEnterName(UUID.randomUUID().toString().substring(0, 10));
 
         studyRepository.saveStudyGroup(studyCreationDto.getUsersId(),
-                                       studyCreationDto.getTitle(),
-                                       studyCreationDto.getDescription(),
-                                       studyCreationDto.getEnterName(),
-                                       studyCreationDto.getStartAt(),
-                                       studyCreationDto.getEndAt());
-        return;
-    }
+                studyCreationDto.getTitle(),
+                studyCreationDto.getDescription(),
+                studyCreationDto.getEnterName(),
+                studyCreationDto.getStartAt(),
+                studyCreationDto.getEndAt());
 
-//    @Transactional
-//    public void setStudyGroupProfileImage(String originalFileName, String fileSize) {
-//
-//    }
+        // 최조 스터디 그룹을 만드는 사람은 바로 저장(스터디 장)
+        Long newStudy = studyRepository.findByEnterName(studyCreationDto.getEnterName());
+        studyRepository.saveUserStudy(newStudy, studyCreationDto.getUsersId(), CurrentStatus.ACCEPT.toString());
+    }
 }
