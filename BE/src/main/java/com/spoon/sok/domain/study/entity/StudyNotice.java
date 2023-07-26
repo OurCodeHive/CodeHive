@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Getter
 @Entity
-@Table(name = "STUDY_NOTICE")
+@Table(name = "study_notice")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyNotice {
 

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Getter
 @Builder
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class User implements UserDetails {

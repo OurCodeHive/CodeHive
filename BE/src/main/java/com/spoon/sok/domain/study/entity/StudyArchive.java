@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-@Table(name = "STUDY_ARCHIVE")
+@Table(name = "study_archive")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyArchive {
 

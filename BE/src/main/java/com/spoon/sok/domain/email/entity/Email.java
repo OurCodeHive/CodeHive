@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @Getter
-@Table(name = "EMAIL_AUTH")
+@Table(name = "email_auth")
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
