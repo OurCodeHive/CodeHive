@@ -1,5 +1,5 @@
 package com.spoon.sok.domain.study.enums;
 
-public enum CurrentStatus {
+public enum StudyUserStatus {
     WAIT, ACCEPT, LEAVE, BAN
 }

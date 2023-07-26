@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Getter
 @Entity
-@Table(name = "REPORT")
+@Table(name = "report")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Report {
     @Id

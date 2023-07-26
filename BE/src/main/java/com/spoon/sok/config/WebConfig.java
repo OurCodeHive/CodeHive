@@ -1,7 +1,7 @@
 package com.spoon.sok.config;
 
 import com.spoon.sok.domain.user.repository.UserRepository;
-import com.spoon.sok.util.JwtInterceptor;
+//import com.spoon.sok.util.JwtInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
