@@ -58,8 +58,8 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
     @Query(value = "SELECT si.studyinfo_id as studyinfoId, " +
             "si.title as title " +
             "FROM USERS U " +
-            "JOIN STUDY_INFO si ON u.nickname = ?1 AND si.title LIKE %?2%", nativeQuery = true)
-    List<StudyInfoDto> findByNicknameAndTitle(String nickname, String title);
+            "JOIN STUDY_INFO si ON u.users_id = ?1 AND si.title LIKE %?2%", nativeQuery = true)
+    List<StudyInfoDto> findByUserIdAndTitle(String userId, String title);
 
     @Modifying
     @Query(value = "INSERT INTO study_info (users_id, title, description, enter_name, created_at, end_at) " +

@@ -37,8 +37,8 @@ public class StudyService {
         return studyRepository.findByUserIdStudyInfoClose(userId);
     }
 
-    public List<StudyInfoDto> searchUserStudyGroup(String nickname, String title) {
-        return studyRepository.findByNicknameAndTitle(nickname, title);
+    public List<StudyInfoDto> searchUserStudyGroup(String userId, String title) {
+        return studyRepository.findByUserIdAndTitle(userId, title);
     }
 
     @Transactional

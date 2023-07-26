@@ -8,7 +8,6 @@ import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +20,8 @@ import java.util.*;
 @RequestMapping("/api/")
 public class StudyController {
 
-    @Value("${jwt.secret}")
-    private String secretKey;
-
-    private final JwtTokenProvider jwtTokenProvider;
     private final StudyService studyService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("calendar/study")
     public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("user") String userId) {
@@ -85,9 +81,9 @@ public class StudyController {
     }
 
     @GetMapping("study/search")
-    public ResponseEntity<Map<String, Object>> searchStudyGroup(@RequestParam("nickname") String nickname,
+    public ResponseEntity<Map<String, Object>> searchStudyGroup(@RequestParam("user") String userId,
                                                                 @RequestParam("title") String title) {
-        List<StudyInfoDto> userStudyGroupList = studyService.searchUserStudyGroup(nickname, title);
+        List<StudyInfoDto> userStudyGroupList = studyService.searchUserStudyGroup(userId, title);
 
         Map<String, Object> response = new HashMap<>();
 
