@@ -43,7 +43,7 @@ public class StudyController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
-    @GetMapping("today/study")
+    @GetMapping("/today/study")
     public ResponseEntity<Map<String, Object>> getTodayStudyMeeting(@RequestParam("today") String today, HttpServletRequest request) {
 
         Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
@@ -64,7 +64,7 @@ public class StudyController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
-    @GetMapping("study")
+    @GetMapping("/study")
     public ResponseEntity<Map<String, Object>> getStudyGroup(@RequestParam("user") String userId) {
         List<StudyInfoDto> userStudyGroupProceedingList = studyService.getUserStudyGroupProceeding(userId);
         List<StudyInfoDto> userStudyGroupCloseList = studyService.getUserStudyGroupClose(userId);
@@ -82,7 +82,7 @@ public class StudyController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
-    @GetMapping("study/search")
+    @GetMapping("/study/search")
     public ResponseEntity<Map<String, Object>> searchStudyGroup(@RequestParam("user") String userId,
                                                                 @RequestParam("title") String title) {
         List<StudyInfoDto> userStudyGroupList = studyService.searchUserStudyGroup(userId, title);
@@ -95,7 +95,7 @@ public class StudyController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
-    @PostMapping("study")
+    @PostMapping("/study")
     public ResponseEntity<Map<String, Object>> setStudyGroup(
             @RequestBody StudyCreationDto studyCreationDto, HttpServletRequest request) {
 
