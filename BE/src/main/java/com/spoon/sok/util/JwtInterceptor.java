@@ -31,34 +31,34 @@ public class JwtInterceptor implements HandlerInterceptor {
         this.userRepository = userRepository;
     }
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String url = request.getRequestURI();
-        if (url.contains("swagger") || url.contains("api-docs") || url.contains("webjars")) {
-            return true;
-        }
-        log.info("프리핸들: {}", request.getHeader("Authorization"));
-        log.info("키 : {}", secretKey);
-
-        try {
-            JwtTokenUtil.isExpired(request.getHeader("Authorization"), secretKey);
-        } catch (ExpiredJwtException e) {
-
-            Map<String, Object> responseBody = new HashMap<>();
-            responseBody.put("status", HttpServletResponse.SC_UNAUTHORIZED);
-            responseBody.put("message", "Again User Login");
-
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json");
-            response.getWriter().write(new ObjectMapper().writeValueAsString(responseBody));
-            return false;
-        }
-
-        String email = JwtTokenUtil.getEmail(request.getHeader("Authorization"), secretKey);
-        if (userRepository.findByEmail(email) != null) {
-            log.info("email prehandle : {}", email);
-            log.info("token 검사 완료");
-        }
-        return true;
-    }
+//    @Override
+//    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+//        String url = request.getRequestURI();
+//        if (url.contains("swagger") || url.contains("api-docs") || url.contains("webjars")) {
+//            return true;
+//        }
+//        log.info("프리핸들: {}", request.getHeader("Authorization"));
+//        log.info("키 : {}", secretKey);
+//
+//        try {
+//            JwtTokenUtil.isExpired(request.getHeader("Authorization"), secretKey);
+//        } catch (ExpiredJwtException e) {
+//
+//            Map<String, Object> responseBody = new HashMap<>();
+//            responseBody.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+//            responseBody.put("message", "Again User Login");
+//
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.setContentType("application/json");
+//            response.getWriter().write(new ObjectMapper().writeValueAsString(responseBody));
+//            return false;
+//        }
+//
+//        String email = JwtTokenUtil.getEmail(request.getHeader("Authorization"), secretKey);
+//        if (userRepository.findByEmail(email) != null) {
+//            log.info("email prehandle : {}", email);
+//            log.info("token 검사 완료");
+//        }
+//        return true;
+//    }
 }

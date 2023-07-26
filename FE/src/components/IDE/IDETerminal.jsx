@@ -1,23 +1,78 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import * as StompJs from '@stomp/stompjs';
 
-function IDETerminal(props: any) {
+function IDETerminal(props) {
+
+  const client = useRef({});
 
   let [openConsole, setOpenConsole] = useState(true);
-  let [console, setConsole] = useState("6vh");
+  let [isConsole, setIsConsole] = useState("6vh");
   let [input, setInput] = useState("");
   let [consoleState, setConsoleState] = useState("Input");
   let [inputColor, setInputColor] = useState("wheat");
   let [resultColor, setResultColor] = useState("gray");
-  let [compileResult] = useState("5");
-  // let [compileResult, setCompileResult] = useState("5");
-
-  // function handleInput(event :React.ChangeEvent<HTMLInputElement>) {
-  //   setInput(event.target.value);
-  // }
+  let [compileResult, setCompileResult] = useState("5");
   
-  function handleInput(event :any) {
+  function handleInput(event) {
     setInput(event.target.value);
   }
+
+  useEffect(() => {
+    connect();
+    return () => {
+      disconnect();
+    }
+  }, [])
+
+  function compileCode() {
+    let code = props.code;
+    const message = {
+      userId: 1,
+      studyRoomId: 1,
+      code: code,
+      input: input,
+    }
+    publish(message);
+    console.log(message);
+  }
+
+  function connect() {
+    client.current = new StompJs.Client({
+      brokerURL: import.meta.env.VITE_CHAT,
+      onConnect: () => {
+        subscribe();
+      },
+    });
+    client.current.activate();
+  };
+
+  function publish(codeAndInput) {
+    if (!client.current.connected) {
+      return;
+    }
+    client.current.publish({
+      destination: '/pub/compile',
+      body: JSON.stringify(codeAndInput),
+    });
+  };
+
+  function subscribe() {
+    client.current.subscribe('/sub/compile/' + props.id, (body) => {
+      const json_body = JSON.parse(body.body);
+      const message = json_body;
+      setCompileResult(message.result);
+      setOpenConsole(true);
+      setIsConsole("20vh");
+      setConsoleState("Result");
+      setInputColor("gray");
+      setResultColor("wheat");
+    });
+  };
+  
+  function disconnect() {
+    client.current.deactivate();
+  };
+
 
   return(
     <div style={{
@@ -27,16 +82,16 @@ function IDETerminal(props: any) {
       width:"60%",
       left:"25%",
       bottom:"0px",
-      height: console,
+      height: isConsole,
       color:"wheat"
     }}>
       <button onClick={() => {
         setOpenConsole(!openConsole);
         if (openConsole) {
-          setConsole("20vh");
+          setIsConsole("20vh");
           props.up();
         } else {
-          setConsole("6vh");
+          setIsConsole("6vh");
           props.down();
         }
       }}
@@ -59,7 +114,7 @@ function IDETerminal(props: any) {
       >Console</button>
 
       {
-        console === "6vh"? null: 
+        isConsole === "6vh"? null: 
         <>
           <p 
             onClick={() => {
@@ -146,13 +201,9 @@ function IDETerminal(props: any) {
         openConsole? 
         null
         :
+        consoleState === "Input"?
         <button onClick={() => {
-          let code = props.code;
-          const submit = {
-            input: input,
-            code: code,
-          }
-          alert(JSON.stringify(submit));
+          compileCode();
           setConsoleState("Result");
           setInputColor("gray");
           setResultColor("wheat");
@@ -174,7 +225,7 @@ function IDETerminal(props: any) {
             textDecoration:"none",
             textShadow:"0px 1px 0px #2f6627",     
           }}
-        >run</button>
+        >run</button>: null
       }
       
     </div>

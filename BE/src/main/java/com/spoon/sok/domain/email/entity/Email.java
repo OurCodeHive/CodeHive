@@ -1,16 +1,13 @@
 package com.spoon.sok.domain.email.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "EMAIL_AUTH")
+@Table(name = "email_auth")
 @ToString
 @NoArgsConstructor
 public class Email {
@@ -26,10 +23,17 @@ public class Email {
     @Column(name = "limit_time")
     private LocalDateTime limitTime;
 
+    private int isauth;
+
     @Builder
-    public Email(String email, String authCode, LocalDateTime limitTime) {
+    public Email(String email, String authCode, LocalDateTime limitTime, int isauth) {
         this.email = email;
         this.authCode = authCode;
         this.limitTime = limitTime;
+        this.isauth = isauth;
+    }
+
+    public void updateIsAuth(int isauth) {
+        this.isauth = isauth;
     }
 }
