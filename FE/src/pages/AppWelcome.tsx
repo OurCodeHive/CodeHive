@@ -4,7 +4,7 @@ import style from "../res/css/module/AppWelcome.module.css"
 import video from '../res/video/Welcome.mp4'
 // import "../res/video/Welcome.mp4"
 function Welcome() {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     return (
         <>
         {/* <div className={style.frame}>

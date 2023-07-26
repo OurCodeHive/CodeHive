@@ -21,7 +21,7 @@ const Signup = () => {
     let [password, setPassword] = useState("");
     let [checkPw, setCheckPw] = useState("");
     let [nickname, setNickname] = useState("");
-    let[nickMsg, setNickMsg] = useState<string>("");
+    let[nickMsg, setNickMsg] = useState<string>("test");
     let [isInput, setIsInput] = useState<boolean>(false);
     let [verify, setVerify] = useState<boolean>(false);
     //timer values
@@ -79,7 +79,8 @@ const Signup = () => {
                     alert(`${res.message}`)
                 }
             startCodeTimer();
-            });
+            })
+            .catch(console.log);
         } else {
             alert("올바른 이메일을 입력해주세요")
         }
@@ -136,24 +137,34 @@ const Signup = () => {
     //닉네임 중복 체크 API//
     ///////////////////////
     function nicknameDuplicateCheck(){
+        setInputNick(true);
+        if(nickname===""){
+            setNickMsg("닉네임을 입력해주세요.");
+            return;
+        } 
         interface returnData {
             message : string,
             status : number,
         }
-        const url = import.meta.env.VITE_APP_SERVER + `check/${nickname}`;
+        // const url = import.meta.env.VITE_APP_SERVER + `check/${nickname}`;
         async function getData(): Promise<returnData | undefined> {
             try {
-                const response: AxiosResponse<returnData> = await axios.get(url);
-                const data = response.data as returnData
+                const response: AxiosResponse<returnData> = await api.get(`/check/${nickname}`);
+                const data = response.data
                 return data;
-            } catch (error) {
+            } catch (error:unknown) {
                 const err = error as AxiosError
-                console.log(err);
+                console.log(err.response.data.message);
+                setNickMsg(err.response?.data.message)
             }
         }
-        getData().then((res)=>console.log(res))
-    }
 
+        getData().then((res)=>console.log(res))
+        .catch(console.log)
+    }
+    ///////
+    //TIMER
+    ///////
     function startCodeTimer(){
         setInputCode(true);
         setStartTimer(true);
@@ -227,7 +238,7 @@ const Signup = () => {
                 <input
                     onFocus={()=>{setIsInput(true);console.log("true")}}
                     onChange={pwConfirm}
-                    type="text"
+                    type="password"
                     name="newpwcheck"
                     id="newpwcheck"
                     required
