@@ -101,7 +101,7 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
 
 
     @Query(value = "UPDATE user_study " +
-            "SET user_study.status = 'WAIT' " +
+            "SET user_study.status = 'ACCEPT' " +
             "WHERE user_study.userstudy_id = :userstudy_id", nativeQuery = true)
     void setUserStudyStatus(@Param("studyinfo_id") Long studyinfoId,
                             @Param("users_id") Long usersId,
