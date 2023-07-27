@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -69,6 +68,7 @@ public class UserService {
         return UserResponseDto.builder()
                 .tokenInfo(tokenInfo)
                 .userId(user.get().getId())
+                .nickname(user.get().getNickname())
                 .responseCode(0)
                 .build();
     }
