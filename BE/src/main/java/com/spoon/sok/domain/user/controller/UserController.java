@@ -54,6 +54,7 @@ public class UserController {
         result.put("status", 200);
         result.put("message", "로그인 성공");
         result.put("userId", responseDto.getUserId());
+        result.put("nickname", responseDto.getNickname());
         result.put("accessToken", responseDto.getTokenInfo().getAccessToken());
         result.put("refreshToken", responseDto.getTokenInfo().getRefreshToken());
 

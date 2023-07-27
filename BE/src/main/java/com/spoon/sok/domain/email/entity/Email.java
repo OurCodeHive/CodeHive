@@ -6,12 +6,10 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Builder
 @Getter
 @Table(name = "email_auth")
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class Email {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +23,7 @@ public class Email {
     @Column(name = "limit_time")
     private LocalDateTime limitTime;
 
-    @Builder.Default
-    private int isauth = 0;
+    private int isauth;
 
     @Builder
     public Email(String email, String authCode, LocalDateTime limitTime, int isauth) {

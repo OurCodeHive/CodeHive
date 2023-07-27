@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
@@ -68,6 +69,7 @@ public class EmailService {
                     .email(email)
                     .authCode(code)
                     .limitTime(LocalDateTime.now().plusMinutes(3))
+                    .isauth(0)
                     .build();
 
             emailRepository.save(emailAuth);
@@ -111,6 +113,7 @@ public class EmailService {
                     .email(email)
                     .authCode(code)
                     .limitTime(LocalDateTime.now().plusMinutes(3))
+                    .isauth(0)
                     .build();
 
             emailRepository.save(emailAuth);
@@ -127,6 +130,7 @@ public class EmailService {
         return new ResponseEntity<Map<String, Object>>(result, status);
     }
 
+    @Transactional
     public ResponseEntity<?> verify(EmailAuthVerifyDto requestDto) {
         Map<String, Object> result = new HashMap<>();
         HttpStatus status;
@@ -151,6 +155,7 @@ public class EmailService {
 
         if (verifyEmail.get().getEmail().equals(requestDto.getEmail())
                 && verifyEmail.get().getAuthCode().equals(requestDto.getAuthCode())) {
+
             verifyEmail.get().updateIsAuth(1);
 
             result.put("status", 200);
