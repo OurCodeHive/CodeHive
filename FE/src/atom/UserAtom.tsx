@@ -30,3 +30,8 @@ export const userState = atom<userType>({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const changePasswordUserState = atom<string>({
+    key : "changePasswordUserState",
+    default : "",
+})
+
