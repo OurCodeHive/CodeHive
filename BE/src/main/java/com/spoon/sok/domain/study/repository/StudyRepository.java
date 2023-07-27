@@ -1,8 +1,10 @@
 package com.spoon.sok.domain.study.repository;
 
+import com.spoon.sok.domain.study.dto.PreCheckUserStudyDto;
 import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
 import com.spoon.sok.domain.study.dto.StudyInfoDto;
 import com.spoon.sok.domain.study.entity.StudyInfo;
+import com.spoon.sok.domain.user.entity.UserStudy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
 
@@ -86,4 +89,13 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
     Long findByStudyInfoAndStatusAndEmail(@Param("studyinfo_id") Long newStudy,
                                   @Param("status") String status,
                                   @Param("email") String email);
+
+    @Query(value = "SELECT us.studyinfo_id, " +
+            "us.users_id, " +
+            "us.userstudy_id, " +
+            "us.invite_email, " +
+            "us.status " +
+            "FROM user_study us " +
+            "WHERE userstudy_id = :userstudy_id", nativeQuery = true)
+    Optional<PreCheckUserStudyDto> findByUserStudyId(Long userstudy_id);
 }

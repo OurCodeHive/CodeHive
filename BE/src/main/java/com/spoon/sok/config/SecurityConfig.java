@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
@@ -34,8 +34,15 @@ public class SecurityConfig {
                     sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests((authorizeRequests) -> {
-                    authorizeRequests.requestMatchers("/api/login/user", "/login/oauth2/code/google", "/api/reissue", "/",
-                                    "/api/signup", "/api/check/**", "/api/email/**", "/api/find/password").permitAll()
+                    authorizeRequests.requestMatchers("/",
+                                    "/api/login/user",
+                                    "/login/oauth2/code/google",
+                                    "/api/reissue",
+                                    "/api/signup",
+                                    "/api/check/**",
+                                    "/api/email/**",
+                                    "/api/find/password",
+                                    "/api/study/invite/pre-check").permitAll()
                             .anyRequest().authenticated();
                 })
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)

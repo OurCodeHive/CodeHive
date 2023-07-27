@@ -1,9 +1,12 @@
 package com.spoon.sok.domain.study.controller;
 
+import com.spoon.sok.domain.study.dto.PreCheckUserStudyDto;
 import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
 import com.spoon.sok.domain.study.dto.StudyCreationDto;
 import com.spoon.sok.domain.study.dto.StudyInfoDto;
+import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.service.StudyService;
+import com.spoon.sok.domain.user.entity.UserStudy;
 import com.spoon.sok.util.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -107,6 +110,36 @@ public class StudyController {
 
         response.put("status", 200);
         response.put("studyinfo_id", studyService.setStudyGroup(studyCreationDto));
+
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    // 올바르지 않은 접근을 검사
+    @GetMapping("/study/invite/pre-check")
+    public ResponseEntity<Map<String, Object>> getEnterStudyGroupConditionCheck(
+            @RequestParam("userstudy_id") Long userstudy_id) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        Optional<PreCheckUserStudyDto> us = studyService.CheckEnterStudyGroupCondition(userstudy_id);
+
+        if (us.get().getStatus() == CurrentStatus.ACCEPT.toString()) {
+            response.put("status", 200);
+            response.put("message", "이미 가입한 사람");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        }
+
+        if (us.isPresent()) {
+            response.put("possible_access", true);             // 초대받은 사람이다.
+            if (us.get().getUsersId() == null) {       // 회원가입은 안했다.
+                response.put("isOurUser", false);
+            } else {
+                response.put("isOurUser", true);
+            }
+        } else {
+            response.put("possible_access", false);            // 초대 받은 사람이 아니다.
+            response.put("isOurUser", false);          // 회원가입도 안했다.
+        }
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }

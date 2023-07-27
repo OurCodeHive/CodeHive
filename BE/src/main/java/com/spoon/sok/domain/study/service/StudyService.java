@@ -1,10 +1,9 @@
 package com.spoon.sok.domain.study.service;
 
+import com.spoon.sok.domain.study.dto.PreCheckUserStudyDto;
 import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
 import com.spoon.sok.domain.study.dto.StudyCreationDto;
 import com.spoon.sok.domain.study.dto.StudyInfoDto;
-import com.spoon.sok.domain.study.entity.StudyAppointment;
-import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
@@ -85,5 +84,9 @@ public class StudyService {
             // 여기서 바로 PK 알아내야함
             return studyRepository.findByStudyInfoAndStatusAndEmail(studyinfo_id, CurrentStatus.WAIT.toString(), email);
         }
+    }
+
+    public Optional<PreCheckUserStudyDto> CheckEnterStudyGroupCondition(Long userstudy_id) {
+        return studyRepository.findByUserStudyId(userstudy_id);
     }
 }
