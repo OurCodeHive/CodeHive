@@ -103,8 +103,10 @@ public class StudyController {
         Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
         studyCreationDto.setUsersId((String) token.get("users_id"));
 
-        studyService.setStudyGroup(studyCreationDto);
         Map<String, Object> response = new HashMap<>();
+
+        response.put("status", 200);
+        response.put("studyinfo_id", studyService.setStudyGroup(studyCreationDto));
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
