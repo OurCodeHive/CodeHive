@@ -1,5 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react'
+import { useRecoilState } from 'recoil';
+import { userState } from '@/atom/UserAtom';
 import style from "../../res/css/module/Login.module.css"
 import logo from "../../res/img/CodeHiveLogo.png"
 import google from "../../res/img/googleLogo.png"
@@ -9,6 +11,9 @@ import axios, {AxiosError, AxiosResponse} from 'axios';
 const Login = () => {
     let [email, setEmail] = useState("")
     let [pw, setPw] = useState("");
+    let [userInfo, setUserInfo] = useRecoilState(userState);
+    
+
     const navigate = useNavigate();
 
     function signUpPage(event: any) {
@@ -24,6 +29,10 @@ const Login = () => {
     //로그인 클릭 시 실행되는 함수
     ////////////////////////////
     function login(){
+        if(email === "" || pw === ""){
+            alert("이메일과 비밀번호를 입력해주세요");
+            return;
+        }
         const user = {
             "email" : email,
             "password" : pw
@@ -32,24 +41,44 @@ const Login = () => {
             status : number,
             message : string,
             accessToken : string,
-            refreshToken : string
+            refreshToken : string,
+            userId : number,
+            nickname : string,
         }
         const url = import.meta.env.VITE_APP_SERVER + "login/user";
         async function doLogin(): Promise<userData | undefined> {
             try {
               ///
               const response: AxiosResponse<userData> = await axios.post(url, user);
+              console.log(response.data);
+              alert("로그인에 성공하였습니다");
+              //recoil!
+              setUserInfo({
+                email : email,
+                userId : response.data.userId,
+                nickname : response.data.nickname,
+                accessToken : response.data.accessToken,
+                refreshToken: response.data.refreshToken});
+               navigate("/study");
               return response.data;
             } catch (error) {
-                const err = error as AxiosError
-                console.log(err);
+                const err = error as any
+                console.log(err); //실패는 여기로
+                alert(err.response?.data.message);
+                return;
             }
           }
+          doLogin()
+          .then((res)=>{
+            console.log(res);
+            // alert("로그인 되었습니다");
+          })
+          .catch((err) => {console.log(err)})
         ///
-        axios.post(url, user)
-        .then((res) =>{
-            console.log(res.data);
-        })
+        // axios.post(url, user)
+        // .then((res) =>{
+        //     console.log(res.data);
+        // })
     }
     function googleLogin(){
         const user = {

@@ -54,6 +54,9 @@ const Signup = () => {
         return()=>clearInterval(timer);
     },[startTimer, time])
 
+    useEffect(()=>{
+
+    })
 
     let navigate = useNavigate();
     const pwConfirm = useCallback((e : React.ChangeEvent<HTMLInputElement>)=>{
@@ -116,19 +119,31 @@ const Signup = () => {
         }
         // const url = import.meta.env.VITE_APP_SERVER + `email/auth?email=${email}`;
         async function checkVerificationCode(): Promise<customI | undefined> {
+            if(time === "0"){
+                setCodeMsg("인증시간이 만료되었습니다");
+                setIsCodeValid(false);
+                return;
+            }
+            if(code === ""){
+                setCodeMsg("코드를 입력해주세요");
+                setIsCodeValid(false);
+                return;
+            }
             try {
                 const response: AxiosResponse<customI> = await api.post(`/email/auth?email=${email}`, data);
                 return response.data as customI;
             } catch (error:any) {
                 const err = error.response.data.message as string
+                setIsCodeValid(false); //코드가 유효한지 확인
                 setCodeMsg(err);
+                console.log(codeMsg);
                 console.log(err); 
                 // return err;
             }
         }
         checkVerificationCode().then((res)=>{
             if(res){
-                setIsCodeValid(true);
+                setIsCodeValid(true); //코드가 유효한지 확인
                 setCodeMsg(res.message)
                 console.log(res);
             }
@@ -197,7 +212,7 @@ const Signup = () => {
                 {
                     showCodeMsg?
                     (isCodeValid? //default = false
-                    <div className={style.verify_message} style={{marginTop : "10px", color : "#b9ea16"}}> 올바른 코드입니다.</div>
+                    <div className={style.verify_message} style={{marginTop : "10px", color : "#b9ea16"}}>{codeMsg}</div>
                     :
                     <div style={{marginTop : "10px"}} className={style.verify_message}>{codeMsg}</div>
                     )
