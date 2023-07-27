@@ -3,21 +3,17 @@ import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 import { useState } from "react";
 import { EditorState, convertToRaw } from 'draft-js';
-import EditorStyle from "@/res/css/module/Editor.module.css";
+import EditorStyle from "@/res/css/module/util/Editor.module.css";
 
 const CustomEditor = ({resultInput} : {resultInput: React.RefObject<HTMLInputElement>}) => {
 	// EditorState.createEmpty() 로 초기값 설정
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty())
-  const editorToHtml = (editorState: EditorState) => {
-    return draftToHtml(convertToRaw(editorState.getCurrentContent()));
-  }
 
   const onEditorStateChange = (editorState: EditorState) => {
       setEditorState(editorState);
       if(resultInput.current != null){
-        resultInput.current.value = editorToHtml(editorState);
-      }
-      
+        resultInput.current.value = draftToHtml(convertToRaw(editorState.getCurrentContent())) ? draftToHtml(convertToRaw(editorState.getCurrentContent())) : "";
+      }      
   }
     
 	return (

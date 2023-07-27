@@ -1,4 +1,4 @@
-import PopupStyle from "@/res/css/module/Popup.module.css";
+import PopupStyle from "@/res/css/module/util/Popup.module.css";
 
 const ConfirmPopup: React.FC<PopupProps> = ({popupStatus, PopupContents, closePopupProp}) => {
     let isOpen = popupStatus;

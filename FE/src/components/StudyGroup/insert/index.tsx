@@ -8,7 +8,7 @@ const StudyInsert: React.FC = () => {
     return (
         <>
          {StepIdx === 1 ? (
-            <Step1Contents/>
+            <Step1Contents />
          ) : (
             <Step2Contents/>
          )}
