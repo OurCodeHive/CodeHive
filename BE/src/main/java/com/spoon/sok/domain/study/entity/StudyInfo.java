@@ -31,6 +31,10 @@ public class StudyInfo {
     @Column(name = "description") // 스터디 설명
     private String description;
 
+//    @Lob
+//    @Column(name = "description", columnDefinition = "BLOB")
+//    private byte[] description;
+
     @Column(name = "profileimage") // 스터디 대표(프로필) 이미지
     private String profileImage;
 

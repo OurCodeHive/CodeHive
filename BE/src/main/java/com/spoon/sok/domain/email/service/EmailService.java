@@ -194,7 +194,7 @@ public class EmailService {
         return templateEngine.process(template, context);
     }
 
-    public void sendInviteLinkEmail(Long studyinfo_id, String email, Integer userstudy_id) {
+    public void sendInviteLinkEmail(Long studyinfo_id, String email, Long userstudy_id) throws MessagingException {
         StringBuilder sb = new StringBuilder();
         Map<String, Object> result = new HashMap<>();
 
@@ -209,7 +209,14 @@ public class EmailService {
             sb.append("&").append("users_id=").append(user.get().getId());
         }
         sb.append("&").append("userstudy_id=").append(userstudy_id);
-
+        sb.append("&").append("invite_email=").append(email);
         log.info("이메일에 첨부될 링크 : {}", sb.toString());
+
+        MimeMessage message = emailSender.createMimeMessage();
+        message.addRecipients(MimeMessage.RecipientType.TO, email);
+        message.setSubject("[CideHive] 스터디 초대 링크");
+        message.setText(setContext(sb.toString(), "inviteEmail"), "utf-8", "html");
+
+        emailSender.send(message);
     }
 }

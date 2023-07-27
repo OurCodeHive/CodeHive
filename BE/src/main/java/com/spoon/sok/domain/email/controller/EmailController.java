@@ -7,10 +7,13 @@ import com.spoon.sok.domain.study.service.StudyService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -37,15 +40,33 @@ public class EmailController {
     }
 
     @PostMapping("study/invite")
-    public void sendInviteEmail(@RequestBody InviteEmailDto inviteEmailDto) {
+    public ResponseEntity<?> sendInviteEmail(@RequestBody InviteEmailDto inviteEmailDto) {
+        // 초대할 이메일 여러개를 받음
         List<String> inviteList = inviteEmailDto.getEmail();
-        for (String email : inviteList) {
-            // 1. 중간테이블에 저장하기 위해 필요한 데이터 (studyinfo_id, users_id)
-            Long PK = studyService.setUserStudyForEmail(inviteEmailDto.getStudyinfo_id(), email);
-            log.info("중간 테이블 저장 했어!");
-            log.info("중간 테이블 PK {}", PK);
 
-//            emailService.sendInviteLinkEmail(inviteEmailDto.getStudyinfo_id(), email, pk);
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            for (String email : inviteList) {
+                // 1. 중간테이블에 저장
+                Long userstudy_id = studyService.setUserStudyForEmail(inviteEmailDto.getStudyinfo_id(), email);
+
+                // 2. 이메일 발송
+                emailService.sendInviteLinkEmail(inviteEmailDto.getStudyinfo_id(), email, userstudy_id);
+            }
+        } catch (MessagingException e) {
+            log.info("이메일 전송에 실패하였습니다.");
+
+            response.put("status", 400);
+            response.put("message", "이메일 전송에 실패하였습니다.");
+
+            e.printStackTrace();
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
         }
+
+        response.put("status", 200);
+        response.put("message", "전송완료");
+
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 }
