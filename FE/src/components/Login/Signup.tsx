@@ -18,6 +18,7 @@ const Signup = () => {
     let [code, setCode] = useState<string>("");
     let [isCodeValid, setIsCodeValid] = useState(false);
     let [showCodeMsg, setShowCodeMsg] = useState(false);
+    let [codeMsg, setCodeMsg] = useState("");
     let [password, setPassword] = useState("");
     let [checkPw, setCheckPw] = useState("");
     let [nickname, setNickname] = useState("");
@@ -114,18 +115,23 @@ const Signup = () => {
             authCode : code
         }
         // const url = import.meta.env.VITE_APP_SERVER + `email/auth?email=${email}`;
-        async function checkVerificationCode(): Promise<string | undefined> {
+        async function checkVerificationCode(): Promise<customI | undefined> {
             try {
-                const response: AxiosResponse<string> = await api.post(`/email/auth?email=${email}`, data);
-                return response.data as string;
+                const response: AxiosResponse<customI> = await api.post(`/email/auth?email=${email}`, data);
+                return response.data as customI;
             } catch (error:any) {
                 const err = error.response.data.message as string
-                // console.log(err); 
-                return err;
+                setCodeMsg(err);
+                console.log(err); 
+                // return err;
             }
         }
         checkVerificationCode().then((res)=>{
-            console.log(res);
+            if(res){
+                setIsCodeValid(true);
+                setCodeMsg(res.message)
+                console.log(res);
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -193,7 +199,7 @@ const Signup = () => {
                     (isCodeValid? //default = false
                     <div className={style.verify_message} style={{marginTop : "10px", color : "#b9ea16"}}> 올바른 코드입니다.</div>
                     :
-                    <div style={{marginTop : "10px"}} className={style.verify_message}> 유효하지 않은 코드입니다.</div>
+                    <div style={{marginTop : "10px"}} className={style.verify_message}>{codeMsg}</div>
                     )
                     :""
                 }
