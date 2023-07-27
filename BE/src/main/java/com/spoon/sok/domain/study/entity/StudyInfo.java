@@ -28,12 +28,9 @@ public class StudyInfo {
     @Column(name = "studyroom_size") // 스터디 참여인원
     private String studyroomSize;
 
-    @Column(name = "description") // 스터디 설명
+    @Lob
+    @Column(name = "description", columnDefinition = "LONGTEXT")
     private String description;
-
-//    @Lob
-//    @Column(name = "description", columnDefinition = "BLOB")
-//    private byte[] description;
 
     @Column(name = "profileimage") // 스터디 대표(프로필) 이미지
     private String profileImage;
