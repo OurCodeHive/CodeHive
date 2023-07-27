@@ -33,12 +33,11 @@ const FindPassword = () => {
             } else {
                 if(startTimer){
                     setTime((prev) => String(Number(prev)-1));
-                    console.log(time);
                 }
             }
         }, 1000);
         return()=>clearInterval(timer);
-    },[startTimer])
+    },[startTimer, time])
 
 
     return (
@@ -46,8 +45,6 @@ const FindPassword = () => {
         <section className={style.login_form}>
         <img onClick={()=>{navigate("/")}}  className={style.logo} src={logo} alt="" />
         <h1 className={style.login_title}>CHANGE PASSWORD</h1>
-     
-            
             <div className={`${style.int_area}`}>
                 <input
                     onChange={(e) => {
@@ -65,7 +62,7 @@ const FindPassword = () => {
                 {
                     verify?
                     <>
-                    <input type="text"className={style.verification_input} placeholder='인증번호 입력'/>
+                    <input type="text"className={style.verification_input} placeholder='Code'/>
                     <span className={style.timer}>{Math.floor(Number(time)/60)} : {getSeconds(Number(time))}</span>
                     </>
                     :
@@ -73,13 +70,14 @@ const FindPassword = () => {
                 }
          
         <div className={style.btn_area}>
-            <button style={{fontWeight:"bold"}} type="submit">비밀번호 변경</button>
+            <button onClick={()=>{turnToSetPwPage()}} style={{fontWeight:"bold"}} type="submit">새 비밀번호 등록</button>
         </div>
 
     </section>
     </div>
     );
-
+    //인증버튼 누르면 
+    //인증코드 전송 
     function sendVerification(email : string){
         setVerify(true);
         console.log(email);
@@ -91,6 +89,16 @@ const FindPassword = () => {
         //     console.log(res.data);
         // })
         
+    }
+    function turnToSetPwPage(){
+        if(true){
+            //인증이 맞으면
+            navigate("/changepassword");
+
+        } else {
+            //인증이 틀리면
+            alert("올바른 인증번호를 입력해주세요.")
+        }
     }
 
 };

@@ -2,5 +2,7 @@
 // import { DashboardProps } from '.';
 
 // export const Dashboard: FC<DashboardProps> = (props) => {
-// 	// return <div {...props}></div>;
+// 	return (
+//     <div>{props as DashboardProps}</div>
+//     )
 // };

@@ -43,9 +43,9 @@
   align-items: center;
 }
 .login_title {
-  padding-top: 10%;
+  padding-top: 15px;
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 20px;
   font-size: 32px;
   color: #fff
 }
@@ -165,7 +165,7 @@ body::before {
     display: block;
     width: 30%;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 20px;
     cursor: pointer;
 }
 .verify_message {
@@ -174,4 +174,43 @@ body::before {
     font-size: 12px;
     color: rgb(252, 84, 28);
     /* text-shadow: 0.3px 0.3px white; */
+}
+.verification_input {
+  margin: auto;
+  margin-top: -10px;
+  font-size: 17px;
+  letter-spacing: 1.5px;
+  font-weight: bold;
+  color: #333(105, 26, 0);
+  background-color: #ffffffb7;
+  border: none;
+  border-radius: 5px;
+  padding: 7px;
+}
+.timer {
+  display: inline-block;
+  font-size: 18px;
+  color: rgb(255, 80, 80);
+  padding: 5px 10px;
+  width: 80px;
+}
+.emailCheck {
+  text-align: center;
+  display: inline-block;
+  /* margin-bottom: 20px; */
+  margin-left: 10px;
+  /* margin-bottom: 10px; */
+  padding: 5px 10px;
+  color: white;
+  background-color: #ffd900c1;
+  border-radius: 7px;
+  line-height: 20px;
+  height: 30px;
+  width: 53px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 10px;
+}
+.emailCheck:hover {
+  background-color : #ffe137d6
 }
