@@ -20,7 +20,7 @@ const Lnb: React.FC = () => {
 
     const changePopupFlag = (flag: boolean) => {
         setPopupFlag(() => flag);
-      };
+    };
 
     return (
         <div className={`col-12 pt50 pb50 ${LnbStyle.lnb_wrap}`}>

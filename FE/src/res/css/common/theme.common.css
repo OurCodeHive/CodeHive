@@ -12,9 +12,6 @@
 .input_style_0::-moz-placeholder {color: #d9d9d9;}
 .input_style_0::-webkit-input-placeholder {color: #d9d9d9;}
 
-
-.input_style_0[type="file"]{width: 0; height: 0; opacity: 0; padding: 0; border: 0px none;}
-
 /* btn_style_0 */
 .btn_style_0{display: inline-block; box-sizing: border-box; overflow: hidden; border: 1px solid #17181d; cursor: pointer; appearance: none; outline: none; padding: 6px 14px; border-radius: 5px; text-align: center; font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d; background-color: transparent;}
 .btn_style_0.border_none{border: 0px none; padding: 7px 15px;}
@@ -30,11 +27,6 @@
 .form_style_0_con .form_style_0.type_date_range .input_box{display: flex; align-items: center;}
 .form_style_0_con .form_style_0.type_date_range .input_box > input{flex: 1;}
 .form_style_0_con .form_style_0.type_date_range .addr_text{margin-left: 7px; margin-right: 7px;}
-/*파일*/
-.form_style_0_con .form_style_0.type_file .file_info_con{font-size: 0; line-height: 0;}
-.form_style_0_con .form_style_0.type_file .file_info_con > li{margin-bottom: 5px; font-size: 15px; font-size: 1.5rem; line-height: 21px; line-height: 2.1rem; font-weight: 300; letter-spacing: -0.02em; color: #17181d;}
-.form_style_0_con .form_style_0.type_file .file_info_con > li:last-child{margin-bottom: 0;}
-
 
 @media all and (min-width: 992px){
     

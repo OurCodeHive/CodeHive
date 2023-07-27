@@ -25,4 +25,14 @@ const getList = async <T = StudyType>(param: object): Promise<T | undefined> => 
     }
 }
 
-export {getList};
+const insertData = async <T = number>(param: object): Promise<T | undefined> => {
+    try {
+        const result = await api.post<T>(`/study`, { params: JSON.stringify(param) });
+        return result.data;
+      } catch (error) {
+          const err = error as AxiosError
+          console.log(err);
+    }
+}
+
+export {getList, insertData};
