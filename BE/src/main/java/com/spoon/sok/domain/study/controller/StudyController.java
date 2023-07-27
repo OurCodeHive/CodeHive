@@ -1,9 +1,6 @@
 package com.spoon.sok.domain.study.controller;
 
-import com.spoon.sok.domain.study.dto.PreCheckUserStudyDto;
-import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
-import com.spoon.sok.domain.study.dto.StudyCreationDto;
-import com.spoon.sok.domain.study.dto.StudyInfoDto;
+import com.spoon.sok.domain.study.dto.*;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.service.StudyService;
 import com.spoon.sok.domain.user.entity.UserStudy;
@@ -140,6 +137,15 @@ public class StudyController {
             response.put("possible_access", false);            // 초대 받은 사람이 아니다.
             response.put("isOurUser", false);          // 회원가입도 안했다.
         }
+
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/study/invite")
+    public ResponseEntity<?> setMemberStudyGroup(@RequestBody ChangeUserStudyDto changeUserStudyDto) {
+        Map<String, Object> response = new HashMap<>();
+
+        studyService.updateStudyGroupStatus(changeUserStudyDto);
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }

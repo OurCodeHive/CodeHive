@@ -98,4 +98,13 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "FROM user_study us " +
             "WHERE userstudy_id = :userstudy_id", nativeQuery = true)
     Optional<PreCheckUserStudyDto> findByUserStudyId(Long userstudy_id);
+
+
+    @Query(value = "UPDATE user_study " +
+            "SET user_study.status = 'WAIT' " +
+            "WHERE user_study.userstudy_id = :userstudy_id", nativeQuery = true)
+    void setUserStudyStatus(@Param("studyinfo_id") Long studyinfoId,
+                            @Param("users_id") Long usersId,
+                            @Param("userstudy_id") Long userstudyId,
+                            @Param("invite_email") String inviteEmail);
 }

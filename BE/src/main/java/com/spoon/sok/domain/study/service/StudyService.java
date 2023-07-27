@@ -1,9 +1,6 @@
 package com.spoon.sok.domain.study.service;
 
-import com.spoon.sok.domain.study.dto.PreCheckUserStudyDto;
-import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
-import com.spoon.sok.domain.study.dto.StudyCreationDto;
-import com.spoon.sok.domain.study.dto.StudyInfoDto;
+import com.spoon.sok.domain.study.dto.*;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
@@ -88,5 +85,13 @@ public class StudyService {
 
     public Optional<PreCheckUserStudyDto> CheckEnterStudyGroupCondition(Long userstudy_id) {
         return studyRepository.findByUserStudyId(userstudy_id);
+    }
+
+    @Transactional
+    public void updateStudyGroupStatus(ChangeUserStudyDto changeUserStudyDto) {
+        studyRepository.setUserStudyStatus(changeUserStudyDto.getStudyinfoId(),
+                                           changeUserStudyDto.getUsersId(),
+                                           changeUserStudyDto.getUserstudyId(),
+                                           changeUserStudyDto.getInviteEmail());
     }
 }
