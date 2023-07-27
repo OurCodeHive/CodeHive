@@ -1,14 +1,23 @@
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import '@/res/css/module/util/DatePicker.module.css';
 import { ko } from 'date-fns/esm/locale';
 
-const CustomDatePicker = ({resultInput, settingDate} : {resultInput: React.RefObject<HTMLInputElement>, settingDate : Date}) => {
-  const [selectDate, setSelectDate] = useState<Date>(settingDate);
+interface DatePickerProps {
+  resultInput : React.RefObject<HTMLInputElement>;
+  settingDate : Date;
+  minDate? : Date;
+  maxDate? : Date;
+}
+
+
+const CustomDatePicker = (Props : DatePickerProps) => {
+  const [selectDate, setSelectDate] = useState<Date>(Props.settingDate);
 
   const changeDate = (date : Date) => {
     setSelectDate(date);
-    if(resultInput.current != null){ resultInput.current.value = toStringByFormatting(date); }
+    if(Props.resultInput.current != null){ Props.resultInput.current.value = toStringByFormatting(date); }
   }
 
 	return (
@@ -16,8 +25,30 @@ const CustomDatePicker = ({resultInput, settingDate} : {resultInput: React.RefOb
       showIcon
       locale={ko}
       dateFormat="yyyy.MM.dd"
+      minDate={Props.minDate ? Props.minDate : selectDate}
       selected={selectDate}
       onChange={(date: Date) => changeDate(date)}
+      calendarClassName="date-picker-calendar" // className 추가
+      inline
+      renderCustomHeader={({ // custom header 만들어주기
+        monthDate,
+        decreaseMonth,
+        increaseMonth,
+        prevMonthButtonDisabled,
+        nextMonthButtonDisabled,
+      }) => (
+        <div className="date-customheader">
+          <button onClick={() => decreaseMonth()} disabled={prevMonthButtonDisabled}>
+            <i className="icon-arrow-left32" />
+          </button>
+          <div>
+            {monthDate.getFullYear()}년 {monthDate.getMonth() + 1}월
+          </div>
+          <button onClick={() => increaseMonth()} disabled={nextMonthButtonDisabled}>
+            <i className="icon-arrow-right32" />
+          </button>
+        </div>
+      )}
     />
     )
 

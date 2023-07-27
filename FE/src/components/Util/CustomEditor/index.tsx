@@ -1,23 +1,23 @@
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
-import { useState } from "react";
+import React, { useState, } from "react";
 import { EditorState, convertToRaw } from 'draft-js';
 import EditorStyle from "@/res/css/module/util/Editor.module.css";
 
-const CustomEditor = ({resultInput} : {resultInput: React.RefObject<HTMLInputElement>}) => {
+const CustomEditor = ({editorRef} : {editorRef : React.RefObject<HTMLInputElement>}) => {
 	// EditorState.createEmpty() 로 초기값 설정
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty())
 
   const onEditorStateChange = (editorState: EditorState) => {
       setEditorState(editorState);
-      if(resultInput.current != null){
-        resultInput.current.value = draftToHtml(convertToRaw(editorState.getCurrentContent())) ? draftToHtml(convertToRaw(editorState.getCurrentContent())) : "";
-      }      
+      if(editorRef.current != null){editorRef.current.value = draftToHtml(convertToRaw(editorState.getCurrentContent())) ? draftToHtml(convertToRaw(editorState.getCurrentContent())) : "";}      
   }
     
 	return (
-		<Editor
+    <div className="col-12">
+      <input type="hidden" ref={editorRef} />
+      <Editor
           editorState={editorState}
           wrapperClassName={`${EditorStyle.editor_wrapper}`}
           toolbarClassName={`${EditorStyle.editor_toolbar_con}`}
@@ -34,7 +34,8 @@ const CustomEditor = ({resultInput} : {resultInput: React.RefObject<HTMLInputEle
             locale: 'ko',
           }}
       />
+    </div>
     )
-}
+};
 
 export default CustomEditor;
