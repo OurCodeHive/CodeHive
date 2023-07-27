@@ -6,7 +6,7 @@
 .essential::after{content: "*"; position: absolute; top: 2px; right: 0; font-size: 10px; font-size: 1.0rem; line-height: 16px; line-height: 1.6rem; font-weight: 500; letter-spacing: -0.02em; color: #f00;}
 
 /* input_style_0 */
-.input_style_0{width: 100%; appearance: none; border: 1px solid #17181d; overflow: hidden; border-radius: 8px; padding: 7px 10px; background-color: #fff; font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 400; letter-spacing: -0.02em; color: #17181d; outline: none;}
+.input_style_0{width: 100%; appearance: none; border: 1px solid #F1F1F1; overflow: hidden; border-radius: 8px; padding: 7px 10px; background-color: #fff; font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 400; letter-spacing: -0.02em; color: #17181d; outline: none;}
 .input_style_0:-moz-placeholder {color: #d9d9d9;}
 .input_style_0:-ms-input-placeholder {color: #d9d9d9;}
 .input_style_0::-moz-placeholder {color: #d9d9d9;}

@@ -20,11 +20,15 @@ export type PopupType = {
       ClosePopupProp : (flag: boolean) => void;
       PopupTitle : string;
       PopupDesc? : string;
-      PopupContents? : React.FC;
+      PopupContents? : React.FC<PopupContentsProps>;
       CancelPopupProp? : (param : unknown) => void;
       ConfirmPopupProp? : (param : unknown) => void;
     };
 };
+
+export type PopupContentsProps = {
+  closePopup: (flag: boolean) => void;
+}
 
 import AlertPopup from "./Alert";
 import ConfirmPopup from "./Confirm";

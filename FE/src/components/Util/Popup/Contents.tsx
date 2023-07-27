@@ -1,14 +1,14 @@
-import { PopupType } from ".";
+import { PopupType, PopupContentsProps } from ".";
 import PopupStyle from "@/res/css/module/util/Popup.module.css";
 
 const ContentsPopup: React.FC<PopupType> = ({PopupInfo}) => {
     let isOpen = PopupInfo.PopupStatus;
-    const PopupContents:React.FC = PopupInfo.PopupContents as React.FC;
-  
     const closePopup = () => {
       isOpen = false;
       PopupInfo.ClosePopupProp(false);
     };
+
+    const PopupContents:React.FC<PopupContentsProps> = PopupInfo.PopupContents as React.FC<PopupContentsProps>;
   
     return (
       <>
@@ -26,7 +26,7 @@ const ContentsPopup: React.FC<PopupType> = ({PopupInfo}) => {
                 </div>
                 <div className={`col-12 ${PopupStyle.popup_contents_con}`}>
                   <div className={`col-12 ${PopupStyle.popup_contents}`}>
-                    <PopupContents/>
+                    <PopupContents closePopup={closePopup} />
                   </div>
                 </div>
               </div>

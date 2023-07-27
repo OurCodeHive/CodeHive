@@ -1,10 +1,11 @@
 import { useState, useRef } from 'react';
+import { PopupContentsProps } from "@/components/Util/Popup";
 import {AlertPopup} from "@/components/Util/Popup";
 import CustomEditor from "@/components/Util/CustomEditor";
 import CustomDatePickcer from "@/components/Util/CustomDatePicker";
-import FileInfo from "@/components/Util/FileInfo";
+import FileInput from "@/components/Util/File/Input";
 
-const StudyInsert1Step: React.FC = () => {
+const StudyInsert1Step = ({closePop} : {closePop: () => void}) => {
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
     const [AlertPopupTitle, setAlertPopupTitle] = useState("");
     const today = new Date();
@@ -41,7 +42,26 @@ const StudyInsert1Step: React.FC = () => {
             return;
         }
 
-        const params:object = {};
+        if(startDateInput.current == null ||  startDateInput.current.value == ''){
+            setAlertPopupTitle("시작날짜를 설정해주세요");
+            changePopupFlag(true);
+            return;
+        }
+
+        if(endDateInput.current == null ||  endDateInput.current.value == ''){
+            setAlertPopupTitle("종료날짜를 설정해주세요");
+            changePopupFlag(true);
+            return;
+        }
+
+        const params:object = {
+            user_id : 1,
+            title : titleInput.current.value,
+            startAt : startDateInput.current.value,
+            endAt : endDateInput.current.value,
+            description : descInput.current?.value,
+            profile : profileInput.current?.value
+        };
 
         console.log(params);
 
@@ -64,8 +84,7 @@ const StudyInsert1Step: React.FC = () => {
                         <span>내용</span>
                     </div>
                     <div className="col-12 col-md-0 input_box">
-                        <input type="hidden" ref={descInput}/>
-                        <CustomEditor resultInput={descInput} />
+                        <CustomEditor editorRef={descInput} />
                     </div>
                 </div>
                 <div className="col-12 form_style_0 type_date_range">
@@ -87,12 +106,12 @@ const StudyInsert1Step: React.FC = () => {
                     <div className="col-12 col-md-0 input_box">
                         <div className="col-12 mb12 addr_text">형식은 png, jpg, jpeg만 가능합니다.</div>
                         <button type="button" className="col-0 btn_style_0 bg_black border_none" onClick={() => profileInput.current?.click()}>이미지 등록</button>
-                        <FileInfo inheritRef={profileInput} multi={true}/>
+                        <FileInput inheritRef={profileInput} multi={false}/>
                     </div>
                 </div>
             </div>
             <div className="col-12 tc btn_style_0_con">
-                <button className="btn_style_0 mr15">취소</button>
+                <button type="button" className="btn_style_0 mr15" onClick={closePop}>취소</button>
                 <button type="submit" className="btn_style_0 bg_point0">만들기</button>
             </div>
             <AlertPopup PopupInfo={AlertPopupInfo} />
