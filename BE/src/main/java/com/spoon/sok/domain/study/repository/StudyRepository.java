@@ -2,6 +2,7 @@ package com.spoon.sok.domain.study.repository;
 
 import com.spoon.sok.domain.study.dto.PreCheckUserStudyDto;
 import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
+import com.spoon.sok.domain.study.dto.StudyInfoDetailDto;
 import com.spoon.sok.domain.study.dto.StudyInfoDto;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.user.entity.UserStudy;
@@ -100,12 +101,21 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
     Optional<PreCheckUserStudyDto> findByUserStudyId(Long userstudy_id);
 
 
-    @Query(value = "    UPDATE user_study " +
+    @Modifying
+    @Query(value = "UPDATE user_study " +
             "SET user_study.status = 'ACCEPT', user_study.users_id = :users_id " +
             "WHERE user_study.userstudy_id = :userstudy_id", nativeQuery = true)
-    void saveUserStudyStatus(@Param("studyinfo_id") Long studyinfoId,
-                            @Param("users_id") Long usersId,
-                            @Param("userstudy_id") Long userstudyId,
-                            @Param("invite_email") String inviteEmail);
+    void saveUserStudyStatus(@Param("users_id") Long usersId,
+                             @Param("userstudy_id") Long userstudyId);
 
+    @Query(value = "SELECT si.created_at createdAt, " +
+            "si.end_at endAt, " +
+            "si.studyinfo_id studyinfoId, " +
+            "si.users_id usersId, " +
+            "si.enter_name enterName, " +
+            "si.profileimage profileImage, " +
+            "si.title title," +
+            "si.description description " +
+            "FROM study_info si where studyinfo_id = :studyInfoId", nativeQuery = true)
+    Optional<StudyInfoDetailDto> findByStudyInfoId(String studyInfoId);
 }

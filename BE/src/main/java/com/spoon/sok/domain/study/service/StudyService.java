@@ -59,9 +59,9 @@ public class StudyService {
         // 최조 스터디 그룹을 만드는 사람은 바로 중간테이블에 저장(스터디 장)
         Long newStudy = studyRepository.findByEnterName(studyCreationDto.getEnterName());
         studyRepository.saveUserStudy(newStudy,
-                                        studyCreationDto.getUsersId(),
-                                        CurrentStatus.ACCEPT.toString(),
-                                        studyCreationDto.getEmail());
+                studyCreationDto.getUsersId(),
+                CurrentStatus.ACCEPT.toString(),
+                studyCreationDto.getEmail());
 
         return newStudy; // studyinfo_id(PK)를 반환
     }
@@ -89,9 +89,11 @@ public class StudyService {
 
     @Transactional
     public void updateStudyGroupStatus(ChangeUserStudyDto changeUserStudyDto) {
-        studyRepository.saveUserStudyStatus(changeUserStudyDto.getStudyinfoId(),
-                                           changeUserStudyDto.getUsersId(),
-                                           changeUserStudyDto.getUserstudyId(),
-                                           changeUserStudyDto.getInviteEmail());
+        studyRepository.saveUserStudyStatus(changeUserStudyDto.getUsersId(),
+                                            changeUserStudyDto.getUserstudyId());
+    }
+
+    public Optional<StudyInfoDetailDto> getStudyInfoAll(String studyinfoId) {
+        return studyRepository.findByStudyInfoId(studyinfoId);
     }
 }

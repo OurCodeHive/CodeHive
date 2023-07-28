@@ -145,7 +145,39 @@ public class StudyController {
     public ResponseEntity<?> setMemberStudyGroup(@RequestBody ChangeUserStudyDto changeUserStudyDto) {
         Map<String, Object> response = new HashMap<>();
 
-        studyService.updateStudyGroupStatus(changeUserStudyDto);
+        try {
+            studyService.updateStudyGroupStatus(changeUserStudyDto);
+            response.put("status", 200);
+            response.put("message", "스터디에 가입되었습니다.");
+        } catch (Exception e) {
+            response.put("status", 400);
+            response.put("message", "관리자에게 문의해주세요.");
+        }
+
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/studyinfo/{studyinfoId}")
+    public ResponseEntity<?> getStudyInfo(@PathVariable("studyinfoId") String studyinfo_id) {
+        Map<String, Object> response = new HashMap<>();
+
+        Optional<StudyInfoDetailDto> studyInfo = studyService.getStudyInfoAll(studyinfo_id);
+        log.info("여기는 들어오나? {}", studyInfo.isPresent());
+
+        if (studyInfo.isPresent()) {
+            response.put("status", 200);
+            response.put("createdAt", studyInfo.get().getCreatedAt());
+            response.put("endAt", studyInfo.get().getEndAt());
+            response.put("studyinfo_id", studyInfo.get().getStudyinfoId());
+            response.put("users_id", studyInfo.get().getUsersId());
+            response.put("enterName", studyInfo.get().getEnterName());
+            response.put("profileImage", studyInfo.get().getProfileImage());
+            response.put("title", studyInfo.get().getTitle());
+            response.put("description", studyInfo.get().getDescription());
+        } else {
+            response.put("status", 200);
+            response.put("message", "존재하지 않은 스터디 그룹입니다.");
+        }
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
