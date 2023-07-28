@@ -16,6 +16,7 @@ const Signup = () => {
     let[nicknameOk, setNicknameOk] = useState(false); 
     let [email, setEmail] = useState("");
     let [code, setCode] = useState<string>("");
+    let [verifiedCode, setVerifiedCode] = useState<string>("0");
     let [isCodeValid, setIsCodeValid] = useState(false);
     let [showCodeMsg, setShowCodeMsg] = useState(false);
     let [codeMsg, setCodeMsg] = useState("");
@@ -131,6 +132,10 @@ const Signup = () => {
             }
             try {
                 const response: AxiosResponse<customI> = await api.post(`/email/auth?email=${email}`, data);
+                setIsCodeValid(true); //코드가 유효한지 확인
+                setVerifiedCode(code);
+                setCodeMsg(response.data.message)
+                console.log(response.data.message);
                 return response.data as customI;
             } catch (error:any) {
                 const err = error.response.data.message as string
@@ -142,11 +147,11 @@ const Signup = () => {
             }
         }
         checkVerificationCode().then((res)=>{
-            if(res){
-                setIsCodeValid(true); //코드가 유효한지 확인
-                setCodeMsg(res.message)
-                console.log(res);
-            }
+            // if(res){
+            //     setIsCodeValid(true); //코드가 유효한지 확인
+            //     setCodeMsg(res.message)
+            //     console.log(res);
+            // }
         })
         .catch((err) => {
             console.log(err);
@@ -157,6 +162,10 @@ const Signup = () => {
     //닉네임 중복 체크 API//
     ///////////////////////
     function nicknameDuplicateCheck(){
+        if(nickname === ""){
+            setNicknameOk(false);
+            setNickMsg("닉네임을 입력해주세요");
+        }
         interface returnData {
             message : string,
             status : number,
@@ -164,22 +173,69 @@ const Signup = () => {
         const url = import.meta.env.VITE_APP_SERVER + `check/${nickname}`;
         async function getData(): Promise<returnData | undefined> {
             try {
-                const response: AxiosResponse<returnData> = await axios.get(url);
+                const response: AxiosResponse<returnData> = await api.get(`/check/${nickname}`);
                 const data = response.data as returnData
+                console.log(data.message);
+                setNicknameOk(true);
+                setNickMsg(data.message);
                 return data;
             } catch (error) {
-                const err = error as AxiosError
+                const err = error as any
+                console.log(err.response?.data.message);
+                setNickMsg(err.response.data.message);
+                setNicknameOk(false);
+            }
+        }
+        getData().then((res)=>{
+            res
+            // console.log(res)
+        })
+    }
+    ////////////////////
+    //회원가입 API     //
+    ////////////////////
+    function SignUp(){
+        if(email === "" || password === "" || checkPw === "" || nickname === ""){
+            alert("모든 필드를 입력해주세요");
+            return;
+        }
+        if(verifiedCode === "0"){
+            alert("이메일 인증을 완료해주세요")
+            return;
+        }
+        interface returnData {
+            status: number,
+            message: string,
+            accessToken: string,
+            refreshToken: string
+        }
+        const signUpUser = {
+            email : email,
+            password : password,
+            authCode : verifiedCode,
+            nickname : nickname,
+        }
+        // const url = import.meta.env.VITE_APP_SERVER + `check/${nickname}`;
+        async function getData(): Promise<returnData | undefined> {
+            try {
+                const response: AxiosResponse<returnData> = await api.post(`/signup`, signUpUser);
+                const data = response.data as returnData
+                console.log(data);
+                return data;
+            } catch (error) {
+                const err = error as any
                 console.log(err);
             }
         }
-        getData().then((res)=>console.log(res))
+        getData().then((res)=>{
+            res
+            // console.log(res)
+        })
     }
-
     function startCodeTimer(){
         setInputCode(true);
         setStartTimer(true);
     }
-    
     return (
         <div className={style.signin_background}>
         <section className={style.login_form}>
@@ -199,7 +255,7 @@ const Signup = () => {
                     verifyEmail(email); 
                     }}>인증</span>
             </div>
-            {
+                {
                     inputCode?
                     <>
                     <input onChange={(e) =>setCode(e.target.value)} type="text"className={style.verification_input} placeholder='Code'/>
@@ -247,7 +303,11 @@ const Signup = () => {
             <div className={`${style.int_area}`}>
                 <input
                     onFocus={()=>{setIsInput(true);console.log("true")}}
-                    onChange={pwConfirm}
+                    onChange={(e)=>{
+                        pwConfirm(e);
+                        setCheckPw(e.target.value)
+                    }}
+                    
                     type="text"
                     name="newpwcheck"
                     id="newpwcheck"
@@ -270,7 +330,6 @@ const Signup = () => {
                     onChange={(e) => {
                         setNickname(e.target.value);
                     }}
-
                     type="nickname"
                     name="nick"
                     id="nick"
@@ -281,17 +340,12 @@ const Signup = () => {
                     nicknameDuplicateCheck()
                     }}>중복체크</span>
             </div>
-                {/* {
-                    inputNick?
+                {
                     nicknameOk?
-                    <div className={style.verify_message}>사용 가능한 닉네임입니다.</div>
+                    <div style={{color : "#bcd806e0"}} className={style.verify_message}>{nickMsg}</div>
                     :
-                    <div className={style.verify_message}>이미 사용중인 닉네임입니다.</div>
-                    :
-                    ""
-                } */}
-                <div className={style.verify_message}>{nickMsg}</div>
-         
+                    <div className={style.verify_message}>{nickMsg}</div>
+                }
         <div className={style.btn_area}>
             <button style={{fontWeight:"bold"}} type="submit">회원가입</button>
         </div>
@@ -309,24 +363,7 @@ const Signup = () => {
           }
 
     }
-    function checkNickName(nickname : string){
-        //닉네임이 비어있으면 빈칸 출력
-        setInputNick(true);
-        if(nickname===""){
-            setNickMsg("닉네임을 입력해주세요.");
-            return;
-        } 
-        setNickMsg("이미 사용중인 닉네임입니다.");
-        // setNickMsg("사용 가능한 닉네임입니다.");
-        
-        // const tempNick = Http.get("/check/"+nickname);
-        const url = import.meta.env.VITE_APP_SERVER + "check/" + nickname;
-        axios.get(url)
-        .then((res) =>{
-            console.log(res.data);
-        })
-
-    }
+    
 };
 
 export default Signup;
