@@ -1,0 +1,11 @@
+/*파일*/
+.file_info_con{position: relative;}
+.file_info_con > ul{font-size: 0; line-height: 0;}
+.file_info_con > ul > li{display: block; box-sizing: border-box; padding-right: 20px; margin-bottom: 5px; font-size: 15px; font-size: 1.5rem; line-height: 21px; line-height: 2.1rem; font-weight: 300; letter-spacing: -0.02em; color: #17181d;}
+.file_info_con > ul > li:last-child{margin-bottom: 0;}
+.file_info_con > ul > li > span{position: relative; display: inline-block; padding-right: 17px;}
+.file_info_con > ul > li > span > .delete_icon{cursor: pointer; position: absolute; top: 3px; right: 0; width: 15px; height: 15px; font-size: 0; line-height: 0; background-color: transparent; border: 0px none;}
+.file_info_con > ul > li > span > .delete_icon::before, .file_info_con > ul > li > span > .delete_icon::after{content: ""; position: absolute; top: 0; left: 7px; height: 15px; width: 2px; background-color: #000;}
+.file_info_con > ul > li > span > .delete_icon::before{transform: rotate(45deg);}
+.file_info_con > ul > li > span > .delete_icon::after{transform: rotate(-45deg);}
+.inputFile{width: 0; height: 0; opacity: 0; padding: 0; border: 0px none; position: absolute;}
