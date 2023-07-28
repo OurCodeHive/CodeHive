@@ -1,11 +1,12 @@
+import { PopupType } from ".";
 import PopupStyle from "@/res/css/module/util/Popup.module.css";
 
-const ConfirmPopup: React.FC<PopupProps> = ({popupStatus, PopupContents, closePopupProp}) => {
-    let isOpen = popupStatus;
+const ConfirmPopup: React.FC<PopupType> = ({PopupInfo}) => {
+  let isOpen = PopupInfo.popupStatus;
   
     const closePopup = () => {
       isOpen = false;
-      closePopupProp(false);
+      PopupInfo.closePopupProp(false);
     };
   
     return (
@@ -19,7 +20,6 @@ const ConfirmPopup: React.FC<PopupProps> = ({popupStatus, PopupContents, closePo
                 </div>
               </div>
             </div>
-            <PopupContents/>
             <div>
                 <span onClick={closePopup}>창 닫기</span>
             </div>

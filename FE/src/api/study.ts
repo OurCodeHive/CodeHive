@@ -11,7 +11,7 @@ const api = http;
 
 /**
  * get study list belong user
- * @param param {userIdx}
+ * @param param { userIdx : number }
  * @param success 
  * @param fail 
  */
@@ -25,6 +25,12 @@ const getList = async <T = StudyType>(param: object): Promise<T | undefined> => 
     }
 }
 
+/**
+ * insert study
+ * @param param { param : object }
+ * @param success 
+ * @param fail 
+ */
 const insertData = async <T = number>(param: object): Promise<T | undefined> => {
     try {
         const result = await api.post<T>(`/study`, { params: JSON.stringify(param) });
