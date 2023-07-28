@@ -8,6 +8,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class StudyCreationDto {
+    private String email;
     private String usersId;
     private String title;
     private String description;
