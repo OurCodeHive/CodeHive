@@ -1,9 +1,9 @@
 import React from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
-import style from "../../res/css/module/FindPassword.module.css"
-import logo from "../../res/img/CodeHiveLogo.png"
-import http from '../../api/http';
+import style from "@/res/css/module/FindPassword.module.css"
+import logo from "@/res/img/codehive_logo.png"
+import Http from '../../api/http';
 import { useNavigate } from 'react-router-dom';
 import { changePasswordUserState } from '@/atom/UserAtom';
 import { useRecoilState } from 'recoil';

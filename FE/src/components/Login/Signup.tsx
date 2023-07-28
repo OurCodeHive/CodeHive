@@ -1,8 +1,8 @@
 import React from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState, useCallback} from 'react';
-import style from "../../res/css/module/Signin.module.css"
-import logo from "../../res/img/CodeHiveLogo.png"
+import style from "@/res/css/module/Signin.module.css"
+import logo from "@/res/img/codehive_logo.png"
 import http from '../../api/http';
 import { useNavigate } from 'react-router-dom';
 // import {verifyEmail} from '@/api/onboard';
