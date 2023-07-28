@@ -19,7 +19,7 @@ const ContentsPopup: React.FC<PopupType> = ({PopupInfo}) => {
                 <div className={`col-12 ${PopupStyle.popup_header_con}`}>
                   <div className={`col-12 ${PopupStyle.popup_header_top_con}`}>
                     <div className={`col-12 ${PopupStyle.title_con}`}>
-                      {PopupInfo.PopupTitle}
+                      
                     </div>
                     <button className={`${PopupStyle.popup_close_btn}`} onClick={closePopup}>창 닫기</button>
                   </div>

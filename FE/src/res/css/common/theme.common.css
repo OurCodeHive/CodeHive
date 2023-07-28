@@ -17,6 +17,9 @@
 .btn_style_0.border_none{border: 0px none; padding: 7px 15px;}
 .btn_style_0[class*=bg_]{border: 0px none; padding: 7px 15px;}
 .btn_style_0.bg_black{background-color: #000; color: #fff;}
+.btn_style_0.bg_a2a2a2{background-color: #A2A2A2;}
+
+
 /* form_style_0 */
 .form_style_0_con .form_style_0{margin-bottom: 17px;}
 .form_style_0_con .form_style_0:last-child{margin-bottom: 0;}

@@ -2,9 +2,9 @@ import React from 'react';
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 import { userState } from '@/atom/UserAtom';
-import style from "../../res/css/module/Login.module.css"
-import logo from "../../res/img/CodeHiveLogo.png"
-import google from "../../res/img/googleLogo.png"
+import style from "@/res/css/module/Login.module.css"
+import logo from "@/res/img/codehive_logo.png"
+import google from "@/res/img/google_logo.png"
 import { useNavigate } from 'react-router-dom';
 import { PassThrough } from 'stream';
 import axios, {AxiosError, AxiosResponse} from 'axios';
