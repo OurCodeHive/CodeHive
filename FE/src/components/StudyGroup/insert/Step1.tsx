@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react';
-import { PopupContentsProps } from "@/components/Util/Popup";
+import { insertData } from "@/api/study";
 import {AlertPopup} from "@/components/Util/Popup";
 import CustomEditor from "@/components/Util/CustomEditor";
 import CustomDatePickcer from "@/components/Util/CustomDatePicker";
 import FileInput from "@/components/Util/File/Input";
 
-const StudyInsert1Step = ({closePop} : {closePop: () => void}) => {
+const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateIdx: () => void}) => {
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
     const [AlertPopupTitle, setAlertPopupTitle] = useState("");
     const today = new Date();
@@ -28,7 +28,7 @@ const StudyInsert1Step = ({closePop} : {closePop: () => void}) => {
     };
 
     //폼 submit 이벤트
-    const formSubmit = (e: React.FormEvent<HTMLFormElement>):void => {
+    const formSubmit = async (e: React.FormEvent<HTMLFormElement>):Promise<void> => {
         e.preventDefault();
         if(titleInput.current == null || titleInput.current.value == ''){
             setAlertPopupTitle("제목을 입력해주세요");
@@ -64,6 +64,14 @@ const StudyInsert1Step = ({closePop} : {closePop: () => void}) => {
         };
 
         console.log(params);
+
+        const result = await insertData(params);
+
+        if(result == 1){ //성공했을 경우
+            
+        } else { //실패했을 경우
+            
+        }
 
         return;
     }
