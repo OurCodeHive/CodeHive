@@ -21,8 +21,8 @@ export type PopupType = {
       PopupTitle : string;
       PopupDesc? : string;
       PopupContents? : React.FC<PopupContentsProps>;
-      CancelPopupProp? : (param : unknown) => void;
-      ConfirmPopupProp? : (param : unknown) => void;
+      CancelPopupProp? : (flag: boolean) => void;
+      ConfirmPopupProp? : (flag: boolean) => void;
     };
 };
 

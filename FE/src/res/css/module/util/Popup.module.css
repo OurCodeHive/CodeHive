@@ -9,3 +9,8 @@
 .popup_wrap .popup_contents .headline{font-size: 25px; font-size: 2.5rem; line-height: 31px; line-height: 3.1rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d;}
 .popup_close_btn{display: inline-block; border: 0px none; background-color: transparent; font-size: 0; line-height: 0; width: 30px; height: 30px; background-size: 26px; background-position: center center; background-repeat: no-repeat; background-image: url('../../img/18x18_ffffff_x_icon.png');}
 .popup_close_btn:hover{background-image: url('../../img/18x18_x_icon_white.png');}
+.confirm_btn_style_0_con{font-size: 0; line-height: 0; display: flex; align-items: stretch;}
+.confirm_btn_style_0_con .confirm_btn_style_0{border-radius: 0;}
+.confirm_btn_style_0_con .confirm_btn_style_0.cancel_btn{ border: 0px none; border-top: 1px solid #17181d; border-right: 1px solid #17181d;}
+.confirm_btn_style_0_con .confirm_btn_style_0:first-child{border-bottom-left-radius: 8px;}
+.confirm_btn_style_0_con .confirm_btn_style_0:last-child{border-bottom-right-radius: 8px;}
