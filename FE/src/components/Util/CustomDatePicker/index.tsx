@@ -28,8 +28,6 @@ const CustomDatePicker = (Props : DatePickerProps) => {
       minDate={Props.minDate ? Props.minDate : selectDate}
       selected={selectDate}
       onChange={(date: Date) => changeDate(date)}
-      calendarClassName="date-picker-calendar" // className 추가
-      inline
       renderCustomHeader={({ // custom header 만들어주기
         monthDate,
         decreaseMonth,
