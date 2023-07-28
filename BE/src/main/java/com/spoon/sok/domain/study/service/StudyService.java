@@ -89,7 +89,7 @@ public class StudyService {
 
     @Transactional
     public void updateStudyGroupStatus(ChangeUserStudyDto changeUserStudyDto) {
-        studyRepository.setUserStudyStatus(changeUserStudyDto.getStudyinfoId(),
+        studyRepository.saveUserStudyStatus(changeUserStudyDto.getStudyinfoId(),
                                            changeUserStudyDto.getUsersId(),
                                            changeUserStudyDto.getUserstudyId(),
                                            changeUserStudyDto.getInviteEmail());

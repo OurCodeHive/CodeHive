@@ -100,11 +100,12 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
     Optional<PreCheckUserStudyDto> findByUserStudyId(Long userstudy_id);
 
 
-    @Query(value = "UPDATE user_study " +
-            "SET user_study.status = 'ACCEPT' " +
+    @Query(value = "    UPDATE user_study " +
+            "SET user_study.status = 'ACCEPT', user_study.users_id = :users_id " +
             "WHERE user_study.userstudy_id = :userstudy_id", nativeQuery = true)
-    void setUserStudyStatus(@Param("studyinfo_id") Long studyinfoId,
+    void saveUserStudyStatus(@Param("studyinfo_id") Long studyinfoId,
                             @Param("users_id") Long usersId,
                             @Param("userstudy_id") Long userstudyId,
                             @Param("invite_email") String inviteEmail);
+
 }
