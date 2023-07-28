@@ -15,9 +15,7 @@ const Filter = ( {searchKeyWord} : {searchKeyWord : (data: string) => void} ) =>
 
     //검색단어 올리기
     const goKeyWord = () => {
-        if(keyWord != ''){
-            searchKeyWord(keyWord);
-        }
+        searchKeyWord(keyWord);
     }
 
     const toggleSearchBox = (e: React.MouseEvent<HTMLDivElement>) => {
