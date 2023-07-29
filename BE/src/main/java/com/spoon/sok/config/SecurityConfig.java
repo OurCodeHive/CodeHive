@@ -48,13 +48,14 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login((oauth2) -> {
                     oauth2.defaultSuccessUrl("/");
+//                    oauth2.failureUrl("/");
                     oauth2.userInfoEndpoint((userInfoEndPoint) -> {
                         userInfoEndPoint.userService(customOAuth2UserService);
                     });
                 })
-//                .formLogin((formLogin) -> {
-//                    formLogin.loginPage("/api/login");
-//                })
+                .formLogin((formLogin) -> {
+                    formLogin.loginPage("/api/login");
+                })
                 .build();
     }
 

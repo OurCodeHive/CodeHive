@@ -116,6 +116,8 @@ public class EmailService {
                     .isauth(0)
                     .build();
 
+            System.out.println(LocalDateTime.now().plusMinutes(3));
+
             emailRepository.save(emailAuth);
 
             result.put("status", 200);

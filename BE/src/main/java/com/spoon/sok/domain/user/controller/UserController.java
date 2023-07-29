@@ -134,7 +134,7 @@ public class UserController {
     public ResponseEntity<?> checkNickname(@PathVariable String nickname) {
         result = new HashMap<>();
 
-        if (userService.checkNickname(nickname)) {
+        if (!userService.checkNickname(nickname)) {
             result.put("status", 400);
             result.put("message", "이미 사용 중인 닉네임 입니다.");
 
