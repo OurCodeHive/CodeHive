@@ -126,6 +126,7 @@ const FindPassword = () => {
             }
         }
         checkVerificationCode().then((res)=>{
+            res
             // if(res){
             //     setIsCodeValid(true); //코드가 유효한지 확인
             //     setCodeMsg(res.message)
