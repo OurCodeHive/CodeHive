@@ -82,7 +82,7 @@ body::before {
     position: absolute;
     left: 10px;
     top: 15px;
-    font-size: 14px;
+    font-size: 16px;
     color: rgb(205, 205, 205);
     transition: all 0.5s ease;
 }
@@ -129,9 +129,12 @@ body::before {
 }
 .caption a {
     flex: 1;
-    font-size: 13px;
+    font-size: 14px;
     color:#d9ff00e0;
     margin-bottom: 30px;
+    background-color: rgba(0, 0, 0, 0.345);
+    border-radius: 20px;
+    padding: 5px 10px;
 }
 .caption a :nth-child(2){
   margin-left: -10px;

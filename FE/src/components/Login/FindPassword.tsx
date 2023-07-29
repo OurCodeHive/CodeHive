@@ -40,10 +40,10 @@ const FindPassword = () => {
     }
     function turnToSetPwPage(){
 
-        // if(isCodeValid==false || email === ""){
-        //     alert("이메일 인증을 완료해주세요")
-        //     return;
-        // }
+        if(isCodeValid==false || email === ""){
+            alert("이메일 인증을 완료해주세요")
+            return;
+        }
         navigate("/changepassword");
 
     }
@@ -60,7 +60,7 @@ const FindPassword = () => {
                 .then((res)=> {
                 if(res){
                     alert(`${res.message}`)
-                    
+                    console.log(res);
                 }
             // startCodeTimer();
             setVerify(true);
