@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState, useCallback } from 'react';
 import style from "@/res/css/module/FindPassword.module.css"
 import logo from "@/res/img/codehive_logo.png"
-import Http from '../../api/http';
+import http from '../../api/http';
 import { useNavigate } from 'react-router-dom';
 import { changePasswordUserState } from '@/atom/UserAtom';
 import { useRecoilState, useRecoilValue } from 'recoil';
