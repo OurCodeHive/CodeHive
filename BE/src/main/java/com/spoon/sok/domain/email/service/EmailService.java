@@ -3,11 +3,13 @@ package com.spoon.sok.domain.email.service;
 import com.spoon.sok.domain.email.dto.EmailAuthVerifyDto;
 import com.spoon.sok.domain.email.entity.Email;
 import com.spoon.sok.domain.email.repository.EmailRepository;
+import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
 import com.spoon.sok.domain.user.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,6 +21,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmailService {
@@ -27,6 +30,7 @@ public class EmailService {
 
     private final UserRepository userRepository;
     private final EmailRepository emailRepository;
+    private final StudyRepository studyRepository;
 
     public ResponseEntity<?> sendAuthEmail(String email) throws MessagingException {
         Map<String, Object> result = new HashMap<>();
@@ -193,5 +197,31 @@ public class EmailService {
         context.setVariable("code", code);
 
         return templateEngine.process(template, context);
+    }
+
+    public void sendInviteLinkEmail(Long studyinfo_id, String email, Long userstudy_id) throws MessagingException {
+        StringBuilder sb = new StringBuilder();
+        Map<String, Object> result = new HashMap<>();
+
+        // Email로 user_id를 찾았다.
+        Optional<User> user = userRepository.findByEmail(email);
+
+        sb.append("http://localhost:8080/test?studyinfo_id=").append(studyinfo_id);
+
+        if (!user.isPresent()) {
+            sb.append("&").append("users_id=null");
+        } else {
+            sb.append("&").append("users_id=").append(user.get().getId());
+        }
+        sb.append("&").append("userstudy_id=").append(userstudy_id);
+        sb.append("&").append("invite_email=").append(email);
+        log.info("이메일에 첨부될 링크 : {}", sb.toString());
+
+        MimeMessage message = emailSender.createMimeMessage();
+        message.addRecipients(MimeMessage.RecipientType.TO, email);
+        message.setSubject("[CideHive] 스터디 초대 링크");
+        message.setText(setContext(sb.toString(), "inviteEmail"), "utf-8", "html");
+
+        emailSender.send(message);
     }
 }

@@ -25,10 +25,13 @@ public class UserStudy {
     private StudyInfo studyInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id", nullable = false)
+    @JoinColumn(name = "users_id", nullable = true)
     private User users;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private CurrentStatus status;
+
+    @Column(name = "invite_email")
+    private String inviteEmail;
 }
