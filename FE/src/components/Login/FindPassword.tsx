@@ -3,12 +3,12 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import style from "@/res/css/module/FindPassword.module.css"
 import logo from "@/res/img/codehive_logo.png"
-import http from '../../api/http';
+import {nonAuthHttp} from '../../api/http';
 import { useNavigate } from 'react-router-dom';
 import { changePasswordUserState } from '@/atom/UserAtom';
 import { useRecoilState } from 'recoil';
 
-const api = http;
+const api = nonAuthHttp;
 const FindPassword = () => {
     let [verifiedEmail, setverifiedEmail] = useRecoilState(changePasswordUserState);
     //pw 입력시 뜨게 하기.
@@ -30,13 +30,6 @@ const FindPassword = () => {
         setVerify(true);
         console.log(email);
         setStartTimer(true);
-        // const tempNick = Http.get("/check/"+nickname);
-        // const url = import.meta.env.VITE_APP_SERVER + "check/" + nickname;
-        // axios.get(url)
-        // .then((res) =>{
-        //     console.log(res.data);
-        // })
-        
     }
     function turnToSetPwPage(){
 
@@ -65,7 +58,8 @@ const FindPassword = () => {
             // startCodeTimer();
             setVerify(true);
             setStartTimer(true);
-            });
+            })
+            .catch(console.log);
         } else {
             alert("올바른 이메일을 입력해주세요")
         }
@@ -115,7 +109,7 @@ const FindPassword = () => {
                 setverifiedEmail(email);
                 setCodeMsg(response.data.message)
                 console.log(response.data.message);
-                return response.data as customI;
+                return response.data
             } catch (error:any) {
                 const err = error.response.data.message as string
                 setIsCodeValid(false); //코드가 유효한지 확인

@@ -3,11 +3,13 @@ import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState, useCallback } from 'react';
 import style from "@/res/css/module/FindPassword.module.css"
 import logo from "@/res/img/codehive_logo.png"
-import http from '../../api/http';
+import {nonAuthHttp} from '../../api/http';
 import { useNavigate } from 'react-router-dom';
 import { changePasswordUserState } from '@/atom/UserAtom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-const api = http;
+const api = nonAuthHttp;
+
+
 const ChangePassword = () => {
     const email = useRecoilValue(changePasswordUserState);
     let [newPw, setNewPw] = useState<string>("");
@@ -54,7 +56,7 @@ const ChangePassword = () => {
                 //유효하다면
                 alert(response.data.message + " 로그인 화면으로 이동합니다.");
                 navigate("/login")
-                return response.data as customI;
+                return response.data
             } catch (error:any) {
                 const err = error.response.data.message as string
                 console.log(err);
@@ -137,29 +139,6 @@ const ChangePassword = () => {
     </section>
     </div>
     );
-      
-    // //비밀번호 변경하는 함수
-    // function NewPw(){
-    //     const user = {
-    //         // "email" : email,
-    //         "newPassword" : newPw,
-    //         // "authCode" : authCode; 
-    //     }
-    //     const url = import.meta.env.VITE_APP_SERVER + "login/user";
-    //     axios.post(url, user)
-    //     .then((res) =>{
-    //         console.log(res.data);
-    //     })
-    //     if(true){
-    //         //인증이 맞으면
-    //         navigate("/changePassword");
-
-    //     } else {
-    //         //인증이 틀리면
-    //         alert("올바른 인증번호를 입력해주세요.")
-    //     }
-    // }
-
 };
 
 export default ChangePassword;

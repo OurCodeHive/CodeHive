@@ -3,10 +3,10 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState, useCallback} from 'react';
 import style from "@/res/css/module/Signin.module.css"
 import logo from "@/res/img/codehive_logo.png"
-import http from '../../api/http';
+import {nonAuthHttp} from '../../api/http';
 import { useNavigate } from 'react-router-dom';
 // import {verifyEmail} from '@/api/onboard';
-const api = http;
+const api = nonAuthHttp;
 const Signup = () => {
     //조건 확인 변수
     let [isCodeValid, setIsCodeValid] = useState(false); //이메일 인증여부 확인
@@ -55,10 +55,6 @@ const Signup = () => {
         }, 1000);
         return()=>clearInterval(timer);
     },[startTimer, time])
-
-    useEffect(()=>{
-
-    })
 
     let navigate = useNavigate();
     const pwConfirm = useCallback((e : React.ChangeEvent<HTMLInputElement>)=>{
@@ -138,8 +134,8 @@ const Signup = () => {
                 setVerifiedCode(code);
                 setCodeMsg(response.data.message)
                 console.log(response.data.message);
-                return response.data as customI;
-            } catch (error:any) {
+                return response.data;
+            } catch (error:unknown) {
                 const err = error.response.data.message as string
                 setIsCodeValid(false); //코드가 유효한지 확인
                 setCodeMsg(err);
@@ -176,13 +172,13 @@ const Signup = () => {
         async function getData(): Promise<returnData | undefined> {
             try {
                 const response: AxiosResponse<returnData> = await api.get(`/check/${nickname}`);
-                const data = response.data as returnData
+                const data = response.data 
                 console.log(data.message);
                 setNicknameOk(true);
                 setNickMsg(data.message);
                 return data;
-            } catch (error) {
-                const err = error as any
+            } catch (err:any) {
+                // const err = error as any
                 console.log(err.response?.data.message);
                 setNickMsg(err.response.data.message);
                 setNicknameOk(false);
@@ -190,8 +186,7 @@ const Signup = () => {
         }
         getData().then((res)=>{
             res
-            // console.log(res)
-        })
+        }).catch(console.log)
     }
     ////////////////////
     //회원가입 API     //
@@ -233,18 +228,16 @@ const Signup = () => {
         async function getData(): Promise<returnData | undefined> {
             try {
                 const response: AxiosResponse<returnData> = await api.post(`/signup`, signUpUser);
-                const data = response.data as returnData
+                const data = response.data
                 console.log(data);
                 return data;
             } catch (error) {
-                const err = error as any
-                console.log(err);
+                console.log(error);
             }
         }
         getData().then((res)=>{
             res
-            // console.log(res)
-        })
+        }).catch(console.log)
     }
     function startCodeTimer(){
         setInputCode(true);

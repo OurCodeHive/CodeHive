@@ -2,12 +2,16 @@ import React from 'react';
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 import { userState } from '@/atom/UserAtom';
+import { nonAuthHttp } from '@/api/http';
 import style from "@/res/css/module/Login.module.css"
 import logo from "@/res/img/codehive_logo.png"
 import google from "@/res/img/google_logo.png"
 import { useNavigate } from 'react-router-dom';
 import { PassThrough } from 'stream';
+import moment from 'moment';
 import axios, {AxiosError, AxiosResponse} from 'axios';
+
+
 const Login = () => {
     let [email, setEmail] = useState("")
     let [pw, setPw] = useState("");
@@ -45,11 +49,11 @@ const Login = () => {
             userId : number,
             nickname : string,
         }
-        const url = import.meta.env.VITE_APP_SERVER + "login/user";
+        // const url = import.meta.env.VITE_APP_SERVER as string + "login/user";
         async function doLogin(): Promise<userData | undefined> {
             try {
               ///
-              const response: AxiosResponse<userData> = await axios.post(url, user);
+              const response: AxiosResponse<userData> = await nonAuthHttp.post("login/user", user);
               console.log(response.data);
               alert("로그인에 성공하였습니다");
               //recoil!
@@ -59,12 +63,14 @@ const Login = () => {
                 nickname : response.data.nickname,
                 accessToken : response.data.accessToken,
                 refreshToken: response.data.refreshToken});
+               localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
+               localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss") as string);
                navigate("/study");
               return response.data;
             } catch (error) {
-                const err = error as any
-                console.log(err); //실패는 여기로
-                alert(err.response?.data.message);
+                // const err = error as any
+                console.log(error); //실패는 여기로
+                alert(error.response?.data.message);
                 return;
             }
           }
@@ -85,12 +91,11 @@ const Login = () => {
             "email" : email,
             "password" : pw
         }
-        const config = {"Content-Type": 'application/json'};
-        const url = import.meta.env.VITE_APP_SERVER + "login/google";
-        axios.post(url, user)
+        // const url = import.meta.env.VITE_APP_SERVER + "login/google";
+        nonAuthHttp.post(``, user)
         .then((res) =>{
             console.log(res.data);
-        })
+        }).catch(console.log)
     }
 
 	return (
