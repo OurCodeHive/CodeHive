@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { insertData } from "@/api/study";
-import {AlertPopup} from "@/components/Util/Popup";
+import { ConfirmPopup } from "@/components/Util/Popup";
 import CustomEditor from "@/components/Util/CustomEditor";
 import CustomDatePickcer from "@/components/Util/CustomDatePicker";
 import FileInput from "@/components/Util/File/Input";
@@ -64,20 +64,17 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
         };
 
         console.log(params);
-
-        const result = await insertData(params);
-
-        if(result == 1){ //성공했을 경우
+        //const result:number = await insertData(params);
+        const result = 1;
+        if(result == 1){ //성공한 경우
             
-        } else { //실패했을 경우
-            
+        } else { //실패한 경우
+            console.log("error");
         }
-
-        return;
     }
 
     return (
-        <form className="col-12" encType="multipart/form-data" onSubmit={(e) => formSubmit(e)}>
+        <form className="col-12" encType="multipart/form-data" onSubmit={(e) => void formSubmit(e)}>
             <div className="col-12 mb37 form_style_0_con">
                 <div className="col-12 form_style_0">
                     <div className="col-12 col-md-0 label_box">
@@ -119,10 +116,10 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
                 </div>
             </div>
             <div className="col-12 tc btn_style_0_con">
-                <button type="button" className="btn_style_0 mr15" onClick={closePop}>취소</button>
+                <button type="button" className="btn_style_0 mr15 bg_a2a2a2" onClick={closePop}>취소</button>
                 <button type="submit" className="btn_style_0 bg_point0">만들기</button>
             </div>
-            <AlertPopup PopupInfo={AlertPopupInfo} />
+            <ConfirmPopup PopupInfo={AlertPopupInfo} />
         </form>
     )
 };

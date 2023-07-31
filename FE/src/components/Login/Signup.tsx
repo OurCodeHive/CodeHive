@@ -1,23 +1,25 @@
 import React from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState, useCallback} from 'react';
-import style from "../../res/css/module/Signin.module.css"
-import logo from "../../res/img/CodeHiveLogo.png"
+import style from "@/res/css/module/Signin.module.css"
+import logo from "@/res/img/codehive_logo.png"
 import http from '../../api/http';
 import { useNavigate } from 'react-router-dom';
 // import {verifyEmail} from '@/api/onboard';
 const api = http;
 const Signup = () => {
-    //pw 입력시 뜨게 하기.
+    //조건 확인 변수
+    let [isCodeValid, setIsCodeValid] = useState(false); //이메일 인증여부 확인
+    let[passwordOK, setPasswordOk] = useState(false); //비밀번호 8-12자리 조건 확인
+    let [verify, setVerify] = useState<boolean>(false); //비밀번호 일치 여부 확인
+    let[nicknameOk, setNicknameOk] = useState(false); //닉네임이 중복인지 확인
+    
     let[inputPW, setInputPW] = useState(false); 
     let[inputNick, setInputNick] = useState(false); 
-    let[passwordOK, setPasswordOk] = useState(false); 
     let[emailOk, setEmailOk] = useState(false); 
-    let[nicknameOk, setNicknameOk] = useState(false); 
     let [email, setEmail] = useState("");
     let [code, setCode] = useState<string>("");
     let [verifiedCode, setVerifiedCode] = useState<string>("0");
-    let [isCodeValid, setIsCodeValid] = useState(false);
     let [showCodeMsg, setShowCodeMsg] = useState(false);
     let [codeMsg, setCodeMsg] = useState("");
     let [password, setPassword] = useState("");
@@ -25,7 +27,6 @@ const Signup = () => {
     let [nickname, setNickname] = useState("");
     let[nickMsg, setNickMsg] = useState<string>("");
     let [isInput, setIsInput] = useState<boolean>(false);
-    let [verify, setVerify] = useState<boolean>(false);
     //timer values
     let [time, setTime] = useState("180");
     let[startTimer, setStartTimer] = useState(false);
@@ -84,7 +85,8 @@ const Signup = () => {
                     alert(`${res.message}`)
                 }
             startCodeTimer();
-            });
+            })
+            .catch(console.log);
         } else {
             alert("올바른 이메일을 입력해주세요")
         }
@@ -147,6 +149,7 @@ const Signup = () => {
             }
         }
         checkVerificationCode().then((res)=>{
+            res;
             // if(res){
             //     setIsCodeValid(true); //코드가 유효한지 확인
             //     setCodeMsg(res.message)
@@ -170,7 +173,7 @@ const Signup = () => {
             message : string,
             status : number,
         }
-        const url = import.meta.env.VITE_APP_SERVER + `check/${nickname}`;
+        // const url = import.meta.env.VITE_APP_SERVER + `check/${nickname}`;
         async function getData(): Promise<returnData | undefined> {
             try {
                 const response: AxiosResponse<returnData> = await api.get(`/check/${nickname}`);
@@ -201,6 +204,18 @@ const Signup = () => {
         }
         if(verifiedCode === "0"){
             alert("이메일 인증을 완료해주세요")
+            return;
+        }
+        if(!passwordOK){
+            alert("8-12자리의 영문자, 숫자, 특수문자를 입력해주세요")
+            return;
+        }
+        if(!verify){
+            alert("비밀번호 일치 여부를 확인해주세요")
+            return;
+        }
+        if(!nicknameOk){
+            alert("닉네임 중복체크를 해주세요")
             return;
         }
         interface returnData {
@@ -308,7 +323,7 @@ const Signup = () => {
                         setCheckPw(e.target.value)
                     }}
                     
-                    type="text"
+                    type="password"
                     name="newpwcheck"
                     id="newpwcheck"
                     required
@@ -326,7 +341,7 @@ const Signup = () => {
                     ""
                 }
             <div className={`${style.int_area}`}>
-                <input
+                <input onFocus={()=>setInputNick(true)}
                     onChange={(e) => {
                         setNickname(e.target.value);
                     }}
@@ -341,13 +356,16 @@ const Signup = () => {
                     }}>중복체크</span>
             </div>
                 {
+                    inputNick?
                     nicknameOk?
                     <div style={{color : "#bcd806e0"}} className={style.verify_message}>{nickMsg}</div>
                     :
                     <div className={style.verify_message}>{nickMsg}</div>
+                    :
+                    ""
                 }
         <div className={style.btn_area}>
-            <button style={{fontWeight:"bold"}} type="submit">회원가입</button>
+            <button onClick={()=>{SignUp()}} style={{fontWeight:"bold"}} type="submit">회원가입</button>
         </div>
 
     </section>

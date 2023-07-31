@@ -1,8 +1,8 @@
 import React from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState, useCallback } from 'react';
-import style from "../../res/css/module/FindPassword.module.css"
-import logo from "../../res/img/CodeHiveLogo.png"
+import style from "@/res/css/module/FindPassword.module.css"
+import logo from "@/res/img/codehive_logo.png"
 import http from '../../api/http';
 import { useNavigate } from 'react-router-dom';
 import { changePasswordUserState } from '@/atom/UserAtom';
@@ -13,9 +13,9 @@ const ChangePassword = () => {
     let [newPw, setNewPw] = useState<string>("");
     let [newPwCheck, setNewPwCheck] = useState<string>("");
     let [isInput, setIsInput] = useState<boolean>(false);
-    let [verify, setVerify] = useState<boolean>(false);
+    let [verify, setVerify] = useState<boolean>(false); //비밀번호 일치 여부 
     let[inputPW, setInputPW] = useState(false); 
-    let[passwordOK, setPasswordOk] = useState(false); 
+    let[passwordOK, setPasswordOk] = useState(false);  //8-12자 조건 맞췄는지 여부 
     let navigate = useNavigate();
 
     const pwConfirm = useCallback((e : React.ChangeEvent<HTMLInputElement>)=>{
@@ -29,6 +29,14 @@ const ChangePassword = () => {
     }, [newPw, newPwCheck])
 
     function changePassword(){
+        if(!passwordOK){
+            alert("8-12자리의 영문자, 숫자, 특수문자를 입력해주세요");
+            return;
+        }
+        if(!verify){
+            alert("비밀번호 일치 여부를 확인해주세요");
+            return;
+        }
         interface customI {
             status : number,
             message : string,
@@ -65,6 +73,15 @@ const ChangePassword = () => {
             console.log(err);
         })
     }
+    function checkPassword(input : string){
+        const regex = /^.*(?=^.{8,12}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+          if (regex.test(input)) {
+        //사용가능
+            setPasswordOk(true);
+        } else {
+            setPasswordOk(false);
+          }
+    }
 
     return (
         <div className={style.signin_background}>
@@ -72,11 +89,12 @@ const ChangePassword = () => {
         <img onClick={()=>{navigate("/")}}  className={style.logo} src={logo} alt="" />
         <h1 className={style.login_title}>CHANGE PASSWORD</h1>
             <div className={`${style.int_area}`}>
-                <input
+                <input onFocus={()=>(setInputPW(true))}
                     onChange={(e) => {
                         setNewPw(e.target.value);
+                        checkPassword(e.target.value);
                     }}
-                    type="text"
+                    type="password"
                     name="newpw"
                     id="newpw"
                     required
@@ -96,7 +114,7 @@ const ChangePassword = () => {
                 <input
                     onFocus={()=>{setIsInput(true);console.log("true")}}
                     onChange={pwConfirm}
-                    type="text"
+                    type="password"
                     name="newpwcheck"
                     id="newpwcheck"
                     required
