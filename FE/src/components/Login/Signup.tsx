@@ -78,7 +78,7 @@ const Signup = () => {
             sendVerificationCode()
                 .then((res)=> {
                 if(res){
-                    alert(`${res.message}`)
+                    // alert(`${res.message}`)
                 }
             startCodeTimer();
             })
@@ -96,14 +96,27 @@ const Signup = () => {
         async function sendVerificationCode(): Promise<userData | undefined> {
             try {
                 const response: AxiosResponse<userData> = await api.get(`/email/auth?email=${email}`);
-                console.log(email);
+                alert(response.data.message);
+                console.log(response);
+                // if(response.status === 400){
+                //     console.log(response);
+                // }
                 return response.data;
-            } catch (error) {
+            } catch (error:unknown) {
                 const err = error as AxiosError
                 console.log(err);
+                alert(err.response?.data.message);
+                return err.response?.data.message;
             }
             }
             
+    }
+    interface IError {
+        response : {
+            data : {
+                message : string
+            }
+        }
     }
     ///////////////////////
     //이메일 인증코드 확인 //
@@ -113,6 +126,7 @@ const Signup = () => {
             status : number,
             message : string,
         }
+  
         const data = {
             email : email,
             authCode : code
@@ -135,14 +149,15 @@ const Signup = () => {
                 setVerifiedCode(code);
                 setCodeMsg(response.data.message)
                 console.log(response.data.message);
+                if(response.status == 409){}
                 return response.data;
-            } catch (error:unknown) {
-                const err = error.response.data.message as string
+            } catch (error:any) {
+                const err:string = error.response.data.message as string
                 setIsCodeValid(false); //코드가 유효한지 확인
                 setCodeMsg(err);
                 console.log(codeMsg);
                 console.log(err); 
-                // return err;
+                return err;
             }
         }
         checkVerificationCode().then((res)=>{
@@ -260,7 +275,6 @@ const Signup = () => {
                 />
                 <label htmlFor='id'>이메일 E-mail</label>
                 <span onClick={()=>{
-                    console.log(email)
                     verifyEmail(email); 
                     }}>인증</span>
             </div>
