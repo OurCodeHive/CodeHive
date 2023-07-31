@@ -1,7 +1,9 @@
 package com.spoon.sok.domain.study.entity;
 
 
+import com.spoon.sok.domain.chat.entity.Chat;
 import com.spoon.sok.domain.user.entity.User;
+import com.spoon.sok.domain.user.entity.UserStudy;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -36,7 +38,7 @@ public class StudyInfo {
     @Column(name = "profileimage") // 스터디 대표(프로필) 이미지
     private String profileImage;
 
-    @Column(name = "enter_name") // 스터디회의(웹IDE접속 스터디룸 이름, 유티크)
+    @Column(name = "enter_name") // 스터디회의(웹IDE접속 스터디룸 이름, 유니크)
     private String enterName;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -45,12 +47,31 @@ public class StudyInfo {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endAt; // 스터디 그룹 종료일
 
+    // user_study 유저스터디 중간테이블과 일대다 관계
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
-    private List<StudyAppointment> meetingList = new ArrayList<>();
+    private List<UserStudy> userStudyList = new ArrayList<>();
 
+    //users 유저테이블과 다대일 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", nullable = false)
     private User users; // 스터디 그룹의 장
+
+    //study_archive 스터디자료 테이블과 일대다 관계
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
+    private List<StudyArchive> archiveList = new ArrayList<>();
+
+    //chat 채팅 테이블과 일대다 관계
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
+    private List<Chat> chatList = new ArrayList<>();
+
+    //study_appointment 스터디미팅(회의) 테이블과 일대다 관계
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
+    private List<StudyAppointment> meetingList = new ArrayList<>();
+
+    //study_notice 스터디공지사항과 일대다 관계
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
+    private List<StudyNotice> noticeList = new ArrayList<>();
+
 
     @Builder
     public StudyInfo(Long id, String title, String studyroomSize, String description, String profileImage, String enterName, Date createdAt, Date endAt, List<StudyAppointment> meetingList, User users) {

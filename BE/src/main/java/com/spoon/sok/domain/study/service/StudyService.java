@@ -143,7 +143,7 @@ public class StudyService {
     public boolean delegateStudyOwnership(String fromNickname, String fromEmail, String toNickname, String toEmail) {
     }
 
-    public StudyMemberCreationResult studyMemberCreationResult(StudyMemberRequestDTO studyMemberRequestDTO) {
+    public StudyUpdateResult studyUpdateResult(StudyMemberRequestDTO studyMemberRequestDTO) {
     }
      */
 }

@@ -1,4 +1,4 @@
-package com.spoon.sok.domain.study.dto;
+package com.spoon.sok.domain.study.dto.responseDTO;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -35,19 +35,19 @@ public class StudyRoomController {
 //    public ResponseEntity<Map<String, Object>> createStudyMember(
 //            @RequestBody StudyMemberRequestDTO studyMemberRequestDTO) {
 //
-//        StudyMemberCreationResult studyMemberCreationResult = studyService.studyMemberCreationResult(studyMemberRequestDTO);
+//        StudyUpdateResult studyUpdateResult = studyService.studyUpdateResult(studyMemberRequestDTO);
 //
 //        // 응답 메시지 설정
 //        Map<String, Object> response = new HashMap<>();
-//        if (studyMemberCreationResult == StudyMemberCreationResult.SUCCESS) {
+//        if (studyUpdateResult == StudyUpdateResult.SUCCESS) {
 //            response.put("status", 200);
 //            response.put("message", "성공적으로 초대 링크를 발송하였습니다.");
-//        } else if (studyMemberCreationResult == StudyMemberCreationResult.FORBIDDEN) {
+//        } else if (studyUpdateResult == StudyUpdateResult.FORBIDDEN) {
 //            response.put("status", 403);
 //            response.put("message", "초대 링크를 만들지 못합니다.");
-//        } else if (studyMemberCreationResult == StudyMemberCreationResult.INTERNAL_SERVER_ERROR) {
-//            response.put("status", 500);
-//            response.put("message", "멤버 초대에 실패했습니다.");
+//        } else if (studyUpdateResult == StudyUpdateResult.NOT_FOUND) {
+//            response.put("status", 404);
+//            response.put("message", "멤버를 찾을 수 없습니다.");
 //        }
 //
 //        // HTTP 응답 반환
@@ -262,14 +262,14 @@ public class StudyRoomController {
     @PostMapping("/meeting/{studyinfo_id}")
     public ResponseEntity<Map<String, Object>> createStudyMeeting(
             @PathVariable("studyinfo_id") Long studyInfoId,
-            @RequestBody StudyMeetingRequestDTO requestDto) {
+            @RequestBody StudyUpdateDTO StudyUpdateDTO) {
 
-        // 스터디 회의 등록 정보를 StudyMeetingRequestDTO로 받아옴
-        String title = requestDto.getTitle();
-        String description = requestDto.getDescription();
-        LocalDate date = requestDto.getDate();
-        LocalTime startTime = requestDto.getStartTime();
-        LocalTime endTime = requestDto.getEndTime();
+        // 스터디 회의 등록 정보를 StudyUpdateDTO로 받아옴
+        String title = StudyUpdateDTO.getTitle();
+        String description = StudyUpdateDTO.getDescription();
+        LocalDate date = StudyUpdateDTO.getDate();
+        LocalTime startTime = StudyUpdateDTO.getStartTime();
+        LocalTime endTime = StudyUpdateDTO.getEndTime();
 
         // 스터디 회의 등록 서비스 호출
         boolean isCreated = studyService.createStudyMeeting(studyInfoId, title, description, date, startTime, endTime);
@@ -293,14 +293,14 @@ public class StudyRoomController {
     @PutMapping("/study/meeting/{study_info_id}")
     public ResponseEntity<Map<String, Object>> updateStudyMeeting(
             @PathVariable("study_info_id") Long studyInfoId,
-            @RequestBody StudyMeetingRequestDTO requestDto) {
+            @RequestBody StudyUpdateDTO StudyUpdateDTO) {
 
         // 요청으로 받아온 데이터를 추출
-        String title = requestDto.getTitle();
-        String description = requestDto.getDescription();
-        LocalDate date = requestDto.getDate();
-        LocalTime startTime = requestDto.getStartTime();
-        LocalTime endTime = requestDto.getEndTime();
+        String title = StudyUpdateDTO.getTitle();
+        String description = StudyUpdateDTO.getDescription();
+        LocalDate date = StudyUpdateDTO.getDate();
+        LocalTime startTime = StudyUpdateDTO.getStartTime();
+        LocalTime endTime = StudyUpdateDTO.getEndTime();
 
         // 스터디 회의 수정 서비스 호출
         boolean isUpdated = studyService.updateStudyMeeting(studyInfoId, title, description, date, startTime, endTime);
