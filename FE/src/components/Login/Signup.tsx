@@ -92,32 +92,33 @@ const Signup = () => {
             authCode : string,
             message : string,
         }
+        interface CustomError extends Error {
+            // name: string; 
+            // message: string;
+            // stack?: string; - Error 인터페이스 프로퍼티들을 직접 쓰거나 아니면 상속해준다.
+            response?: {
+               data?: {
+                message:string
+               };
+               status: number;
+               headers: string;
+            };
+         }
         // const url = import.meta.env.VITE_APP_SERVER + `email/auth?email=${email}`;
         async function sendVerificationCode(): Promise<userData | undefined> {
             try {
                 const response: AxiosResponse<userData> = await api.get(`/email/auth?email=${email}`);
                 alert(response.data.message);
                 console.log(response);
-                // if(response.status === 400){
-                //     console.log(response);
-                // }
                 return response.data;
             } catch (error:unknown) {
-                const err = error as AxiosError
+                const err = error as CustomError
                 console.log(err);
-                alert(err.response?.data.message);
-                return err.response?.data.message;
-            }
-            }
-            
-    }
-    interface IError {
-        response : {
-            data : {
-                message : string
+                alert(err.response?.data?.message);
             }
         }
     }
+
     ///////////////////////
     //이메일 인증코드 확인 //
     ///////////////////////
@@ -126,6 +127,18 @@ const Signup = () => {
             status : number,
             message : string,
         }
+        interface CustomError extends Error {
+            // name: string; 
+            // message: string;
+            // stack?: string; - Error 인터페이스 프로퍼티들을 직접 쓰거나 아니면 상속해준다.
+            response?: {
+               data?: {
+                message:string
+               };
+               status: number;
+               headers: string;
+            };
+         }
   
         const data = {
             email : email,
@@ -133,13 +146,13 @@ const Signup = () => {
         }
         // const url = import.meta.env.VITE_APP_SERVER + `email/auth?email=${email}`;
         async function checkVerificationCode(): Promise<customI | undefined> {
-            if(time === "0"){
-                setCodeMsg("인증시간이 만료되었습니다");
+            if(code === ""){
+                setCodeMsg("코드를 입력해주세요");
                 setIsCodeValid(false);
                 return;
             }
-            if(code === ""){
-                setCodeMsg("코드를 입력해주세요");
+            if(time === "0"){
+                setCodeMsg("인증시간이 만료되었습니다");
                 setIsCodeValid(false);
                 return;
             }
@@ -148,16 +161,12 @@ const Signup = () => {
                 setIsCodeValid(true); //코드가 유효한지 확인
                 setVerifiedCode(code);
                 setCodeMsg(response.data.message)
-                console.log(response.data.message);
-                if(response.status == 409){}
                 return response.data;
-            } catch (error:any) {
-                const err:string = error.response.data.message as string
+            } catch (error) {
+                const err = error as CustomError;
+                const data = err.response?.data?.message as string
                 setIsCodeValid(false); //코드가 유효한지 확인
-                setCodeMsg(err);
-                console.log(codeMsg);
-                console.log(err); 
-                return err;
+                setCodeMsg(data);
             }
         }
         checkVerificationCode().then((res)=>{
@@ -177,6 +186,18 @@ const Signup = () => {
     //닉네임 중복 체크 API//
     ///////////////////////
     function nicknameDuplicateCheck(){
+        interface CustomError extends Error {
+            // name: string; 
+            // message: string;
+            // stack?: string; - Error 인터페이스 프로퍼티들을 직접 쓰거나 아니면 상속해준다.
+            response?: {
+               data?: {
+                message:string
+               };
+               status: number;
+               headers: string;
+            };
+         }
         if(nickname === ""){
             setNicknameOk(false);
             setNickMsg("닉네임을 입력해주세요");
@@ -190,14 +211,12 @@ const Signup = () => {
             try {
                 const response: AxiosResponse<returnData> = await api.get(`/check/${nickname}`);
                 const data = response.data 
-                console.log(data.message);
                 setNicknameOk(true);
                 setNickMsg(data.message);
                 return data;
-            } catch (err:any) {
-                // const err = error as any
-                console.log(err.response?.data.message);
-                setNickMsg(err.response.data.message);
+            } catch (error) {
+                const err = error as CustomError;
+                setNickMsg(err.response?.data?.message as string);
                 setNicknameOk(false);
             }
         }

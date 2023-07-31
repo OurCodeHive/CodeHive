@@ -82,6 +82,18 @@ const FindPassword = () => {
             
     }
     function verifyCode(){
+        interface CustomError extends Error {
+            // name: string; 
+            // message: string;
+            // stack?: string; - Error 인터페이스 프로퍼티들을 직접 쓰거나 아니면 상속해준다.
+            response?: {
+               data?: {
+                message:string
+               };
+               status: number;
+               headers: string;
+            };
+         }
         interface customI {
             status : number,
             message : string,
@@ -110,12 +122,12 @@ const FindPassword = () => {
                 setCodeMsg(response.data.message)
                 console.log(response.data.message);
                 return response.data
-            } catch (error:any) {
-                const err = error.response.data.message as string
+            } catch (error) {
+                const err = error as CustomError;
+                const msg = err?.response?.data?.message;
                 setIsCodeValid(false); //코드가 유효한지 확인
-                setCodeMsg(err);
+                setCodeMsg(msg as string);
                 console.log(codeMsg);
-                console.log(err); 
                 // return err;
             }
         }
