@@ -1,18 +1,16 @@
 package com.spoon.sok.domain.study.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
-@Data
-@NoArgsConstructor
 @Getter
 @Setter
-public class JoinStudyGroupDto {
+@NoArgsConstructor
+public class LeaveStudyRequestDTO {
     private String email;
     private String nickname;
-    private String enterName; // studyinfo_id 랜덤 문자열
+    private Long studyInfoId;
+
+    // 생성자, getter, setter 등 추가적인 메서드들 (필요 시 구현)
 }

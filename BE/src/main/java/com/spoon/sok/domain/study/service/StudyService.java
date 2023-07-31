@@ -1,15 +1,17 @@
 package com.spoon.sok.domain.study.service;
 
-import com.spoon.sok.domain.study.dto.StudyAppointmentDTO;
-import com.spoon.sok.domain.study.dto.StudyCreationDto;
-import com.spoon.sok.domain.study.dto.StudyInfoDto;
+import com.spoon.sok.domain.study.dto.*;
 import com.spoon.sok.domain.study.entity.StudyAppointment;
+import com.spoon.sok.domain.study.enums.StudyMemberCreationResult;
+import com.spoon.sok.domain.study.enums.StudyUpdateResult;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,6 +56,51 @@ public class StudyService {
                                        studyCreationDto.getStartAt(),
                                        studyCreationDto.getEndAt());
         return;
+    }
+
+    public StudyMemberCreationResult studyMemberCreationResult(StudyMemberRequestDTO requestDto) {
+    }
+
+    public StudyUpdateResult updateStudyGroup(Long studyInfoId, StudyUpdateDTO studyUpdateDto) {
+    }
+
+    public boolean createStudyNotice(Long studyInfoId, String author, String title, String content, LocalDate uploadAt) {
+    }
+
+    public List<StudyNoticeDTO> getStudyNotices(Long studyInfoId, int page, int size) {
+    }
+
+    public boolean updateStudyNotice(Long studyInfoId, Long studyBoardId, String author, String title, String content, LocalDate uploadAt) {
+    }
+
+    public boolean deleteStudyNotice(Long studyInfoId, Long studyBoardId) {
+    }
+
+    public List<StudyDocumentDTO> getStudyDocuments(Long studyInfoId, int page, int size) {
+    }
+
+    public List<StudyAppointmentDTO> getStudyMeetingByStudyId(Long studyInfoId) {
+    }
+
+    public boolean createStudyMeeting(Long studyInfoId, String title, String description, LocalDate date, LocalTime startTime, LocalTime endTime) {
+    }
+
+    public boolean updateStudyMeeting(Long studyInfoId, String title, String description, LocalDate date, LocalTime startTime, LocalTime endTime) {
+    }
+
+    public boolean deleteStudyMeeting(Long studyInfoId, Long studyAppointmentId) {
+    }
+
+    public boolean leaveStudy(String email, String nickname, Long studyInfoId) {
+    }
+
+    public boolean forceLeaveStudy(String email, String nickname, Long studyInfoId) {
+    }
+
+    public List<String> getStudyUsers(Long studyInfoId) {
+    }
+
+    public boolean delegateStudyOwnership(String fromNickname, String fromEmail, String toNickname, String toEmail) {
     }
 
 //    @Transactional

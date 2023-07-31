@@ -9,10 +9,11 @@ public interface StudyAppointmentDTO {
 
     String getTitle();
 
-    Date getMeetingAt();
+    String getDay();
 
-    Date getCreatedAt();
+    String getStartTime();
 
-    Date getEndAt();
+    String getEndTime();
 
+    String getDate();
 }
