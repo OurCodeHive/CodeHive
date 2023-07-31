@@ -63,7 +63,7 @@ interface customResponse extends AxiosResponse {
  }
 authHttp.interceptors.response.use(
     //실행
-    async (response : AxiosResponse): Promise<any> => {
+    (response : AxiosResponse): Promise<any> => {
     
       const { config, status } = response; //response의 config 파일
       const originalRequest = config;
