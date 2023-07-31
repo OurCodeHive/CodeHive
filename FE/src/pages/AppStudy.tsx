@@ -1,11 +1,11 @@
 import Lnb from "@/components/inc/Lnb";
-import StudyGroupView from "@/components/StudyGroup/View";
+import StudyView from "@/components/StudyGroup/view";
 
 function AppStudy() {
   return (
     <div className="col-12">
       <Lnb/>
-      <StudyGroupView/>
+      <StudyView/>
     </div>
   )
 }
