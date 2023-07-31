@@ -1,6 +1,5 @@
 package com.spoon.sok.domain.user.auth;
 
-import com.spoon.sok.domain.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -11,9 +11,7 @@ import com.spoon.sok.domain.user.repository.UserRepository;
 import com.spoon.sok.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -124,7 +122,6 @@ public class UserService {
                 .email(requestDto.getEmail())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .nickname(requestDto.getNickname())
-                .socialLogin(0)
                 .status(UserStatus.NORMAL)
                 .createdAt(LocalDateTime.now())
                 .roles(Collections.singletonList(Authority.ROLE_USER.name()))
@@ -149,7 +146,7 @@ public class UserService {
     public int changePassword(UserChangePasswordRequestDto requestDto) {
         Optional<User> user = userRepository.findByEmail(requestDto.getEmail());
 
-        if (user.get().getSocialLogin() == 1) {
+        if (user.get().getAuthProvider() == null) {
             return 1;
         }
 
@@ -178,6 +175,15 @@ public class UserService {
         Long expiration = jwtTokenProvider.getExpiration(requestDto.getAccessToken());
         redisTemplate.opsForValue()
                 .set(requestDto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+
+        return true;
+    }
+
+    @Transactional
+    public boolean resign(UserResignRequestDto requestDto) {
+        Optional<User> user = userRepository.findByEmail(requestDto.getEmail());
+
+        userRepository.deleteById(user.get().getId());
 
         return true;
     }

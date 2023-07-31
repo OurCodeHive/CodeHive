@@ -1,19 +1,19 @@
 package com.spoon.sok.domain.user.entity;
 
 import com.spoon.sok.domain.study.entity.StudyInfo;
+import com.spoon.sok.domain.user.auth.OAuth2UserInfo;
+import com.spoon.sok.domain.user.auth.AuthProvider;
 import com.spoon.sok.domain.user.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Getter
@@ -37,8 +37,10 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String nickname;
 
-    @Column(name = "social_login")
-    private int socialLogin;
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider;
+
+    private String oauth2Id;
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
@@ -64,11 +66,11 @@ public class User implements UserDetails {
     private List<String> roles = new ArrayList<>();
 
     @Builder
-    public User (String email, String password, String nickname, int socialLogin, UserStatus status, LocalDateTime createdAt) {
+    public User (String email, String password, String nickname, AuthProvider authProvider, UserStatus status, LocalDateTime createdAt) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.socialLogin = socialLogin;
+        this.authProvider = authProvider;
         this.status = status;
         this.createdAt = createdAt;
     }
@@ -107,5 +109,12 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User update(OAuth2UserInfo oAuth2UserInfo) {
+        this.email = oAuth2UserInfo.getEmail();
+        this.oauth2Id = oAuth2UserInfo.getOAuth2Id();
+
+        return this;
     }
 }

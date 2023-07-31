@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -190,5 +189,24 @@ public class UserController {
         result.put("message", "로그아웃 완료");
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+    }
+
+    @PostMapping("/resign")
+    public ResponseEntity<?> resign(@RequestBody UserResignRequestDto requestDto) {
+        result = new HashMap<>();
+
+        boolean responseCode = userService.resign(requestDto);
+
+        if (responseCode) {
+            result.put("status", 200);
+            result.put("message", "회원 삭제 완료");
+
+            return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+        } else {
+            result.put("status", 400);
+            result.put("message", "잘못된 요청입니다.");
+
+            return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
+        }
     }
 }
