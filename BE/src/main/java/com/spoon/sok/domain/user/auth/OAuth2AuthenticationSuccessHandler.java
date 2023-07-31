@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -40,12 +41,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
         clearAuthenticationAttributes(request, response);
-        Cookie cookie = new Cookie("refreshToken", tokenInfo.getRefreshToken());
-        cookie.setPath("http://localhost:5173/study");
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
 
-        System.out.println(cookie.getPath());
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", tokenInfo.getRefreshToken())
+                .path("/")
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }

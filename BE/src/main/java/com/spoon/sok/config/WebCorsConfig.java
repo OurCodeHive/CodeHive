@@ -10,7 +10,7 @@ public class WebCorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("/*") // 외부에서 들어오는 모든 url 허용
+                .allowedOriginPatterns("*")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")    //허용되는 Method
                 .allowedHeaders("*")    //허용되는 헤더
                 .maxAge(3600);   //허용 시간
