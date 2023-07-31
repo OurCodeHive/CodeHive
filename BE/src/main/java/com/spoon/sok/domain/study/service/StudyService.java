@@ -97,54 +97,53 @@ public class StudyService {
                                             changeUserStudyDto.getUserstudyId());
     }
 
-//    public Optional<StudyInfoDetailDto> getStudyInfoAll(String studyinfoId) {
-//        return studyRepository.findByStudyInfoId(studyinfoId);
-//    }
-//
-//
-//    public StudyMemberCreationResult studyMemberCreationResult(StudyMemberRequestDTO requestDto) {
-//    }
-//
-//    public StudyUpdateResult updateStudyGroup(Long studyInfoId, StudyUpdateDTO studyUpdateDto) {
-//    }
-//
-//    public boolean createStudyNotice(Long studyInfoId, String author, String title, String content, LocalDate uploadAt) {
-//    }
-//
-//    public List<StudyNoticeDTO> getStudyNotices(Long studyInfoId, int page, int size) {
-//    }
-//
-//    public boolean updateStudyNotice(Long studyInfoId, Long studyBoardId, String author, String title, String content, LocalDate uploadAt) {
-//    }
-//
-//    public boolean deleteStudyNotice(Long studyInfoId, Long studyBoardId) {
-//    }
-//
-//    public List<StudyDocumentDTO> getStudyDocuments(Long studyInfoId, int page, int size) {
-//    }
-//
-//    public List<StudyAppointmentDTO> getStudyMeetingByStudyId(Long studyInfoId) {
-//    }
-//
-//    public boolean createStudyMeeting(Long studyInfoId, String title, String description, LocalDate date, LocalTime startTime, LocalTime endTime) {
-//    }
-//
-//    public boolean updateStudyMeeting(Long studyInfoId, String title, String description, LocalDate date, LocalTime startTime, LocalTime endTime) {
-//    }
-//
-//    public boolean deleteStudyMeeting(Long studyInfoId, Long studyAppointmentId) {
-//    }
-//
-//    public boolean leaveStudy(String email, String nickname, Long studyInfoId) {
-//    }
-//
-//    public boolean forceLeaveStudy(String email, String nickname, Long studyInfoId) {
-//    }
-//
-//    public List<String> getStudyUsers(Long studyInfoId) {
-//    }
-//
-//    public boolean delegateStudyOwnership(String fromNickname, String fromEmail, String toNickname, String toEmail) {
-//    }
 
+    public Optional<StudyInfoDetailDto> getStudyInfoAll(String studyinfoId) {
+        return studyRepository.findByStudyInfoId(studyinfoId);
+    }
+
+    public StudyUpdateResult updateStudyGroup(Long studyInfoId, StudyUpdateDTO studyUpdateDto) {
+    }
+
+    public boolean createStudyNotice(Long studyInfoId, String author, String title, String content, LocalDate uploadAt) {
+    }
+
+    public List<StudyNoticeDTO> getStudyNotices(Long studyInfoId, int page, int size) {
+    }
+
+    public boolean updateStudyNotice(Long studyInfoId, Long studyBoardId, String author, String title, String content, LocalDate uploadAt) {
+    }
+
+    public boolean deleteStudyNotice(Long studyInfoId, Long studyBoardId) {
+    }
+
+    public List<StudyDocumentDTO> getStudyDocuments(Long studyInfoId, int page, int size) {
+    }
+
+    public List<StudyAppointmentDTO> getStudyMeetingByStudyId(Long studyInfoId) {
+    }
+
+    public boolean createStudyMeeting(Long studyInfoId, String title, String description, LocalDate date, LocalTime startTime, LocalTime endTime) {
+    }
+
+    public boolean updateStudyMeeting(Long studyInfoId, String title, String description, LocalDate date, LocalTime startTime, LocalTime endTime) {
+    }
+
+    public boolean deleteStudyMeeting(Long studyInfoId, Long studyAppointmentId) {
+    }
+
+    public boolean leaveStudy(String email, String nickname, Long studyInfoId) {
+    }
+
+    public boolean forceLeaveStudy(String email, String nickname, Long studyInfoId) {
+    }
+
+    public List<String> getStudyUsers(Long studyInfoId) {
+    }
+
+    public boolean delegateStudyOwnership(String fromNickname, String fromEmail, String toNickname, String toEmail) {
+    }
+
+    public StudyMemberCreationResult studyMemberCreationResult(StudyMemberRequestDTO studyMemberRequestDTO) {
+    }
 }
