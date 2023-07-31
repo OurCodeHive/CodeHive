@@ -1,15 +1,21 @@
 import React from 'react';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState, useCallback } from 'react';
-import style from "../../res/css/module/FindPassword.module.css"
-import logo from "../../res/img/CodeHiveLogo.png"
-import Http from '../../api/http';
+import style from "@/res/css/module/FindPassword.module.css"
+import logo from "@/res/img/codehive_logo.png"
+import http from '@/api/http';
 import { useNavigate } from 'react-router-dom';
+import { changePasswordUserState } from '@/atom/UserAtom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+const api = http;
 const ChangePassword = () => {
+    const email = useRecoilValue(changePasswordUserState);
     let [newPw, setNewPw] = useState<string>("");
     let [newPwCheck, setNewPwCheck] = useState<string>("");
     let [isInput, setIsInput] = useState<boolean>(false);
     let [verify, setVerify] = useState<boolean>(false);
+    let[inputPW, setInputPW] = useState(false); 
+    let[passwordOK, setPasswordOk] = useState(false); 
     let navigate = useNavigate();
 
     const pwConfirm = useCallback((e : React.ChangeEvent<HTMLInputElement>)=>{
@@ -21,6 +27,44 @@ const ChangePassword = () => {
             setVerify(false);
         }
     }, [newPw, newPwCheck])
+
+    function changePassword(){
+        interface customI {
+            status : number,
+            message : string,
+        }
+        const data = {
+            email : email,
+            newPassword : newPw,
+        }
+        console.log(data);
+        // const url = import.meta.env.VITE_APP_SERVER + `email/auth?email=${email}`;
+        async function getData(): Promise<customI | undefined> {
+            
+            try {
+                const response: AxiosResponse<customI> = await api.post(`/find/password`, data);
+                //유효하다면
+                alert(response.data.message + " 로그인 화면으로 이동합니다.");
+                navigate("/login")
+                return response.data as customI;
+            } catch (error:any) {
+                const err = error.response.data.message as string
+                console.log(err);
+                alert(err);
+            }
+        }
+        getData().then((res)=>{
+            res
+            // if(res){
+            //     setIsCodeValid(true); //코드가 유효한지 확인
+            //     setCodeMsg(res.message)
+            //     console.log(res);
+            // }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
 
     return (
         <div className={style.signin_background}>
@@ -39,6 +83,15 @@ const ChangePassword = () => {
                 />
                 <label htmlFor='newpw'>새 비밀번호</label>
             </div>
+            {
+                inputPW?
+                    (passwordOK?
+                    <div className={style.verify_message} style={{color : "#b9ea16"}}> 사용 가능한 비밀번호입니다.</div>
+                    :
+                    <div className={style.verify_message}> 8 ~ 12자리의 영문자, 숫자, 특수문자를 입력해주세요.</div>
+                    )
+                : ""
+            }   
             <div className={`${style.int_area}`}>
                 <input
                     onFocus={()=>{setIsInput(true);console.log("true")}}
@@ -60,34 +113,34 @@ const ChangePassword = () => {
                     ""
                 }
         <div className={style.btn_area}>
-            <button onClick={NewPw} style={{fontWeight:"bold"}} type="submit">비밀번호 변경</button>
+            <button onClick={changePassword} style={{fontWeight:"bold"}} type="submit">비밀번호 변경</button>
         </div>
 
     </section>
     </div>
     );
       
-    //비밀번호 변경하는 함수
-    function NewPw(){
-        const user = {
-            // "email" : email,
-            "newPassword" : newPw,
-            // "authCode" : authCode; 
-        }
-        const url = import.meta.env.VITE_APP_SERVER + "login/user";
-        axios.post(url, user)
-        .then((res) =>{
-            console.log(res.data);
-        })
-        if(true){
-            //인증이 맞으면
-            navigate("/changePassword");
+    // //비밀번호 변경하는 함수
+    // function NewPw(){
+    //     const user = {
+    //         // "email" : email,
+    //         "newPassword" : newPw,
+    //         // "authCode" : authCode; 
+    //     }
+    //     const url = import.meta.env.VITE_APP_SERVER + "login/user";
+    //     axios.post(url, user)
+    //     .then((res) =>{
+    //         console.log(res.data);
+    //     })
+    //     if(true){
+    //         //인증이 맞으면
+    //         navigate("/changePassword");
 
-        } else {
-            //인증이 틀리면
-            alert("올바른 인증번호를 입력해주세요.")
-        }
-    }
+    //     } else {
+    //         //인증이 틀리면
+    //         alert("올바른 인증번호를 입력해주세요.")
+    //     }
+    // }
 
 };
 
