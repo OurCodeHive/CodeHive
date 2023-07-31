@@ -95,7 +95,7 @@ body::before {
 .btn_area {
     margin-top: 0px;
 }
-.btn_area a, button{
+.btn_area button, .btn_area a{
     margin-top: 10px;
     width: 400px;
     height: 50px;
