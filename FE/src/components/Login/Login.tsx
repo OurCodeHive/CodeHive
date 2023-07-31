@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 import { userState } from '@/atom/UserAtom';
-import { nonAuthHttp, http } from '@/api/http';
+import { nonAuthHttp, authHttp } from '@/api/http';
 import style from "@/res/css/module/Login.module.css"
 import logo from "@/res/img/codehive_logo.png"
 import google from "@/res/img/google_logo.png"
@@ -16,19 +16,19 @@ const Login = () => {
     let [email, setEmail] = useState("")
     let [pw, setPw] = useState("");
     let [userInfo, setUserInfo] = useRecoilState(userState);
-    
 
     const navigate = useNavigate();
 
-    function signUpPage(event: any) {
+    function signUpPage(event: React.MouseEvent<HTMLAnchorElement> ) {
         event.preventDefault();
         navigate("/signup");
     }
 
-    function findPassword(event: any) {
+    function findPassword(event: React.MouseEvent<HTMLAnchorElement> ) {
         event.preventDefault();
         navigate("/findpassword");
     }
+
     ////////////////////////////
     //로그인 클릭 시 실행되는 함수
     ////////////////////////////
@@ -53,7 +53,7 @@ const Login = () => {
         async function doLogin(): Promise<userData | undefined> {
             try {
               ///
-              const response: AxiosResponse<userData> = await nonAuthHttp.post("login/user", user);
+              const response: AxiosResponse<userData> = await authHttp.post("login/user", user);
               console.log(response.data);
               alert("로그인에 성공하였습니다");
               //recoil!
@@ -64,13 +64,14 @@ const Login = () => {
                 accessToken : response.data.accessToken,
                 refreshToken: response.data.refreshToken});
                localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
-               localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss") as string);
+               localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
                navigate("/study");
               return response.data;
             } catch (error) {
                 // const err = error as any
                 console.log(error); //실패는 여기로
-                alert(error.response?.data.message);
+                // alert(error.response?.data.message);
+                alert("로그인에 실패하였습니다.")
                 return;
             }
           }
@@ -80,11 +81,6 @@ const Login = () => {
             // alert("로그인 되었습니다");
           })
           .catch((err) => {console.log(err)})
-        ///
-        // axios.post(url, user)
-        // .then((res) =>{
-        //     console.log(res.data);
-        // })
     }
     function googleLogin(){
         const user = {
