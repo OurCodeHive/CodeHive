@@ -12,10 +12,11 @@ import java.util.Date;
 @Getter
 @Setter
 public class StudyCreationDto {
+    private String email;
     private String usersId;
     private String title;
     private String description;
-    private String startAt;
-    private String endAt;
+    private Date startAt;
+    private Date endAt;
     private String enterName;
 }

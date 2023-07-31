@@ -22,12 +22,15 @@ public class UserResponseDto {
 
     private Long userId;
 
+    private String nickname;
+
     private int responseCode;
 
     @Builder
-    public UserResponseDto(TokenInfo tokenInfo, Long userId, int responseCode) {
+    public UserResponseDto(TokenInfo tokenInfo, Long userId, String nickname, int responseCode) {
         this.tokenInfo = tokenInfo;
         this.userId = userId;
+        this.nickname = nickname;
         this.responseCode = responseCode;
     }
 
