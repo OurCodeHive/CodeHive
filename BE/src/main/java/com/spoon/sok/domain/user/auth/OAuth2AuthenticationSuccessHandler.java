@@ -41,7 +41,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
         clearAuthenticationAttributes(request, response);
         Cookie cookie = new Cookie("refreshToken", tokenInfo.getRefreshToken());
-        cookie.setPath("${oauth.authorizedRedirectUri}");
+        cookie.setPath("http://localhost:5173/study");
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
 
