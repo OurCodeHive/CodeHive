@@ -3,10 +3,12 @@ package com.spoon.sok.domain.study.controller;
 
 
 import com.spoon.sok.domain.study.dto.requestDTO.StudyUpdateDTO;
+import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.enums.StudyUpdateResult;
 import com.spoon.sok.domain.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Instanceof;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,9 +65,8 @@ public class StudyRoomController {
             @PathVariable("studyinfo_id") Long studyInfoId,
             @RequestBody StudyUpdateDTO studyUpdateDto) {
 
-//        StudyUpdateResult studyUpdateResult = studyService.updateStudyGroup(studyInfoId, studyUpdateDto);
         studyUpdateDto.setId(studyInfoId);
-//        studyService.updateStudyGroup(studyUpdateDto.toEntity());
+        StudyInfo res = studyService.updateStudyGroup(studyUpdateDto.toEntity());
 
 //        log.info("수정할 StudyGroup ID {}", studyService.updateStudyGroup(studyUpdateDto.toEntity()));
 

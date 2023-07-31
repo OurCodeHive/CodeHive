@@ -118,5 +118,5 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "FROM study_info si where studyinfo_id = :studyInfoId", nativeQuery = true)
     Optional<StudyInfoDetailDto> findByStudyInfoIdQuery(String studyInfoId);
 
-//    void saveStudyGroup(StudyInfo studyInfo);
+//    int saveStudyInfo(StudyInfo studyInfo);
 }

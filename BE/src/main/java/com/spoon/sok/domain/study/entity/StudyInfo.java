@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Getter
 @Entity
+@Transactional
 @Table(name = "study_info")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyInfo {

@@ -1,6 +1,7 @@
 package com.spoon.sok.domain.study.service;
 
 import com.spoon.sok.domain.study.dto.queryDTO.*;
+import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
@@ -98,10 +99,13 @@ public class StudyService {
         return studyRepository.findByStudyInfoIdQuery(studyinfoId);
     }
 
-//    public void updateStudyGroup(StudyInfo updateStudyInfo) {
-//        studyRepository.saveStudyGroup(updateStudyInfo);
-//        return;
-//    }
+    //////////////////////////////////// here
+    @Transactional
+    public StudyInfo updateStudyGroup(StudyInfo updateStudyInfo) {
+//        StudyInfo studyinfo = studyRepository.save(updateStudyInfo);
+//        return studyinfo.getEnterName();
+        return studyRepository.save(updateStudyInfo);
+    }
 
     /*
     public boolean createStudyNotice(Long studyInfoId, String author, String title, String content, LocalDate uploadAt) {
