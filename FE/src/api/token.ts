@@ -25,12 +25,10 @@ export {refresh, refreshError};
 
 
 const refresh = async(config : AxiosRequestConfig) : Promise<AxiosRequestConfig> => {
-    try {
+   
         const refreshToken = Cookie.get("refreshToken");//시간을 걸어서 준 리프레시토큰
         console.log(refreshToken);
-    } catch(err){
-        console.log(err);
-    }}
+  
 
         const expireAt = localStorage.getItem("expireAt");
         let accessToken = localStorage.getItem("accessToken")
