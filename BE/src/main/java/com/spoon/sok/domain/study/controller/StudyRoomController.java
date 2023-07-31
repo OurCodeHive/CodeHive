@@ -1,10 +1,10 @@
 package com.spoon.sok.domain.study.controller;
 
-import com.spoon.sok.domain.study.dto.*;
-import com.spoon.sok.domain.study.enums.StudyMemberCreationResult;
+
+
+import com.spoon.sok.domain.study.dto.requestDTO.StudyUpdateDTO;
 import com.spoon.sok.domain.study.enums.StudyUpdateResult;
 import com.spoon.sok.domain.study.service.StudyService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,57 +27,67 @@ public class StudyRoomController {
 
     private final StudyService studyService;
 
+    // Email 초대 부분과 똑같은 로직!
+    ///////////////////////////////////
 // [스터디룸] 스터디 멤버 추가
 // [POST] api/study/member
-    @PostMapping("/study/member")
-    public ResponseEntity<Map<String, Object>> createStudyMember(
-            @RequestBody StudyMemberRequestDTO studyMemberRequestDTO) {
+//    @PostMapping("/study/member")
+//    public ResponseEntity<Map<String, Object>> createStudyMember(
+//            @RequestBody StudyMemberRequestDTO studyMemberRequestDTO) {
+//
+//        StudyMemberCreationResult studyMemberCreationResult = studyService.studyMemberCreationResult(studyMemberRequestDTO);
+//
+//        // 응답 메시지 설정
+//        Map<String, Object> response = new HashMap<>();
+//        if (studyMemberCreationResult == StudyMemberCreationResult.SUCCESS) {
+//            response.put("status", 200);
+//            response.put("message", "성공적으로 초대 링크를 발송하였습니다.");
+//        } else if (studyMemberCreationResult == StudyMemberCreationResult.FORBIDDEN) {
+//            response.put("status", 403);
+//            response.put("message", "초대 링크를 만들지 못합니다.");
+//        } else if (studyMemberCreationResult == StudyMemberCreationResult.INTERNAL_SERVER_ERROR) {
+//            response.put("status", 500);
+//            response.put("message", "멤버 초대에 실패했습니다.");
+//        }
+//
+//        // HTTP 응답 반환
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
+    ///////////////////////////////////
 
-        StudyMemberCreationResult studyMemberCreationResult = studyService.studyMemberCreationResult(studyMemberRequestDTO);
-
-        // 응답 메시지 설정
-        Map<String, Object> response = new HashMap<>();
-        if (studyMemberCreationResult == StudyMemberCreationResult.SUCCESS) {
-            response.put("status", 200);
-            response.put("message", "성공적으로 초대 링크를 발송하였습니다.");
-        } else if (studyMemberCreationResult == StudyMemberCreationResult.FORBIDDEN) {
-            response.put("status", 403);
-            response.put("message", "초대 링크를 만들지 못합니다.");
-        } else if (studyMemberCreationResult == StudyMemberCreationResult.INTERNAL_SERVER_ERROR) {
-            response.put("status", 500);
-            response.put("message", "멤버 초대에 실패했습니다.");
-        }
-
-        // HTTP 응답 반환
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
     // [스터디룸] 스터디 그룹의 기간을 수정
     // [PUT] api/study/{studyinfo_id}
     @PutMapping("/study/{studyinfo_id}")
-    public ResponseEntity<Map<String, Object>> updateStudyGroup(
+    public void updateStudyGroup(
             @PathVariable("studyinfo_id") Long studyInfoId,
-            @RequestBody StudyUpdateDTO studyUpdateDto, HttpServletRequest request) {
+            @RequestBody StudyUpdateDTO studyUpdateDto) {
 
-        StudyUpdateResult studyUpdateResult = studyService.updateStudyGroup(studyInfoId, studyUpdateDto);
+//        StudyUpdateResult studyUpdateResult = studyService.updateStudyGroup(studyInfoId, studyUpdateDto);
+        studyUpdateDto.setId(studyInfoId);
+//        studyService.updateStudyGroup(studyUpdateDto.toEntity());
+
+//        log.info("수정할 StudyGroup ID {}", studyService.updateStudyGroup(studyUpdateDto.toEntity()));
 
         // 응답 메시지 설정
-        Map<String, Object> response = new HashMap<>();
-        if (studyUpdateResult == StudyUpdateResult.SUCCESS) {
-            response.put("status", 200);
-            response.put("message", "스터디 그룹 정보가 변경되었습니다.");
-        } else if (studyUpdateResult == StudyUpdateResult.NOT_FOUND) {
-            response.put("status", 404);
-            response.put("message", "스터디 그룹을 찾을 수 없습니다.");
-        } else if (studyUpdateResult == StudyUpdateResult.FORBIDDEN) {
-            response.put("status", 403);
-            response.put("message", "접근할 수 없는 회원입니다.");
-        }
+//        Map<String, Object> response = new HashMap<>();
+//        if (studyUpdateResult == StudyUpdateResult.SUCCESS) {
+//            response.put("status", 200);
+//            response.put("message", "스터디 그룹 정보가 변경되었습니다.");
+//        } else if (studyUpdateResult == StudyUpdateResult.NOT_FOUND) {
+//            response.put("status", 404);
+//            response.put("message", "스터디 그룹을 찾을 수 없습니다.");
+//        } else if (studyUpdateResult == StudyUpdateResult.FORBIDDEN) {
+//            response.put("status", 403);
+//            response.put("message", "접근할 수 없는 회원입니다.");
+//        }
 
         // HTTP 응답 반환
-        return new ResponseEntity<>(response, HttpStatus.OK);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
     }
+}
 
+    /*
     // [스터디룸] 스터디 공지사항 등록
     // [POST] api/study/{studyinfo_id}/board
     @PostMapping("/study/{studyinfo_id}/board")
@@ -434,3 +444,4 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
+     */

@@ -1,8 +1,6 @@
 package com.spoon.sok.domain.study.service;
 
-import com.spoon.sok.domain.study.dto.*;
-import com.spoon.sok.domain.study.enums.StudyMemberCreationResult;
-import com.spoon.sok.domain.study.enums.StudyUpdateResult;
+import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
@@ -12,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,23 +24,23 @@ public class StudyService {
     private final UserRepository userRepository;
 
     public List<StudyAppointmentDTO> getStudyMeeting(String userId) {
-        return studyRepository.findByUserIdStudyMeetings(userId);
+        return studyRepository.findByUserIdStudyMeetingsQuery(userId);
     }
 
     public List<StudyAppointmentDTO> getTodayStudyMeeting(String today, String userId) {
-        return studyRepository.findByTodayStudyMeetings(today, userId);
+        return studyRepository.findByTodayStudyMeetingsQuery(today, userId);
     }
 
     public List<StudyInfoDto> getUserStudyGroupProceeding(String userId) {
-        return studyRepository.findByUserIdStudyInfoProceeding(userId);
+        return studyRepository.findByUserIdStudyInfoProceedingQuery(userId);
     }
 
     public List<StudyInfoDto> getUserStudyGroupClose(String userId) {
-        return studyRepository.findByUserIdStudyInfoClose(userId);
+        return studyRepository.findByUserIdStudyInfoCloseQuery(userId);
     }
 
     public List<StudyInfoDto> searchUserStudyGroup(String userId, String title) {
-        return studyRepository.findByUserIdAndTitle(userId, title);
+        return studyRepository.findByUserIdAndTitleQuery(userId, title);
     }
 
     @Transactional
@@ -53,7 +49,7 @@ public class StudyService {
         // 웹 IDE 접속하기 위한 10글자 문자열 생성
         studyCreationDto.setEnterName(UUID.randomUUID().toString().substring(0, 10));
 
-        studyRepository.saveStudyGroup(studyCreationDto.getUsersId(),
+        studyRepository.saveStudyGroupQuery(studyCreationDto.getUsersId(),
                 studyCreationDto.getTitle(),
                 studyCreationDto.getDescription(),
                 studyCreationDto.getEnterName(),
@@ -61,8 +57,8 @@ public class StudyService {
                 studyCreationDto.getEndAt());
 
         // 최조 스터디 그룹을 만드는 사람은 바로 중간테이블에 저장(스터디 장)
-        Long newStudy = studyRepository.findByEnterName(studyCreationDto.getEnterName());
-        studyRepository.saveUserStudy(newStudy,
+        Long newStudy = studyRepository.findByEnterNameQuery(studyCreationDto.getEnterName());
+        studyRepository.saveUserStudyQuery(newStudy,
                 studyCreationDto.getUsersId(),
                 CurrentStatus.ACCEPT.toString(),
                 studyCreationDto.getEmail());
@@ -74,37 +70,40 @@ public class StudyService {
     public Long setUserStudyForEmail(Long studyinfo_id, String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if (!user.isPresent()) {
-            studyRepository.saveUserStudy(
+            studyRepository.saveUserStudyQuery(
                     studyinfo_id, null, CurrentStatus.WAIT.toString(), email);
             // 여기서 바로 PK 알아내야함
-            return studyRepository.findByStudyInfoAndStatusAndEmail(studyinfo_id, CurrentStatus.WAIT.toString(), email);
+            return studyRepository.findByStudyInfoAndStatusAndEmailQuery(studyinfo_id, CurrentStatus.WAIT.toString(), email);
 
         } else {
-            studyRepository.saveUserStudy(
+            studyRepository.saveUserStudyQuery(
                     studyinfo_id, String.valueOf(user.get().getId()), CurrentStatus.WAIT.toString(), email);
             // 여기서 바로 PK 알아내야함
-            return studyRepository.findByStudyInfoAndStatusAndEmail(studyinfo_id, CurrentStatus.WAIT.toString(), email);
+            return studyRepository.findByStudyInfoAndStatusAndEmailQuery(studyinfo_id, CurrentStatus.WAIT.toString(), email);
         }
     }
 
     public Optional<PreCheckUserStudyDto> CheckEnterStudyGroupCondition(Long userstudy_id) {
-        return studyRepository.findByUserStudyId(userstudy_id);
+        return studyRepository.findByUserStudyIdQuery(userstudy_id);
     }
 
     @Transactional
     public void updateStudyGroupStatus(ChangeUserStudyDto changeUserStudyDto) {
-        studyRepository.saveUserStudyStatus(changeUserStudyDto.getUsersId(),
+        studyRepository.saveUserStudyStatusQuery(changeUserStudyDto.getUsersId(),
                                             changeUserStudyDto.getUserstudyId());
     }
 
 
     public Optional<StudyInfoDetailDto> getStudyInfoAll(String studyinfoId) {
-        return studyRepository.findByStudyInfoId(studyinfoId);
+        return studyRepository.findByStudyInfoIdQuery(studyinfoId);
     }
 
-    public StudyUpdateResult updateStudyGroup(Long studyInfoId, StudyUpdateDTO studyUpdateDto) {
-    }
+//    public void updateStudyGroup(StudyInfo updateStudyInfo) {
+//        studyRepository.saveStudyGroup(updateStudyInfo);
+//        return;
+//    }
 
+    /*
     public boolean createStudyNotice(Long studyInfoId, String author, String title, String content, LocalDate uploadAt) {
     }
 
@@ -146,4 +145,5 @@ public class StudyService {
 
     public StudyMemberCreationResult studyMemberCreationResult(StudyMemberRequestDTO studyMemberRequestDTO) {
     }
+     */
 }

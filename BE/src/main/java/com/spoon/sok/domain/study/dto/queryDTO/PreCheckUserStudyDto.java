@@ -1,4 +1,4 @@
-package com.spoon.sok.domain.study.dto;
+package com.spoon.sok.domain.study.dto.queryDTO;
 
 public interface PreCheckUserStudyDto {
     Long getUserstudyId();

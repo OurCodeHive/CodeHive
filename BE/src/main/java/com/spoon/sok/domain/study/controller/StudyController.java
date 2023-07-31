@@ -1,8 +1,6 @@
 package com.spoon.sok.domain.study.controller;
 
-import com.spoon.sok.domain.study.dto.*;
-import com.spoon.sok.domain.study.enums.StudyMemberCreationResult;
-import com.spoon.sok.domain.study.enums.StudyUpdateResult;
+import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.service.StudyService;
 import com.spoon.sok.util.JwtTokenProvider;
@@ -15,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.*;
 import java.util.*;
 
 @Slf4j

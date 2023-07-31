@@ -4,6 +4,7 @@ package com.spoon.sok.domain.study.entity;
 import com.spoon.sok.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -50,4 +51,18 @@ public class StudyInfo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", nullable = false)
     private User users; // 스터디 그룹의 장
+
+    @Builder
+    public StudyInfo(Long id, String title, String studyroomSize, String description, String profileImage, String enterName, Date createdAt, Date endAt, List<StudyAppointment> meetingList, User users) {
+        this.id = id;
+        this.title = title;
+        this.studyroomSize = studyroomSize;
+        this.description = description;
+        this.profileImage = profileImage;
+        this.enterName = enterName;
+        this.createdAt = createdAt;
+        this.endAt = endAt;
+        this.meetingList = meetingList;
+        this.users = users;
+    }
 }

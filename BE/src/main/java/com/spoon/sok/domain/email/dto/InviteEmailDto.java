@@ -1,4 +1,4 @@
-package com.spoon.sok.domain.study.dto;
+package com.spoon.sok.domain.email.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

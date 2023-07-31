@@ -2,7 +2,7 @@ package com.spoon.sok.domain.email.controller;
 
 import com.spoon.sok.domain.email.dto.EmailAuthVerifyDto;
 import com.spoon.sok.domain.email.service.EmailService;
-import com.spoon.sok.domain.study.dto.InviteEmailDto;
+import com.spoon.sok.domain.email.dto.InviteEmailDto;
 import com.spoon.sok.domain.study.service.StudyService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
