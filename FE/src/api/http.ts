@@ -18,20 +18,20 @@ const authHttp =  axios.create({
 
 authHttp.interceptors.request.use(
     (config) => {
-      const accessToken = localStorage.getItem("accessToken")
-      config.headers.common["Authorization"] = `Bearer ${accessToken}`
-      return config
+      const accessToken = localStorage.getItem("accessToken");
+      config.headers.common["Authorization"] = `Bearer ${accessToken}`;
+      return config;
     }
 )
 
-  restApi.interceptors.response.use(
+authHttp.interceptors.response.use(
     async (response) => {
       const { config } = response;
       const originalRequest = config;
-  
-      if (response?.data?.code == 40300) {
-        const refresh_token = await getStorage("refreshToken")
-        return await restApi.get(`/account/token?refreshToken=${refresh_token}`)
+      console.log(response);
+      if (response?.data?.code == 403) {
+        const refreshToken = await getStorage("refreshToken")
+        return await authHttp.get(`/account/token?refreshToken=${refresh_token}`)
           .then(async (res) => {
             if (res.data.message === "OK") {
               setStorage("token", res.data.payload.access_token)
