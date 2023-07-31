@@ -3,12 +3,12 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import style from "@/res/css/module/FindPassword.module.css"
 import logo from "@/res/img/codehive_logo.png"
-import http from '@/api/http';
+import {nonAuthHttp} from '../../api/http';
 import { useNavigate } from 'react-router-dom';
 import { changePasswordUserState } from '@/atom/UserAtom';
 import { useRecoilState } from 'recoil';
 
-const api = http;
+const api = nonAuthHttp;
 const FindPassword = () => {
     let [verifiedEmail, setverifiedEmail] = useRecoilState(changePasswordUserState);
     //pw 입력시 뜨게 하기.
@@ -30,20 +30,13 @@ const FindPassword = () => {
         setVerify(true);
         console.log(email);
         setStartTimer(true);
-        // const tempNick = Http.get("/check/"+nickname);
-        // const url = import.meta.env.VITE_APP_SERVER + "check/" + nickname;
-        // axios.get(url)
-        // .then((res) =>{
-        //     console.log(res.data);
-        // })
-        
     }
     function turnToSetPwPage(){
 
-        // if(isCodeValid==false || email === ""){
-        //     alert("이메일 인증을 완료해주세요")
-        //     return;
-        // }
+        if(isCodeValid==false || email === ""){
+            alert("이메일 인증을 완료해주세요")
+            return;
+        }
         navigate("/changepassword");
 
     }
@@ -60,12 +53,13 @@ const FindPassword = () => {
                 .then((res)=> {
                 if(res){
                     alert(`${res.message}`)
-                    
+                    console.log(res);
                 }
             // startCodeTimer();
             setVerify(true);
             setStartTimer(true);
-            });
+            })
+            .catch(console.log);
         } else {
             alert("올바른 이메일을 입력해주세요")
         }
@@ -88,6 +82,18 @@ const FindPassword = () => {
             
     }
     function verifyCode(){
+        interface CustomError extends Error {
+            // name: string; 
+            // message: string;
+            // stack?: string; - Error 인터페이스 프로퍼티들을 직접 쓰거나 아니면 상속해준다.
+            response?: {
+               data?: {
+                message:string
+               };
+               status: number;
+               headers: string;
+            };
+         }
         interface customI {
             status : number,
             message : string,
@@ -115,17 +121,18 @@ const FindPassword = () => {
                 setverifiedEmail(email);
                 setCodeMsg(response.data.message)
                 console.log(response.data.message);
-                return response.data as customI;
-            } catch (error:any) {
-                const err = error.response.data.message as string
+                return response.data
+            } catch (error) {
+                const err = error as CustomError;
+                const msg = err?.response?.data?.message;
                 setIsCodeValid(false); //코드가 유효한지 확인
-                setCodeMsg(err);
+                setCodeMsg(msg as string);
                 console.log(codeMsg);
-                console.log(err); 
                 // return err;
             }
         }
         checkVerificationCode().then((res)=>{
+            res
             // if(res){
             //     setIsCodeValid(true); //코드가 유효한지 확인
             //     setCodeMsg(res.message)
