@@ -1,14 +1,16 @@
 import React, {useState} from "react";
+import { StudyType } from "@/type/StudyType";
 import {getList} from "@/api/study";
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/atom/UserAtom';
 import LnbFilter from "./item/Filter";
 import LnbListItem from "./item/ListItem";
-import { StudyType } from "@/type/StudyType";
 import LnbStyle from "@/res/css/module/Lnb.module.css";
 
-const param = {user : 1};
-const originStudyList:Array<StudyType> = await getList(param) as Array<StudyType>;
-
-const List: React.FC = () => {
+const List = async () => {
+    const userId = useRecoilValue(userState).userId;
+    const param = {user : userId};
+    const originStudyList:Array<StudyType> = await getList(param) as Array<StudyType>;
     const [studyList, setStudyList] = useState(originStudyList);
     const searchKeyWord = (data: string) => {
         setStudyList(originStudyList.filter((item) => {if(item.title.indexOf(data) > -1) return item;}));
