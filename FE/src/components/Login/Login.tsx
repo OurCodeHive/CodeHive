@@ -53,7 +53,7 @@ const Login = () => {
         async function doLogin(): Promise<userData | undefined> {
             try {
               ///
-              const response: AxiosResponse<userData> = await http.post("login/user", user);
+              const response: AxiosResponse<userData> = await nonAuthHttp.post("login/user", user);
               console.log(response.data);
               alert("로그인에 성공하였습니다");
               //recoil!

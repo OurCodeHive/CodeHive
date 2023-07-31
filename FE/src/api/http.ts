@@ -17,7 +17,7 @@ const http =  axios.create({
         'Content-Type': 'application/json',
     },
 });
-http.interceptors.request.use(refresh, refreshError);
+// http.interceptors.request.use(refresh, refreshError);
 
 //인증이 불필요한 axios instance
 const nonAuthHttp = axios.create({
