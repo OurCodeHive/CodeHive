@@ -13,16 +13,10 @@ const api = http;
  * get study list belong user
  * @param param { userIdx : number }
  * @param success 
- * @param fail 
+ * @param fail
  */
-const getList = async <T = StudyType>(param: object): Promise<T | undefined> => {
-    try {
-        const result = await api.get<T>(`/study`, { params: param });
-        return result.data;
-      } catch (error) {
-          const err = error as AxiosError
-          console.log(err);
-    }
+const getList = async (param: object, success: ({data} : {data: object}) => void, fail: (error: unknown) => void) => {
+    await api.get<Array<StudyType>>(`/study`, { params: param }).then(success).catch(fail);
 }
 
 /**
@@ -31,14 +25,8 @@ const getList = async <T = StudyType>(param: object): Promise<T | undefined> => 
  * @param success 
  * @param fail 
  */
-const insertData = async <T = number>(param: object): Promise<T | undefined> => {
-    try {
-        const result = await api.post<T>(`/study`, { params: JSON.stringify(param) });
-        return result.data;
-      } catch (error) {
-          const err = error as AxiosError
-          console.log(err);
-    }
+const insertData = async (param: object, success: () => void, fail: () => void) => {
+    await api.post(`/study`, { params: param }).then(success).catch(fail);
 }
 
 export {getList, insertData};

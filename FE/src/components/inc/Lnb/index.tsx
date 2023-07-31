@@ -27,7 +27,7 @@ const Lnb: React.FC = () => {
             <img src={LnbLogo} alt="사이드바 로고" />
             <div className={`col-12 ${LnbStyle.lnb_con}`}>
                 <a href="/" className={`col-12 tc ${LnbStyle.home_btn}`}><img src={HomeIcon} alt="홈 아이콘"/>Home</a>
-                
+                <LnbList />
                 <button className={`col-12 mt50 ${LnbStyle.new_btn}`} onClick={() => changePopupFlag(true)}><img src={PlusIcon} alt="홈 아이콘"/>New</button>
                 <ContentsPopup PopupInfo={PopupInfo} />
             </div>

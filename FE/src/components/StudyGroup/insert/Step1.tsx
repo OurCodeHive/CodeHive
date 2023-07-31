@@ -1,11 +1,14 @@
 import { useState, useRef } from 'react';
 import { insertData } from "@/api/study";
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/atom/UserAtom';
 import { ConfirmPopup } from "@/components/Util/Popup";
 import CustomEditor from "@/components/Util/CustomEditor";
 import CustomDatePickcer from "@/components/Util/CustomDatePicker";
 import FileInput from "@/components/Util/File/Input";
 
 const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateIdx: (idx: number) => void}) => {
+    const userId = useRecoilValue(userState).userId;
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
     const [AlertPopupTitle, setAlertPopupTitle] = useState("");
     const today = new Date();
@@ -54,8 +57,8 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
             return;
         }
 
-        const params:object = {
-            user_id : 1,
+        const params = {
+            userId : 1,
             title : titleInput.current.value,
             startAt : startDateInput.current.value,
             endAt : endDateInput.current.value,
@@ -64,6 +67,12 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
         };
 
         console.log(params);
+        await insertData(params,
+            () => {
+                alert("생성 완료!");
+            },
+            () => {alert("생성에 실패했습니다");})
+
         const result = await insertData(params);
         if(result == 1){ //성공한 경우
             updateIdx(2);
