@@ -114,7 +114,7 @@ public class UserService {
 
         Optional<Email> email = emailRepository.findByNewestCode(requestDto.getEmail());
 
-        if (email.isEmpty() || email.get().getIsauth() != 1) {
+        if (email.isEmpty() || email.get().getIsauth() != 1 || email.get().getAuthCode() != requestDto.getAuthcode()) {
             return 3;
         }
 

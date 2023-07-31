@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,13 +43,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             throw new RuntimeException("Email Not Found From OAuth2 Provider");
         }
 
-        User user = userRepository.findByEmail(oAuth2UserInfo.getEmail()).orElse(null);
+        Optional<User> optionalUser = userRepository.findByEmail(oAuth2UserInfo.getEmail());
+        User user = null;
 
-        if (user != null) {
-            if (!user.getAuthProvider().equals(authProvider)) {
+        if (!optionalUser.isEmpty()) {
+            if (!optionalUser.get().getAuthProvider().equals(authProvider)) {
                 throw new RuntimeException("Email already signed up.");
             }
-            user = updateUser(user, oAuth2UserInfo);
+            user = updateUser(optionalUser.get(), oAuth2UserInfo);
         } else {
             user = registUser(authProvider, oAuth2UserInfo);
         }
