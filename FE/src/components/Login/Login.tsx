@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 import { userState } from '@/atom/UserAtom';
-import { nonAuthHttp } from '@/api/http';
+import { nonAuthHttp, http } from '@/api/http';
 import style from "@/res/css/module/Login.module.css"
 import logo from "@/res/img/codehive_logo.png"
 import google from "@/res/img/google_logo.png"
@@ -53,7 +53,7 @@ const Login = () => {
         async function doLogin(): Promise<userData | undefined> {
             try {
               ///
-              const response: AxiosResponse<userData> = await nonAuthHttp.post("login/user", user);
+              const response: AxiosResponse<userData> = await http.post("login/user", user);
               console.log(response.data);
               alert("로그인에 성공하였습니다");
               //recoil!
@@ -138,7 +138,8 @@ const Login = () => {
             <button onClick={login} style={{fontWeight:"bold"}} type="submit">로그인</button>
         </div>
         <div className={`${style.btn_area}`}>
-            <button onClick={googleLogin} className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></button>
+            {/* <button onClick={googleLogin} className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></button> */}
+            <a href='http://localhost:8080/oauth2/authorize/google?redirect_uri=http://localhost:5173/study' className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></a>
         </div>
     </section>
     </div>

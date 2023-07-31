@@ -96,6 +96,7 @@ const Signup = () => {
         async function sendVerificationCode(): Promise<userData | undefined> {
             try {
                 const response: AxiosResponse<userData> = await api.get(`/email/auth?email=${email}`);
+                console.log(email);
                 return response.data;
             } catch (error) {
                 const err = error as AxiosError

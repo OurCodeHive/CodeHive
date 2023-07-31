@@ -10,8 +10,8 @@ import {refresh, refreshError} from "./token";
 
 //인증이 필요한 axios instance
 const http =  axios.create({
-    // baseURL : 'http://localhost:8080/api',
-    baseURL : 'https://hiveapi.minsungblog.com/api',
+    baseURL : 'http://localhost:8080/api',
+    // baseURL : 'https://hiveapi.minsungblog.com/api',
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
@@ -21,7 +21,8 @@ http.interceptors.request.use(refresh, refreshError);
 
 //인증이 불필요한 axios instance
 const nonAuthHttp = axios.create({
-    baseURL : 'https://hiveapi.minsungblog.com/api',
+    // baseURL : 'https://hiveapi.minsungblog.com/api',
+    baseURL : 'http://localhost:8080/api',
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
