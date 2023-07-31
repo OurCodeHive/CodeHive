@@ -5,7 +5,7 @@ import CustomEditor from "@/components/Util/CustomEditor";
 import CustomDatePickcer from "@/components/Util/CustomDatePicker";
 import FileInput from "@/components/Util/File/Input";
 
-const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateIdx: () => void}) => {
+const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateIdx: (idx: number) => void}) => {
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
     const [AlertPopupTitle, setAlertPopupTitle] = useState("");
     const today = new Date();
@@ -64,10 +64,9 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
         };
 
         console.log(params);
-        //const result:number = await insertData(params);
-        const result = 1;
+        const result = await insertData(params);
         if(result == 1){ //성공한 경우
-            
+            updateIdx(2);
         } else { //실패한 경우
             console.log("error");
         }
