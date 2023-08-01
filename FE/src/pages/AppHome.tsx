@@ -7,7 +7,7 @@ const AppHome = () => {
         <>
         
         <Background></Background>
-        <AppStudy/>
+        {/* <AppStudy/> */}
         {/* <Intro></Intro> */}
 
         </>

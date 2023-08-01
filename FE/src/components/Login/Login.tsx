@@ -69,7 +69,7 @@ const Login = () => {
                 refreshToken: response.data.refreshToken});
                localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
                localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
-               navigate("/study");
+               navigate("/home");
               return response.data;
             } catch (error) {
                 // const err = error as any
