@@ -1,5 +1,6 @@
 package com.spoon.sok.domain.study.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spoon.sok.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,11 +28,13 @@ public class StudyNotice {
     private Date createdAt; // 스터디 공지사항 등록일자
 
     // study_info 스터디 정보 테이블과 다대일 관계 - studyinfo_id
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyinfo_id", nullable = false) // 스터디 정보키
     private StudyInfo studyInfo;
 
     // study_info 스터디 정보 테이블과 다대일 관계 - user_id
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", nullable = false)
     private User user; // 스터디 그룹장(공지사항 작성자)

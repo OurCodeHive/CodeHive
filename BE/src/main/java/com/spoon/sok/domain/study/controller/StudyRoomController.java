@@ -4,15 +4,19 @@ package com.spoon.sok.domain.study.controller;
 
 import com.spoon.sok.domain.study.dto.requestDTO.StudyUpdateDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
+import com.spoon.sok.domain.study.entity.StudyNotice;
 import com.spoon.sok.domain.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -56,25 +60,23 @@ public class StudyRoomController {
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-}
 
-    /*
-    // [스터디룸] 스터디 공지사항 조회
     // [GET] api/study/{studyinfo_id}/board?page={int}&size={int}
     @GetMapping("/study/{studyinfo_id}/board")
-    public ResponseEntity<Map<String, Object>> getStudyNotices(
+    public ResponseEntity<Map<String, Object>> getStudyNoticeList(
             @PathVariable("studyinfo_id") Long studyInfoId,
             @RequestParam("page") int page,
             @RequestParam("size") int size) {
 
+        Pageable pageRequest = PageRequest.of(page, size);
         // 스터디 공지사항 조회 서비스 호출
-        List<StudyNoticeDTO> studyNotices = studyService.getStudyNotices(studyInfoId, page, size);
+        List<StudyNotice> studyNoticeList = studyService.getStudyNoticeList(studyInfoId, pageRequest);
 
         // 응답 메시지 설정
         Map<String, Object> response = new HashMap<>();
-        if (studyNotices != null) {
+        if (studyNoticeList != null) {
             response.put("status", 200);
-            response.put("study_notices", studyNotices);
+            response.put("studyNoticeList", studyNoticeList);
         } else {
             response.put("status", 400);
             response.put("message", "공지사항 조회에 실패하였습니다.");
@@ -83,7 +85,9 @@ public class StudyRoomController {
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+}
 
+    /*
     // [스터디룸] 스터디 관련 공지사항 수정
     // [PUT] api/study/{studyinfo_id}/board/{studyboard_id}
     @PutMapping("/study/{studyinfo_id}/board/{studyboard_id}")
