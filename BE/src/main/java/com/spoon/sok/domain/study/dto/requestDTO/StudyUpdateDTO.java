@@ -13,6 +13,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class StudyUpdateDTO {
     private Long id;
+//    private User users;
+    private Long usersId;
     private String title;        // 스터디 그룹의 제목
     private String description;  // 스터디 그룹의 설명
     private Date startAt;      // 스터디 그룹의 시작 날짜

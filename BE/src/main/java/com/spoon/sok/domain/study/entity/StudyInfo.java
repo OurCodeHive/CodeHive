@@ -67,4 +67,8 @@ public class StudyInfo {
         this.meetingList = meetingList;
         this.users = users;
     }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
 }
