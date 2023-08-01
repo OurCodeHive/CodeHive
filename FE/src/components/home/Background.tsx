@@ -1,7 +1,7 @@
 import React from 'react';
 import homePicture from '@/res/img/home_background.jpg';
 import style from '@/res/css/module/Home.module.css'
-import Intro from './intro';
+import Intro from './Intro';
 import Comedy from './Comedy';
 import Schedule from './Schedule';
 function Background(){
