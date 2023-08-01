@@ -63,8 +63,8 @@ public class StudyInfo {
     private List<StudyArchive> archiveList = new ArrayList<>();
 
     //chat 채팅 테이블과 일대다 관계
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
-    private List<Chat> chatList = new ArrayList<>();
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
+//    private List<Chat> chatList = new ArrayList<>();
 
     //study_appointment 스터디미팅(회의) 테이블과 일대다 관계
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
@@ -92,4 +92,13 @@ public class StudyInfo {
     public void updateTitle(String title) {
         this.title = title;
     }
+
+    public void updateEndAt(Date endAt) {
+        this.endAt = endAt;
+    }
+
+    public void updateCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
 }

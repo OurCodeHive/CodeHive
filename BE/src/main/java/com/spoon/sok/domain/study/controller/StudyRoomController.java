@@ -8,16 +8,11 @@ import com.spoon.sok.domain.study.enums.StudyUpdateResult;
 import com.spoon.sok.domain.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Instanceof;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -25,6 +20,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+
 public class StudyRoomController {
 
     private final StudyService studyService;
@@ -33,18 +29,23 @@ public class StudyRoomController {
     // [PUT] api/study/{studyinfo_id}
     @PutMapping("/study/{studyinfoId}")
     public ResponseEntity<Map<String, Object>> updateStudyGroup(
-            @PathVariable("studyinfoId") Long studyinfoId, @RequestBody StudyUpdateDTO updateInfo) {
+            @PathVariable("studyinfoId") Long studyinfoId, @RequestBody StudyUpdateDTO studyUpdateDTO) {
 
-        updateInfo.setId(studyinfoId);
-        log.info("여기 이제 업데이트 했어 {}", studyService.updateStudyGroup(studyinfoId, updateInfo));
+        StudyInfo studyInfo = studyUpdateDTO.toEntity(); // StudyUpdateDTO를 StudyInfo로 변환
+
+        // 수정된 studyInfo를 전달
+        StudyUpdateResult result = studyService.updateStudyGroup(studyinfoId, studyInfo);
 
         // 응답 메시지 설정
         Map<String, Object> response = new HashMap<>();
+        response.put("result", result); // Update 결과 추가 (필요에 따라 다른 정보도 추가 가능)
 
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
+
+
 
     /*
     // [스터디룸] 스터디 공지사항 등록

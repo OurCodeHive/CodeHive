@@ -4,6 +4,7 @@ import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.dto.requestDTO.StudyUpdateDTO;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
+import com.spoon.sok.domain.study.enums.StudyUpdateResult;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
 import com.spoon.sok.domain.user.repository.UserRepository;
@@ -101,17 +102,23 @@ public class StudyService {
     }
 
     //////////////////////////////////// here
+    // Long pk -> Long id 로 수정
     @Transactional
-    public int updateStudyGroup(Long pk, StudyUpdateDTO updateStudyInfo) {
-        Optional<StudyInfo> target = studyRepository.findById(pk);
+    public StudyUpdateResult updateStudyGroup(Long id, StudyInfo studyUpdateDTO) {
+        Optional<StudyInfo> target = studyRepository.findById(id);
 
         if (target.isPresent()) {
-            target.get().updateTitle(updateStudyInfo.getTitle());
-            studyRepository.save(target.get());
-            return 0;
+            StudyInfo studyInfo = target.get();
+            studyInfo.updateTitle(studyUpdateDTO.getTitle());
+            studyInfo.updateCreatedAt(studyUpdateDTO.getCreatedAt());
+            studyInfo.updateEndAt(studyUpdateDTO.getEndAt());
+            studyRepository.save(studyInfo); // 생략 가능
+            return StudyUpdateResult.SUCCESS;
         }
-        return 1;
+
+        return StudyUpdateResult.NOT_FOUND;
     }
+
 
     /*
     public boolean createStudyNotice(Long studyInfoId, String author, String title, String content, LocalDate uploadAt) {
