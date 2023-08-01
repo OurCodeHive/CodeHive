@@ -1,6 +1,7 @@
 package com.spoon.sok.domain.user.controller;
 
 import com.spoon.sok.domain.user.dto.request.*;
+import com.spoon.sok.domain.user.dto.response.GetUserInfoResponseDto;
 import com.spoon.sok.domain.user.dto.response.UserResponseDto;
 import com.spoon.sok.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -197,6 +198,42 @@ public class UserController {
 
         result.put("status", 200);
         result.put("message", "로그아웃 완료");
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+    }
+
+    @PostMapping("/info/{userId}")
+    public ResponseEntity<?> getUserInfo(@PathVariable Long userId) {
+        result = new HashMap<>();
+
+        GetUserInfoResponseDto responseDto = userService.getUserInfo(userId);
+
+        if (responseDto == null) {
+            result.put("status", 400);
+            result.put("message", "회원을 불러오는데 실패하였습니다.");
+
+            return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
+        }
+
+        result.put("email", responseDto.getEmail());
+        result.put("nickname", responseDto.getNickname());
+        result.put("status", 200);
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+    }
+
+    @PutMapping("/info/update")
+    public ResponseEntity<?> updateUserInfo(@RequestBody UserUpdateInfoRequestDto requestDto) {
+        result = new HashMap<>();
+
+        if (userService.updateUser(requestDto)) {
+            result.put("status", 400);
+            result.put("message", "해당 유저를 찾을 수 없습니다");
+
+            return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
+        }
+        result.put("status", 200);
+        result.put("message", "회원 정보가 수정되었습니다.");
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }

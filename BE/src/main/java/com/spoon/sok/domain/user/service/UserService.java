@@ -4,6 +4,7 @@ import com.spoon.sok.domain.email.entity.Email;
 import com.spoon.sok.domain.email.repository.EmailRepository;
 import com.spoon.sok.domain.user.auth.AuthProvider;
 import com.spoon.sok.domain.user.dto.request.*;
+import com.spoon.sok.domain.user.dto.response.GetUserInfoResponseDto;
 import com.spoon.sok.domain.user.dto.response.UserResponseDto;
 import com.spoon.sok.domain.user.entity.User;
 import com.spoon.sok.domain.user.enums.Authority;
@@ -16,6 +17,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -186,6 +188,34 @@ public class UserService {
         Optional<User> user = userRepository.findByEmail(requestDto.getEmail());
 
         userRepository.deleteById(user.get().getId());
+
+        return true;
+    }
+
+    public GetUserInfoResponseDto getUserInfo(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isEmpty()) {
+            return null;
+        }
+
+        GetUserInfoResponseDto responseDto = GetUserInfoResponseDto.builder()
+                .email(user.get().getEmail())
+                .nickname(user.get().getNickname())
+                .build();
+
+        return responseDto;
+    }
+
+    @Transactional
+    public boolean updateUser(UserUpdateInfoRequestDto requestDto) {
+        Optional<User> user = userRepository.findById(requestDto.getUserId());
+
+        if (user.isEmpty()) {
+            return false;
+        }
+
+        user.get().updateUserInfo(requestDto.getEmail(), passwordEncoder.encode(requestDto.getPassword()), requestDto.getNickname());
 
         return true;
     }

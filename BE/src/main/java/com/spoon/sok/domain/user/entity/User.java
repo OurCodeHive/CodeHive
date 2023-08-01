@@ -79,6 +79,12 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public void updateUserInfo(String email, String password, String nickname) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
