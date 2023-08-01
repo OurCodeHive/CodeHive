@@ -1,0 +1,36 @@
+.backgraound {
+  background-color: #222226;
+  height: 6vh;
+}
+
+.boxPadding {
+  padding: 10px 10px 10px 10px;
+  display: flex;
+  color: wheat;
+}
+
+.boxSetting {
+  position: absolute;
+}
+
+.saveBtn {
+  background-color: #423423;
+  border-radius: 4px;
+  border: 1px solid #423423;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 3px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
+}
+
+.notice {
+  margin: auto;
+}
+
+.leftBtnBox {
+  position: absolute;
+  right: 1vh;
+}

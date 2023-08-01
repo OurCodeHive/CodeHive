@@ -1,0 +1,64 @@
+.container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+.container::-webkit-scrollbar-track {
+  background-color: grey;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+}
+
+.container {
+  height: 87vh;
+  padding-bottom: 5px;
+}
+
+.idePage {
+  background-color: #222326;
+  height: 100vh;
+}
+
+.ideContainer {
+  display: flex;
+}
+
+.quillBox {
+  width: 25%;
+  height: 93.8vh;
+  color: #A18DC6;
+  background-color: #222326;
+  padding-bottom:5px;
+}
+
+.codeEditer {
+  width:  60%;
+  padding-bottom: 70px;
+}
+
+.languageBtn {
+  color: wheat;
+  background-color: #222326;
+  border: none;
+}
+
+.leftSpace {
+  width: 15%;
+  color: #222326;
+  flex-direction: column;
+  background-color: #222326;
+}
+
+.chatIcon {
+  position: absolute;
+  z-index: 2;
+  right: 5vh;
+  bottom: 4vh;
+  width: 50px;
+}

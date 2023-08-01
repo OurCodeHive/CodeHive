@@ -1,5 +1,5 @@
 import VoiceComponent from './VoiceComp';
-import './UserVideo.css';
+import style from '@/res/css/module/UserVideo.module.css';
 
 function UserVideoComponent(props:any) {
 
@@ -8,11 +8,7 @@ function UserVideoComponent(props:any) {
 			{
 				props.streamManager !== undefined ? (
 					<>
-						<div className="streamcomponent" 
-							style={{
-								display:"none",
-							}}
-						>
+						<div className={style.streamcomponent}>
 							<VoiceComponent streamManager={props.streamManager} />
 						</div>
 					</>
