@@ -28,7 +28,11 @@ const Login = () => {
         event.preventDefault();
         navigate("/findpassword");
     }
-
+    function enter(e:React.KeyboardEvent<HTMLInputElement>):void{
+        if(e.key === 'Enter'){
+            login();
+        }
+    }
     ////////////////////////////
     //로그인 클릭 시 실행되는 함수
     ////////////////////////////
@@ -118,6 +122,7 @@ const Login = () => {
                 onChange={(e) => {
                     setPw(e.target.value);
                 }}
+                onKeyDown={(e)=>{enter(e)}}
                     type="password"
                     name="pw"
                     id="pw"
@@ -131,11 +136,11 @@ const Login = () => {
             <a onClick={(event)=>findPassword(event)} href="">비밀번호를 잊으셨나요?</a>
         </div>
         <div className={style.btn_area}>
-            <button onClick={login} style={{fontWeight:"bold"}} type="submit">로그인</button>
+            <button  onClick={login} style={{fontWeight:"bold"}} type="submit">로그인</button>
         </div>
         <div className={`${style.btn_area}`}>
             {/* <button onClick={googleLogin} className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></button> */}
-            <a href='http://localhost:8080/oauth2/authorize/google?redirect_uri=http://localhost:5173/study' className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></a>
+            <a href='https://hiveapi.minsungblog.com/oauth2/authorize/google?redirect_uri=http://localhost:5173/study' className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></a>
         </div>
     </section>
     </div>
