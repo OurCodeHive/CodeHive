@@ -5,6 +5,7 @@ import { EmailCheck } from "@/utils/valid/Valid";
 import InviteEmailStyle from '@/res/css/module/InviteEmail.module.css';
 
 const StudyInsert2Step = ({closePop, studyInfoId} : {closePop: () => void, studyInfoId: number}) => {
+    const [CompleteStatus, setCompleteStatus] = useState(false);
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
     const [AlertPopupTitle, setAlertPopupTitle] = useState("");
     const [EmailList, setEmailList] = useState(["",""]);
@@ -17,8 +18,11 @@ const StudyInsert2Step = ({closePop, studyInfoId} : {closePop: () => void, study
         ClosePopupProp : () => changePopupFlag(false),
     }
 
-    const changePopupFlag = (flag: boolean) => {
+    const changePopupFlag = ( flag:boolean ) => {
         setAlertPopupFlag(() => flag);
+        if(CompleteStatus){ //전송완료일 때
+            closePop();
+        }
     };
 
     //이메일 input 추가 함수
@@ -64,7 +68,9 @@ const StudyInsert2Step = ({closePop, studyInfoId} : {closePop: () => void, study
             email : curEmail
         }
         await inviteMember(param, () => {
-            alert("전송 성공!");
+            setAlertPopupTitle("초대 이메일이 전송되었습니다");
+            setCompleteStatus(() => true);
+            changePopupFlag(true);
         }, () => {
             setAlertPopupTitle("에러가 발생했습니다<br/>관리자에 문의해주세요");
             changePopupFlag(true);
