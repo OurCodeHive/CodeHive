@@ -85,6 +85,10 @@ public class User implements UserDetails {
         this.nickname = nickname;
     }
 
+    public void updateUserStatus(UserStatus status) {
+        this.status = status;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()

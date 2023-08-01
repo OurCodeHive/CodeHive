@@ -57,6 +57,10 @@ public class UserService {
             return UserResponseDto.builder().responseCode(3).build();
         }
 
+        if (user.get().getStatus() == UserStatus.LEAVE || user.get().getStatus() == UserStatus.FORCELEAVE) {
+            return UserResponseDto.builder().responseCode(4).build();
+        }
+
         UsernamePasswordAuthenticationToken authenticationToken = requestDto.toAuthentication();
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
@@ -185,9 +189,13 @@ public class UserService {
 
     @Transactional
     public boolean resign(UserResignRequestDto requestDto) {
-        Optional<User> user = userRepository.findByEmail(requestDto.getEmail());
+        Optional<User> user = userRepository.findById(requestDto.getUserId());
 
-        userRepository.deleteById(user.get().getId());
+        if (user.isEmpty()) {
+            return false;
+        }
+
+        user.get().updateUserStatus(UserStatus.LEAVE);
 
         return true;
     }
@@ -216,6 +224,14 @@ public class UserService {
         }
 
         user.get().updateUserInfo(requestDto.getEmail(), passwordEncoder.encode(requestDto.getPassword()), requestDto.getNickname());
+
+        return true;
+    }
+
+    public boolean resignbyHost(UserResignRequestDto requestDto) {
+        Optional<User> user = userRepository.findById(requestDto.getUserId());
+
+        userRepository.deleteById(user.get().getId());
 
         return true;
     }

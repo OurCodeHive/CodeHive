@@ -49,6 +49,11 @@ public class UserController {
                     result.put("message", "비밀번호가 일치하지 않습니다.");
 
                     return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
+                case 4:
+                    result.put("status", 400);
+                    result.put("message", "탈퇴된 회원입니다.");
+
+                    return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -238,15 +243,32 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/resign")
-    public ResponseEntity<?> resign(@RequestBody UserResignRequestDto requestDto) {
+    @PostMapping("/resign/host")
+    public ResponseEntity<?> resignbyHost(@RequestBody UserResignRequestDto requestDto) {
         result = new HashMap<>();
 
-        boolean responseCode = userService.resign(requestDto);
+        boolean responseCode = userService.resignbyHost(requestDto);
 
         if (responseCode) {
             result.put("status", 200);
             result.put("message", "회원 삭제 완료");
+
+            return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+        } else {
+            result.put("status", 400);
+            result.put("message", "잘못된 요청입니다.");
+
+            return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/resign")
+    public ResponseEntity<?> resign(@RequestBody UserResignRequestDto requestDto) {
+        boolean responseCode = userService.resign(requestDto);
+
+        if (responseCode) {
+            result.put("status", 200);
+            result.put("message", "회원 탈퇴가 완료되었습니다.");
 
             return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
         } else {

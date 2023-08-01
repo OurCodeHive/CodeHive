@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class UserResignRequestDto {
-    private String email;
+    private Long userId;
 }
