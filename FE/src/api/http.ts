@@ -27,7 +27,7 @@ const cookies:ICookies = new Cookies();
 //   }
 
 //인증이 필요한 axios instance
-const authHttp : AxiosInstance =  axios.create({
+const authHttp =  axios.create({
     baseURL: import.meta.env.VITE_APP_SERVER as string,
     timeout: 10000,
     headers: {
