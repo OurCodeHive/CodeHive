@@ -1,5 +1,6 @@
 package com.spoon.sok.config;
 
+import com.spoon.sok.domain.user.auth.ExceptionHandlerFilter;
 import com.spoon.sok.domain.user.auth.OAuth2AuthenticationFailureHandler;
 import com.spoon.sok.domain.user.auth.OAuth2AuthenticationSuccessHandler;
 import com.spoon.sok.domain.user.repository.CookieAuthorizationRequestRepository;
@@ -16,11 +17,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
@@ -48,7 +50,7 @@ public class WebSecurityConfig {
                     sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests((authorizeRequests) -> {
-                    authorizeRequests.requestMatchers("/**",
+                    authorizeRequests.requestMatchers(
                                     "/api/login/user",
                                     "/oauth2/**",
                                     "/api/reissue",
@@ -74,6 +76,7 @@ public class WebSecurityConfig {
                     oauth2.failureHandler(oAuth2AuthenticationFailureHandler);
                 })
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new ExceptionHandlerFilter(), OAuth2LoginAuthenticationFilter.class)
                 .build();
     }
 

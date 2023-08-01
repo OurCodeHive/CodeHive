@@ -11,9 +11,9 @@ public class WebCorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOriginPatterns("*")
-                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")    //허용되는 Method
-                .allowedHeaders("*")    //허용되는 헤더
+                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
                 .allowCredentials(true)
-                .maxAge(3600);   //허용 시간
+                .maxAge(3600);
     }
 }
