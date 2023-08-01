@@ -2,28 +2,36 @@ import React from 'react';
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 import { userState } from '@/atom/UserAtom';
+import { nonAuthHttp, authHttp } from '@/api/http';
 import style from "@/res/css/module/Login.module.css"
 import logo from "@/res/img/codehive_logo.png"
 import google from "@/res/img/google_logo.png"
 import { useNavigate } from 'react-router-dom';
 import { PassThrough } from 'stream';
+import moment from 'moment';
 import axios, {AxiosError, AxiosResponse} from 'axios';
+
+
 const Login = () => {
     let [email, setEmail] = useState("")
     let [pw, setPw] = useState("");
     let [userInfo, setUserInfo] = useRecoilState(userState);
-    
 
     const navigate = useNavigate();
 
-    function signUpPage(event: any) {
+    function signUpPage(event: React.MouseEvent<HTMLAnchorElement> ) {
         event.preventDefault();
         navigate("/signup");
     }
 
-    function findPassword(event: any) {
+    function findPassword(event: React.MouseEvent<HTMLAnchorElement> ) {
         event.preventDefault();
         navigate("/findpassword");
+    }
+    function enter(e:React.KeyboardEvent<HTMLInputElement>):void{
+        if(e.key === 'Enter'){
+            login();
+        }
     }
     ////////////////////////////
     //로그인 클릭 시 실행되는 함수
@@ -45,11 +53,15 @@ const Login = () => {
             userId : number,
             nickname : string,
         }
+<<<<<<< HEAD
         const url = "https://hiveapi.minsungblog.com/api/login/user";
+=======
+        // const url = import.meta.env.VITE_APP_SERVER as string + "login/user";
+>>>>>>> 8cc343aca46c251a20d0e28e44aae248324bd93e
         async function doLogin(): Promise<userData | undefined> {
             try {
               ///
-              const response: AxiosResponse<userData> = await axios.post(url, user);
+              const response: AxiosResponse<userData> = await authHttp.post("login/user", user);
               console.log(response.data);
               alert("로그인에 성공하였습니다");
               //recoil!
@@ -59,12 +71,15 @@ const Login = () => {
                 nickname : response.data.nickname,
                 accessToken : response.data.accessToken,
                 refreshToken: response.data.refreshToken});
+               localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
+               localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
                navigate("/study");
               return response.data;
             } catch (error) {
-                const err = error as any
-                console.log(err); //실패는 여기로
-                alert(err.response?.data.message);
+                // const err = error as any
+                console.log(error); //실패는 여기로
+                // alert(error.response?.data.message);
+                alert("로그인에 실패하였습니다.")
                 return;
             }
           }
@@ -74,23 +89,17 @@ const Login = () => {
             // alert("로그인 되었습니다");
           })
           .catch((err) => {console.log(err)})
-        ///
-        // axios.post(url, user)
-        // .then((res) =>{
-        //     console.log(res.data);
-        // })
     }
     function googleLogin(){
         const user = {
             "email" : email,
             "password" : pw
         }
-        const config = {"Content-Type": 'application/json'};
-        const url = import.meta.env.VITE_APP_SERVER + "login/google";
-        axios.post(url, user)
+        // const url = import.meta.env.VITE_APP_SERVER + "login/google";
+        nonAuthHttp.post(``, user)
         .then((res) =>{
             console.log(res.data);
-        })
+        }).catch(console.log)
     }
 
 	return (
@@ -117,6 +126,7 @@ const Login = () => {
                 onChange={(e) => {
                     setPw(e.target.value);
                 }}
+                onKeyDown={(e)=>{enter(e)}}
                     type="password"
                     name="pw"
                     id="pw"
@@ -130,10 +140,11 @@ const Login = () => {
             <a onClick={(event)=>findPassword(event)} href="">비밀번호를 잊으셨나요?</a>
         </div>
         <div className={style.btn_area}>
-            <button onClick={login} style={{fontWeight:"bold"}} type="submit">로그인</button>
+            <button  onClick={login} style={{fontWeight:"bold"}} type="submit">로그인</button>
         </div>
         <div className={`${style.btn_area}`}>
-            <button onClick={googleLogin} className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></button>
+            {/* <button onClick={googleLogin} className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></button> */}
+            <a href='https://hiveapi.minsungblog.com/oauth2/authorize/google?redirect_uri=http://localhost:5173/study' className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></a>
         </div>
     </section>
     </div>
