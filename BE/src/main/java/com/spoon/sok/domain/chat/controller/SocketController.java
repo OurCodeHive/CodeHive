@@ -1,15 +1,12 @@
 package com.spoon.sok.domain.chat.controller;
 
-import com.spoon.sok.domain.chat.dto.ChatDto;
-import com.spoon.sok.domain.chat.dto.CompileRequestDto;
-import com.spoon.sok.domain.chat.dto.CompileResponseDto;
-import com.spoon.sok.domain.chat.dto.NoticeDto;
+import com.spoon.sok.CodeExecuteService;
+import com.spoon.sok.domain.chat.dto.*;
 import com.spoon.sok.domain.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,34 +15,31 @@ public class SocketController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final ChatService chatService;
+    private final CodeExecuteService codeExecuteService;
 
     @MessageMapping("/chat")
     public void sendMessage(ChatDto chatDto, SimpMessageHeaderAccessor accessor) {
         chatService.mongoInsert(chatDto);
-        System.out.println(chatDto);
         simpMessagingTemplate.convertAndSend("/sub/chat/" + chatDto.getStudyRoomId(), chatDto);
     }
 
     @MessageMapping("/notice")
     public void sendNotice(NoticeDto noticeDto, SimpMessageHeaderAccessor accessor) {
-        System.out.println(noticeDto);
         simpMessagingTemplate.convertAndSend("/sub/notice/" + noticeDto.getStudyRoomId(), noticeDto);
     }
 
-    @MessageMapping("/compile")
-    public void getCodeAndInputAndReturnResult(CompileRequestDto compileRequestDto, SimpMessageHeaderAccessor accessor) {
-        // System.out.println(compileRequestDto);
-        // 여기서 컴파일 하고 결과 받아서 리턴해야하함
-        System.out.println("받음");
-        System.out.println(compileRequestDto);
-        CompileResponseDto responseDto = new CompileResponseDto();
+    @MessageMapping("/submit")
+    public void submitNotice(SubmitRequestDto compileRequestDto, SimpMessageHeaderAccessor accessor) {
+        SubmitResponseDto responseDto = new SubmitResponseDto();
         responseDto.setUserId(compileRequestDto.getUserId());
         responseDto.setStudyRoomId(compileRequestDto.getStudyRoomId());
+        simpMessagingTemplate.convertAndSend("/sub/submit/" + responseDto.getStudyRoomId(), responseDto);
+    }
 
-        responseDto.setResult("구현중 입니다.");
-
-        System.out.println(responseDto);
-        simpMessagingTemplate.convertAndSend("/sub/compile/" + responseDto.getStudyRoomId(), responseDto);
+    @MessageMapping("/run")
+    public void runCode(RunCodeRequestDto runCodeRequestDto, SimpMessageHeaderAccessor accessor) {
+        String responseDto = codeExecuteService.RunCode(runCodeRequestDto);
+        simpMessagingTemplate.convertAndSend("/sub/run/" + runCodeRequestDto.getStudyRoomId(), responseDto);
     }
 
 }

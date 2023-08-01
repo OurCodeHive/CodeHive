@@ -9,10 +9,9 @@ import lombok.ToString;
 @ToString
 @Setter
 @Getter
-public class CompileResponseDto {
+public class SubmitRequestDto {
 
     private Long userId;
     private Long studyRoomId;
-    private String result;
 
 }
