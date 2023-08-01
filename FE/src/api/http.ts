@@ -3,7 +3,6 @@
  * Date : 23/07/21 -> modified by DY on 23/07/29
  * Contents : 공통 axios 생성 (+ interceptor 설정 후 http 역할에 따라 이분화)
 */
-
 import {Cookies} from 'react-cookie';
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig} from "axios";
 

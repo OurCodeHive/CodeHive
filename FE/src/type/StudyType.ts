@@ -1,5 +1,5 @@
 export type StudyType = {
-    studyInfoId : number;
+    studyinfoId : number;
     title : string;
     end : 1 | 0;   
 }
