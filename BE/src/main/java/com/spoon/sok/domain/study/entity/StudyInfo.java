@@ -1,14 +1,10 @@
 package com.spoon.sok.domain.study.entity;
 
 
-import com.spoon.sok.domain.chat.entity.Chat;
 import com.spoon.sok.domain.user.entity.User;
 import com.spoon.sok.domain.user.entity.UserStudy;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -16,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Getter
+@Setter
 @Entity
 @Transactional
 @Table(name = "study_info")
@@ -63,8 +60,8 @@ public class StudyInfo {
     private List<StudyArchive> archiveList = new ArrayList<>();
 
     //chat 채팅 테이블과 일대다 관계
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
-    private List<Chat> chatList = new ArrayList<>();
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
+//    private List<Chat> chatList = new ArrayList<>();
 
     //study_appointment 스터디미팅(회의) 테이블과 일대다 관계
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")

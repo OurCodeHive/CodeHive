@@ -3,21 +3,16 @@ package com.spoon.sok.domain.study.controller;
 
 
 import com.spoon.sok.domain.study.dto.requestDTO.StudyUpdateDTO;
-import com.spoon.sok.domain.study.entity.StudyInfo;
-import com.spoon.sok.domain.study.enums.StudyUpdateResult;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Instanceof;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -29,8 +24,6 @@ public class StudyRoomController {
 
     private final StudyService studyService;
 
-    // [스터디룸] 스터디 그룹의 기간을 수정
-    // [PUT] api/study/{studyinfo_id}
     @PutMapping("/study/{studyinfoId}")
     public ResponseEntity<Map<String, Object>> updateStudyGroup(
             @PathVariable("studyinfoId") Long studyinfoId, @RequestBody StudyUpdateDTO updateInfo) {
@@ -44,24 +37,13 @@ public class StudyRoomController {
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-}
 
-    /*
-    // [스터디룸] 스터디 공지사항 등록
-    // [POST] api/study/{studyinfo_id}/board
     @PostMapping("/study/{studyinfo_id}/board")
-    public ResponseEntity<Map<String, Object>> createStudyNotice(
+    public ResponseEntity<?> createStudyNotice(
             @PathVariable("studyinfo_id") Long studyInfoId,
             @RequestBody StudyNoticeDTO studyNoticeDTO) {
 
-        // 요청으로 받아온 데이터를 추출
-        String author = studyNoticeDTO.getAuthor();
-        String title = studyNoticeDTO.getTitle();
-        String content = studyNoticeDTO.getContent();
-        LocalDate uploadAt = studyNoticeDTO.getUploadAt();
-
-        // 스터디 공지사항 등록 서비스 호출
-        boolean isCreated = studyService.createStudyNotice(studyInfoId, author, title, content, uploadAt);
+        boolean isCreated = studyService.createStudyNotice(studyInfoId, studyNoticeDTO);
 
         // 응답 메시지 설정
         Map<String, Object> response = new HashMap<>();
@@ -72,11 +54,11 @@ public class StudyRoomController {
             response.put("status", 400);
             response.put("message", "공지사항 등록에 실패하였습니다.");
         }
-
-        // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+}
 
+    /*
     // [스터디룸] 스터디 공지사항 조회
     // [GET] api/study/{studyinfo_id}/board?page={int}&size={int}
     @GetMapping("/study/{studyinfo_id}/board")
