@@ -20,13 +20,17 @@ public class CodeExecuteService {
         String code = runCodeRequestDto.getCode();
         String input = runCodeRequestDto.getInput();
         String name = UUID.randomUUID().toString();
+        Long userId = runCodeRequestDto.getUserId();
 
         // AWS API gateway Poat 요청
         LambdaRequestDto lambdaRequestDto = new LambdaRequestDto();
+
         lambdaRequestDto.setCode(code);
         lambdaRequestDto.setName(name);
         lambdaRequestDto.setInput(input);
+        lambdaRequestDto.setUserId(userId);
 
+        System.out.println(lambdaRequestDto);
         RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<LambdaRequestDto> requestEntity = new HttpEntity<>(lambdaRequestDto);

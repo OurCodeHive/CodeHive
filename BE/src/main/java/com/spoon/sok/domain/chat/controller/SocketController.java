@@ -18,19 +18,19 @@ public class SocketController {
     private final CodeExecuteService codeExecuteService;
 
     @MessageMapping("/chat")
-    public void sendMessage(ChatDto chatDto, SimpMessageHeaderAccessor accessor) {
+    public void sendMessage(ChatWebSocketDto chatDto, SimpMessageHeaderAccessor accessor) {
         chatService.mongoInsert(chatDto);
         simpMessagingTemplate.convertAndSend("/sub/chat/" + chatDto.getStudyRoomId(), chatDto);
     }
 
     @MessageMapping("/notice")
-    public void sendNotice(NoticeDto noticeDto, SimpMessageHeaderAccessor accessor) {
+    public void sendNotice(NoticeWebSocketDto noticeDto, SimpMessageHeaderAccessor accessor) {
         simpMessagingTemplate.convertAndSend("/sub/notice/" + noticeDto.getStudyRoomId(), noticeDto);
     }
 
     @MessageMapping("/submit")
-    public void submitNotice(SubmitRequestDto compileRequestDto, SimpMessageHeaderAccessor accessor) {
-        SubmitResponseDto responseDto = new SubmitResponseDto();
+    public void submitNotice(SubmitWebSocketDto compileRequestDto, SimpMessageHeaderAccessor accessor) {
+        SubmitWebSocketDto responseDto = new SubmitWebSocketDto();
         responseDto.setUserId(compileRequestDto.getUserId());
         responseDto.setStudyRoomId(compileRequestDto.getStudyRoomId());
         simpMessagingTemplate.convertAndSend("/sub/submit/" + responseDto.getStudyRoomId(), responseDto);
@@ -38,8 +38,8 @@ public class SocketController {
 
     @MessageMapping("/run")
     public void runCode(RunCodeRequestDto runCodeRequestDto, SimpMessageHeaderAccessor accessor) {
-        String responseDto = codeExecuteService.RunCode(runCodeRequestDto);
-        simpMessagingTemplate.convertAndSend("/sub/run/" + runCodeRequestDto.getStudyRoomId(), responseDto);
+        String response = codeExecuteService.RunCode(runCodeRequestDto);
+        simpMessagingTemplate.convertAndSend("/sub/run/" + runCodeRequestDto.getStudyRoomId(), response);
     }
 
 }
