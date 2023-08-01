@@ -21,9 +21,9 @@ const { persistAtom } = recoilPersist({
 export const userState = atom<userType>({
   key: "useState", // 전역적으로 고유한 값
   default: {
-    email : "",
-    userId : 0,
-    nickname : "",
+    email : "jiminsung@naver.com",
+    userId : 2,
+    nickname : "Minsung",
     accessToken : "",
     refreshToken:"",
   }, // 초깃값
