@@ -1,13 +1,11 @@
 package com.spoon.sok.domain.chat.entity;
 
-import com.spoon.sok.domain.chat.dto.ChatDto;
+import com.spoon.sok.domain.chat.dto.ChatWebSocketDto;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.sql.Timestamp;
 
 @Getter
 @Document(collection = "chat")
@@ -22,7 +20,7 @@ public class Chat {
     private String message;
     private String time;
 
-    public Chat(ChatDto dto) {
+    public Chat(ChatWebSocketDto dto) {
         this.studyInfoId = dto.getStudyRoomId();
         this.userId = dto.getUserId();
         this.message = dto.getMessage();

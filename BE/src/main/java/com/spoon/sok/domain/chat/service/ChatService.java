@@ -1,7 +1,7 @@
 package com.spoon.sok.domain.chat.service;
 
 
-import com.spoon.sok.domain.chat.dto.ChatDto;
+import com.spoon.sok.domain.chat.dto.ChatWebSocketDto;
 import com.spoon.sok.domain.chat.entity.Chat;
 import com.spoon.sok.domain.chat.repository.ChatRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,19 +21,19 @@ public class ChatService {
     private final ChatRepository chatRepository;
 
     @Transactional
-    public void mongoInsert(ChatDto dto) {
+    public void mongoInsert(ChatWebSocketDto dto) {
         // 몽고디비 저장
         Chat chat = new Chat(dto);
         chatRepository.save(chat);
     }
 
-    public List<ChatDto> getStudyChatList(Long studyInfoId) {
+    public List<ChatWebSocketDto> getStudyChatList(Long studyInfoId) {
 
-        List<ChatDto> result = new ArrayList<>();
+        List<ChatWebSocketDto> result = new ArrayList<>();
         List<Chat> chatList = chatRepository.findByStudyInfoId(studyInfoId);
 
         for (Chat chat : chatList) {
-            ChatDto chatItem = new ChatDto();
+            ChatWebSocketDto chatItem = new ChatWebSocketDto();
             chatItem.setStudyRoomId(chat.getStudyInfoId());
             chatItem.setUserId(chat.getUserId());
             chatItem.setMessage(chat.getMessage());
