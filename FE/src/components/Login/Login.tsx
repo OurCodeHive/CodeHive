@@ -45,7 +45,7 @@ const Login = () => {
             userId : number,
             nickname : string,
         }
-        const url = import.meta.env.VITE_APP_SERVER + "login/user";
+        const url = "https://hiveapi.minsungblog.com/api/login/user";
         async function doLogin(): Promise<userData | undefined> {
             try {
               ///

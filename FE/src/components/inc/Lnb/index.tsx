@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import LnbList from "./list";
-import {ContentsPopup} from "@/components/Util/Popup";
+import {ContentsPopup} from "@/utils/Popup";
 import StudyInsert from "@/components/StudyGroup/insert";
 import LnbStyle from "@/res/css/module/Lnb.module.css";
 import LnbLogo from "@/res/img/codehive_lnb_logo.png";

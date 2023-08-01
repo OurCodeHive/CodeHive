@@ -25,8 +25,12 @@ const getList = async (param: object, success: ({data} : {data: object}) => void
  * @param success 
  * @param fail 
  */
-const insertData = async (param: object, success: () => void, fail: () => void) => {
-    await api.post(`/study`, { params: param }).then(success).catch(fail);
+const insertData = async (param: object, success: ({data} : {data: object}) => void, fail: () => void) => {
+    await api.post(`/study`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-export {getList, insertData};
+const inviteMember = async (param: object, success: () => void, fail: () => void) => {
+    await api.post(`/email/study/invite`, JSON.stringify(param)).then(success).catch(fail);
+}
+
+export {getList, insertData, inviteMember};
