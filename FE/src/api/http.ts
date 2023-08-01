@@ -5,7 +5,7 @@
 */
 
 import {Cookies} from 'react-cookie';
-import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig} from "axios";
+import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig} from "axios";
 
 interface ICookies {
     get(e:string):string,
@@ -48,56 +48,39 @@ authHttp.interceptors.request.use(
       return config;
     }
 )
-interface customResponse extends AxiosResponse {
-    // name: string; 
-    // message: string;
-    // stack?: string; - Error 인터페이스 프로퍼티들을 직접 쓰거나 아니면 상속해준다.
-    response?: {
-       data?: {
-        message?:string;
-        accessToken? : string;
-       };
-       status: number;
-       headers: string;
-    };
- }
+
 authHttp.interceptors.response.use(
     //실행
-    (response : AxiosResponse): Promise<any> => {
+    async (response : AxiosResponse): Promise<any> => {
     
       const { config, status } = response; //response의 config 파일
       const originalRequest = config;
       console.log(response);//
       console.log(status);//
-      
+      if (status === 403) {//에러 = 엑세스 토큰 만료. 확인 후 validate
+        const refreshToken = cookies.get("refreshToken");
+        const reIssueData = {
+            accessToken : accessToken,
+            refreshToken : refreshToken
+        }
+        return await authHttp.post(`reissue`, reIssueData)
+          .then((res:IResponse) => {
+            if(res.status == 200){
+                accessToken = res.data.accessToken;
+                localStorage.setItem("accessToken", accessToken);
+                originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+                return axios(originalRequest);
+            }
+          }).catch((err) => {
+            console.log(err)
+          })
+      }
       return response;
     },
     //에러
-    (error:AxiosError) => {
-        console.log(error.response?.status);
-        
-        if (error.response?.status === 403) {//에러 = 엑세스 토큰 만료. 확인 후 validate
-            const refreshToken = cookies.get("refreshToken");
-            const reIssueData = {
-                accessToken : accessToken,
-                refreshToken : refreshToken
-            }
-            return nonAuthHttp.post(`reissue`, reIssueData)//엑세스 & 리프레시 토큰 재발급
-              .then((res:customResponse) => {
-                if(res.status == 200){
-                    accessToken = res.data.accessToken;
-                    localStorage.setItem("accessToken", accessToken);
-                    originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-                    return axios(originalRequest);
-                }
-              }).catch((err) => {
-                console.log(err)
-              })
-          }
-
-
-    //   console.log(error, '^^***')
-    //   throw error
+    (error) => {
+      console.log(error, '^^***')
+      throw error
     }
   )
 
