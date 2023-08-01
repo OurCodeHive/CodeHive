@@ -43,6 +43,7 @@ authHttp.interceptors.request.use(
         console.log(accessToken);
         if(config.headers && accessToken){
             config.headers.Authorization = `Bearer ${accessToken}`;
+            console.log(config);
         }
       return config;
     }
@@ -51,10 +52,12 @@ authHttp.interceptors.request.use(
 authHttp.interceptors.response.use(
     //실행
     async (response : AxiosResponse): Promise<any> => {
-      const { config } = response; //response의 config 파일
+    
+      const { config, status } = response; //response의 config 파일
       const originalRequest = config;
       console.log(response);//
-      if (response.status === 403) {//에러 = 엑세스 토큰 만료. 확인 후 validate
+      console.log(status);//
+      if (status === 403) {//에러 = 엑세스 토큰 만료. 확인 후 validate
         const refreshToken = cookies.get("refreshToken");
         const reIssueData = {
             accessToken : accessToken,
@@ -90,7 +93,6 @@ const nonAuthHttp : AxiosInstance = axios.create({
     },
 })
 export {authHttp, nonAuthHttp};
-
 
 ////////////////
 //previous code 

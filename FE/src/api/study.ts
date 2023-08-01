@@ -4,7 +4,7 @@
  * Contents : 스터디 관련 api 요청
 */
 import { AxiosError } from 'axios';
-import {authHttp} from './http';
+import {authHttp, nonAuthHttp} from './http';
 import { StudyType } from '@/type/StudyType';
 
 const api = authHttp;
