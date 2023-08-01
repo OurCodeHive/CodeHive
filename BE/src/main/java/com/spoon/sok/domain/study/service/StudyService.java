@@ -2,9 +2,12 @@ package com.spoon.sok.domain.study.service;
 
 import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.dto.requestDTO.StudyUpdateDTO;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.entity.StudyInfo;
+import com.spoon.sok.domain.study.entity.StudyNotice;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.enums.StudyUpdateResult;
+import com.spoon.sok.domain.study.repository.StudyNoticeRepository;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
 import com.spoon.sok.domain.user.repository.UserRepository;
@@ -13,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +28,7 @@ import java.util.UUID;
 public class StudyService {
 
     private final StudyRepository studyRepository;
+    private final StudyNoticeRepository studyNoticeRepository;
     private final UserRepository userRepository;
 
     public List<StudyAppointmentDTO> getStudyMeeting(String userId) {
@@ -120,10 +125,21 @@ public class StudyService {
     }
 
 
+
     /*
     public boolean createStudyNotice(Long studyInfoId, String author, String title, String content, LocalDate uploadAt) {
+
+    @Transactional
+    public boolean createStudyNotice(Long studyinfoId, StudyNoticeDTO notice) {
+        Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyinfoId);
+        Optional<User> author = userRepository.findById(notice.getAuthorId());
+
+        StudyNotice savedNotice = studyNoticeRepository.save(notice.toEntity(author.get(), findStudyInfo.get()));
+        if (savedNotice != null) return true;
+        else return false;
     }
 
+    /*
     public List<StudyNoticeDTO> getStudyNotices(Long studyInfoId, int page, int size) {
     }
 

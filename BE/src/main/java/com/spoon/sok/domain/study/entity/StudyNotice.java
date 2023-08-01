@@ -1,16 +1,12 @@
 package com.spoon.sok.domain.study.entity;
 
-//import com.spoon.sok.domain.user.entity.User;
 import com.spoon.sok.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
-@Getter
+@Getter @Setter
 @Entity
 @Table(name = "study_notice")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
