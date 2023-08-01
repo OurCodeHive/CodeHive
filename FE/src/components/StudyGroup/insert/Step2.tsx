@@ -54,11 +54,18 @@ const StudyInsert2Step = ({closePop, studyInfoId} : {closePop: () => void, study
         let flag = true;
         EmailList.forEach((item) => {
             if(!EmailCheck(item)) return flag = false; //유효성 실패시 종료
-            else if(!curEmail.includes(item)) curEmail.push(item); //중복확인 후 추가
+            else if(!curEmail.includes(item) && item != "") curEmail.push(item); //중복확인 후 추가
         });
         //유효성 실패
         if(!flag){
             setAlertPopupTitle("올바르지 않은 이메일이 있습니다.");
+            changePopupFlag(true);
+            return;
+        }
+
+        //보낼 이메일이 없을 때
+        if(curEmail.length == 0){
+            setAlertPopupTitle("보낼 이메일이 없습니다.");
             changePopupFlag(true);
             return;
         }
