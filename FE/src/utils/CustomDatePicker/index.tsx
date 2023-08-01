@@ -22,7 +22,6 @@ const CustomDatePicker = (Props : DatePickerProps) => {
 
 	return (
 		<DatePicker
-      showIcon
       locale={ko}
       dateFormat="yyyy.MM.dd"
       minDate={Props.minDate ? Props.minDate : selectDate}

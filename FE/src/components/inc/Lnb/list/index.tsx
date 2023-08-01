@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { StudyType } from "@/type/StudyType";
 import {getList} from "@/api/study";
 import { useRecoilValue } from 'recoil';
@@ -7,11 +7,25 @@ import LnbFilter from "./item/Filter";
 import LnbListItem from "./item/ListItem";
 import LnbStyle from "@/res/css/module/Lnb.module.css";
 
-const List = async () => {
+const List:React.FC = () => {
     const userId = useRecoilValue(userState).userId;
     const param = {user : userId};
-    const originStudyList:Array<StudyType> = await getList(param) as Array<StudyType>;
-    const [studyList, setStudyList] = useState(originStudyList);
+    let originStudyList = [] as Array<StudyType>;
+    const [studyList, setStudyList] = useState<Array<StudyType>>(originStudyList);
+    useEffect(() => {
+        async function fetchData() {
+            await getList(param,
+                ({data}) => {
+                    originStudyList = data.study_list as Array<StudyType>;
+                    setStudyList(originStudyList);
+                },
+                (error) => {console.log(error);});
+        }
+        void fetchData();
+    }, []);
+
+    
+
     const searchKeyWord = (data: string) => {
         setStudyList(originStudyList.filter((item) => {if(item.title.indexOf(data) > -1) return item;}));
     }
@@ -20,7 +34,7 @@ const List = async () => {
         return (
             <ul className="col-12">
                 <LnbFilter searchKeyWord={searchKeyWord}/>
-                {studyList.map(item => <LnbListItem key={item.studyInfoId} item={item} />)}
+                {studyList.map((item, index) => <LnbListItem key={index} item={item} />)}
             </ul>
         )    
     } else { //리스트가 존재하지 않을 때
