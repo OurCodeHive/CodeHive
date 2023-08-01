@@ -5,13 +5,12 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UserSignupRequestDto {
-    private String email;
-
-    private String password;
+public class UserUpdateInfoRequestDto {
+    private Long userId;
 
     private String nickname;
 
-    private String authCode;
-}
+    private String email;
 
+    private String password;
+}

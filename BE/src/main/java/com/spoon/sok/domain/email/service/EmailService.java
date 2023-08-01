@@ -60,7 +60,7 @@ public class EmailService {
             MimeMessage message = emailSender.createMimeMessage();
 
             message.addRecipients(MimeMessage.RecipientType.TO, email);
-            message.setSubject("[CodeHive] 회원가입 인증");
+            message.setSubject("[CodeHive] 이메일 인증");
             message.setText(setContext(code, "authEmail"), "utf-8", "html");
 
             emailSender.send(message);
@@ -115,6 +115,8 @@ public class EmailService {
                     .limitTime(LocalDateTime.now().plusMinutes(3))
                     .isauth(0)
                     .build();
+
+            System.out.println(LocalDateTime.now().plusMinutes(3));
 
             emailRepository.save(emailAuth);
 
@@ -219,7 +221,7 @@ public class EmailService {
 
         MimeMessage message = emailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email);
-        message.setSubject("[CideHive] 스터디 초대 링크");
+        message.setSubject("[CodeHive] 스터디 초대 링크");
         message.setText(setContext(sb.toString(), "inviteEmail"), "utf-8", "html");
 
         emailSender.send(message);

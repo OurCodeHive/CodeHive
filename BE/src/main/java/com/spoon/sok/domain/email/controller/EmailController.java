@@ -17,7 +17,6 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/api/email")
 public class EmailController {
@@ -49,10 +48,10 @@ public class EmailController {
         try {
             for (String email : inviteList) {
                 // 1. 중간테이블에 저장
-                Long userstudy_id = studyService.setUserStudyForEmail(inviteEmailDto.getStudyinfo_id(), email);
+                Long userstudy_id = studyService.setUserStudyForEmail(inviteEmailDto.getStudyinfoId(), email);
 
                 // 2. 이메일 발송
-                emailService.sendInviteLinkEmail(inviteEmailDto.getStudyinfo_id(), email, userstudy_id);
+                emailService.sendInviteLinkEmail(inviteEmailDto.getStudyinfoId(), email, userstudy_id);
             }
         } catch (MessagingException e) {
             log.info("이메일 전송에 실패하였습니다.");
