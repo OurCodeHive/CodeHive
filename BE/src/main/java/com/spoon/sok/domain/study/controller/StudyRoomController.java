@@ -221,14 +221,14 @@ public class StudyRoomController {
     @PostMapping("/meeting/{studyinfo_id}")
     public ResponseEntity<Map<String, Object>> createStudyMeeting(
             @PathVariable("studyinfo_id") Long studyInfoId,
-            @RequestBody StudyMeetingRequestDTO requestDto) {
+            @RequestBody StudyUpdateDTO StudyUpdateDTO) {
 
-        // 스터디 회의 등록 정보를 StudyMeetingRequestDTO로 받아옴
-        String title = requestDto.getTitle();
-        String description = requestDto.getDescription();
-        LocalDate date = requestDto.getDate();
-        LocalTime startTime = requestDto.getStartTime();
-        LocalTime endTime = requestDto.getEndTime();
+        // 스터디 회의 등록 정보를 StudyUpdateDTO로 받아옴
+        String title = StudyUpdateDTO.getTitle();
+        String description = StudyUpdateDTO.getDescription();
+        LocalDate date = StudyUpdateDTO.getDate();
+        LocalTime startTime = StudyUpdateDTO.getStartTime();
+        LocalTime endTime = StudyUpdateDTO.getEndTime();
 
         // 스터디 회의 등록 서비스 호출
         boolean isCreated = studyService.createStudyMeeting(studyInfoId, title, description, date, startTime, endTime);
@@ -252,14 +252,14 @@ public class StudyRoomController {
     @PutMapping("/study/meeting/{study_info_id}")
     public ResponseEntity<Map<String, Object>> updateStudyMeeting(
             @PathVariable("study_info_id") Long studyInfoId,
-            @RequestBody StudyMeetingRequestDTO requestDto) {
+            @RequestBody StudyUpdateDTO StudyUpdateDTO) {
 
         // 요청으로 받아온 데이터를 추출
-        String title = requestDto.getTitle();
-        String description = requestDto.getDescription();
-        LocalDate date = requestDto.getDate();
-        LocalTime startTime = requestDto.getStartTime();
-        LocalTime endTime = requestDto.getEndTime();
+        String title = StudyUpdateDTO.getTitle();
+        String description = StudyUpdateDTO.getDescription();
+        LocalDate date = StudyUpdateDTO.getDate();
+        LocalTime startTime = StudyUpdateDTO.getStartTime();
+        LocalTime endTime = StudyUpdateDTO.getEndTime();
 
         // 스터디 회의 수정 서비스 호출
         boolean isUpdated = studyService.updateStudyMeeting(studyInfoId, title, description, date, startTime, endTime);

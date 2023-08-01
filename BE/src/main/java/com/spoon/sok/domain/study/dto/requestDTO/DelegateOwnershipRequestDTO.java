@@ -1,5 +1,6 @@
-package com.spoon.sok.domain.study.dto;
+package com.spoon.sok.domain.study.dto.requestDTO;
 
+import com.spoon.sok.domain.study.dto.UserInfoDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
