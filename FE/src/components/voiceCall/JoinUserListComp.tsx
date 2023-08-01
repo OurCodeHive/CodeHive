@@ -1,3 +1,6 @@
+import style from "@/res/css/module/UserVideo.module.css";
+
+
 function JoinUser(props:any) {
 
   let userList = props.user;
@@ -5,12 +8,7 @@ function JoinUser(props:any) {
   
   return (
     <>
-      <div style={{
-        position:"absolute",
-        color:"wheat",
-        fontSize:"16px",
-        right:"17vh"
-      }}>
+      <div className={style.joinUserName}>
         {
           userList.map((item:any, index:number) => {
             return <p key={index}>{item}</p>

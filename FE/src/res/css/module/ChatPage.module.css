@@ -11,7 +11,6 @@
   padding-right: 3%;
   padding-left: 3%;
   max-width: 70%;
-  /* width: 80%; */
   font-weight: bold;
   text-align: left;
 }
@@ -55,17 +54,13 @@
   width: 40px;
   height: 40px;
   padding: 4px;
-  /* margin-right: 1%; */
-  /* margin-left: 7.5%; */
   border-radius: 50%;
 }
 
 
 .send{
-  /* background: rgba(0, 0, 0, 0.15); */
   background-color: rgba(232, 215, 250, 0.717);
   padding: 0.25rem;
-  /* position: fixed; */
   position: absolute;
   border-radius: 10px 10px 10px 10px;
   bottom: 0;
@@ -76,8 +71,6 @@
   margin-top: -1%;
   box-sizing: border-box;
   backdrop-filter: blur(10px);
-  /* background-color: rgb(145, 90, 17); */
-  /* width: 80%; */
 }
 
 .input {
@@ -90,12 +83,10 @@
 
 .btn {
   padding: 0.25rem;
-  /* background-color: ; */
   width: 10%;
   background: none;
   border: none;
   padding-bottom: 3%;
-  /* display: none; */
 }
 
 
@@ -120,16 +111,62 @@
   display: flex;
 }
 
+.backGround {
+  position: absolute;
+  right: 3vh;
+  top: 15vh;
+  background-color: #E6E6FA;
+  border-radius: 10px;
+  height: 73vh;
+  width: 50vh;
+  padding-top: 1vh;
+  max-height: 73vh;
+}
+
+.boxSize{
+  height: 70vh;
+  width: 50vh;
+}
+
+.boxPadding{
+  padding-left: 1vh;
+  padding-right: 1vh;
+}
+
+.talkItem {
+  font-size: 15px;
+  margin-top: 10px;
+  padding-left: 3px;
+}
+
+.talkDetailItem {
+  font-size: 15px;
+  background-color: #E2E2E2;
+  width: fit-content;
+  word-break: break-all;
+  padding: 7px;
+  border-radius: 10px;
+  justify-items: end;
+}
+
+.container {
+  flex-direction: row;
+  max-height: 63.5vh;
+  width: 100%;
+  overflow-y: auto;
+}
 
 .container::-webkit-scrollbar {
   width: 10px;
 }
+
 .container::-webkit-scrollbar-thumb {
   background-color: #2f3542;
   border-radius: 10px;
   background-clip: padding-box;
   border: 2px solid transparent;
 }
+
 .container::-webkit-scrollbar-track {
   background-color: grey;
   border-radius: 10px;

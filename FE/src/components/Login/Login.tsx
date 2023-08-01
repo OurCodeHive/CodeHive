@@ -53,6 +53,7 @@ const Login = () => {
             userId : number,
             nickname : string,
         }
+        // const url = import.meta.env.VITE_APP_SERVER as string + "login/user";
         async function doLogin(): Promise<userData | undefined> {
             try {
               ///
