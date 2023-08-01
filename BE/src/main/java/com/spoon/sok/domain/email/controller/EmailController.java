@@ -17,7 +17,6 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/api/email")
 public class EmailController {

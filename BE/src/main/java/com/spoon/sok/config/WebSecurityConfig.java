@@ -37,7 +37,6 @@ public class WebSecurityConfig {
                 .httpBasic((httpBasic) -> {
                     httpBasic.disable();
                 })
-                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .formLogin((formLogin) -> {
                     formLogin.disable();

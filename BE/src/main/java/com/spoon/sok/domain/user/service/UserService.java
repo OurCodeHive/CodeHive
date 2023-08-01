@@ -2,6 +2,7 @@ package com.spoon.sok.domain.user.service;
 
 import com.spoon.sok.domain.email.entity.Email;
 import com.spoon.sok.domain.email.repository.EmailRepository;
+import com.spoon.sok.domain.user.auth.AuthProvider;
 import com.spoon.sok.domain.user.dto.request.*;
 import com.spoon.sok.domain.user.dto.response.UserResponseDto;
 import com.spoon.sok.domain.user.entity.User;
@@ -114,7 +115,7 @@ public class UserService {
 
         Optional<Email> email = emailRepository.findByNewestCode(requestDto.getEmail());
 
-        if (email.isEmpty() || email.get().getIsauth() != 1 || email.get().getAuthCode() != requestDto.getAuthcode()) {
+        if (email.isEmpty() || email.get().getIsauth() != 1 || !email.get().getAuthCode().equals(requestDto.getAuthCode())) {
             return 3;
         }
 
@@ -123,6 +124,7 @@ public class UserService {
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .nickname(requestDto.getNickname())
                 .status(UserStatus.NORMAL)
+                .authProvider(AuthProvider.ORIGIN)
                 .createdAt(LocalDateTime.now())
                 .roles(Collections.singletonList(Authority.ROLE_USER.name()))
                 .build();

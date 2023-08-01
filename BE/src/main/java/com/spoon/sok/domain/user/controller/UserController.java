@@ -3,9 +3,11 @@ package com.spoon.sok.domain.user.controller;
 import com.spoon.sok.domain.user.dto.request.*;
 import com.spoon.sok.domain.user.dto.response.UserResponseDto;
 import com.spoon.sok.domain.user.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class UserController {
     private Map<String, Object> result;
 
     @PostMapping("/login/user")
-    public ResponseEntity<?> login(@RequestBody UserLoginRequestDto requestDto) {
+    public ResponseEntity<?> login(@RequestBody UserLoginRequestDto requestDto, HttpServletResponse response) {
         UserResponseDto responseDto = userService.login(requestDto);
 
         result = new HashMap<>();
@@ -50,12 +51,21 @@ public class UserController {
             }
         }
 
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", responseDto.getTokenInfo().getRefreshToken())
+                .domain("localhost")
+                .path("/")
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
         result.put("status", 200);
         result.put("message", "로그인 성공");
         result.put("userId", responseDto.getUserId());
         result.put("nickname", responseDto.getNickname());
         result.put("accessToken", responseDto.getTokenInfo().getAccessToken());
-        result.put("refreshToken", responseDto.getTokenInfo().getRefreshToken());
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }

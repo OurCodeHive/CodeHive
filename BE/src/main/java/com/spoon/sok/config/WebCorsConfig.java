@@ -13,6 +13,7 @@ public class WebCorsConfig implements WebMvcConfigurer {
                 .allowedOriginPatterns("*")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")    //허용되는 Method
                 .allowedHeaders("*")    //허용되는 헤더
+                .allowCredentials(true)
                 .maxAge(3600);   //허용 시간
     }
 }
