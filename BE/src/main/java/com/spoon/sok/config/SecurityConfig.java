@@ -34,7 +34,7 @@ public class SecurityConfig {
                     sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests((authorizeRequests) -> {
-                    authorizeRequests.requestMatchers("/",
+                    authorizeRequests.requestMatchers("/**",
                                     "/api/login/user",
                                     "/login/oauth2/code/google",
                                     "/api/reissue",
