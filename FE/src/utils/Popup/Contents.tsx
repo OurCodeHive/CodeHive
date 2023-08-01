@@ -16,14 +16,6 @@ const ContentsPopup: React.FC<PopupType> = ({PopupInfo}) => {
           <div className={`col-12 ${PopupStyle.popup_wrap}`} style={{zIndex : `${PopupInfo.zIndex}`}} onClick={() => closePopup()}>
             <div className={`col-12 ${PopupStyle.popup_con}`} style={{maxWidth : `${PopupInfo.maxWidth}px`}}>
               <div className={`col-12 ${PopupStyle.popup_inner}`} onClick={(e) => e.stopPropagation()}>
-                <div className={`col-12 ${PopupStyle.popup_header_con}`}>
-                  <div className={`col-12 ${PopupStyle.popup_header_top_con}`}>
-                    <div className={`col-12 ${PopupStyle.title_con}`}>
-                      
-                    </div>
-                    <button className={`${PopupStyle.popup_close_btn}`} onClick={closePopup}>창 닫기</button>
-                  </div>
-                </div>
                 <div className={`col-12 ${PopupStyle.popup_contents_con}`}>
                   <div className={`col-12 ${PopupStyle.popup_contents}`}>
                     <PopupContents closePopup={closePopup} />

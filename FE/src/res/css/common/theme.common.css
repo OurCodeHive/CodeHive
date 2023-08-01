@@ -1,6 +1,10 @@
 .point0{color: #FFDF2B !important;}
 .bg_point0{background-color: #FFDF2B !important;}
 
+.headline{font-size: 33px; font-size: 3.3rem; line-height: 39px; line-height: 3.9rem; font-weight: 700; letter-spacing: -0.02em; color: #17181d;}
+.title{font-size: 25px; font-size: 2.5rem; line-height: 31px; line-height: 3.1rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d;}
+.sub_title{font-size: 21px; font-size: 2.1rem; line-height: 27px; line-height: 2.7rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d;}
+
 /*필수 표시*/
 .essential{display: inline-block; padding-right: 8px; position: relative;}
 .essential::after{content: "*"; position: absolute; top: 2px; right: 0; font-size: 10px; font-size: 1.0rem; line-height: 16px; line-height: 1.6rem; font-weight: 500; letter-spacing: -0.02em; color: #f00;}

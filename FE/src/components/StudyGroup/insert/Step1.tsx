@@ -1,11 +1,14 @@
 import { useState, useRef } from 'react';
 import { insertData } from "@/api/study";
-import { ConfirmPopup } from "@/components/Util/Popup";
-import CustomEditor from "@/components/Util/CustomEditor";
-import CustomDatePickcer from "@/components/Util/CustomDatePicker";
-import FileInput from "@/components/Util/File/Input";
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/atom/UserAtom';
+import { AlertPopup } from "@/utils/Popup";
+import CustomEditor from "@/utils/CustomEditor";
+import CustomDatePickcer from "@/utils/CustomDatePicker";
+import FileInput from "@/utils/File/Input";
 
 const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateIdx: (idx: number) => void}) => {
+    const userId = useRecoilValue(userState).userId;
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
     const [AlertPopupTitle, setAlertPopupTitle] = useState("");
     const today = new Date();
@@ -54,8 +57,8 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
             return;
         }
 
-        const params:object = {
-            user_id : 1,
+        const params = {
+            userId : userId,
             title : titleInput.current.value,
             startAt : startDateInput.current.value,
             endAt : endDateInput.current.value,
@@ -64,12 +67,11 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
         };
 
         console.log(params);
-        const result = await insertData(params);
-        if(result == 1){ //성공한 경우
-            updateIdx(2);
-        } else { //실패한 경우
-            console.log("error");
-        }
+        await insertData(params,
+            ({data}) => {updateIdx(data.studyinfo_id);},
+            () => {alert("생성에 실패했습니다");}
+        );
+
     }
 
     return (
@@ -118,7 +120,7 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
                 <button type="button" className="btn_style_0 mr15 bg_a2a2a2" onClick={closePop}>취소</button>
                 <button type="submit" className="btn_style_0 bg_point0">만들기</button>
             </div>
-            <ConfirmPopup PopupInfo={AlertPopupInfo} />
+            <AlertPopup PopupInfo={AlertPopupInfo} />
         </form>
     )
 };

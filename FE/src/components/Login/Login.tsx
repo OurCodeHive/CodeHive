@@ -53,7 +53,11 @@ const Login = () => {
             userId : number,
             nickname : string,
         }
+<<<<<<< HEAD
+        const url = "https://hiveapi.minsungblog.com/api/login/user";
+=======
         // const url = import.meta.env.VITE_APP_SERVER as string + "login/user";
+>>>>>>> 8cc343aca46c251a20d0e28e44aae248324bd93e
         async function doLogin(): Promise<userData | undefined> {
             try {
               ///
