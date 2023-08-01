@@ -37,7 +37,7 @@ public class StudyNotice {
 
     // study_info 스터디 정보 테이블과 다대일 관계 - user_id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "users_id", nullable = false)
     private User user; // 스터디 그룹장(공지사항 작성자)
 
     @Builder

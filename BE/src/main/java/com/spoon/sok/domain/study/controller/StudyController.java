@@ -164,7 +164,7 @@ public class StudyController {
 
         if (studyInfo.isPresent()) {
             response.put("status", 200);
-            response.put("createdAt", studyInfo.get().getCreatedAt());
+            response.put("startAt", studyInfo.get().getStartAt());
             response.put("endAt", studyInfo.get().getEndAt());
             response.put("studyinfo_id", studyInfo.get().getStudyinfoId());
             response.put("users_id", studyInfo.get().getUsersId());

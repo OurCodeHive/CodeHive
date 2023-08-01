@@ -44,7 +44,7 @@ public class StudyInfo {
     private String enterName;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt; // 스터디 그룹 생성일
+    private Date startAt; // 스터디 그룹 생성일
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date endAt; // 스터디 그룹 종료일
@@ -76,29 +76,25 @@ public class StudyInfo {
 
 
     @Builder
-    public StudyInfo(Long id, String title, String studyroomSize, String description, String profileImage, String enterName, Date createdAt, Date endAt, List<StudyAppointment> meetingList, User users) {
+    public StudyInfo(Long id, String title, String studyroomSize, String description, String profileImage, String enterName, Date startAt, Date endAt, List<StudyAppointment> meetingList, User users) {
         this.id = id;
         this.title = title;
         this.studyroomSize = studyroomSize;
         this.description = description;
         this.profileImage = profileImage;
         this.enterName = enterName;
-        this.createdAt = createdAt;
+        this.startAt = startAt;
         this.endAt = endAt;
         this.meetingList = meetingList;
         this.users = users;
-    }
-
-    public void updateTitle(String title) {
-        this.title = title;
     }
 
     public void updateEndAt(Date endAt) {
         this.endAt = endAt;
     }
 
-    public void updateCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void updateStartAt(Date startAt) {
+        this.startAt = startAt;
     }
 
 }

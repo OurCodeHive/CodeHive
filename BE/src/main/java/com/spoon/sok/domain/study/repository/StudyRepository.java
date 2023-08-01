@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
 
-    @Query(value = "SELECT sa.created_at as createdAt, " +
+    @Query(value = "SELECT sa.start_at as startAt, " +
             "sa.end_at as endAt, " +
             "sa.meeting_at as meetingAt, " +
             "sa.study_appointment_title as title, " +
@@ -28,7 +28,7 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "WHERE u.users_id = :userId", nativeQuery = true)
     List<StudyAppointmentDTO> findByUserIdStudyMeetingsQuery(@Param("userId") String userId);
 
-    @Query(value = "SELECT sa.created_at as createdAt, " +
+    @Query(value = "SELECT sa.start_at as startAt, " +
             "sa.end_at as endAt, " +
             "sa.meeting_at as meetingAt, " +
             "sa.study_appointment_title as title, " +
@@ -63,7 +63,7 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
     List<StudyInfoDto> findByUserIdAndTitleQuery(String userId, String title);
 
     @Modifying
-    @Query(value = "INSERT INTO study_info (users_id, title, description, enter_name, created_at, end_at) " +
+    @Query(value = "INSERT INTO study_info (users_id, title, description, enter_name, start_at, end_at) " +
             "VALUES (:userId, :title, :description, :enterName, :startAt, :endAt)", nativeQuery = true)
     void saveStudyGroupQuery(@Param("userId") String userId,
                         @Param("title") String title,
@@ -107,7 +107,7 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
     void saveUserStudyStatusQuery(@Param("users_id") Long usersId,
                              @Param("userstudy_id") Long userstudyId);
 
-    @Query(value = "SELECT si.created_at createdAt, " +
+    @Query(value = "SELECT si.start_at startAt, " +
             "si.end_at endAt, " +
             "si.studyinfo_id studyinfoId, " +
             "si.users_id usersId, " +
