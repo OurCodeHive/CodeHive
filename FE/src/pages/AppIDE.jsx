@@ -27,7 +27,8 @@ import { useState } from "react";
 import ChatComp from '@/components/chat/ChatFrameComp';
 
 import style from "./AppIDE.module.css";
-
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/atom/UserAtom';
 function getRandomColor() {
 	return "#" + Math.floor(Math.random() * 16777215).toString(16);
 }
@@ -67,18 +68,17 @@ const materialPalenightTheme = EditorView.theme(
       caretColor: cursor 
     },
 
-    '.cm-content::-webkit-scrollbar': {
+    '.cm-scroller::-webkit-scrollbar': {
       width: "10px",
     },
-
-    '.cm-content::-webkit-scrollbar-thumb': {
+    '.cm-scroller::-webkit-scrollbar-thumb': {
       backgroundColor: "#2f3542",
       borderRadius: "10px",
       backgroundClip: "padding-box",
       border: "2px solid transparent"
     },
     
-    '.cm-content::-webkit-scrollbar-track': {
+    '.cm-scroller::-webkit-scrollbar-track': {
       backgroundColor: "grey",
       borderRadius: "10px",
       boxShadow: "inset 0px 0px 5px white",
@@ -220,6 +220,8 @@ const MouseBox = styled.div`
 `;
 
 function Code() {
+
+  let loginUser = useRecoilValue(userState);
   
   const editorRef = useRef();
   let { id } = useParams();
@@ -242,7 +244,7 @@ function Code() {
     const ytext = CodeDoc.getText('codemirror');
     setCode(ytext);
     provider.awareness.setLocalStateField('user', {
-      name: sessionStorage.getItem("loginUser"),
+      name: loginUser.nickname,
       color: getRandomColor(),
       colorLight: "#8acb8833",
     });
@@ -270,28 +272,28 @@ function Code() {
 
   }, [])
 
-  useEffect(() => {
-    attachQuillRefs();
-    const provider = new WebsocketProvider(url, docxId, docxDoc);
-    const ytext = docxDoc.getText("quill");
+  // useEffect(() => {
+  //   attachQuillRefs();
+  //   const provider = new WebsocketProvider(url, docxId, docxDoc);
+  //   const ytext = docxDoc.getText("quill");
     
-    provider.awareness.on('change', changes => {
-      Array.from(provider.awareness.getStates().values());
-    });
+  //   provider.awareness.on('change', changes => {
+  //     Array.from(provider.awareness.getStates().values());
+  //   });
 
-    provider.awareness.setLocalStateField("user", {
-      name: "민성",
-      color: getRandomColor(),
-    });
+  //   provider.awareness.setLocalStateField("user", {
+  //     name: loginUser.nickname,
+  //     color: getRandomColor(),
+  //   });
 
-    const binding = new QuillBinding(ytext, quillRef, provider.awareness);
+  //   const binding = new QuillBinding(ytext, quillRef, provider.awareness);
     
-  }, []);
+  // }, []);
 
-  const attachQuillRefs = () => {
-    if (typeof reactQuillRef.getEditor !== "function") return;
-    quillRef = reactQuillRef.getEditor();
-  };
+  // const attachQuillRefs = () => {
+  //   if (typeof reactQuillRef.getEditor !== "function") return;
+  //   quillRef = reactQuillRef.getEditor();
+  // };
 
   const modulesRef = {
     toolbar: [
@@ -314,29 +316,6 @@ function Code() {
     },
   };
   
-  function saveCode() {
-    let name = window.prompt("저장할 이름을 입력해 주세요");
-    if (name === ""){
-      return
-    }
-    if (name === null){
-      return
-    }
-    let extension = ".py"
-    if (language === "Java") {
-      extension = ".java"
-    }
-    let fileName = presentTime() + name + extension;
-    let output = CodeDoc.getText('codemirror');
-    const element = document.createElement('a');
-    const file = new Blob([output], {
-      type: 'text/plain',
-    });
-    element.href = URL.createObjectURL(file);
-    element.download = fileName;
-    document.body.appendChild(element); // FireFox
-    element.click();
-  }
 
   function toggleChat() {
     console.log(showChat);
@@ -360,11 +339,11 @@ function Code() {
       backgroundColor:"#222326",
       height: "100vh",
     }}>
-      <IDEHeader saveCode={saveCode} id={id}/>
-      {/* <VoiceComp mySessionId={codeId} myUserName={"민성" + getRandomColor()} /> */}
+      <IDEHeader code={code} id={id} language={language}/>
+      <IDETerminal code={code} id={id} up={consoleUp} down={consoleDown}/>
+      <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} />
       <div style={{ display:"flex" }}>
         <MouseBox 
-
           style={{
             width: "25%",
             height: "93.8vh",
@@ -418,7 +397,7 @@ function Code() {
         {/* <JoinUserList/> */}
         </div>
       </div>
-      <IDETerminal code={code} up={consoleUp} down={consoleDown} id={id}/>
+
       <img src='https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/chat.png'
         onClick={() => {
           toggleChat();

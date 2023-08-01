@@ -3,9 +3,13 @@ import { useRef, useState, useEffect } from 'react';
 import style from "./ChatPage.module.css"
 import * as StompJs from '@stomp/stompjs';
 import axios from 'axios';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/atom/UserAtom';
+
 
 function ChatFrameComp(props) {
 
+  let loginUser = useRecoilValue(userState);
   const client = useRef({});
   const scrollRef = useRef();
 
@@ -43,7 +47,8 @@ function ChatFrameComp(props) {
   }, [])
 
   let dic = {
-    1:"민성"
+    1:"Hayoung",
+    2:"MinSung"
   }
 
   useEffect(() => {
@@ -58,7 +63,7 @@ function ChatFrameComp(props) {
     }
 
     const newChat = {
-      userId: 1,
+      userId: loginUser.userId,
       studyRoomId: props.id,
       message: chat,
       dateTime: getDate()
@@ -113,7 +118,7 @@ function ChatFrameComp(props) {
         position:"absolute",
         right:"3vh",
         top:"15vh",
-        backgroundColor:"rgba(232, 215, 250, 0.717)",
+        backgroundColor:"#E6E6FA",
         borderRadius:"10px 10px 10px 10px",
         height:"73vh",
         width:"50vh",
@@ -143,22 +148,56 @@ function ChatFrameComp(props) {
                     paddingRight:"1vh",
                   }}>
                     <div ref={scrollRef}></div>
-                    <p
-                      style={{
-                        fontSize:"15px",
-                        paddingLeft:"3px",
-                      }}
-                    >{dic[value.userId]}&nbsp;&nbsp;&nbsp;{value.dateTime}</p>
-                    <p
-                      style={{
-                        fontSize:"15px",
-                        backgroundColor:"skyblue",
-                        width:"fit-content",
-                        wordBreak:"break-all",
-                        padding:"7px",
-                        borderRadius:"10px"
-                      }}
-                    >{value.message}</p>
+                    {
+                      value.userId === loginUser.userId ?
+                      <>
+                        <p
+                        style={{
+                          fontSize:"15px",
+                          marginTop:"10px",
+                          paddingLeft:"3px",
+                          // alignContent:"right",
+                          // textAlign:"right",
+
+                        }}>
+                          {/* {value.dateTime}&nbsp;&nbsp;&nbsp;{dic[value.userId]} */}
+                          {dic[value.userId]}&nbsp;&nbsp;&nbsp;{value.dateTime}
+                          </p>
+                        <p
+                          style={{
+                            fontSize:"15px",
+                            backgroundColor:"#E2E2E2",
+                            width:"fit-content",
+                            wordBreak:"break-all",
+                            padding:"7px",
+                            borderRadius:"10px",
+                            justifyItems: "end",
+                          }}
+                        >{value.message}</p>
+                      </>
+                      :
+                      <>
+                        <p
+                        style={{
+                          marginTop:"10px",
+                          fontSize:"15px",
+                          paddingLeft:"3px",
+                        }}>
+                          {dic[value.userId]}&nbsp;&nbsp;&nbsp;{value.dateTime}
+                          </p>
+                        <p
+                          style={{
+                            fontSize:"15px",
+                            backgroundColor:"	#E2E2E2",
+                            width:"fit-content",
+                            wordBreak:"break-all",
+                            padding:"7px",
+                            borderRadius:"10px"
+                          }}
+                        >{value.message}</p>
+                      </>
+                    }
+
                   </div>
                 )
               })

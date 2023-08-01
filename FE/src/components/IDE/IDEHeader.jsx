@@ -2,10 +2,38 @@ import saveButton from "@/components/IDE/downlode";
 import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import * as StompJs from '@stomp/stompjs';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/atom/UserAtom';
+import toast, { Toaster } from 'react-hot-toast';
+
+function notify (name){
+  toast(name + '님이 공지를 변경하였습니다.', {
+    duration: 2000,
+    icon: '👏',
+    style: {
+      fontSize:"15px",
+    },
+    iconTheme: {
+      primary: '#000',
+      secondary: '#fff',
+    },
+    ariaProps: {
+      role: 'status',
+      'aria-live': 'polite',
+    },
+  });
+}
+
 
 
 function IDEHeader(props) {
 
+  let dic = {
+    1:"Hayoung",
+    2:"MinSung"
+  }
+
+  let loginUser = useRecoilValue(userState);
   const client = useRef({});
   let [notice, setNotice] = useState("게리맨더링 코드리뷰 중 입니다.");
   
@@ -20,8 +48,8 @@ function IDEHeader(props) {
       return
     }
     const message = {
-      userId:1,
-      studyRoomId:1,
+      userId: loginUser.userId,
+      studyRoomId: props.id,
       notice: value,
     }
     publish(message);
@@ -67,6 +95,8 @@ function IDEHeader(props) {
       const json_body = JSON.parse(body.body);
       const message = json_body;
       setNotice(message.notice)
+
+      notify(dic[message.userId]);
     });
   };
   
@@ -74,11 +104,51 @@ function IDEHeader(props) {
     client.current.deactivate();
   };
 
+  function presentTime() {
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = "0" + (date.getMonth()+1);
+    var day = "0" + date.getDate();
+    var hour = "0" + date.getHours();
+    var minute = "0" + date.getMinutes();
+    return String(year).substr(-2) + "-" + month.substr(-2) + "-" + day.substr(-2) + " ";
+  }
+
+  function saveCode() {
+
+    let name = window.prompt("저장할 이름을 입력해 주세요");
+    if (name === ""){
+      return
+    }
+    if (name === null){
+      return
+    }
+    let extension = ".py"
+    if (props.language === "Java") {
+      extension = ".java"
+    }
+    let fileName = presentTime() + name + extension;
+    let output = props.code;
+
+    const element = document.createElement('a');
+    const file = new Blob([output], {
+      type: 'text/plain',
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = fileName;
+    document.body.appendChild(element); // FireFox
+    element.click();
+
+  }
+
   return(
     <div style={{
       backgroundColor:"#222226",
       height:"6vh",
     }}>
+      <Toaster
+        position="top-right"
+      />
       <div style={{
         padding: "10px 10px 10px 10px",
         display:"flex",
@@ -106,7 +176,7 @@ function IDEHeader(props) {
           }}
         >문서저장</button>&nbsp;&nbsp;
         <button onClick={() => {
-          props.saveCode();
+          saveCode();
         }}
           style={{
             backgroundColor:"#423423",
