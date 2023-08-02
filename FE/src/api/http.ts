@@ -34,6 +34,7 @@ const authHttp : AxiosInstance =  axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
+    withCredentials : true,
 });
 
 let accessToken:string|null = localStorage.getItem("accessToken");
@@ -91,6 +92,7 @@ const nonAuthHttp : AxiosInstance = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
+    withCredentials : true,
 })
 export {authHttp, nonAuthHttp};
 

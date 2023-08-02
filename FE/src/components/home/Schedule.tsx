@@ -63,14 +63,12 @@ function ScheduleList(props:{schedules:string[]}){
         } else {
             return `남은 시간:${hours}시간 ${mins}분`;
         }
-
     }
 
     props.schedules.map((schedule)=>{
         return (
             <>
             <div className={style.schedule_wrap}>
-    
                 <div className={style.time_info}>
                     <div className={style.from_to}><span>06:43</span><img src={arrow} alt="" /> <span>09:10 </span></div>
                     <div className={style.duration}>2h 27m</div>
@@ -79,7 +77,6 @@ function ScheduleList(props:{schedules:string[]}){
                 <div className={style.timer_wrap}>
                     <div className={style.timer_text}>{getTimeLeft(schedule.startTime)}</div>
                 </div>
-    
             </div>
             </>
         )
