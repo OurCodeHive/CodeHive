@@ -91,9 +91,7 @@ public class StudyRoomController {
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-}
 
-    /*
     // [스터디룸] 스터디 관련 공지사항 수정
     // [PUT] api/study/{studyinfo_id}/board/{studyboard_id}
     @PutMapping("/study/{studyinfo_id}/board/{studyboard_id}")
@@ -102,14 +100,8 @@ public class StudyRoomController {
             @PathVariable("studyboard_id") Long studyBoardId,
             @RequestBody StudyNoticeDTO studyNoticeDTO) {
 
-        // 요청으로 받아온 데이터를 추출
-        String author = studyNoticeDTO.getAuthor();
-        String title = studyNoticeDTO.getTitle();
-        String content = studyNoticeDTO.getContent();
-        LocalDate uploadAt = studyNoticeDTO.getUploadAt();
-
         // 스터디 공지사항 수정 서비스 호출
-        boolean isUpdated = studyService.updateStudyNotice(studyInfoId, studyBoardId, author, title, content, uploadAt);
+        boolean isUpdated = studyService.updateStudyNotice(studyBoardId, studyNoticeDTO);
 
         // 응답 메시지 설정
         Map<String, Object> response = new HashMap<>();
@@ -124,7 +116,9 @@ public class StudyRoomController {
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+}
 
+    /*
     // [스터디룸] 스터디 관련 공지사항 삭제
     // [DELETE] api/study/{studyinfo_id}/board/{studyinfo_id}
     @DeleteMapping("/study/{studyinfo_id}/board/{studyboard_id}")

@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -144,10 +145,22 @@ public class StudyService {
         return studyNoticePage.getContent();
     }
 
-    /*
-    public boolean updateStudyNotice(Long studyInfoId, Long studyBoardId, String author, String title, String content, LocalDate uploadAt) {
+    @Transactional
+    public boolean updateStudyNotice(Long studyBoardId ,StudyNoticeDTO notice) {
+        Optional<StudyNotice> targetNotice = studyNoticeRepository.findById(studyBoardId);
+
+        if (targetNotice.isPresent()) {
+            targetNotice.get().setNoticeTitle(notice.getNoticeTitle());
+            targetNotice.get().setContent(notice.getContent());
+            targetNotice.get().setUploadAt(notice.getUploadAt());
+
+            studyNoticeRepository.save(targetNotice.get());
+            return true;
+        }
+        return false;
     }
 
+    /*
     public boolean deleteStudyNotice(Long studyInfoId, Long studyBoardId) {
     }
 
