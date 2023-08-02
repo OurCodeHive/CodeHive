@@ -14,6 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -95,17 +100,37 @@ public class StudyController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
+    //
     @PostMapping("/study")
     public ResponseEntity<Map<String, Object>> setStudyGroup(
-            @RequestBody StudyCreationDto studyCreationDto, HttpServletRequest request, MultipartFile multipartFile) {
+            HttpServletRequest request,
+            @RequestParam(value = "profile") List<MultipartFile> multipartFile,
+            @RequestParam(value = "userId") String usersId,
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "startAt") String startAt,
+            @RequestParam(value = "endAt") String endAt,
+            @RequestParam(value = "description") String description
+    ) throws IOException, ParseException {
 
         Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
+
+        // 문자열 -> Date
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date formatStartAt = format.parse(startAt);
+        Date formatEndAt = format.parse(endAt);
+
+        StudyCreationDto studyCreationDto = new StudyCreationDto();
         studyCreationDto.setUsersId((String) token.get("users_id"));
+        studyCreationDto.setUsersId(usersId);
+        studyCreationDto.setTitle(title);
+        studyCreationDto.setDescription(description);
+        studyCreationDto.setStartAt(formatStartAt);
+        studyCreationDto.setEndAt(formatEndAt);
 
         Map<String, Object> response = new HashMap<>();
 
         response.put("status", 200);
-        response.put("studyinfo_id", studyService.setStudyGroup(studyCreationDto));
+        response.put("studyinfo_id", studyService.setStudyGroup(studyCreationDto, multipartFile.get(0)));
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }

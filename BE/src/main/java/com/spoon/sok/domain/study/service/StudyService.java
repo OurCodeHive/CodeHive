@@ -1,5 +1,6 @@
 package com.spoon.sok.domain.study.service;
 
+import com.spoon.sok.aws.S3Service;
 import com.spoon.sok.domain.study.dto.*;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.repository.StudyRepository;
@@ -9,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,6 +25,7 @@ public class StudyService {
 
     private final StudyRepository studyRepository;
     private final UserRepository userRepository;
+    private final S3Service s3Service;
 
     public List<StudyAppointmentDTO> getStudyMeeting(String userId) {
         return studyRepository.findByUserIdStudyMeetings(userId);
@@ -44,17 +48,26 @@ public class StudyService {
     }
 
     @Transactional
-    public Long setStudyGroup(StudyCreationDto studyCreationDto) {
+    public Long setStudyGroup(StudyCreationDto studyCreationDto, MultipartFile file) throws IOException {
 
         // 웹 IDE 접속하기 위한 10글자 문자열 생성
         studyCreationDto.setEnterName(UUID.randomUUID().toString().substring(0, 10));
 
-        studyRepository.saveStudyGroup(studyCreationDto.getUsersId(),
+        // S3로 파일 업로드하고 문자열 받아오기
+        String imgUrl = s3Service.upload(file);
+
+        System.out.println(imgUrl);
+
+        // 여기에 추가적으로 imgUrl 저장
+        studyRepository.saveStudyGroup(
+                studyCreationDto.getUsersId(),
                 studyCreationDto.getTitle(),
                 studyCreationDto.getDescription(),
                 studyCreationDto.getEnterName(),
                 studyCreationDto.getStartAt(),
-                studyCreationDto.getEndAt());
+                studyCreationDto.getEndAt(),
+                imgUrl
+        );
 
         // 최조 스터디 그룹을 만드는 사람은 바로 중간테이블에 저장(스터디 장)
         Long newStudy = studyRepository.findByEnterName(studyCreationDto.getEnterName());
