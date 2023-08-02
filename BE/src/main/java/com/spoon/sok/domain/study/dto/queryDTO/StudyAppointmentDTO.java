@@ -1,4 +1,4 @@
-package com.spoon.sok.domain.study.dto;
+package com.spoon.sok.domain.study.dto.queryDTO;
 
 import java.util.Date;
 
@@ -9,10 +9,11 @@ public interface StudyAppointmentDTO {
 
     String getTitle();
 
-    Date getMeetingAt();
+    Date getDay();
 
-    Date getCreatedAt();
+    Date getStartTime();
 
-    Date getEndAt();
+    Date getEndTime();
 
+    Date getDate();
 }

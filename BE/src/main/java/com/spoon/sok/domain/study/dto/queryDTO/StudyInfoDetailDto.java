@@ -1,12 +1,13 @@
-package com.spoon.sok.domain.study.dto;
+package com.spoon.sok.domain.study.dto.queryDTO;
 
 import java.util.Date;
 
 public interface StudyInfoDetailDto {
 
-    Date getCreatedAt();
+    String getStartAt();
 
-    Date getEndAt();
+    String getEndAt();
+
     String getStudyinfoId();
 
     String getUsersId();

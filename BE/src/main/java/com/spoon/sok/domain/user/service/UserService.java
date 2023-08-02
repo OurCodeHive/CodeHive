@@ -17,7 +17,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -228,8 +227,13 @@ public class UserService {
         return true;
     }
 
+    @Transactional
     public boolean resignbyHost(UserResignRequestDto requestDto) {
         Optional<User> user = userRepository.findById(requestDto.getUserId());
+
+        if (user.isEmpty()) {
+            return false;
+        }
 
         userRepository.deleteById(user.get().getId());
 

@@ -2,16 +2,16 @@ package com.spoon.sok.domain.study.entity;
 
 //import com.spoon.sok.domain.user.entity.User;
 
+import com.spoon.sok.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
-@Setter
+@Entity
 @Table(name = "study_archive")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyArchive {
@@ -30,11 +30,26 @@ public class StudyArchive {
     @Column(name = "content") // 스터디 내용
     private String content;
 
+    // study_info 스터디 정보 테이블과 다대일 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyinfo_id", nullable = false) // 스터디 정보키
     private StudyInfo studyInfo;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", nullable = false) // 유저키
-//    private User user;
+    // users 유저 테이블과 다대일 관계
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false) // 스터디 정보키
+    private com.spoon.sok.domain.user.entity.User user;
+
+    //file 파일 테이블과 일대다 관계
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyArchive")
+    private List<File> fileList = new ArrayList<>();
+
+    @Builder
+    public StudyArchive(Long id, Date uploadAt, String title, String content, StudyInfo studyInfo) {
+        this.id = id;
+        this.uploadAt = uploadAt;
+        this.title = title;
+        this.content = content;
+        this.studyInfo = studyInfo;
+    }
 }

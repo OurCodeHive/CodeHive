@@ -2,6 +2,7 @@ package com.spoon.sok.domain.study.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,5 +32,19 @@ public class File {
     @Column(name = "etc") // 확장자
     private String etc;
 
+    // study_archive 스터디자료 테이블과 다대일 관계
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studyarchive_id", nullable = false)
+    private StudyArchive studyArchive;
 
+    @Builder
+    public File (Long id, Long fileSize, String originName, String realName, String path, String etc, StudyArchive studyArchive) {
+        this.id = id;
+        this.fileSize = fileSize;
+        this.originName = originName;
+        this.realName = realName;
+        this.path = path;
+        this.etc = etc;
+        this.studyArchive = studyArchive;
+    }
 }

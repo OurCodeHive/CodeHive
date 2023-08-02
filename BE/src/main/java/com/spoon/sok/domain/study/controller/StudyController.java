@@ -1,9 +1,8 @@
 package com.spoon.sok.domain.study.controller;
 
-import com.spoon.sok.domain.study.dto.*;
+import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.service.StudyService;
-import com.spoon.sok.domain.user.entity.UserStudy;
 import com.spoon.sok.util.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -110,14 +109,24 @@ public class StudyController {
             @RequestParam(value = "startAt") String startAt,
             @RequestParam(value = "endAt") String endAt,
             @RequestParam(value = "description") String description
-    ) throws IOException, ParseException {
+    )  {
 
         Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
 
         // 문자열 -> Date
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date formatStartAt = format.parse(startAt);
-        Date formatEndAt = format.parse(endAt);
+        Date formatStartAt = null;
+        try {
+            formatStartAt = format.parse(startAt);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        Date formatEndAt = null;
+        try {
+            formatEndAt = format.parse(endAt);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
 
         StudyCreationDto studyCreationDto = new StudyCreationDto();
         studyCreationDto.setUsersId((String) token.get("users_id"));
@@ -130,7 +139,11 @@ public class StudyController {
         Map<String, Object> response = new HashMap<>();
 
         response.put("status", 200);
-        response.put("studyinfo_id", studyService.setStudyGroup(studyCreationDto, multipartFile.get(0)));
+        try {
+            response.put("studyinfo_id", studyService.setStudyGroup(studyCreationDto, multipartFile.get(0)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
@@ -152,14 +165,14 @@ public class StudyController {
 
         if (us.isPresent()) {
             response.put("possible_access", true);             // 초대받은 사람이다.
-            if (us.get().getUsersId() == null) {       // 회원가입은 안했다.
+            if (us.get().getUsersId() == null) {               // 회원가입은 안했다.
                 response.put("isOurUser", false);
             } else {
                 response.put("isOurUser", true);
             }
         } else {
             response.put("possible_access", false);            // 초대 받은 사람이 아니다.
-            response.put("isOurUser", false);          // 회원가입도 안했다.
+            response.put("isOurUser", false);                  // 회원가입도 안했다.
         }
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
@@ -186,11 +199,10 @@ public class StudyController {
         Map<String, Object> response = new HashMap<>();
 
         Optional<StudyInfoDetailDto> studyInfo = studyService.getStudyInfoAll(studyinfo_id);
-        log.info("여기는 들어오나? {}", studyInfo.isPresent());
 
         if (studyInfo.isPresent()) {
             response.put("status", 200);
-            response.put("createdAt", studyInfo.get().getCreatedAt());
+            response.put("startAt", studyInfo.get().getStartAt());
             response.put("endAt", studyInfo.get().getEndAt());
             response.put("studyinfo_id", studyInfo.get().getStudyinfoId());
             response.put("users_id", studyInfo.get().getUsersId());
