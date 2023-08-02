@@ -107,14 +107,14 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
     void saveUserStudyStatusQuery(@Param("users_id") Long usersId,
                              @Param("userstudy_id") Long userstudyId);
 
-    @Query(value = "SELECT si.start_at startAt, " +
-            "si.end_at endAt, " +
-            "si.studyinfo_id studyinfoId, " +
-            "si.users_id usersId, " +
-            "si.enter_name enterName, " +
-            "si.profileimage profileImage, " +
-            "si.title title," +
-            "si.description description " +
+    @Query(value = "SELECT DATE_FORMAT(si.start_at, '%Y-%m-%d') as startAt, " +
+            "DATE_FORMAT(si.end_at, '%Y-%m-%d') as endAt, " +
+            "si.studyinfo_id as studyinfoId, " +
+            "si.users_id as usersId, " +
+            "si.enter_name as enterName, " +
+            "si.profileimage as profileImage, " +
+            "si.title as title," +
+            "si.description as description " +
             "FROM study_info si where studyinfo_id = :studyInfoId", nativeQuery = true)
     Optional<StudyInfoDetailDto> findByStudyInfoIdQuery(String studyInfoId);
 
