@@ -58,12 +58,11 @@ public class UserController {
         }
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", responseDto.getTokenInfo().getRefreshToken())
-//                .domain("localhost")
-                .domain("ourcodehive.vercel.app")
                 .path("/")
                 .sameSite("None")
                 .httpOnly(true)
                 .secure(true)
+                .maxAge(3600)
                 .build();
 
         response.addHeader("Set-Cookie", cookie.toString());
