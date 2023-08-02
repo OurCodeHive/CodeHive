@@ -7,6 +7,7 @@ import { nonAuthHttp } from '@/api/http';
 import logout from "@/res/img/logout.png";
 import mypage from "@/res/img/30X30_mypage.png";
 import { useNavigate } from 'react-router-dom';
+import { AxiosResponse } from 'axios';
 interface ICookies {
     get(e:string):string,
 }

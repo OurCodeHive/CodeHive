@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import style from '@/res/css/module/Home.module.css';
 import arrow from '@/res/img/icon_arrow.png';
 import { authHttp, nonAuthHttp } from '@/api/http';
-import moment from 'moment';
+import moment, { ISO_8601 } from 'moment';
 import { start } from 'repl';
+import { format } from 'path';
+
 const Schedule = () => {
     let [schedules, setSchedules] = useState<string[]>([]);
-    let now = moment().toISOString();
-    let startAt = "2023-08-02T17:22:43.512Z";
-    // console.log(moment().toISOString().diff(startAt));
-    console.log(now);
+
+    
+
+
     useEffect(()=>{
         // const today = new Date().toISOString().slice(0,10)
         const today = "2023-08-02";
@@ -20,8 +22,6 @@ const Schedule = () => {
     },[])
     return (
         <div>
-            //2023-08-02T17:22:43.512Z
-            //2023-08-02T18:47:56.542Z
             <div className={`${style.box_schedule}`}>
             <div className={`${style.subtitle_schedule}`}>오늘 예정된 스터디</div>
                 <div className={style.content}>
@@ -46,25 +46,45 @@ const Schedule = () => {
 };
 
 function ScheduleList(props:{schedules:string[]}){
+    function getTimeLeft(startTime:string):string{
+        let now = moment().toISOString();
+        // let startAt = moment("2023-08-02T05:22:43.512Z");
+        let startAt = moment(startTime);
+        console.log("now = "+now);
+        console.log("startAt = "+startAt.toISOString());
+        let hours = moment.duration(startAt.diff(moment())).hours();
+        let mins = moment.duration(startAt.diff(moment())).minutes();
+        let seconds = moment.duration(startAt.diff(moment())).seconds();
+        // let duration = moment(moment.utc(moment(startAt)).diff(moment(now))).days();
+        console.log(hours +" "+ mins +" "+ seconds);
+
+        if(hours<=0 && mins<=0 && seconds<=0){
+            return "지난 스터디입니다";
+        } else {
+            return `남은 시간:${hours}시간 ${mins}분`;
+        }
+
+    }
+
     props.schedules.map((schedule)=>{
+        return (
+            <>
+            <div className={style.schedule_wrap}>
+    
+                <div className={style.time_info}>
+                    <div className={style.from_to}><span>06:43</span><img src={arrow} alt="" /> <span>09:10 </span></div>
+                    <div className={style.duration}>2h 27m</div>
+                </div>
+    
+                <div className={style.timer_wrap}>
+                    <div className={style.timer_text}>{getTimeLeft(schedule.startTime)}</div>
+                </div>
+    
+            </div>
+            </>
+        )
 
     })
-    return (
-        <>
-        <div className={style.schedule_wrap}>
-
-            <div className={style.time_info}>
-                <div className={style.from_to}><span>06:43</span><img src={arrow} alt="" /> <span>09:10 </span></div>
-                <div className={style.duration}> 2h 27m</div>
-            </div>
-
-            <div className={style.timer_wrap}>
-                <div className={style.timer_text}>남은 시간 : 8시간 11분</div>
-            </div>
-
-        </div>
-        </>
-    )
 }
 
 
