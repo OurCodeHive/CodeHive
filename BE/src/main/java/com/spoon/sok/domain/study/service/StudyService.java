@@ -1,7 +1,6 @@
 package com.spoon.sok.domain.study.service;
 
 import com.spoon.sok.domain.study.dto.queryDTO.*;
-import com.spoon.sok.domain.study.dto.requestDTO.StudyUpdateDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.entity.StudyNotice;
@@ -14,12 +13,11 @@ import com.spoon.sok.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -143,6 +141,10 @@ public class StudyService {
         Page<StudyNotice> studyNoticePage = studyNoticeRepository.findByStudyInfo(findStudyInfo.get(), pageRequest);
         return studyNoticePage.getContent();
     }
+
+//    public boolean createStudyAppointment(Long studyInfoId, String title, String description, Date date, Date startTime, Date endTime) {
+//    }
+
 
     /*
     public boolean updateStudyNotice(Long studyInfoId, Long studyBoardId, String author, String title, String content, LocalDate uploadAt) {
