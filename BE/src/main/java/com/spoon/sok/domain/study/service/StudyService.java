@@ -160,10 +160,22 @@ public class StudyService {
         return false;
     }
 
-    /*
-    public boolean deleteStudyNotice(Long studyInfoId, Long studyBoardId) {
+    @Transactional
+    public boolean deleteStudyNotice(Long studyBoardId) {
+        Optional<StudyNotice> findStudyNotice = studyNoticeRepository.findById(studyBoardId);
+        log.info("조회는 되니? {} ", findStudyNotice.get().getNoticeTitle());
+
+        if (findStudyNotice.isPresent()) {
+            log.info("전이야");
+            studyNoticeRepository.delete(findStudyNotice.get());
+            log.info("후야");
+            return true;
+        } else {
+            return false;
+        }
     }
 
+    /*
     public List<StudyDocumentDTO> getStudyDocuments(Long studyInfoId, int page, int size) {
     }
 

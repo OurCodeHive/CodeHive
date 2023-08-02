@@ -22,12 +22,10 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-
 public class StudyRoomController {
 
     private final StudyService studyService;
 
-    // [스터디룸] 스터디 그룹 기간 수정
     @PutMapping("/study/{studyinfoId}")
     public ResponseEntity<Map<String, Object>> updateStudyGroup(
             @PathVariable("studyinfoId") Long studyinfoId, @RequestBody StudyUpdateDTO studyUpdateDTO) {
@@ -45,8 +43,6 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // [스터디룸] 스터디 공지사항 등록
-    // [POST] api/study/{studyinfo_id}/board
     @PostMapping("/study/{studyinfo_id}/board")
     public ResponseEntity<?> createStudyNotice(
             @PathVariable("studyinfo_id") Long studyInfoId,
@@ -66,8 +62,6 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // [스터디룸] 스터디 공지사항 조회
-    // [GET] api/study/{studyinfo_id}/board?page={int}&size={int}
     @GetMapping("/study/{studyinfo_id}/board")
     public ResponseEntity<Map<String, Object>> getStudyNoticeList(
             @PathVariable("studyinfo_id") Long studyInfoId,
@@ -92,8 +86,6 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // [스터디룸] 스터디 관련 공지사항 수정
-    // [PUT] api/study/{studyinfo_id}/board/{studyboard_id}
     @PutMapping("/study/{studyinfo_id}/board/{studyboard_id}")
     public ResponseEntity<Map<String, Object>> updateStudyNotice(
             @PathVariable("studyinfo_id") Long studyInfoId,
@@ -116,9 +108,7 @@ public class StudyRoomController {
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-}
 
-    /*
     // [스터디룸] 스터디 관련 공지사항 삭제
     // [DELETE] api/study/{studyinfo_id}/board/{studyinfo_id}
     @DeleteMapping("/study/{studyinfo_id}/board/{studyboard_id}")
@@ -127,7 +117,7 @@ public class StudyRoomController {
             @PathVariable("studyboard_id") Long studyBoardId) {
 
         // 스터디 공지사항 삭제 서비스 호출
-        boolean isDeleted = studyService.deleteStudyNotice(studyInfoId, studyBoardId);
+        boolean isDeleted = studyService.deleteStudyNotice(studyBoardId);
 
         // 응답 메시지 설정
         Map<String, Object> response = new HashMap<>();
@@ -142,7 +132,9 @@ public class StudyRoomController {
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+}
 
+    /*
 //     [스터디룸] 스터디 자료 조회
 //     [GET] api/study/{studyinfo_id}/document?page={int}&size={int}
     @GetMapping("/study/{studyinfo_id}/document")
