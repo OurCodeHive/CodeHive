@@ -15,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class StudyNoticeDTO {
     private Long authorId;
-    private String title;
+    private String noticeTitle;
     private String content;
     private Date uploadAt;
 
@@ -23,9 +23,15 @@ public class StudyNoticeDTO {
         return StudyNotice.builder()
                 .studyInfo(studyinfo)
                 .user(author)
-                .title(title)
+                .noticeTitle(noticeTitle)
                 .content(content)
-                .createdAt(uploadAt)
+                .uploadAt(uploadAt)
                 .build();
     }
+
+    /**
+     * 변경사항 *
+     * createdAt -> uploadAt *
+     * title -> noticeTitle *
+     */
 }

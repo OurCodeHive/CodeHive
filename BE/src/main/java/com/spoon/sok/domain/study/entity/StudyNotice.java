@@ -7,8 +7,9 @@ import lombok.*;
 
 import java.util.Date;
 
-@Getter @Setter
+@Getter
 @Entity
+@Setter
 @Table(name = "study_notice")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyNotice {
@@ -18,17 +19,17 @@ public class StudyNotice {
     @Column(name = "studyboard_id") // 공지사항키
     private Long id;
 
-    @Column(name = "title") // 스터디 제목
-    private String title;
+    @Column(name = "notice_title") // 스터디 공지사항 제목
+    private String noticeTitle;
 
     @Column(name = "content") // 스터디 내용
     private String content;
 
     @Temporal(TemporalType.DATE)
-    private Date createdAt; // 스터디 공지사항 등록일자
+    private Date uploadAt; // 스터디 공지사항 등록일자
 
     // study_info 스터디 정보 테이블과 다대일 관계 - studyinfo_id
-    @JsonIgnore
+    @JsonIgnore // @ManyToOne의 Fetch 타입을 Lazy로 사용했을 때 나타나는 문제점을 해결하기 위한 어노테이션
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyinfo_id", nullable = false) // 스터디 정보키
     private StudyInfo studyInfo;
@@ -40,12 +41,19 @@ public class StudyNotice {
     private User user; // 스터디 그룹장(공지사항 작성자)
 
     @Builder
-    public StudyNotice(Long id, String title, String content, Date createdAt, StudyInfo studyInfo, User user) {
+    public StudyNotice(Long id, String noticeTitle, String content, Date uploadAt, StudyInfo studyInfo, User user) {
         this.id = id;
-        this.title = title;
+        this.noticeTitle = noticeTitle;
         this.content = content;
-        this.createdAt = createdAt;
+        this.uploadAt = uploadAt;
         this.studyInfo = studyInfo;
         this.user = user;
     }
+
+    /**
+     * 엔티티 수정사항 *
+     * createdAt -> uploadAt  *
+     * title -> notice_title *
+     * title -> noticeTitle *
+     */
 }

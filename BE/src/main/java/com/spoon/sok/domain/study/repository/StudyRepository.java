@@ -16,8 +16,8 @@ import java.util.Optional;
 
 public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
 
-    @Query(value = "SELECT sa.start_at as startAt, " +
-            "sa.end_at as endAt, " +
+    @Query(value = "SELECT sa.start_time as startTime, " +
+            "sa.end_time as endTime, " +
             "sa.meeting_at as meetingAt, " +
             "sa.study_appointment_title as title, " +
             "sa.study_appointment_id as studyappointmentId, " +
@@ -28,8 +28,8 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "WHERE u.users_id = :userId", nativeQuery = true)
     List<StudyAppointmentDTO> findByUserIdStudyMeetingsQuery(@Param("userId") String userId);
 
-    @Query(value = "SELECT sa.start_at as startAt, " +
-            "sa.end_at as endAt, " +
+    @Query(value = "SELECT sa.start_time as startTime, " +
+            "sa.end_time as endTime, " +
             "sa.meeting_at as meetingAt, " +
             "sa.study_appointment_title as title, " +
             "sa.study_appointment_id as studyappointmentId, " +

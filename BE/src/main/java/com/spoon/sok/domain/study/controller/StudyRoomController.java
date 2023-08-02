@@ -27,6 +27,7 @@ public class StudyRoomController {
 
     private final StudyService studyService;
 
+    // [스터디룸] 스터디 그룹 기간 수정
     @PutMapping("/study/{studyinfoId}")
     public ResponseEntity<Map<String, Object>> updateStudyGroup(
             @PathVariable("studyinfoId") Long studyinfoId, @RequestBody StudyUpdateDTO studyUpdateDTO) {

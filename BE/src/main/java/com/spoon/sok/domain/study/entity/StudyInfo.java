@@ -1,18 +1,13 @@
 package com.spoon.sok.domain.study.entity;
 
-
 import com.spoon.sok.domain.user.entity.User;
 import com.spoon.sok.domain.user.entity.UserStudy;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Getter
-@Setter
 @Entity
 @Transactional
 @Table(name = "study_info")
@@ -32,7 +27,7 @@ public class StudyInfo {
 
     @Lob
     @Column(name = "description", columnDefinition = "LONGTEXT")
-    private String description;
+    private String description; // 스터디 설명
 
     @Column(name = "profileimage") // 스터디 대표(프로필) 이미지
     private String profileImage;
@@ -41,10 +36,10 @@ public class StudyInfo {
     private String enterName;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date startAt; // 스터디 그룹 생성일
+    private Date startAt; // 스터디 그룹 시작일(기간설정 - 시작)
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date endAt; // 스터디 그룹 종료일
+    private Date endAt; // 스터디 그룹 종료일(기간설정 - 종료)
 
     // user_study 유저스터디 중간테이블과 일대다 관계
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
@@ -57,19 +52,19 @@ public class StudyInfo {
 
     //study_archive 스터디자료 테이블과 일대다 관계
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
-    private List<StudyArchive> archiveList = new ArrayList<>();
+    private List<StudyArchive> archiveList = new ArrayList<>(); // 스터디 자료
 
-    //chat 채팅 테이블과 일대다 관계
+//    chat 채팅 테이블과 일대다 관계
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
 //    private List<Chat> chatList = new ArrayList<>();
 
     //study_appointment 스터디미팅(회의) 테이블과 일대다 관계
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
-    private List<StudyAppointment> meetingList = new ArrayList<>();
+    private List<StudyAppointment> meetingList = new ArrayList<>(); // 스터디 회의
 
     //study_notice 스터디공지사항과 일대다 관계
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
-    private List<StudyNotice> noticeList = new ArrayList<>();
+    private List<StudyNotice> noticeList = new ArrayList<>(); // 스터디 공지사항
 
 
     @Builder
@@ -85,13 +80,14 @@ public class StudyInfo {
         this.meetingList = meetingList;
         this.users = users;
     }
-
+    
+    // 스터디 그룹 기간 설정 - 시작일 변경
     public void updateEndAt(Date endAt) {
         this.endAt = endAt;
     }
-
+    
+    // 스터디 그룹 기간 설정 - 종료일 변경
     public void updateStartAt(Date startAt) {
         this.startAt = startAt;
     }
-
 }

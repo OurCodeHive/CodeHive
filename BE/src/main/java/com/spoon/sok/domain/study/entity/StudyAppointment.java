@@ -26,10 +26,10 @@ public class StudyAppointment {
     private Date meetingAt; // 회의 날짜
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt; // 회의 시작 날짜
+    private Date startTime; // 회의 시작 날짜
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date endAt; // 회의 종료 시간
+    private Date endTime; // 회의 종료 시간
 
     // study_info 스터디 정보 테이블과 다대일 관계
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,12 +37,17 @@ public class StudyAppointment {
     private StudyInfo studyInfo;
 
     @Builder
-    public StudyAppointment(Long id, StudyInfo studyInfo, String title, Date meetingAt, Date createdAt, Date endAt) {
+    public StudyAppointment(Long id, StudyInfo studyInfo, String title, Date meetingAt, Date startTime, Date endTime) {
         this.id = id;
         this.studyInfo = studyInfo;
         this.title = title;
         this.meetingAt = meetingAt;
-        this.createdAt = createdAt;
-        this.endAt = endAt;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
+
+    /**
+     * 엔티티 수정사항 *
+     * createdAt -> endTime, startTime*
+     */
 }
