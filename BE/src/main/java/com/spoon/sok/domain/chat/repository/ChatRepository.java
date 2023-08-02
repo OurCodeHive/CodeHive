@@ -9,4 +9,6 @@ public interface ChatRepository extends MongoRepository<Chat, String> {
 
     List<Chat> findByStudyInfoId(Long studyInfoId);
 
+    void deleteAllByUserId(Long userId);
+
 }
