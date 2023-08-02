@@ -59,7 +59,7 @@ public class UserController {
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", responseDto.getTokenInfo().getRefreshToken())
 //                .domain("localhost")
-                .domain("https://ourcodehive.vercel.app")
+                .domain("ourcodehive.vercel.app")
                 .path("/")
                 .sameSite("None")
                 .httpOnly(true)
