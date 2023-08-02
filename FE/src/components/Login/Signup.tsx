@@ -266,6 +266,7 @@ const Signup = () => {
                 const response: AxiosResponse<returnData> = await api.post(`/signup`, signUpUser);
                 const data = response.data
                 console.log(data);
+                navigate('/login')
                 return data;
             } catch (error) {
                 console.log(error);

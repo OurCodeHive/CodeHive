@@ -45,7 +45,7 @@
 .login_title {
   padding-top: 15px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   font-size: 32px;
   color: #fff
 }
@@ -63,30 +63,31 @@ body::before {
   z-index: 2;
 }
 .int_area {
-    display: flex;
+  display: flex;
   width: 400px;
   position: relative;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   border-bottom: #fff;
   
 }
 
 .int_area:first-child {
-    margin-top: 70px;
+    /* margin-top: 30px; */
 }
 .int_area input {
     flex: 6;
     width: 400px;
-    padding: 20px 10px 10px;
+    padding: 10px 10px 0px;
     background-color: transparent;
-    font-size: 18px;
+    font-size: 17px;
     color: #fff;
     border: none;
     border-bottom: 1px solid rgb(255, 255, 255);
 }
 .int_area label {
     position: absolute;
+    /* margin-top: -10px; */
     left: 10px;
     top: 30px;
     font-size: 15px;

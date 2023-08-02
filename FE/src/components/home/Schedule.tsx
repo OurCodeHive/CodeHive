@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import style from '@/res/css/module/Home.module.css';
 import arrow from '@/res/img/icon_arrow.png';
-import { nonAuthHttp } from '@/api/http';
+import { authHttp, nonAuthHttp } from '@/api/http';
+import moment from 'moment';
+import { start } from 'repl';
 const Schedule = () => {
     let [schedules, setSchedules] = useState<string[]>([]);
-
+    let now = moment().toISOString();
+    let startAt = "2023-08-02T17:22:43.512Z";
+    // console.log(moment().toISOString().diff(startAt));
+    console.log(now);
     useEffect(()=>{
-        const today = new Date().toISOString().slice(0,10)
-        nonAuthHttp.get(`/today/study?today=${today}`).then((res)=>{
+        // const today = new Date().toISOString().slice(0,10)
+        const today = "2023-08-02";
+        authHttp.get(`/today/study?today=${today}`).then((res)=>{
             setSchedules(res.data.today);//[{},{},{}]
             console.log(res.data.today);
         })
     },[])
     return (
         <div>
+            //2023-08-02T17:22:43.512Z
+            //2023-08-02T18:47:56.542Z
             <div className={`${style.box_schedule}`}>
             <div className={`${style.subtitle_schedule}`}>오늘 예정된 스터디</div>
                 <div className={style.content}>
@@ -38,6 +46,9 @@ const Schedule = () => {
 };
 
 function ScheduleList(props:{schedules:string[]}){
+    props.schedules.map((schedule)=>{
+
+    })
     return (
         <>
         <div className={style.schedule_wrap}>

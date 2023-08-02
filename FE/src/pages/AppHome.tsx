@@ -1,14 +1,13 @@
 import React from 'react';
-import AppStudy from './AppStudy';
 import Background from '@/components/home/Background.tsx';
 import Intro from '@/components/home/intro';
+import Lnb from '@/components/inc/Lnb';
 const AppHome = () => {
     return (
         <>
         
         <Background></Background>
-        {/* <AppStudy/> */}
-        {/* <Intro></Intro> */}
+        {/* <Lnb></Lnb> */}
 
         </>
     );
