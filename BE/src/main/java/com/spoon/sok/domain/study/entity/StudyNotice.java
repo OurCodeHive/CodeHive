@@ -22,8 +22,9 @@ public class StudyNotice {
     @Column(name = "notice_title") // 스터디 공지사항 제목
     private String noticeTitle;
 
-    @Column(name = "content") // 스터디 내용
-    private String content;
+    @Lob
+    @Column(name = "content", columnDefinition = "LONGTEXT")
+    private String content; // 스터디 설명
 
     @Temporal(TemporalType.DATE)
     private Date uploadAt; // 스터디 공지사항 등록일자

@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -142,14 +144,22 @@ public class StudyService {
         return studyNoticePage.getContent();
     }
 
-//    public boolean createStudyAppointment(Long studyInfoId, String title, String description, Date date, Date startTime, Date endTime) {
-//    }
+    @Transactional
+    public boolean updateStudyNotice(Long studyBoardId ,StudyNoticeDTO notice) {
+        Optional<StudyNotice> targetNotice = studyNoticeRepository.findById(studyBoardId);
 
+        if (targetNotice.isPresent()) {
+            targetNotice.get().setNoticeTitle(notice.getNoticeTitle());
+            targetNotice.get().setContent(notice.getContent());
+            targetNotice.get().setUploadAt(notice.getUploadAt());
 
-    /*
-    public boolean updateStudyNotice(Long studyInfoId, Long studyBoardId, String author, String title, String content, LocalDate uploadAt) {
+            studyNoticeRepository.save(targetNotice.get());
+            return true;
+        }
+        return false;
     }
 
+    /*
     public boolean deleteStudyNotice(Long studyInfoId, Long studyBoardId) {
     }
 
