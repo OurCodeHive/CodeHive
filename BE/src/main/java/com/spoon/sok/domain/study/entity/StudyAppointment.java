@@ -26,7 +26,7 @@ public class StudyAppointment {
     private Date meetingAt; // 회의 날짜
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt; // 회의 시작 날짜
+    private Date startAt; // 회의 시작 날짜
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date endAt; // 회의 종료 시간
@@ -37,12 +37,12 @@ public class StudyAppointment {
     private StudyInfo studyInfo;
 
     @Builder
-    public StudyAppointment(Long id, StudyInfo studyInfo, String title, Date meetingAt, Date createdAt, Date endAt) {
+    public StudyAppointment(Long id, StudyInfo studyInfo, String title, Date meetingAt, Date startAt, Date endAt) {
         this.id = id;
         this.studyInfo = studyInfo;
         this.title = title;
         this.meetingAt = meetingAt;
-        this.createdAt = createdAt;
+        this.startAt = startAt;
         this.endAt = endAt;
     }
 }
