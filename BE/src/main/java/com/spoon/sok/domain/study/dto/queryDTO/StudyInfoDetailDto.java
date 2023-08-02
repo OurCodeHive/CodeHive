@@ -4,9 +4,9 @@ import java.util.Date;
 
 public interface StudyInfoDetailDto {
 
-    Date getStartAt();
+    String getStartAt();
 
-    Date getEndAt();
+    String getEndAt();
 
     String getStudyinfoId();
 

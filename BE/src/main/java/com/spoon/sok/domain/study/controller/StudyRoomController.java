@@ -66,6 +66,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // [스터디룸] 스터디 공지사항 조회
     // [GET] api/study/{studyinfo_id}/board?page={int}&size={int}
     @GetMapping("/study/{studyinfo_id}/board")
     public ResponseEntity<Map<String, Object>> getStudyNoticeList(
