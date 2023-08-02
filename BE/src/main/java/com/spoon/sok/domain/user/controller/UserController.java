@@ -58,7 +58,7 @@ public class UserController {
         }
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", responseDto.getTokenInfo().getRefreshToken())
-                .domain("localhost")
+//                .domain("localhost")
                 .path("/")
                 .sameSite("None")
                 .httpOnly(true)
