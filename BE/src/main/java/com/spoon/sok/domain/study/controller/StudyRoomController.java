@@ -2,6 +2,7 @@ package com.spoon.sok.domain.study.controller;
 
 import com.spoon.sok.domain.study.dto.requestDTO.StudyUpdateDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.enums.StudyUpdateResult;
 import com.spoon.sok.domain.study.entity.StudyNotice;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -63,20 +65,41 @@ public class StudyRoomController {
     }
 
     @GetMapping("/study/{studyinfo_id}/board")
-    public ResponseEntity<Map<String, Object>> getStudyNoticeList(
+    public ResponseEntity<Map<String, Object>> getStudyNoticeBoard(
             @PathVariable("studyinfo_id") Long studyInfoId,
             @RequestParam("page") int page,
             @RequestParam("size") int size) {
 
         Pageable pageRequest = PageRequest.of(page, size);
-        // 스터디 공지사항 조회 서비스 호출
-        List<StudyNotice> studyNoticeList = studyService.getStudyNoticeList(studyInfoId, pageRequest);
+        List<StudyNoticePreviewDTO> studyNoticeBoard = studyService.getStudyNoticeBoard(studyInfoId, pageRequest);
 
         // 응답 메시지 설정
         Map<String, Object> response = new HashMap<>();
-        if (studyNoticeList != null) {
+        if (studyNoticeBoard != null) {
             response.put("status", 200);
-            response.put("studyNoticeList", studyNoticeList);
+            response.put("studyNoticeBoard", studyNoticeBoard);
+        } else {
+            response.put("status", 400);
+            response.put("message", "공지사항 조회에 실패하였습니다.");
+        }
+
+        // HTTP 응답 반환
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/study/{studyinfo_id}/board/{studyboard_id}")
+    public ResponseEntity<Map<String, Object>> getStudyNotice(
+            @PathVariable("studyinfo_id") Long studyInfoId,
+            @PathVariable("studyboard_id") Long studyboardId) {
+
+        // 스터디 공지사항 조회 서비스 호출
+        Optional<StudyNotice> studyNotice = studyService.getStudyNoticeList(studyboardId);
+
+        // 응답 메시지 설정
+        Map<String, Object> response = new HashMap<>();
+        if (studyNotice != null) {
+            response.put("status", 200);
+            response.put("studyNotice", studyNotice);
         } else {
             response.put("status", 400);
             response.put("message", "공지사항 조회에 실패하였습니다.");
@@ -109,8 +132,6 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // [스터디룸] 스터디 관련 공지사항 삭제
-    // [DELETE] api/study/{studyinfo_id}/board/{studyinfo_id}
     @DeleteMapping("/study/{studyinfo_id}/board/{studyboard_id}")
     public ResponseEntity<Map<String, Object>> deleteStudyNotice(
             @PathVariable("studyinfo_id") Long studyInfoId,
