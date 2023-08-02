@@ -1,17 +1,17 @@
 package com.spoon.sok.domain.chat.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Data
+@Setter
+@Getter
 @ToString
-@Setter @Getter
-public class NoticeDto {
+public class LambdaRequestDto {
 
     private Long userId;
-    private Long studyRoomId;
-    private String notice;
-
+    private String name;
+    private String code;
+    private String input;
+    
 }

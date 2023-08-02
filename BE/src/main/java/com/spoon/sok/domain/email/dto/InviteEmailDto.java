@@ -8,6 +8,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class InviteEmailDto {
-    private Long studyinfo_id;
+    private Long studyinfoId;
     private List<String> email;
 }

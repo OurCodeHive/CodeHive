@@ -16,7 +16,6 @@ import io.openvidu.java.client.Session;
 import io.openvidu.java.client.SessionProperties;
 
 
-@CrossOrigin(origins = "*")
 @RestController
 public class OpenviduController {
 
