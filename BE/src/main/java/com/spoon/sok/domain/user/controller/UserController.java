@@ -59,6 +59,7 @@ public class UserController {
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", responseDto.getTokenInfo().getRefreshToken())
 //                .domain("localhost")
+                .domain("https://ourcodehive.vercel.app")
                 .path("/")
                 .sameSite("None")
                 .httpOnly(true)
@@ -81,7 +82,8 @@ public class UserController {
         result = new HashMap<>();
 
         if (errors.hasErrors()) {
-            System.out.println(errors.toString());;
+            System.out.println(errors.toString());
+            ;
             result.put("status", 400);
             result.put("message", "에러 발생!");
             return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
@@ -181,7 +183,6 @@ public class UserController {
 
                     return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
             }
-
         }
 
         result.put("status", 200);
