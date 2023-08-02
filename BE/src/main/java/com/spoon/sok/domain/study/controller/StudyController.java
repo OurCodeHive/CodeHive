@@ -102,48 +102,39 @@ public class StudyController {
     //
     @PostMapping("/study")
     public ResponseEntity<Map<String, Object>> setStudyGroup(
-            HttpServletRequest request,
-            @RequestParam(value = "profile") List<MultipartFile> multipartFile,
+//            HttpServletRequest request,
+            @RequestParam(value = "profile", required = false) List<MultipartFile> multipartFile,
             @RequestParam(value = "userId") String usersId,
             @RequestParam(value = "title") String title,
             @RequestParam(value = "startAt") String startAt,
             @RequestParam(value = "endAt") String endAt,
             @RequestParam(value = "description") String description
-    )  {
+    ) throws ParseException, IOException {
 
-        Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
-
+//        Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
+        System.out.println("das");
         // 문자열 -> Date
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date formatStartAt = null;
-        try {
-            formatStartAt = format.parse(startAt);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        Date formatEndAt = null;
-        try {
-            formatEndAt = format.parse(endAt);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+        Date formatStartAt = format.parse(startAt);
+        Date formatEndAt = format.parse(endAt);
+
 
         StudyCreationDto studyCreationDto = new StudyCreationDto();
-        studyCreationDto.setUsersId((String) token.get("users_id"));
+//        studyCreationDto.setUsersId((String) token.get("users_id"));
         studyCreationDto.setUsersId(usersId);
         studyCreationDto.setTitle(title);
         studyCreationDto.setDescription(description);
         studyCreationDto.setStartAt(formatStartAt);
         studyCreationDto.setEndAt(formatEndAt);
+        System.out.println(studyCreationDto);
 
         Map<String, Object> response = new HashMap<>();
 
+//        System.out.println(multipartFile.size());
+
         response.put("status", 200);
-        try {
-            response.put("studyinfo_id", studyService.setStudyGroup(studyCreationDto, multipartFile.get(0)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        response.put("studyinfo_id", studyService.setStudyGroup(studyCreationDto, multipartFile));
+
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }

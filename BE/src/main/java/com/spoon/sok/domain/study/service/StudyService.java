@@ -56,18 +56,24 @@ public class StudyService {
     }
 
     @Transactional
-    public Long setStudyGroup(StudyCreationDto studyCreationDto, MultipartFile file) throws IOException {
+    public Long setStudyGroup(StudyCreationDto studyCreationDto, List<MultipartFile> fileList) throws IOException {
 
         // 웹 IDE 접속하기 위한 10글자 문자열 생성
-        studyCreationDto.setEnterName(UUID.randomUUID().toString().substring(0, 10));
+        String enterName = UUID.randomUUID().toString().substring(0, 10);
+        System.out.println(enterName);
+        studyCreationDto.setEnterName(enterName);
 
+        String imgUrl = "https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/basicImage.png";
 
         // S3로 파일 업로드하고 문자열 받아오기
-        String imgUrl = s3Service.upload(file);
-
+        if (fileList != null) {
+            imgUrl = s3Service.upload(fileList.get(0));
+        }
         System.out.println(imgUrl);
+        System.out.println(studyCreationDto);
+//        return 1L;
 
-        // 여기에 추가적으로 imgUrl 저장
+        // 여기 코드 로직 몰라서 더이상 못짜겠슴
         studyRepository.saveStudyGroup(
                 studyCreationDto.getUsersId(),
                 studyCreationDto.getTitle(),
@@ -78,7 +84,7 @@ public class StudyService {
                 imgUrl
         );
 
-        // 최조 스터디 그룹을 만드는 사람은 바로 중간테이블에 저장(스터디 장)
+//        // 최조 스터디 그룹을 만드는 사람은 바로 중간테이블에 저장(스터디 장)
         Long newStudy = studyRepository.findByEnterNameQuery(studyCreationDto.getEnterName());
         studyRepository.saveUserStudyQuery(newStudy,
                 studyCreationDto.getUsersId(),

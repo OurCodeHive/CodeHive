@@ -64,7 +64,7 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
 
     @Modifying
 
-    @Query(value = "INSERT INTO study_info (users_id, title, description, enter_name, created_at, end_at, profileimage) " +
+    @Query(value = "INSERT INTO study_info (users_id, title, description, enter_name, start_at, end_at, profileimage) " +
             "VALUES (:userId, :title, :description, :enterName, :startAt, :endAt, :image)", nativeQuery = true)
     void saveStudyGroup(@Param("userId") String userId,
                         @Param("title") String title,
