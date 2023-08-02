@@ -13,6 +13,9 @@ import com.spoon.sok.domain.user.entity.User;
 import com.spoon.sok.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -125,10 +128,6 @@ public class StudyService {
     }
 
 
-
-    /*
-    public boolean createStudyNotice(Long studyInfoId, String author, String title, String content, LocalDate uploadAt) {
-
     @Transactional
     public boolean createStudyNotice(Long studyinfoId, StudyNoticeDTO notice) {
         Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyinfoId);
@@ -139,10 +138,13 @@ public class StudyService {
         else return false;
     }
 
-    /*
-    public List<StudyNoticeDTO> getStudyNotices(Long studyInfoId, int page, int size) {
+    public List<StudyNotice> getStudyNoticeList(Long studyInfoId, Pageable pageRequest) {
+        Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyInfoId);
+        Page<StudyNotice> studyNoticePage = studyNoticeRepository.findByStudyInfo(findStudyInfo.get(), pageRequest);
+        return studyNoticePage.getContent();
     }
 
+    /*
     public boolean updateStudyNotice(Long studyInfoId, Long studyBoardId, String author, String title, String content, LocalDate uploadAt) {
     }
 
