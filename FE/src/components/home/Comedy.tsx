@@ -5,8 +5,8 @@ import { authHttp, nonAuthHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
 const Comedy = () => {
     let [comedies, setComedies] = useState([]);
-    let [author, setAuthor] = useState([]);
-    let [comedy, setComedy] = useState<string>("test");
+    let [writer, setWriter] = useState([]);
+    let [comedy, setComedy] = useState<string>("testtest");
     let [idx, setIdx] = useState<number>(0);
     let random = 0;
 
@@ -19,7 +19,8 @@ const Comedy = () => {
     }, [])
 
     useEffect(()=>{
-        setComedy(comedies[idx]["content"]);
+        setComedy(comedies[idx]['content']);
+        setWriter(comedies[idx]['writer']);
         console.log(comedy);
     }, [idx])
 
@@ -33,9 +34,10 @@ const Comedy = () => {
         async function requestComedy(): Promise<userData | undefined> {
             try {
                 const response: AxiosResponse<userData> = await nonAuthHttp.get(`/comedy`);
-                console.log(response.data.comedy[0]);
+                console.log(response.data.comedy);
                 setComedies(response.data.comedy); //전체 코미디 넣기
                 setComedy(response.data.comedy[idx]["content"]); //처음 로딩할 때 0번째 인덱스 코미디 등록하기
+                setWriter(response.data.comedy[idx]["writer"]);
                 console.log(comedy);
                 return response.data;
             } catch (error) {
@@ -59,17 +61,17 @@ const Comedy = () => {
         } else {
             setIdx(idx+1)
         }
+        console.log(idx);
     }
     return (
         <div>
             <div className={style.subtitle_comedy}>코딩문학제 오늘의 작품 <img onClick={refreshComedy} src={refresh} alt="코딩문학제 새로고침" /></div>
                 <div className={style.box}>
-                    <textarea className={style.content_comedy} name="" id="" cols="40" rows="20">
-                        {comedy}
-                        {author}
+                    <textarea className={style.content_comedy} name="" id="" cols="40" rows="20" value={comedy}>
                     </textarea>
-                    </div>
+                    <div>{writer}</div>
                 </div>
+        </div>
           
         
     );
