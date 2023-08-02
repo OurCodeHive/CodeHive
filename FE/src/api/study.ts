@@ -28,8 +28,24 @@ const insertData = async (param: object, success: ({data} : {data: object}) => v
     await api.post(`/study`, JSON.stringify(param)).then(success).catch(fail);
 }
 
+/**
+ * invite member
+ * @param param { param : object }
+ * @param success 
+ * @param fail 
+ */
 const inviteMember = async (param: object, success: () => void, fail: () => void) => {
     await api.post(`/email/study/invite`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-export {getList, insertData, inviteMember};
+/**
+ * get study view
+ * @param studyinfoId : number
+ * @param success 
+ * @param fail 
+ */
+const getView = async (studyinfoId: number, success: ({data} : {data: object}) => void, fail: (error: unknown) => void) => {
+    await api.get(`/studyinfo/${studyinfoId}`).then(success).catch(fail);
+}
+
+export {getList, insertData, inviteMember, getView};

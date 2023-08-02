@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import FileInfoStyle from "@/res/css/module/util/FileInfo.module.css";
+import FileInfoStyle from "./css/FileInfo.module.css";
 
 const FileInfo = ({inheritRef, multi} : {inheritRef : React.RefObject<HTMLInputElement>, multi : boolean}) => {
     const [files, setFiles] = useState<File[]>([]);

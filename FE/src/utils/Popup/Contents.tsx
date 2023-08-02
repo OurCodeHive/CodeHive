@@ -1,5 +1,5 @@
 import { PopupType, PopupContentsProps } from ".";
-import PopupStyle from "@/res/css/module/util/Popup.module.css";
+import PopupStyle from "./css/Popup.module.css";
 
 const ContentsPopup: React.FC<PopupType> = ({PopupInfo}) => {
     let isOpen = PopupInfo.PopupStatus;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import '@/res/css/module/util/DatePicker.module.css';
+import './css/DatePicker.module.css';
 import { ko } from 'date-fns/esm/locale';
 
 interface DatePickerProps {

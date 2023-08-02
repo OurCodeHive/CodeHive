@@ -3,9 +3,9 @@ import { insertData } from "@/api/study";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { AlertPopup } from "@/utils/Popup";
-import CustomEditor from "@/utils/CustomEditor";
+import CustomEditor from "@/utils/CustomEditor/CustomEditor";
 import CustomDatePickcer from "@/utils/CustomDatePicker";
-import FileInput from "@/utils/File/Input";
+import FileInput from "@/utils/FileInfo/Input";
 
 const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateIdx: (idx: number) => void}) => {
     const userId = useRecoilValue(userState).userId;

@@ -4,7 +4,9 @@ export type StudyType = {
     end? : 1 | 0;
     profile? : string;
     createdAt? : string;
+    startAt? : string;
     endAt? : string;
     userId? : number;
-    roomId? : string;
+    enterName? : string;
+    description? : string;
 }
