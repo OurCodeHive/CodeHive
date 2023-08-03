@@ -4,12 +4,14 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import toast, { Toaster } from 'react-hot-toast';
 import style from "@/res/css/module/IDETerminal.module.css";
+import { language } from "@codemirror/language";
 
 interface IDETerminalProps {
   id: string;
   code: string;
   up: () => void;
   down: () => void;
+  language: string;
 }
 
 function IDETerminal(props: IDETerminalProps) {
@@ -63,6 +65,10 @@ function IDETerminal(props: IDETerminalProps) {
 
   // 제출 했다고 알리기
   function submit() {
+    if (props.language === "Java") {
+      alert("구현중 입니다.")
+      return
+    }
     const message = {
       userId: loginUser.userId,
       studyRoomId: props.id,
@@ -83,6 +89,9 @@ function IDETerminal(props: IDETerminalProps) {
 
   // 코드실행
   function runCode() {
+    if (props.language === "Java") {
+      return
+    }
     const codeAndInput = {
       userId: loginUser.userId,
       studyRoomId: props.id,
@@ -109,6 +118,7 @@ function IDETerminal(props: IDETerminalProps) {
       const json_body = JSON.parse(body.body);
       const message = json_body;
       // console.log(message)
+      console.log(message.output)
       runNotice(dic[message.userId]);
       setIsConsole("20vh");
       setConsoleState("Result");
@@ -225,7 +235,13 @@ function IDETerminal(props: IDETerminalProps) {
 
 // 코드 제출 toast
 function notify(name: string) {
-  toast(name + '님이 코드를 제출하였습니다.', {
+
+  let sentence = name + '님이 코드를 제출하였습니다.';
+  if (name == undefined) {
+    sentence = "코드가 제출되었습니다.";
+  }
+
+  toast(sentence, {
     duration: 2000,
     icon: '💻',
     style: {
@@ -245,23 +261,30 @@ function notify(name: string) {
 
 // 결과 확인 notice
 function runNotice(name: string) {
+
+  let sentence = name + '님이 제출한 코드가 실행되었습니다.';
+  if (name == undefined) {
+    sentence = "코드가 실행되었습니다.";
+  }
+
   toast(
-    name +
-    '님이 제출한 코드가 실행되었습니다.', {
-    duration: 2000,
-    icon: '💻',
-    style: {
-      fontSize: "14px",
-      width: "60vh",
-    },
-    iconTheme: {
-      primary: '#000',
-      secondary: '#fff',
-    },
-    ariaProps: {
-      role: 'status',
-      'aria-live': 'polite',
-    },
+    sentence, 
+    {
+      duration: 2000,
+      icon: '💻',
+      style: 
+        {
+          fontSize: "14px",
+          width: "60vh",
+        },
+        iconTheme: {
+          primary: '#000',
+          secondary: '#fff',
+        },
+        ariaProps: {
+          role: 'status',
+          'aria-live': 'polite',
+        },
   });
 }
 
