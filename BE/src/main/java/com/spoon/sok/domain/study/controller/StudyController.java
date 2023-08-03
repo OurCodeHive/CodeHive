@@ -81,7 +81,7 @@ public class StudyController {
         Map<String, Object> response = new HashMap<>();
 
         response.put("status", 200);
-        response.put("study_list", mergedList);
+        response.put("studyList", mergedList);
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
@@ -188,7 +188,7 @@ public class StudyController {
             response.put("status", 200);
             response.put("startAt", studyInfo.get().getStartAt());
             response.put("endAt", studyInfo.get().getEndAt());
-            response.put("studyinfo_id", studyInfo.get().getStudyinfoId());
+            response.put("studyinfoId", studyInfo.get().getStudyinfoId());
             response.put("users_id", studyInfo.get().getUsersId());
             response.put("enterName", studyInfo.get().getEnterName());
             response.put("profileImage", studyInfo.get().getProfileImage());
