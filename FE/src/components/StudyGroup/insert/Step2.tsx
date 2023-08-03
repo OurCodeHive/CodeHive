@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { inviteMember } from "@/api/study";
 import { AlertPopup } from "@/utils/Popup";
-import { EmailCheck } from "@/utils/valid/Valid";
+import { EmailCheck } from "@/utils/Valid/Valid";
 import InviteEmailStyle from '@/res/css/module/InviteEmail.module.css';
 
 const StudyInsert2Step = ({closePop, studyInfoId} : {closePop: () => void, studyInfoId: number}) => {

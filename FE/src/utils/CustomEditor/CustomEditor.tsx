@@ -3,7 +3,7 @@ import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 import React, { useState, } from "react";
 import { EditorState, convertToRaw } from 'draft-js';
-import EditorStyle from "@/res/css/module/util/Editor.module.css";
+import EditorStyle from "./css/Editor.module.css";
 
 const CustomEditor = ({editorRef} : {editorRef : React.RefObject<HTMLInputElement>}) => {
 	// EditorState.createEmpty() 로 초기값 설정
