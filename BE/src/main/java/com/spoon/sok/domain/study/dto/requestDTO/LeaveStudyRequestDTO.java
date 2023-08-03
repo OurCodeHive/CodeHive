@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class LeaveStudyRequestDTO {
-    private String email;
-    private String nickname;
-    private Long studyInfoId;
+    private Long studyinfoId;
+    private Long userId;       // 자기자신이 스스로 나간다.
 }

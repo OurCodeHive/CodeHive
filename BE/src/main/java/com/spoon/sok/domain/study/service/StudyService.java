@@ -2,16 +2,25 @@ package com.spoon.sok.domain.study.service;
 
 import com.spoon.sok.aws.S3Service;
 import com.spoon.sok.domain.study.dto.queryDTO.*;
+import com.spoon.sok.domain.study.dto.requestDTO.LeaveStudyRequestDTO;
+import com.spoon.sok.domain.study.dto.requestDTO.StudyMeetingRequestDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
+import com.spoon.sok.domain.study.entity.StudyAppointment;
+import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
+import com.spoon.sok.domain.study.dto.requestDTO.ForceLeaveRequestDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyUserListDTO;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.entity.StudyNotice;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.enums.StudyUpdateResult;
+import com.spoon.sok.domain.study.repository.StudyAppointmentRepository;
 import com.spoon.sok.domain.study.repository.StudyNoticeRepository;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
+import com.spoon.sok.domain.user.entity.UserStudy;
 import com.spoon.sok.domain.user.repository.UserRepository;
+import com.spoon.sok.domain.user.repository.UserStudyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,7 +28,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +37,14 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class StudyService {
 
     private final StudyRepository studyRepository;
     private final StudyNoticeRepository studyNoticeRepository;
+    private final UserStudyRepository userStudyRepository;
     private final UserRepository userRepository;
+    private final StudyAppointmentRepository studyAppointmentRepository;
     private final S3Service s3Service;
 
     public List<StudyAppointmentDTO> getStudyMeeting(String userId) {
@@ -116,7 +126,7 @@ public class StudyService {
     @Transactional
     public void updateStudyGroupStatus(ChangeUserStudyDto changeUserStudyDto) {
         studyRepository.saveUserStudyStatusQuery(changeUserStudyDto.getUsersId(),
-                                            changeUserStudyDto.getUserstudyId());
+                changeUserStudyDto.getUserstudyId());
     }
 
 
@@ -178,7 +188,7 @@ public class StudyService {
     }
 
     @Transactional
-    public boolean updateStudyNotice(Long studyBoardId ,StudyNoticeDTO notice) {
+    public boolean updateStudyNotice(Long studyBoardId, StudyNoticeDTO notice) {
         Optional<StudyNotice> targetNotice = studyNoticeRepository.findById(studyBoardId);
 
         if (targetNotice.isPresent()) {
@@ -190,6 +200,80 @@ public class StudyService {
             return true;
         }
         return false;
+    }
+    
+    // 스터디 회의를 등록하는 메서드
+    @Transactional
+    public boolean createStudyAppointment(Long studyInfoId, StudyAppointment studyAppointment) {
+        // 스터디 정보 조회 (studyInfoId를 사용하여 스터디 정보를 가져옴)
+        Optional<StudyInfo> targetStudy = studyRepository.findById(studyInfoId);
+        if (!targetStudy.isPresent()) {
+            return false; // 스터디 정보가 없으면 등록 실패
+        }
+
+        StudyInfo studyInfo = targetStudy.get();
+        // 스터디 회의를 스터디 정보와 연결하여 저장
+        studyAppointment.setStudyInfo(studyInfo);
+        studyAppointmentRepository.save(studyAppointment);
+
+        return true; // 등록 성공
+    }
+
+    // 스터디 회의를 조회하는 메서드
+    @Transactional
+    // 스터디 정보 ID로 해당 스터디에 생성된 모든 스터디 회의 조회
+    public List<StudyAppointment> getAllStudyAppointmentsByStudyInfoId(Long studyInfoId) {
+        return studyAppointmentRepository.findByStudyInfoId(studyInfoId);
+    }
+
+    // 스터디 회의를 수정하는 메서드
+    @Transactional
+    public boolean updateStudyAppointment(Long studyInfoId, Long appointmentId, StudyAppointment studyAppointmentResponseDTO) {
+        Optional<StudyAppointment> target = studyAppointmentRepository.findById(appointmentId);
+        if (!target.isPresent()) {
+            return false; // 수정하려는 스터디 회의가 없을 때
+        }
+
+        StudyAppointment existingStudyAppointment = target.get();
+        if (!existingStudyAppointment.getStudyInfo().getId().equals(studyInfoId)) {
+            return false; // 스터디 회의와 스터디 정보가 매칭되지 않을 때(
+        }
+
+        existingStudyAppointment.updateTitle(studyAppointmentResponseDTO.getTitle());
+        existingStudyAppointment.updateMeetingAt(studyAppointmentResponseDTO.getMeetingAt());
+        existingStudyAppointment.updateStartTime(studyAppointmentResponseDTO.getStartTime());
+        existingStudyAppointment.updateEndTime(studyAppointmentResponseDTO.getEndTime());
+
+        // 스터디 회의 저장
+        studyAppointmentRepository.save(existingStudyAppointment);
+        return true; // 수정 성공
+    }
+
+    // 스터디 회의를 삭제하는 메서드
+    public boolean deleteStudyAppointment(Long studyInfoId, Long appointmentId) {
+        // 스터디 정보 조회 (studyInfoId를 사용하여 스터디 정보를 가져옴)
+        Optional<StudyInfo> targetStudy = studyRepository.findById(studyInfoId);
+        if (!targetStudy.isPresent()) {
+            return false; // 스터디 정보가 없으면 삭제 실패
+        }
+
+        // 스터디 회의 조회 (appointmentId를 사용하여 스터디 회의 정보를 가져옴)
+        Optional<StudyAppointment> targetAppointment = studyAppointmentRepository.findById(appointmentId);
+        if (!targetAppointment.isPresent()) {
+            return false; // 스터디 회의가 없으면 삭제 실패
+        }
+
+        StudyInfo studyInfo = targetStudy.get();
+        StudyAppointment studyAppointment = targetAppointment.get();
+
+        // 스터디 회의와 스터디 정보가 매칭되는지 확인
+        if (!studyAppointment.getStudyInfo().getId().equals(studyInfoId)) {
+            return false; // 스터디 회의와 스터디 정보가 매칭되지 않을 때 삭제 실패
+        }
+        
+        studyAppointmentRepository.delete(studyAppointment);
+
+        return true; // 삭제 성공
     }
 
     @Transactional
@@ -220,19 +304,85 @@ public class StudyService {
     public boolean deleteStudyMeeting(Long studyInfoId, Long studyAppointmentId) {
     }
 
-    public boolean leaveStudy(String email, String nickname, Long studyInfoId) {
-    }
-
-    public boolean forceLeaveStudy(String email, String nickname, Long studyInfoId) {
-    }
-
-    public List<String> getStudyUsers(Long studyInfoId) {
-    }
-
-    public boolean delegateStudyOwnership(String fromNickname, String fromEmail, String toNickname, String toEmail) {
-    }
-
     public StudyUpdateResult studyUpdateResult(StudyMemberRequestDTO studyMemberRequestDTO) {
     }
      */
+
+    @Transactional
+    public boolean leaveStudy(LeaveStudyRequestDTO leaveStudyRequestDTO) {
+
+        Optional<StudyInfo> si = studyRepository.findById(leaveStudyRequestDTO.getStudyinfoId());
+
+        // 방장이 나가려하면 위임하고 나가야 하므로, false
+        if (si.get().getUsers().getId().equals(leaveStudyRequestDTO.getUserId())) {
+            return false;
+        }
+
+        int deleteCount = userStudyRepository.deleteByStudyInfoIdAndUsersId(
+                leaveStudyRequestDTO.getStudyinfoId(), leaveStudyRequestDTO.getUserId()
+        );
+
+        if (deleteCount > 0) return true;
+
+        return false;
+    }
+
+    @Transactional
+    public boolean forceLeaveStudy(ForceLeaveRequestDTO forceLeaveRequestDTO) {
+
+        Optional<StudyInfo> si = studyRepository.findById(forceLeaveRequestDTO.getStudyinfoId());
+        if (si.isPresent()) {
+            // 방장만 강퇴시킨다.
+            if (!si.get().getUsers().getId().equals(forceLeaveRequestDTO.getFrom())) {
+                return false;
+            }
+        }
+
+        // 스터디 그룹과 강퇴할 유저 조건으로 중간테이블의 데이터를 불러온다.
+        Optional<UserStudy> us = userStudyRepository.findByStudyInfoIdAndUsersId(
+                forceLeaveRequestDTO.getStudyinfoId(), forceLeaveRequestDTO.getTarget()
+        );
+
+        if (us.isPresent()) {
+            if (us.get().getStatus().equals(CurrentStatus.ACCEPT)) {
+                us.get().updateStatus(CurrentStatus.BAN); // 중간테이블의 상태를 변경
+                userStudyRepository.save(us.get());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<StudyUserListDTO> getStudyUsers(Long studyInfoId) {
+        // 중간테이블 가져오기
+        List<UserStudy> userStudyList = userStudyRepository.findByStudyInfoIdEquals(studyInfoId);
+        List<StudyUserListDTO> result = new ArrayList<>();
+
+        for (UserStudy us : userStudyList) {
+            StudyUserListDTO data = new StudyUserListDTO();
+
+            data.setUserId(us.getUsers().getId());
+            data.setNickName(us.getUsers().getNickname());
+            data.setEmail(us.getUsers().getEmail());
+            data.setStatus(us.getStatus());
+
+            result.add(data);
+        }
+        return result;
+
+    }
+
+    @Transactional
+    public boolean delegateStudyOwnership(DelegateRequestDTO delegateRequestDTO) {
+        Optional<StudyInfo> targetStudyInfo = studyRepository.findById(delegateRequestDTO.getStudyinfoId());
+        Optional<User> toUser = userRepository.findById(delegateRequestDTO.getTo());
+
+        if (targetStudyInfo.isPresent() && toUser.isPresent()) {
+            targetStudyInfo.get().updateUsers(toUser.get());
+            studyRepository.save(targetStudyInfo.get());
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
