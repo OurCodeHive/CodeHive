@@ -78,6 +78,7 @@ const StudyInsert2Step = ({closePop, studyInfoId} : {closePop: () => void, study
             setAlertPopupTitle("초대 이메일이 전송되었습니다");
             setCompleteStatus(() => true);
             changePopupFlag(true);
+            window.location.reload();
         }, () => {
             setAlertPopupTitle("에러가 발생했습니다<br/>관리자에 문의해주세요");
             changePopupFlag(true);
