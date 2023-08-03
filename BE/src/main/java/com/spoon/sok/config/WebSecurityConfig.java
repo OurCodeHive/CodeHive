@@ -54,6 +54,7 @@ public class WebSecurityConfig {
                 })
                 .authorizeHttpRequests((authorizeRequests) -> {
                     authorizeRequests.requestMatchers(
+                                    "/**",
                                     "/ws/**",
                                     "/api/login/user",
                                     "/oauth2/authorize/**",
