@@ -3,10 +3,9 @@ import { insertData } from "@/api/study";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { AlertPopup } from "@/utils/Popup";
-import CustomEditor from "@/utils/CustomEditor";
+import CustomEditor from "@/utils/CustomEditor/CustomEditor";
 import CustomDatePickcer from "@/utils/CustomDatePicker";
-import FileInput from "@/utils/File/Input";
-import axios from 'axios';
+import FileInput from "@/utils/FileInfo/Input";
 
 
 const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateIdx: (idx: number) => void}) => {
@@ -58,54 +57,26 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
             changePopupFlag(true);
             return;
         }
-        /////////////////////////////////////////////
-        const url = import.meta.env.VITE_APP_SERVER + "study";
-        let data:any = new FormData();
-        data.append("userId", userId);
-        data.append("title", titleInput.current.value);
-        data.append("startAt", startDateInput.current.value);
-        data.append("endAt", endDateInput.current.value);
-        data.append("description", descInput.current?.value);
+
+        let param = new FormData();
+        param.append("userId", String(userId));
+        param.append("title", titleInput.current.value);
+        param.append("startAt", startDateInput.current.value);
+        param.append("endAt", endDateInput.current.value);
+        param.append("description", String(descInput.current?.value));
         console.log(profileInput.current?.files)
         
         // 파일 존재하는 경우만 업로드
         if (profileInput.current?.files) {
             for (let i = 0; i < profileInput.current?.files.length; i++) {
-                data.append("profile", profileInput.current?.files[i]);
+                param.append("profile", profileInput.current?.files[i]);
             }   
-        } else {
-            data.append("profile", []);
         }
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            // 유저 개인 엑세스토큰
-            // 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaW1pbnN1bmdAbmF2ZXIuY29tIiwidXNlcnNfaWQiOiIxNSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2OTA5Njk3ODl9.pTnY1jprIUeqGJH0suJjeJH0WQAlnDMuJi6vdsyMNW8'
-          }
-        };
-        axios.post(url, data, config)
-        .then((data) => {
-            updateIdx(data.studyinfo_id);
+        await insertData(param, ({data}) => {
+            updateIdx(data.studyinfoId);
+        }, () => {
+            alert("생성에 실패했습니다.");
         })
-        .catch(() => {
-            alert("생성에 실패했습니다");
-        })
-        ////////////////////////////////////////////////////////
-
-        // const params = {
-        //     userId : userId,
-        //     title : titleInput.current.value,
-        //     startAt : startDateInput.current.value,
-        //     endAt : endDateInput.current.value,
-        //     description : descInput.current?.value,
-        //     profile : profileInput.current?.value
-        // };
-
-        // console.log(params);
-        // await insertData(params,
-        //     ({data}) => {updateIdx(data.studyinfo_id);},
-        //     () => {alert("생성에 실패했습니다");}
-        // );
 
     }
 

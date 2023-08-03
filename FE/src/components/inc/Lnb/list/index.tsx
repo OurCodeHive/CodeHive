@@ -32,19 +32,23 @@ const List:React.FC = () => {
     //리스트가 존재할 때
     if(studyList.length > 0){
         return (
-            <ul className="col-12">
+            <div className="col-12">
                 <LnbFilter searchKeyWord={searchKeyWord}/>
-                {studyList.map((item, index) => <LnbListItem key={index} item={item} />)}
-            </ul>
+                <ul className="col-12">
+                    {studyList.map((item, index) => <LnbListItem key={index} item={item} />)}
+                </ul>
+            </div>
         )    
     } else { //리스트가 존재하지 않을 때
         return (
-            <ul className="col-12">
+            <div className="col-12">
                 <LnbFilter searchKeyWord={searchKeyWord}/>
-                <div className={`col-12 ${LnbStyle.no_data}`}>
-                    해당하는 스터디가 없습니다.
-                </div>
-            </ul>
+                <ul className="col-12">
+                    <div className={`col-12 ${LnbStyle.no_data}`}>
+                        해당하는 스터디가 없습니다.
+                    </div>
+                </ul>
+            </div>
         )
     }
     

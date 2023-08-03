@@ -1,0 +1,6 @@
+.tab_btn_wrap{overflow: hidden;}
+.tab_btn{font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 400; letter-spacing: -0.02em; color: #17181d; background-color: transparent;}
+.tab_btn.active{background-color: #000; color: #fff;}
+
+
+.tab_contents_con{display: block;}
