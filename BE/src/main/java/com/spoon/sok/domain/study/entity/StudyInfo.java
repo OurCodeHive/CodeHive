@@ -90,4 +90,9 @@ public class StudyInfo {
     public void updateStartAt(Date startAt) {
         this.startAt = startAt;
     }
+
+    // 스터디 그룹의 방장 변경
+    public void updateUsers(User user) {
+        this.users = user;
+    }
 }
