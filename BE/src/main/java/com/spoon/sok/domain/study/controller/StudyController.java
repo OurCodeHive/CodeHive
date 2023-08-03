@@ -126,8 +126,8 @@ public class StudyController {
         Map<String, Object> response = new HashMap<>();
 
         response.put("status", 200);
-        response.put("studyinfo_id", studyService.setStudyGroup(studyCreationDto, multipartFile));
-
+        response.put("studyinfoId", studyService.setStudyGroup(studyCreationDto, multipartFile));
+        response.put("title", title);
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }

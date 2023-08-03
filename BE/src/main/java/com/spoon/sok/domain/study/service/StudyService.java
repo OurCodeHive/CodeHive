@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -81,7 +82,7 @@ public class StudyService {
                 imgUrl
         );
 
-//        // 최조 스터디 그룹을 만드는 사람은 바로 중간테이블에 저장(스터디 장)
+        // 최조 스터디 그룹을 만드는 사람은 바로 중간테이블에 저장(스터디 장)
         Long newStudy = studyRepository.findByEnterNameQuery(studyCreationDto.getEnterName());
         studyRepository.saveUserStudyQuery(newStudy,
                 studyCreationDto.getUsersId(),
