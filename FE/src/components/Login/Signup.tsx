@@ -32,6 +32,9 @@ const Signup = () => {
     let[startTimer, setStartTimer] = useState(false);
     let [inputCode, setInputCode] = useState<boolean>(false);
 
+    //sending
+    let [sending, setSending] = useState<boolean>(false);
+
     //timer
     const getSeconds = (time:number) =>{
         const seconds = Number(time%60);
@@ -70,17 +73,20 @@ const Signup = () => {
     //이메일 인증코드 보내기
     ///////////////////////
     function verifyEmail(email:string){
+        // setSending(true);
         //유효 이메일 형식 인증 로직
         const regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
         if(email === "") {
             alert("이메일을 입력해주세요")
         } else  if (regex.test(email)) {
+            
             sendVerificationCode()
                 .then((res)=> {
+                    setSending(false);
                 if(res){
-                    // alert(`${res.message}`)
+                    startCodeTimer();
+                    // setSending(false);
                 }
-            startCodeTimer();
             })
             .catch(console.log);
         } else {
@@ -107,14 +113,16 @@ const Signup = () => {
         // const url = import.meta.env.VITE_APP_SERVER + `email/auth?email=${email}`;
         async function sendVerificationCode(): Promise<userData | undefined> {
             try {
+                setSending(true);
                 const response: AxiosResponse<userData> = await api.get(`/email/auth?email=${email}`);
                 alert(response.data.message);
                 console.log(response);
                 return response.data;
             } catch (error:unknown) {
+                setSending(false);
                 const err = error as CustomError
                 console.log(err);
-                alert(err.response?.data?.message);
+                alert(err.response?.data?.message); //이미 가입한 이메일입니다.
             }
         }
     }
@@ -266,6 +274,8 @@ const Signup = () => {
                 const response: AxiosResponse<returnData> = await api.post(`/signup`, signUpUser);
                 const data = response.data
                 console.log(data);
+                alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.")
+                navigate('/login')
                 return data;
             } catch (error) {
                 console.log(error);
@@ -295,7 +305,15 @@ const Signup = () => {
                 <label htmlFor='id'>이메일 E-mail</label>
                 <span onClick={()=>{
                     verifyEmail(email); 
-                    }}>인증</span>
+                    }}
+                    style= {
+                        sending?
+                        {display : "none"}
+                         :
+                        {}
+                    }
+                    >인증</span>
+                <span style={sending? {} : {display : "none"}}>전송중</span>
             </div>
                 {
                     inputCode?

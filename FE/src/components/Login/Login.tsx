@@ -56,7 +56,7 @@ const Login = () => {
         async function doLogin(): Promise<userData | undefined> {
             try {
               ///
-              const response: AxiosResponse<userData> = await authHttp.post("login/user", user);
+              const response: AxiosResponse<userData> = await nonAuthHttp.post("login/user", user);
               console.log(response.data);
               alert("로그인에 성공하였습니다");
               //recoil!
@@ -68,7 +68,7 @@ const Login = () => {
                 refreshToken: response.data.refreshToken});
                localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
                localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
-               navigate("/study");
+               navigate("/home");
               return response.data;
             } catch (error) {
                 // const err = error as any
