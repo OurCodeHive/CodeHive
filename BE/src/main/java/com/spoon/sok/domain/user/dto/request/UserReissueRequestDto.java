@@ -9,7 +9,4 @@ import lombok.NoArgsConstructor;
 public class UserReissueRequestDto {
     @NotEmpty(message = "accessToken을 입력해주세요")
     private String accessToken;
-
-    @NotEmpty(message = "refreshToken을 입력해주세요")
-    private String refreshToken;
 }

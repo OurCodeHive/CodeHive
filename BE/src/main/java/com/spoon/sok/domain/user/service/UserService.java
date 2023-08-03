@@ -77,19 +77,19 @@ public class UserService {
                 .build();
     }
 
-    public UserResponseDto reissue(UserReissueRequestDto requestDto) {
-        if (!jwtTokenProvider.validateToken(requestDto.getRefreshToken())) {
+    public UserResponseDto reissue(UserReissueRequestDto requestDto, String refreshToken) {
+        if (!jwtTokenProvider.validateToken(refreshToken)) {
             return UserResponseDto.builder().responseCode(1).build();
         }
 
         Authentication authentication = jwtTokenProvider.getAuthentication(requestDto.getAccessToken());
 
-        String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + authentication.getName());
-        if (ObjectUtils.isEmpty(refreshToken)) {
+        String restRefreshToken = (String) redisTemplate.opsForValue().get("RT:" + authentication.getName());
+        if (ObjectUtils.isEmpty(restRefreshToken)) {
             return UserResponseDto.builder().responseCode(2).build();
         }
 
-        if (!refreshToken.equals(requestDto.getRefreshToken())) {
+        if (!restRefreshToken.equals(refreshToken)) {
             return UserResponseDto.builder().responseCode(3).build();
         }
 

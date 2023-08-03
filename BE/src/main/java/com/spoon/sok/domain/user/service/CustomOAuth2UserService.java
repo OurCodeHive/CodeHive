@@ -80,9 +80,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private User updateUser(User user, OAuth2UserInfo oAuth2UserInfo) {
+        Optional<User> sameEmailUser = userRepository.findByEmail(user.getEmail());
         Optional<User> sameNicknameUser = userRepository.findByNickname(user.getNickname());
 
-        if (!sameNicknameUser.isEmpty()) {
+        if (!sameEmailUser.isEmpty() && user.getOauth2Id().equals(sameEmailUser.get().getOauth2Id())) {
+            throw new RuntimeException("Nickname is already signed up");
+        }
+
+        if (!sameNicknameUser.isEmpty() && user.getOauth2Id().equals(sameNicknameUser.get().getOauth2Id())) {
             throw new RuntimeException("Nickname is already signed up");
         }
 

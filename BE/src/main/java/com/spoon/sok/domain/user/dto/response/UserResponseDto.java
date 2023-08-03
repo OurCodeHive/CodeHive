@@ -11,11 +11,16 @@ public class UserResponseDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    @RequiredArgsConstructor
     public static class TokenInfo {
         private String grantType;
         private String accessToken;
         private String refreshToken;
         private Long refreshTokenExpirationTime;
+
+        public TokenInfo(String accessToken) {
+            this.accessToken = accessToken;
+        }
     }
 
     private TokenInfo tokenInfo;

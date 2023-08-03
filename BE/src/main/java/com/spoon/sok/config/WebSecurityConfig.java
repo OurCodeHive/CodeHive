@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -50,16 +49,16 @@ public class WebSecurityConfig {
                     sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests((authorizeRequests) -> {
-                    authorizeRequests.requestMatchers("/**",
+                    authorizeRequests.requestMatchers(
                                     "/api/login/user",
-                                    "/oauth2/**",
+                                    "/oauth2/authorize/**",
                                     "/api/reissue",
                                     "/api/signup",
                                     "/api/check/**",
                                     "/api/email/**",
                                     "/api/find/password",
                                     "/api/study/invite/pre-check").permitAll()
-                            .anyRequest().authenticated();
+                            .anyRequest().hasRole("USER");
                 })
                 .oauth2Login((oauth2) -> {
                     oauth2.authorizationEndpoint((endpoint) -> {
@@ -76,7 +75,7 @@ public class WebSecurityConfig {
                     oauth2.failureHandler(oAuth2AuthenticationFailureHandler);
                 })
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new ExceptionHandlerFilter(), OAuth2LoginAuthenticationFilter.class)
+                .addFilterBefore(new ExceptionHandlerFilter(jwtTokenProvider, redisTemplate), OAuth2LoginAuthenticationFilter.class)
                 .build();
     }
 

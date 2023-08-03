@@ -62,7 +62,6 @@ public class UserController {
                 .sameSite("None")
                 .httpOnly(true)
                 .secure(true)
-                .maxAge(3600)
                 .build();
 
         response.addHeader("Set-Cookie", cookie.toString());
@@ -77,8 +76,11 @@ public class UserController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<?> reissue(@Validated @RequestBody UserReissueRequestDto requestDto, Errors errors) {
+    public ResponseEntity<?> reissue(@Validated @RequestBody UserReissueRequestDto requestDto, Errors errors, @RequestHeader("Cookie") String refreshToken) {
         result = new HashMap<>();
+        System.out.println(refreshToken.substring(12));
+
+        refreshToken = refreshToken.substring(12);
 
         if (errors.hasErrors()) {
             System.out.println(errors.toString());
@@ -88,7 +90,7 @@ public class UserController {
             return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
         }
 
-        UserResponseDto responseDto = userService.reissue(requestDto);
+        UserResponseDto responseDto = userService.reissue(requestDto, refreshToken);
 
         if (responseDto.getResponseCode() != 0) {
             switch (responseDto.getResponseCode()) {
@@ -106,10 +108,10 @@ public class UserController {
                     return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
             }
         }
+
         result.put("status", 200);
-        result.put("message", "Token 정보가 갱신되었습니다.");
+        result.put("message", "AccessToken 재발급 완료.");
         result.put("accessToken", responseDto.getTokenInfo().getAccessToken());
-        result.put("refreshToken", responseDto.getTokenInfo().getRefreshToken());
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
