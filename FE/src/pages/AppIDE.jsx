@@ -108,7 +108,6 @@ function Code() {
   };
 
   function toggleChat() {
-    console.log(showChat);
     if (showChat === "hidden") {
       setShowChat("visible");
     } else {

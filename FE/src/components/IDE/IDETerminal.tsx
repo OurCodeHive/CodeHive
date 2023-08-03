@@ -35,6 +35,7 @@ function IDETerminal(props: IDETerminalProps) {
   const [resultColor, setResultColor] = useState<string>("gray");
   const [compileResult, setCompileResult] = useState<string>("");
   const [consoleResultColor, setConsoleResultColor] = useState<string>("wheat");
+  const [isRunning, setIsRunning] = useState<boolean>(false);
 
   // input 변경
   function handleInput(event: ChangeEvent<HTMLTextAreaElement>) {
@@ -65,10 +66,6 @@ function IDETerminal(props: IDETerminalProps) {
 
   // 제출 했다고 알리기
   function submit() {
-    if (props.language === "Java") {
-      alert("구현중 입니다.")
-      return
-    }
     const message = {
       userId: loginUser.userId,
       studyRoomId: props.id,
@@ -89,10 +86,8 @@ function IDETerminal(props: IDETerminalProps) {
 
   // 코드실행
   function runCode() {
-    if (props.language === "Java") {
-      return
-    }
     const codeAndInput = {
+      language: props.language,
       userId: loginUser.userId,
       studyRoomId: props.id,
       code: props.code,
@@ -117,14 +112,13 @@ function IDETerminal(props: IDETerminalProps) {
     client.current.subscribe('/sub/run/' + props.id, (body:any) => {
       const json_body = JSON.parse(body.body);
       const message = json_body;
-      // console.log(message)
-      console.log(message.output)
       runNotice(dic[message.userId]);
       setIsConsole("20vh");
       setConsoleState("Result");
       setInputColor("gray");
       setResultColor("wheat");
       setInputColor("gray");
+      setIsRunning(false);
       props.up();
       // 성공인 경우
       if (message.state) {
@@ -146,6 +140,7 @@ function IDETerminal(props: IDETerminalProps) {
       const json_body = JSON.parse(body.body);
       const message = json_body;
       notify(dic[message.userId]);
+      setIsRunning(true);
     });
   }
 
@@ -178,6 +173,15 @@ function IDETerminal(props: IDETerminalProps) {
     setConsoleState("Result");
     setInputColor("gray");
     setResultColor("wheat");
+  }
+
+  function submitAndRun() {
+    if (isRunning) {
+      runningCode();
+      return;
+    }
+    submit();
+    runCode();
   }
 
   return (
@@ -223,8 +227,7 @@ function IDETerminal(props: IDETerminalProps) {
         openConsole ? null :
           consoleState === "Input" ?
             <button onClick={() => {
-              submit();
-              runCode();
+              submitAndRun();
             }}
               className={style.runBtn}
             >run</button> : null
@@ -266,6 +269,31 @@ function runNotice(name: string) {
   if (name == undefined) {
     sentence = "코드가 실행되었습니다.";
   }
+
+  toast(
+    sentence, 
+    {
+      duration: 2000,
+      icon: '💻',
+      style: 
+        {
+          fontSize: "14px",
+          width: "60vh",
+        },
+        iconTheme: {
+          primary: '#000',
+          secondary: '#fff',
+        },
+        ariaProps: {
+          role: 'status',
+          'aria-live': 'polite',
+        },
+  });
+}
+
+function runningCode() {
+
+  let sentence = "이미 실행중인 코드가 있습니다.";
 
   toast(
     sentence, 
