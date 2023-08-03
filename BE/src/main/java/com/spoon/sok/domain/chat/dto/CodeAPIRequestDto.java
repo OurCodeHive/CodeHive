@@ -7,7 +7,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class LambdaRequestDto {
+public class CodeAPIRequestDto {
 
     private Long userId;
     private String name;
