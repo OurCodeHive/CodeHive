@@ -46,8 +46,7 @@ public class StudyAppointment {
         this.endTime = endTime;
     }
 
-    /**
-     * 엔티티 수정사항 *
-     * createdAt -> endTime, startTime*
-     */
+    public void setStudyInfo(StudyInfo studyInfo) {
+        this.studyInfo = studyInfo;
+    }
 }

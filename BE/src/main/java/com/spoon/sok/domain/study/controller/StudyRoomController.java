@@ -3,6 +3,7 @@ package com.spoon.sok.domain.study.controller;
 import com.spoon.sok.domain.study.dto.requestDTO.StudyAppointmentRequestDTO;
 import com.spoon.sok.domain.study.dto.requestDTO.StudyMeetingRequestDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyAppointmentResponseDTO;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyErrorResponseDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.entity.StudyAppointment;
 import com.spoon.sok.domain.study.entity.StudyInfo;
@@ -210,33 +211,37 @@ public class StudyRoomController {
      */
 
     // [스터디름] (스터디 장) 일정 보기를 누르면 활성화된 달력 창에서 스터디 회의 등록
-//    @PostMapping("/meeting/{studyinfo_id}")
-//    public ResponseEntity<StudyAppointmentResponseDTO> createStudyMeeting(
-//            @PathVariable("studyinfo_id") Long studyInfoId,
-//            @RequestBody StudyAppointmentRequestDTO studyAppointmentRequestDTO) {
-//
-//        // 스터디 회의 등록 정보를 StudyAppointmentRequestDTO로 받아옴
-//        StudyAppointment studyAppointment = studyAppointmentRequestDTO.toEntity();
-//
-//        // 스터디 회의 등록 서비스 호출
-//        boolean isCreated = studyService.createStudyAppointment(studyInfoId, studyAppointment);
-//
-//        // 응답 메시지 설정
-//        if (isCreated) {
-//            // 스터디 회의가 성공적으로 등록된 경우, 등록된 정보를 응답으로 반환
-//            StudyAppointmentResponseDTO responseDTO = new StudyAppointmentResponseDTO(
-//                    studyAppointment.getId(),
-//                    studyAppointment.getTitle(),
-//                    studyAppointment.getMeetingAt(),
-//                    studyAppointment.getStartTime(),
-//                    studyAppointment.getEndTime()
-//            );
-//            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-//        } else {
-//            // 등록에 실패한 경우 적절한 에러 응답을 처리해도 좋습니다.
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @PostMapping("/study/meeting/{studyinfo_id}")
+    public ResponseEntity<?> createStudyMeeting(
+            @PathVariable("studyinfo_id") Long studyInfoId,
+            @RequestBody StudyAppointmentRequestDTO studyAppointmentRequestDTO) {
+
+        // 스터디 회의 등록 정보를 StudyAppointmentRequestDTO로 받아옴
+        // 받아온 DTO의 toEntity함수를 이용해서 엔티티로 변환시켜준다.
+        StudyAppointment studyAppointment = studyAppointmentRequestDTO.toEntity();
+
+        // 스터디 회의 등록 서비스 호출
+        boolean isCreated = studyService.createStudyAppointment(studyInfoId, studyAppointment);
+        // 응답 메시지 설정
+        if (isCreated) {
+            // 스터디 회의가 성공적으로 등록된 경우, 등록된 정보를 응답으로 반환
+            StudyAppointmentResponseDTO studyAppointmentResponseDTO = new StudyAppointmentResponseDTO(
+                    studyAppointment.getId(),
+                    studyAppointment.getTitle(),
+                    studyAppointment.getMeetingAt(),
+                    studyAppointment.getStartTime(),
+                    studyAppointment.getEndTime()
+            );
+            return new ResponseEntity<>(studyAppointmentResponseDTO, HttpStatus.OK);
+        }  else {
+            // 등록에 실패한 경우 에러 응답 반환
+            StudyErrorResponseDTO studyErrorResponseDTO = new StudyErrorResponseDTO(
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "스터디 회의 등록에 실패했습니다."
+            );
+            return new ResponseEntity<>(studyErrorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
 
 //    // [스터디룸] (스터디 장) 일정 보기를 누르면 활성화된 달력 창에서 스터디 회의 수정

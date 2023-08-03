@@ -1,11 +1,14 @@
 package com.spoon.sok.domain.study.service;
 
 import com.spoon.sok.domain.study.dto.queryDTO.*;
+import com.spoon.sok.domain.study.dto.requestDTO.StudyAppointmentRequestDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
+import com.spoon.sok.domain.study.entity.StudyAppointment;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.entity.StudyNotice;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.enums.StudyUpdateResult;
+import com.spoon.sok.domain.study.repository.StudyAppointmentRepository;
 import com.spoon.sok.domain.study.repository.StudyNoticeRepository;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
@@ -27,12 +30,14 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class StudyService {
 
     private final StudyRepository studyRepository;
     private final StudyNoticeRepository studyNoticeRepository;
     private final UserRepository userRepository;
+    private final StudyAppointmentRepository studyAppointmentRepository;
+
 
     public List<StudyAppointmentDTO> getStudyMeeting(String userId) {
         return studyRepository.findByUserIdStudyMeetingsQuery(userId);
@@ -158,6 +163,26 @@ public class StudyService {
         }
         return false;
     }
+
+    // 스터디 미팅을 만들어주는 서비스
+    // 스터디 회의를 등록하는 메서드
+    @Transactional
+    public boolean createStudyAppointment(Long studyInfoId, StudyAppointment studyAppointment) {
+        // 스터디 정보 조회 (studyInfoId를 사용하여 스터디 정보를 가져옴)
+        Optional<StudyInfo> targetStudy = studyRepository.findById(studyInfoId);
+        if (!targetStudy.isPresent()) {
+            return false; // 스터디 정보가 없으면 등록 실패
+        }
+
+        StudyInfo studyInfo = targetStudy.get();
+        // 스터디 회의를 스터디 정보와 연결하여 저장
+        studyAppointment.setStudyInfo(studyInfo);
+        studyAppointmentRepository.save(studyAppointment);
+
+        return true; // 등록 성공
+    }
+
+
 
     /*
     public boolean deleteStudyNotice(Long studyInfoId, Long studyBoardId) {
