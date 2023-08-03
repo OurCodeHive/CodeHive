@@ -1,9 +1,14 @@
 package com.spoon.sok.domain.study.service;
 
+import com.spoon.sok.aws.S3Service;
 import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.dto.requestDTO.StudyAppointmentRequestDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.entity.StudyAppointment;
+import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyUserListDTO;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.entity.StudyNotice;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
@@ -12,16 +17,19 @@ import com.spoon.sok.domain.study.repository.StudyAppointmentRepository;
 import com.spoon.sok.domain.study.repository.StudyNoticeRepository;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
+import com.spoon.sok.domain.user.entity.UserStudy;
 import com.spoon.sok.domain.user.repository.UserRepository;
+import com.spoon.sok.domain.user.repository.UserStudyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.web.multipart.MultipartFile;
 import java.util.Date;
 import javax.swing.text.html.Option;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,9 +43,10 @@ public class StudyService {
 
     private final StudyRepository studyRepository;
     private final StudyNoticeRepository studyNoticeRepository;
+    private final UserStudyRepository userStudyRepository;
     private final UserRepository userRepository;
     private final StudyAppointmentRepository studyAppointmentRepository;
-
+    private final S3Service s3Service;
 
     public List<StudyAppointmentDTO> getStudyMeeting(String userId) {
         return studyRepository.findByUserIdStudyMeetingsQuery(userId);
@@ -60,17 +69,29 @@ public class StudyService {
     }
 
     @Transactional
-    public Long setStudyGroup(StudyCreationDto studyCreationDto) {
+    public Long setStudyGroup(StudyCreationDto studyCreationDto, List<MultipartFile> fileList) throws IOException {
 
         // 웹 IDE 접속하기 위한 10글자 문자열 생성
-        studyCreationDto.setEnterName(UUID.randomUUID().toString().substring(0, 10));
+        String enterName = UUID.randomUUID().toString().substring(0, 10);
+        studyCreationDto.setEnterName(enterName);
 
-        studyRepository.saveStudyGroupQuery(studyCreationDto.getUsersId(),
+        String imgUrl = "https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/basicImage.png";
+
+        // S3로 파일 업로드하고 문자열 받아오기
+        if (fileList != null) {
+            imgUrl = s3Service.upload(fileList.get(0));
+        }
+
+        // 여기 코드 로직 몰라서 더이상 못짜겠슴
+        studyRepository.saveStudyGroup(
+                studyCreationDto.getUsersId(),
                 studyCreationDto.getTitle(),
                 studyCreationDto.getDescription(),
                 studyCreationDto.getEnterName(),
                 studyCreationDto.getStartAt(),
-                studyCreationDto.getEndAt());
+                studyCreationDto.getEndAt(),
+                imgUrl
+        );
 
         // 최조 스터디 그룹을 만드는 사람은 바로 중간테이블에 저장(스터디 장)
         Long newStudy = studyRepository.findByEnterNameQuery(studyCreationDto.getEnterName());
@@ -143,10 +164,28 @@ public class StudyService {
         else return false;
     }
 
-    public List<StudyNotice> getStudyNoticeList(Long studyInfoId, Pageable pageRequest) {
+    public List<StudyNoticePreviewDTO> getStudyNoticeBoard(Long studyInfoId, Pageable pageRequest) {
         Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyInfoId);
         Page<StudyNotice> studyNoticePage = studyNoticeRepository.findByStudyInfo(findStudyInfo.get(), pageRequest);
-        return studyNoticePage.getContent();
+
+        List<StudyNoticePreviewDTO> list = new ArrayList<>();
+
+        for (StudyNotice sn : studyNoticePage) {
+            StudyNoticePreviewDTO data = new StudyNoticePreviewDTO();
+            data.setUploadAt(sn.getUploadAt());
+            data.setNoticeTitle(sn.getNoticeTitle());
+            data.setAuthorId(sn.getUser().getId());
+            data.setNickName(sn.getUser().getNickname());
+            data.setStudyboardId(sn.getId());
+
+            list.add(data);
+        }
+
+        return list;
+    }
+
+    public Optional<StudyNotice> getStudyNoticeList(Long studyboardId) {
+        return studyNoticeRepository.findById(studyboardId);
     }
 
     @Transactional
@@ -163,7 +202,6 @@ public class StudyService {
         }
         return false;
     }
-
     
     // 스터디 회의를 등록하는 메서드
     @Transactional
@@ -239,11 +277,19 @@ public class StudyService {
         return true; // 삭제 성공
     }
 
+    @Transactional
+    public boolean deleteStudyNotice(Long studyBoardId) {
+        Optional<StudyNotice> findStudyNotice = studyNoticeRepository.findById(studyBoardId);
 
-    /*
-    public boolean deleteStudyNotice(Long studyInfoId, Long studyBoardId) {
+        if (findStudyNotice.isPresent()) {
+            studyNoticeRepository.delete(findStudyNotice.get());
+            return true;
+        } else {
+            return false;
+        }
     }
 
+    /*
     public List<StudyDocumentDTO> getStudyDocuments(Long studyInfoId, int page, int size) {
     }
 
@@ -265,13 +311,45 @@ public class StudyService {
     public boolean forceLeaveStudy(String email, String nickname, Long studyInfoId) {
     }
 
-    public List<String> getStudyUsers(Long studyInfoId) {
-    }
-
-    public boolean delegateStudyOwnership(String fromNickname, String fromEmail, String toNickname, String toEmail) {
-    }
-
     public StudyUpdateResult studyUpdateResult(StudyMemberRequestDTO studyMemberRequestDTO) {
     }
      */
+
+    public List<StudyUserListDTO> getStudyUsers(Long studyInfoId) {
+        // 중간테이블 가져오기
+        List<UserStudy> userStudyList = userStudyRepository.findByStudyInfoIdEquals(studyInfoId);
+        List<StudyUserListDTO> result = new ArrayList<>();
+
+        for (UserStudy us : userStudyList) {
+            StudyUserListDTO data = new StudyUserListDTO();
+
+            data.setUserId(us.getUsers().getId());
+            data.setNickName(us.getUsers().getNickname());
+            data.setEmail(us.getUsers().getEmail());
+            data.setStatus(us.getStatus());
+
+            log.info("여기야 {}", us.getUsers().getId());
+            log.info("여기야 {}", us.getUsers().getNickname());
+            log.info("여기야 {}", us.getUsers().getEmail());
+            log.info("여기야 {}", us.getStatus());
+
+            result.add(data);
+        }
+        return result;
+
+    }
+
+    @Transactional
+    public boolean delegateStudyOwnership(DelegateRequestDTO delegateRequestDTO) {
+        Optional<StudyInfo> targetStudyInfo = studyRepository.findById(delegateRequestDTO.getStudyinfoId());
+        Optional<User> toUser = userRepository.findById(delegateRequestDTO.getTo());
+
+        if (targetStudyInfo.isPresent() && toUser.isPresent()) {
+            targetStudyInfo.get().updateUsers(toUser.get());
+            studyRepository.save(targetStudyInfo.get());
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -63,14 +63,16 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
     List<StudyInfoDto> findByUserIdAndTitleQuery(String userId, String title);
 
     @Modifying
-    @Query(value = "INSERT INTO study_info (users_id, title, description, enter_name, start_at, end_at) " +
-            "VALUES (:userId, :title, :description, :enterName, :startAt, :endAt)", nativeQuery = true)
-    void saveStudyGroupQuery(@Param("userId") String userId,
+
+    @Query(value = "INSERT INTO study_info (users_id, title, description, enter_name, start_at, end_at, profileimage) " +
+            "VALUES (:userId, :title, :description, :enterName, :startAt, :endAt, :image)", nativeQuery = true)
+    void saveStudyGroup(@Param("userId") String userId,
                         @Param("title") String title,
                         @Param("description") String description,
                         @Param("enterName") String enterName,
                         @Param("startAt") Date startAt,
-                        @Param("endAt") Date endAt);
+                        @Param("endAt") Date endAt,
+                        @Param("image") String image);
 
     @Query(value = "SELECT studyinfo_id from study_info where study_info.enter_name = :enterName", nativeQuery = true)
     Long findByEnterNameQuery(@Param("enterName") String enterName);
