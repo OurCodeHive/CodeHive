@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import toast, { Toaster } from 'react-hot-toast';
 import style from '@/res/css/module/IDEHeader.module.css';
+import ConfirmPopup from "@/utils/Popup/Confirm";
 
 interface IDEHeaderProps {
   id: string;
@@ -14,6 +15,9 @@ interface IDEHeaderProps {
 }
 
 function IDEHeader(props: IDEHeaderProps) {
+
+  const navigate = useNavigate();
+
   // 마운트시 연결 언마운트 연결해제
   useEffect(() => {
     connect();
@@ -21,6 +25,27 @@ function IDEHeader(props: IDEHeaderProps) {
       disconnect();
     }
   }, []);
+
+  const [popupStatus, setPopupStatus] = useState(false);
+
+  const popupInfo = {
+    PopupStatus: popupStatus,
+    zIndex: 999,
+    maxWidth: 600,
+    PopupTitle: "정말로 나가시겠습니까?",
+    ClosePopupProp : () => changePopupFlag(false),
+    ConfirmPopupProp : () => exit()
+  }
+
+  const changePopupFlag = (flag: boolean) => {
+    setPopupStatus(() => flag);
+  };
+
+  function exit() {
+    navigate("/");
+    // RTC 연결을 끊기위해 새로고침
+    location.reload();
+  }
 
   // 유저 정보 담는 임시 딕셔너리
   const dic: { [key: number]: string } = {
@@ -34,8 +59,8 @@ function IDEHeader(props: IDEHeaderProps) {
   // 웹소켓
   const client = useRef<any>({});
 
-  const [notice, setNotice] = useState<string>("게리맨더링 코드리뷰 중 입니다.");
-  const navigate = useNavigate();
+  const [notice, setNotice] = useState<string>("오늘 하루도 화이팅!!");
+
 
   // 공지변경 소켓 통신
   function changeNotice() {
@@ -106,19 +131,8 @@ function IDEHeader(props: IDEHeaderProps) {
     return `${String(year).slice(-2)}-${month}-${day} `;
   }
 
-  // 나가기
-  function exit() {
-    if (window.confirm("정말로 나가시겠습니까?")) {
-      navigate('/');
-    }
-  }
-
   // 코드 저장 함수
   function saveCode() {
-    const name = window.prompt("저장할 이름을 입력해 주세요");
-    if (name === "" || name === null) {
-      return;
-    }
 
     let extension = ".py";
     if (props.language === "Java") {
@@ -141,6 +155,7 @@ function IDEHeader(props: IDEHeaderProps) {
   return (
     <div className={style.background}>
       <Toaster position="top-right" />
+      <ConfirmPopup PopupInfo={popupInfo}/>
       <div className={style.boxPadding}>
         <div className={style.boxSetting}>
           <button onClick={() => { saveButton(saveDocx(), "코드"); }}
@@ -154,7 +169,7 @@ function IDEHeader(props: IDEHeaderProps) {
           <button onClick={() => { changeNotice(); }}
             className={style.saveBtn}>공지변경</button>
             &nbsp;&nbsp;
-          <button onClick={() => { exit(); }}
+          <button onClick={() => { setPopupStatus(true); }}
             className={style.saveBtn}>나가기</button>
         </div>
       </div>
