@@ -1,5 +1,6 @@
 package com.spoon.sok.domain.study.controller;
 
+import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
 import com.spoon.sok.domain.study.dto.requestDTO.StudyUpdateDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
@@ -153,7 +154,6 @@ public class StudyRoomController {
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-}
 
     /*
 //     [스터디룸] 스터디 자료 조회
@@ -373,26 +373,20 @@ public class StudyRoomController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
+     */
     // [스터디룸] 스터디장은 소속된 유저 목록에서 스터디장을 다른사람에게 위임할 수 있다. (자신은 팀원으로 돌아감)
     // [PUT] [api/study/delegate]
     @PutMapping("/study/delegate")
-    public ResponseEntity<Map<String, Object>> delegateStudyOwnership(@RequestBody DelegateOwnershipRequestDTO requestDto) {
-
-        // 요청으로 받아온 데이터를 추출
-        String fromNickname = requestDto.getFrom().getNickname();
-        String fromEmail = requestDto.getFrom().getEmail();
-        String toNickname = requestDto.getTo().getNickname();
-        String toEmail = requestDto.getTo().getEmail();
+    public ResponseEntity<Map<String, Object>> delegateStudyOwnership(@RequestBody DelegateRequestDTO requestDto) {
 
         // 스터디장 위임 서비스 호출
-        boolean isDelegated = studyService.delegateStudyOwnership(fromNickname, fromEmail, toNickname, toEmail);
+        boolean isDelegated = studyService.delegateStudyOwnership(requestDto);
 
         // 응답 메시지 설정
         Map<String, Object> response = new HashMap<>();
         if (isDelegated) {
             response.put("status", 200);
-            response.put("message", "스터디장 권한이 성공적으로 위임되었습니다. 자신은 팀원으로 변경되었습니다.");
+            response.put("message", "스터디장 권한이 성공적으로 위임되었습니다.");
         } else {
             response.put("status", 400);
             response.put("message", "스터디장 권한 위임에 실패하였습니다.");
@@ -402,4 +396,4 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
-     */
+

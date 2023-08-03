@@ -2,6 +2,7 @@ package com.spoon.sok.domain.study.service;
 
 import com.spoon.sok.aws.S3Service;
 import com.spoon.sok.domain.study.dto.queryDTO.*;
+import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
 import com.spoon.sok.domain.study.entity.StudyInfo;
@@ -229,10 +230,21 @@ public class StudyService {
     public List<String> getStudyUsers(Long studyInfoId) {
     }
 
-    public boolean delegateStudyOwnership(String fromNickname, String fromEmail, String toNickname, String toEmail) {
-    }
-
     public StudyUpdateResult studyUpdateResult(StudyMemberRequestDTO studyMemberRequestDTO) {
     }
      */
+
+    @Transactional
+    public boolean delegateStudyOwnership(DelegateRequestDTO delegateRequestDTO) {
+        Optional<StudyInfo> targetStudyInfo = studyRepository.findById(delegateRequestDTO.getStudyinfoId());
+        Optional<User> toUser = userRepository.findById(delegateRequestDTO.getTo());
+
+        if (targetStudyInfo.isPresent() && toUser.isPresent()) {
+            targetStudyInfo.get().updateUsers(toUser.get());
+            studyRepository.save(targetStudyInfo.get());
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
