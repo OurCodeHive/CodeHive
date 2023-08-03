@@ -43,13 +43,13 @@ const Intro = () => {
         console.log(aT);
         const data = {
             accessToken : aT,
-            // refreshToken : rT,
         }
         console.log(data);
         authHttp.post('/logout',data).then(()=>{
             localStorage.removeItem("accessToken");
             localStorage.removeItem("expireAt");
             sessionStorage.removeItem("useState");
+            alert("로그아웃 되었습니다");
             navigate("/login");
         }).catch((err)=>{
             console.log(err);

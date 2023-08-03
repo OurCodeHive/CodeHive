@@ -32,9 +32,9 @@ const Pomodoro = () => {
     
     function initTimer(){
         //전체 몇초 남았는지
-        setSecondsLeft(minutes*60)
+        setSecondsLeft(Number(minutes)*60)
     }
-    const totalSeconds = minutes*60
+    const totalSeconds = Number(minutes)*60
     const percentage = Math.round(secondsLeft / totalSeconds)
     return (
         <div>
