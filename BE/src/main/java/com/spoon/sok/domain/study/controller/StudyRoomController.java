@@ -4,6 +4,7 @@ import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
 import com.spoon.sok.domain.study.dto.requestDTO.StudyUpdateDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyUserListDTO;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.enums.StudyUpdateResult;
 import com.spoon.sok.domain.study.entity.StudyNotice;
@@ -354,18 +355,17 @@ public class StudyRoomController {
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+     */
 
-    // [스터디룸] 스터디에 소속된 유저 목록
-    // [GET] [api/study/user/list?study={studyinfo_id}]
     @GetMapping("/study/user/list")
     public ResponseEntity<Map<String, Object>> getStudyUsers(@RequestParam("study") Long studyInfoId) {
-        List<String> studyUsers = studyService.getStudyUsers(studyInfoId);
+        List<StudyUserListDTO> studyUserList = studyService.getStudyUsers(studyInfoId);
 
         Map<String, Object> response = new HashMap<>();
 
-        if (!studyUsers.isEmpty()) {
+        if (!studyUserList.isEmpty()) {
             response.put("status", 200);
-            response.put("study_users", studyUsers);
+            response.put("studyUserList", studyUserList);
         } else {
             response.put("status", 400);
             response.put("message", "스터디에 소속된 유저 목록 조회에 실패하였습니다.");
@@ -373,9 +373,7 @@ public class StudyRoomController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-     */
-    // [스터디룸] 스터디장은 소속된 유저 목록에서 스터디장을 다른사람에게 위임할 수 있다. (자신은 팀원으로 돌아감)
-    // [PUT] [api/study/delegate]
+
     @PutMapping("/study/delegate")
     public ResponseEntity<Map<String, Object>> delegateStudyOwnership(@RequestBody DelegateRequestDTO requestDto) {
 

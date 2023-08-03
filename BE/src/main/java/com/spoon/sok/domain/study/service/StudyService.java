@@ -5,6 +5,7 @@ import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyUserListDTO;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.entity.StudyNotice;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
@@ -12,7 +13,9 @@ import com.spoon.sok.domain.study.enums.StudyUpdateResult;
 import com.spoon.sok.domain.study.repository.StudyNoticeRepository;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
+import com.spoon.sok.domain.user.entity.UserStudy;
 import com.spoon.sok.domain.user.repository.UserRepository;
+import com.spoon.sok.domain.user.repository.UserStudyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,6 +38,7 @@ public class StudyService {
 
     private final StudyRepository studyRepository;
     private final StudyNoticeRepository studyNoticeRepository;
+    private final UserStudyRepository userStudyRepository;
     private final UserRepository userRepository;
     private final S3Service s3Service;
 
@@ -227,12 +231,33 @@ public class StudyService {
     public boolean forceLeaveStudy(String email, String nickname, Long studyInfoId) {
     }
 
-    public List<String> getStudyUsers(Long studyInfoId) {
-    }
-
     public StudyUpdateResult studyUpdateResult(StudyMemberRequestDTO studyMemberRequestDTO) {
     }
      */
+
+    public List<StudyUserListDTO> getStudyUsers(Long studyInfoId) {
+        // 중간테이블 가져오기
+        List<UserStudy> userStudyList = userStudyRepository.findByStudyInfoIdEquals(studyInfoId);
+        List<StudyUserListDTO> result = new ArrayList<>();
+
+        for (UserStudy us : userStudyList) {
+            StudyUserListDTO data = new StudyUserListDTO();
+
+            data.setUserId(us.getUsers().getId());
+            data.setNickName(us.getUsers().getNickname());
+            data.setEmail(us.getUsers().getEmail());
+            data.setStatus(us.getStatus());
+
+            log.info("여기야 {}", us.getUsers().getId());
+            log.info("여기야 {}", us.getUsers().getNickname());
+            log.info("여기야 {}", us.getUsers().getEmail());
+            log.info("여기야 {}", us.getStatus());
+
+            result.add(data);
+        }
+        return result;
+
+    }
 
     @Transactional
     public boolean delegateStudyOwnership(DelegateRequestDTO delegateRequestDTO) {
