@@ -16,7 +16,7 @@ const List:React.FC = () => {
         async function fetchData() {
             await getList(param,
                 ({data}) => {
-                    originStudyList = data.studyList;    
+                    originStudyList = data.study_list;    
                     setStudyList(originStudyList);
                 },
                 (error) => {console.log(error);});
