@@ -1,6 +1,6 @@
 package com.spoon.sok;
 
-import com.spoon.sok.domain.chat.dto.LambdaRequestDto;
+import com.spoon.sok.domain.chat.dto.CodeAPIRequestDto;
 import com.spoon.sok.domain.chat.dto.RunCodeRequestDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -15,27 +15,30 @@ public class CodeExecuteService {
     @Value("${AWS_API_GATEWAY_URL}")
     private String AWS_API_GATEWAY_URL;
 
-    public String RunCode(RunCodeRequestDto runCodeRequestDto){
+    @Value("${JAVA_COMPILE_SERVER}")
+    private String JAVA_COMPILE_SERVER;
 
+    public String RunCode(RunCodeRequestDto runCodeRequestDto){
         String code = runCodeRequestDto.getCode();
         String input = runCodeRequestDto.getInput();
         String name = UUID.randomUUID().toString();
         Long userId = runCodeRequestDto.getUserId();
 
         // AWS API gateway Poat 요청
-        LambdaRequestDto lambdaRequestDto = new LambdaRequestDto();
+        CodeAPIRequestDto codeAPIRequestDto = new CodeAPIRequestDto();
 
-        lambdaRequestDto.setCode(code);
-        lambdaRequestDto.setName(name);
-        lambdaRequestDto.setInput(input);
-        lambdaRequestDto.setUserId(userId);
+        codeAPIRequestDto.setCode(code);
+        codeAPIRequestDto.setName(name);
+        codeAPIRequestDto.setInput(input);
+        codeAPIRequestDto.setUserId(userId);
 
-        System.out.println(lambdaRequestDto);
         RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<CodeAPIRequestDto> requestEntity = new HttpEntity<>(codeAPIRequestDto);
 
-        HttpEntity<LambdaRequestDto> requestEntity = new HttpEntity<>(lambdaRequestDto);
-
-        return restTemplate.exchange(AWS_API_GATEWAY_URL, HttpMethod.POST, requestEntity, String.class).getBody();
-
+        if (runCodeRequestDto.getLanguage().equals("Python")) {
+            return restTemplate.exchange(AWS_API_GATEWAY_URL, HttpMethod.POST, requestEntity, String.class).getBody();
+        } else {
+            return restTemplate.exchange(JAVA_COMPILE_SERVER, HttpMethod.POST, requestEntity, String.class).getBody();
+        }
     }
 }
