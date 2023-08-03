@@ -13,20 +13,18 @@
     margin: auto;
 }
 .enter_login {
+    cursor: pointer;
     position: fixed;
     margin: 0 auto;
     left: 0;
     right: 0;
     bottom: 5px;
-    /* right: 50%; */
-    /* right: 40%; */
-    z-index: 2;
+    z-index: 5;
     display: block;
     background-color: transparent;
-    border: 2px solid red;
     width: 300px;
     height: 50px;
-    cursor: pointer;
+    border: none;
     
 }
 /* div:first-child {
