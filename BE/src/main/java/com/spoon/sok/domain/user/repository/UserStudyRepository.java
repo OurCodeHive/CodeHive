@@ -11,4 +11,7 @@ public interface UserStudyRepository  extends JpaRepository<UserStudy, Long> {
 
     Optional<UserStudy> findByStudyInfoIdAndUsersId(Long studyinfoId, Long usersId);
 
+    // 삭제된 레코드 개수를 반환
+    int deleteByStudyInfoIdAndUsersId(Long studyinfoId, Long usersId);
+
 }

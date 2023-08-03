@@ -1,13 +1,10 @@
 package com.spoon.sok.domain.study.controller;
 
-import com.spoon.sok.domain.study.dto.requestDTO.StudyAppointmentRequestDTO;
-import com.spoon.sok.domain.study.dto.requestDTO.StudyMeetingRequestDTO;
+import com.spoon.sok.domain.study.dto.requestDTO.*;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyAppointmentResponseDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyErrorResponseDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.entity.StudyAppointment;
-import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
-import com.spoon.sok.domain.study.dto.requestDTO.ForceLeaveRequestDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyUserListDTO;
 import com.spoon.sok.domain.study.entity.StudyInfo;
@@ -303,59 +300,28 @@ public class StudyRoomController {
         }
     }
 
-//    // [스터디룸] 스터디 나가기
-//    // [POST] [api/study/leave]
-//    @PostMapping("/study/leave")
-//    public ResponseEntity<Map<String, Object>> leaveStudy(
-//            @RequestBody LeaveStudyRequestDTO leaveStudyRequestDTO) {
-//
-//        // 요청으로 받아온 데이터를 추출
-//        String email = leaveStudyRequestDTO.getEmail();
-//        String nickname = leaveStudyRequestDTO.getNickname();
-//        Long studyInfoId = leaveStudyRequestDTO.getStudyInfoId();
-//
-//        // 스터디 나가기 서비스 호출
-//        boolean isLeft = studyService.leaveStudy(email, nickname, studyInfoId);
-//
-//        // 응답 메시지 설정
-//        Map<String, Object> response = new HashMap<>();
-//        if (isLeft) {
-//            response.put("status", 200);
-//            response.put("message", "스터디를 성공적으로 나갔습니다.");
-//        } else {
-//            response.put("status", 400);
-//            response.put("message", "스터디 나가기에 실패하였습니다.");
-//        }
-//
-//        // HTTP 응답 반환
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
-//
-//    // [스터디룸] (스터디 장이 그룹원을 추방시킴) 스터디 그룹원 강퇴
-//    // [POST] [api/study/force/leave]
-//    @PostMapping("/study/force/leave")
-//    public ResponseEntity<Map<String, Object>> forceLeaveStudy(@RequestBody LeaveStudyRequestDTO leaveStudyRequestDTO) {
-//        // 요청으로 받아온 데이터를 추출
-//        String email = leaveStudyRequestDTO.getEmail();
-//        String nickname = leaveStudyRequestDTO.getNickname();
-//        Long studyInfoId = leaveStudyRequestDTO.getStudyInfoId();
-//
-//        // 스터디 그룹원 강퇴 서비스 호출
-//        boolean isForcedLeave = studyService.forceLeaveStudy(email, nickname, studyInfoId);
-//
-//        // 응답 메시지 설정
-//        Map<String, Object> response = new HashMap<>();
-//        if (isForcedLeave) {
-//            response.put("status", 200);
-//            response.put("message", "스터디 그룹원을 성공적으로 강퇴하였습니다.");
-//        } else {
-//            response.put("status", 400);
-//            response.put("message", "스터디 그룹원 강퇴에 실패하였습니다.");
-//        }
-//
-//        // HTTP 응답 반환
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
+    // [스터디룸] 스터디 나가기
+    // [POST] [api/study/leave]
+    @PostMapping("/study/leave") // studyinfoId와 userId
+    public ResponseEntity<Map<String, Object>> leaveStudy(
+            @RequestBody LeaveStudyRequestDTO leaveStudyRequestDTO) {
+
+        // 스터디 나가기 서비스 호출
+        boolean isLeft = studyService.leaveStudy(leaveStudyRequestDTO);
+
+        // 응답 메시지 설정
+        Map<String, Object> response = new HashMap<>();
+        if (isLeft) {
+            response.put("status", 200);
+            response.put("message", "스터디를 성공적으로 나갔습니다.");
+        } else {
+            response.put("status", 400);
+            response.put("message", "스터디 나가기에 실패하였습니다.");
+        }
+
+        // HTTP 응답 반환
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     // [스터디룸] (스터디 장이 그룹원을 추방시킴) 스터디 그룹원 강퇴
     // [POST] [api/study/force/leave]

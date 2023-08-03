@@ -2,6 +2,8 @@ package com.spoon.sok.domain.study.service;
 
 import com.spoon.sok.aws.S3Service;
 import com.spoon.sok.domain.study.dto.queryDTO.*;
+import com.spoon.sok.domain.study.dto.requestDTO.LeaveStudyRequestDTO;
+import com.spoon.sok.domain.study.dto.requestDTO.StudyMeetingRequestDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.entity.StudyAppointment;
 import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
@@ -302,12 +304,28 @@ public class StudyService {
     public boolean deleteStudyMeeting(Long studyInfoId, Long studyAppointmentId) {
     }
 
-    public boolean leaveStudy(String email, String nickname, Long studyInfoId) {
-    }
-
     public StudyUpdateResult studyUpdateResult(StudyMemberRequestDTO studyMemberRequestDTO) {
     }
      */
+
+    @Transactional
+    public boolean leaveStudy(LeaveStudyRequestDTO leaveStudyRequestDTO) {
+
+        Optional<StudyInfo> si = studyRepository.findById(leaveStudyRequestDTO.getStudyinfoId());
+
+        // 방장이 나가려하면 위임하고 나가야 하므로, false
+        if (si.get().getUsers().getId().equals(leaveStudyRequestDTO.getUserId())) {
+            return false;
+        }
+
+        int deleteCount = userStudyRepository.deleteByStudyInfoIdAndUsersId(
+                leaveStudyRequestDTO.getStudyinfoId(), leaveStudyRequestDTO.getUserId()
+        );
+
+        if (deleteCount > 0) return true;
+
+        return false;
+    }
 
     @Transactional
     public boolean forceLeaveStudy(ForceLeaveRequestDTO forceLeaveRequestDTO) {
