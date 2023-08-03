@@ -1,0 +1,6 @@
+.email_link_title{font-size: 19px; font-size: 1.9rem; line-height: 25px; line-height: 2.5rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d;}
+.email_link_input_con{font-size: 0; line-height: 0;}
+.email_link_input_con > li{position: relative;}
+.email_link_input_con input{padding-right: 30px;}
+.email_link_remove_btn{cursor: pointer; width: 16px; text-align: center; position: absolute; top: 11px; right: 8px; display: inline-block; font-size: 10px; font-size: 1.0rem; line-height: 16px; line-height: 1.6rem; font-weight: 500; letter-spacing: -0.02em; color: #fff; border: 0px none; border-radius: 50%; overflow: hidden; background-color: #000;}
+.email_add_btn_con{cursor: pointer; border: 1px solid #d9d9d9; background-color: #fff; border-radius: 8px; overflow: hidden; padding: 10px 7px;}

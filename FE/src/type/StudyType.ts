@@ -1,5 +1,17 @@
 export type StudyType = {
-    studyInfoId : number;
+    studyinfoId : number;
     title : string;
-    end : 1 | 0;   
+    end? : 1 | 0;
+    profile? : string;
+    createdAt? : string;
+    startAt? : string;
+    endAt? : string;
+    userId? : number;
+    enterName? : string;
+    description? : string;
+}
+
+export type StudyListType = {
+    study_list : StudyType[];
+    status? : number;
 }

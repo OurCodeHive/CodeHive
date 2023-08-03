@@ -3,7 +3,6 @@
  * Date : 23/07/21 -> modified by DY on 23/07/29
  * Contents : 공통 axios 생성 (+ interceptor 설정 후 http 역할에 따라 이분화)
 */
-
 import {Cookies} from 'react-cookie';
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig} from "axios";
 
@@ -28,7 +27,7 @@ const cookies:ICookies = new Cookies();
 //   }
 
 //인증이 필요한 axios instance
-const authHttp : AxiosInstance =  axios.create({
+const authHttp =  axios.create({
     baseURL: import.meta.env.VITE_APP_SERVER as string,
     timeout: 10000,
     headers: {
@@ -50,51 +49,72 @@ authHttp.interceptors.request.use(
     }
 )
 
-authHttp.interceptors.response.use(
+// authHttp.interceptors.response.use(
     //실행
-    async (response : AxiosResponse): Promise<any> => {
+    // async (response : AxiosResponse): Promise<any> => {
     
-      const { config, status } = response; //response의 config 파일
-      const originalRequest = config;
-      console.log(response);//
-      console.log(status);//
-      if (status === 403) {//에러 = 엑세스 토큰 만료. 확인 후 validate
-        const refreshToken = cookies.get("refreshToken");
-        const reIssueData = {
-            accessToken : accessToken,
-            refreshToken : refreshToken
-        }
-        return await authHttp.post(`reissue`, reIssueData)
-          .then((res:IResponse) => {
-            if(res.status == 200){
-                accessToken = res.data.accessToken;
-                localStorage.setItem("accessToken", accessToken);
-                originalRequest.headers.Authorization = `Bearer${accessToken}`;
-                return axios(originalRequest);
-            }
-          }).catch((err) => {
-            console.log(err)
-          })
-      }
-      return response;
-    },
-    //에러
-    (error) => {
-      console.log(error, '^^***')
-      throw error
-    }
-  )
+//       const { config, status } = response; //response의 config 파일
+//       const originalRequest = config;
+//       console.log(response);//
+//       console.log(status);//
+//       if (status === 403) {//에러 = 엑세스 토큰 만료. 확인 후 validate
+//         const refreshToken = cookies.get("refreshToken");
+//         const reIssueData = {
+//             accessToken : accessToken,
+//             refreshToken : refreshToken
+//         }
+//         return await authHttp.post(`reissue`, reIssueData)
+//           .then((res:IResponse) => {
+//             if(res.status == 200){
+//                 accessToken = res.data.accessToken;
+//                 localStorage.setItem("accessToken", accessToken);
+//                 originalRequest.headers.Authorization = `Bearer${accessToken}`;
+//                 return axios(originalRequest);
+//             }
+//           }).catch((err) => {
+//             console.log(err)
+//           })
+//       }
+//       return response;
+//     },
+//     //에러
+//     (error) => {
+//       console.log(error, '^^***')
+//       throw error
+//     }
+//   )
 
-//인증이 불필요한 axios instance
-const nonAuthHttp : AxiosInstance = axios.create({
-    baseURL : import.meta.env.VITE_APP_SERVER as string,
-    timeout: 10000,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    withCredentials : true,
-})
-export {authHttp, nonAuthHttp};
+// //인증이 불필요한 axios instance
+// const nonAuthHttp : AxiosInstance = axios.create({
+//     baseURL : import.meta.env.VITE_APP_SERVER as string,
+//     timeout: 10000,
+//     headers: {
+//         'Content-Type': 'application/json',
+//     },
+//     withCredentials : true,
+// })
+
+// //인증이 불필요한 axios instance
+// const formHttp : AxiosInstance = axios.create({
+//     baseURL : import.meta.env.VITE_APP_SERVER as string,
+//     timeout: 10000,
+//     headers: {
+//         'Content-Type': 'multipart/form-data',
+//     },
+// })
+
+// formHttp.interceptors.request.use(
+//     (config : InternalAxiosRequestConfig):InternalAxiosRequestConfig => {
+//         console.log(accessToken);
+//         if(config.headers && accessToken){
+//             config.headers.Authorization = `Bearer ${accessToken}`;
+//             console.log(config);
+//         }
+//       return config;
+//     }
+// )
+
+export {authHttp, nonAuthHttp, formHttp};
 
 ////////////////
 //previous code 
