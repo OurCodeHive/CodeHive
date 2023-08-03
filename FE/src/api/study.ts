@@ -4,7 +4,7 @@
  * Contents : 스터디 관련 api 요청
 */
 import {authHttp, formHttp} from './http';
-import { StudyType } from '@/type/StudyType';
+import { StudyType, StudyListType } from '@/type/StudyType';
 
 const api = authHttp;
 const formApi = formHttp;
@@ -15,8 +15,8 @@ const formApi = formHttp;
  * @param success 
  * @param fail
  */
-const getList = async (param: object, success: ({data} : {data: object}) => void, fail: (error: unknown) => void) => {
-    await api.get<Array<StudyType>>(`/study`, { params: param }).then(success).catch(fail);
+const getList = async (param: object, success: ({data} : {data: StudyListType}) => void, fail: (error: unknown) => void) => {
+    await api.get(`/study`, { params: param }).then(success).catch(fail);
 }
 
 /**
@@ -45,7 +45,7 @@ const inviteMember = async (param: object, success: () => void, fail: () => void
  * @param success 
  * @param fail 
  */
-const getView = async (studyinfoId: number, success: ({data} : {data: object}) => void, fail: (error: unknown) => void) => {
+const getView = async (studyinfoId: number, success: ({data} : {data: StudyType}) => void, fail: (error: unknown) => void) => {
     await api.get(`/studyinfo/${studyinfoId}`).then(success).catch(fail);
 }
 

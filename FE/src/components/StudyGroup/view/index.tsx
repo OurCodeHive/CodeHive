@@ -9,7 +9,7 @@ import DocumentList from '../document/list';
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
 
 const StudyView: React.FC = () => {
-  const [ViewContents, setViewContents] = useState<StudyType | null>(null);
+  const [ViewContents, setViewContents] = useState<StudyType>({} as StudyType);
   const initIdx = 0;
   const TabContents = [] as TabType[];
   TabContents.push({title : "공지사항", contents : NoticeList});
@@ -22,7 +22,7 @@ const StudyView: React.FC = () => {
       }, (error) => {console.log(error)});
     }
     void fetchData();
-  }, []);
+  });
 
   return (
     <div className="col-12 pt50">

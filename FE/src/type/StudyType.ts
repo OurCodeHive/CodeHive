@@ -10,3 +10,8 @@ export type StudyType = {
     enterName? : string;
     description? : string;
 }
+
+export type StudyListType = {
+    studyList : StudyType[];
+    status? : number;
+}
