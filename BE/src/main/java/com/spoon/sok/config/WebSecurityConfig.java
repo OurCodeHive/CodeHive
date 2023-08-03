@@ -53,7 +53,7 @@ public class WebSecurityConfig {
                     sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests((authorizeRequests) -> {
-                    authorizeRequests.requestMatchers("/**",
+                    authorizeRequests.requestMatchers(
                                     "/ws/**",
                                     "/api/login/user",
                                     "/oauth2/authorize/**",
