@@ -4,7 +4,7 @@ import refresh from '@/res/img/refresh.png';
 import { authHttp, nonAuthHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
 const Comedy = () => {
-    let [comedies, setComedies] = useState<IComedy>();
+    let [comedies, setComedies] = useState<ComedyItem[]>();
     let [writer, setWriter] = useState<string>();
     let [comedy, setComedy] = useState<string>("testtest");
     let [idx, setIdx] = useState<number>(0);
@@ -21,10 +21,10 @@ const Comedy = () => {
             [index:number]:{
                comedy? : ComedyItem[];
             }
-            comedy? : ComedyItem[];
+            comedy? : ComedyItem[] | IComedy;
           };
         };
-        comedy : IComedy;
+        comedy : ComedyItem[];
      }
     //  interface IComedy {
     //      response?: {
@@ -54,7 +54,7 @@ const Comedy = () => {
                 console.log(response.data);
                 const {comedy} = response.data;
                 if(comedy){
-                    setComedies(response.data.comedy); //전체 코미디 넣기
+                    setComedies(comedy); //전체 코미디 넣기
                     setComedy(response.data.comedy[idx].content); //처음 로딩할 때 0번째 인덱스 코미디 등록하기
                     setWriter(response.data.comedy[idx].writer);
                 }
