@@ -10,10 +10,11 @@ public class WebCorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://ourcodehive.vercel.app", "http://localhost:5173")
-                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                .allowedOrigins("https://ourcodehive.vercel.app", "http://localhost:5173", "https://codehive.shop:8080", "http://localhost:8080")
+                .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true)
+                .exposedHeaders("Authorization")
                 .maxAge(3600);
     }
 }
