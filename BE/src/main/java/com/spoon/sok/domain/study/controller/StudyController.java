@@ -102,7 +102,6 @@ public class StudyController {
     //
     @PostMapping("/study")
     public ResponseEntity<Map<String, Object>> setStudyGroup(
-//            HttpServletRequest request,
             @RequestParam(value = "profile", required = false) List<MultipartFile> multipartFile,
             @RequestParam(value = "userId") String usersId,
             @RequestParam(value = "title") String title,
@@ -111,8 +110,6 @@ public class StudyController {
             @RequestParam(value = "description") String description
     ) throws ParseException, IOException {
 
-//        Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
-        System.out.println("das");
         // 문자열 -> Date
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date formatStartAt = format.parse(startAt);
@@ -120,7 +117,6 @@ public class StudyController {
 
 
         StudyCreationDto studyCreationDto = new StudyCreationDto();
-//        studyCreationDto.setUsersId((String) token.get("users_id"));
         studyCreationDto.setUsersId(usersId);
         studyCreationDto.setTitle(title);
         studyCreationDto.setDescription(description);
@@ -129,8 +125,6 @@ public class StudyController {
         System.out.println(studyCreationDto);
 
         Map<String, Object> response = new HashMap<>();
-
-//        System.out.println(multipartFile.size());
 
         response.put("status", 200);
         response.put("studyinfo_id", studyService.setStudyGroup(studyCreationDto, multipartFile));
