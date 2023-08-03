@@ -91,7 +91,28 @@ const nonAuthHttp : AxiosInstance = axios.create({
         'Content-Type': 'application/json',
     },
 })
-export {authHttp, nonAuthHttp};
+
+//인증이 불필요한 axios instance
+const formHttp : AxiosInstance = axios.create({
+    baseURL : import.meta.env.VITE_APP_SERVER as string,
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'multipart/form-data',
+    },
+})
+
+formHttp.interceptors.request.use(
+    (config : InternalAxiosRequestConfig):InternalAxiosRequestConfig => {
+        console.log(accessToken);
+        if(config.headers && accessToken){
+            config.headers.Authorization = `Bearer ${accessToken}`;
+            console.log(config);
+        }
+      return config;
+    }
+)
+
+export {authHttp, nonAuthHttp, formHttp};
 
 ////////////////
 //previous code 

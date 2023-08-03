@@ -4,12 +4,14 @@ import TabStyle from './css/Tab.module.css';
 
 export type TabType = {
   title : string;
-  contents : React.ReactNode;
+  contents : React.FC;
 }
 
 const Tab = ({initIdx, TabList} : {initIdx: number, TabList: TabType[]}) => {   
   const [tabIdx, setTabIdx] = useState(initIdx);
+  let Content = TabList[tabIdx].contents;
   const changeIdx = (idx: number) => {
+    Content = TabList[idx].contents;
     setTabIdx(() => idx);
   }
 
@@ -23,12 +25,12 @@ const Tab = ({initIdx, TabList} : {initIdx: number, TabList: TabType[]}) => {
       <div className={`col-12 ${TabStyle.tab_btn_wrap}`}>
         <div className={`col-12 ${TabStyle.tab_btn_con}`}>
           {btnList.map((item, index) => (
-            <TabBtn key={index} title={item} activeFlag={tabIdx == index} changeTab={changeIdx} />
+            <TabBtn key={index} idx={index} title={item} activeFlag={tabIdx == index} changeTab={changeIdx} />
           ))}
         </div>
       </div>
       <div className={`col-12 ${TabStyle.tab_contents_con}`}>
-        {TabList[tabIdx].contents}
+        <Content />
       </div>
     </div>
     )

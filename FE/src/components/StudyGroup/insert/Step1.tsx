@@ -7,6 +7,7 @@ import CustomEditor from "@/utils/CustomEditor/CustomEditor";
 import CustomDatePickcer from "@/utils/CustomDatePicker";
 import FileInput from "@/utils/FileInfo/Input";
 
+
 const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateIdx: (idx: number) => void}) => {
     const userId = useRecoilValue(userState).userId;
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
@@ -57,20 +58,25 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
             return;
         }
 
-        const params = {
-            userId : userId,
-            title : titleInput.current.value,
-            startAt : startDateInput.current.value,
-            endAt : endDateInput.current.value,
-            description : descInput.current?.value,
-            profile : profileInput.current?.value
-        };
-
-        console.log(params);
-        await insertData(params,
-            ({data}) => {updateIdx(data.studyinfo_id);},
-            () => {alert("생성에 실패했습니다");}
-        );
+        let param = new FormData();
+        param.append("userId", String(userId));
+        param.append("title", titleInput.current.value);
+        param.append("startAt", startDateInput.current.value);
+        param.append("endAt", endDateInput.current.value);
+        param.append("description", String(descInput.current?.value));
+        console.log(profileInput.current?.files)
+        
+        // 파일 존재하는 경우만 업로드
+        if (profileInput.current?.files) {
+            for (let i = 0; i < profileInput.current?.files.length; i++) {
+                param.append("profile", profileInput.current?.files[i]);
+            }   
+        }
+        await insertData(param, ({data}) => {
+            updateIdx(data.studyinfoId);
+        }, () => {
+            alert("생성에 실패했습니다.");
+        })
 
     }
 

@@ -3,10 +3,11 @@
  * Date : 23/07/24
  * Contents : 스터디 관련 api 요청
 */
-import {authHttp} from './http';
+import {authHttp, formHttp} from './http';
 import { StudyType } from '@/type/StudyType';
 
 const api = authHttp;
+const formApi = formHttp;
 
 /**
  * get study list belong user
@@ -20,12 +21,12 @@ const getList = async (param: object, success: ({data} : {data: object}) => void
 
 /**
  * insert study
- * @param param { param : object }
+ * @param param { param : FormData }
  * @param success 
  * @param fail 
  */
-const insertData = async (param: object, success: ({data} : {data: object}) => void, fail: () => void) => {
-    await api.post(`/study`, JSON.stringify(param)).then(success).catch(fail);
+const insertData = async (param: FormData, success: ({data} : {data: StudyType}) => void, fail: () => void) => {
+    await formApi.post(`/study`, param).then(success).catch(fail);
 }
 
 /**

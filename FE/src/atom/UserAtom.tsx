@@ -22,7 +22,7 @@ export const userState = atom<userType>({
   key: "useState", // 전역적으로 고유한 값
   default: {
     email : "jiminsung@naver.com",
-    userId : 2,
+    userId : 15,
     nickname : "Minsung",
     accessToken : "",
     refreshToken:"",
