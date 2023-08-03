@@ -34,4 +34,8 @@ public class UserStudy {
 
     @Column(name = "invite_email")
     private String inviteEmail;
+
+    public void updateStatus(CurrentStatus status) {
+        this.status = status;
+    }
 }
