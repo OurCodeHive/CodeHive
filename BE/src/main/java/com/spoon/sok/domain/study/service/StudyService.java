@@ -106,7 +106,7 @@ public class StudyService {
     @Transactional
     public void updateStudyGroupStatus(ChangeUserStudyDto changeUserStudyDto) {
         studyRepository.saveUserStudyStatusQuery(changeUserStudyDto.getUsersId(),
-                                            changeUserStudyDto.getUserstudyId());
+                changeUserStudyDto.getUserstudyId());
     }
 
 
@@ -150,7 +150,7 @@ public class StudyService {
     }
 
     @Transactional
-    public boolean updateStudyNotice(Long studyBoardId ,StudyNoticeDTO notice) {
+    public boolean updateStudyNotice(Long studyBoardId, StudyNoticeDTO notice) {
         Optional<StudyNotice> targetNotice = studyNoticeRepository.findById(studyBoardId);
 
         if (targetNotice.isPresent()) {
@@ -164,7 +164,7 @@ public class StudyService {
         return false;
     }
 
-    // 스터디 미팅을 만들어주는 서비스
+    
     // 스터디 회의를 등록하는 메서드
     @Transactional
     public boolean createStudyAppointment(Long studyInfoId, StudyAppointment studyAppointment) {
@@ -182,6 +182,62 @@ public class StudyService {
         return true; // 등록 성공
     }
 
+    // 스터디 회의를 조회하는 메서드
+    @Transactional
+    // 스터디 정보 ID로 해당 스터디에 생성된 모든 스터디 회의 조회
+    public List<StudyAppointment> getAllStudyAppointmentsByStudyInfoId(Long studyInfoId) {
+        return studyAppointmentRepository.findByStudyInfoId(studyInfoId);
+    }
+
+    // 스터디 회의를 수정하는 메서드
+    @Transactional
+    public boolean updateStudyAppointment(Long studyInfoId, Long appointmentId, StudyAppointment studyAppointmentResponseDTO) {
+        Optional<StudyAppointment> target = studyAppointmentRepository.findById(appointmentId);
+        if (!target.isPresent()) {
+            return false; // 수정하려는 스터디 회의가 없을 때
+        }
+
+        StudyAppointment existingStudyAppointment = target.get();
+        if (!existingStudyAppointment.getStudyInfo().getId().equals(studyInfoId)) {
+            return false; // 스터디 회의와 스터디 정보가 매칭되지 않을 때(
+        }
+
+        existingStudyAppointment.updateTitle(studyAppointmentResponseDTO.getTitle());
+        existingStudyAppointment.updateMeetingAt(studyAppointmentResponseDTO.getMeetingAt());
+        existingStudyAppointment.updateStartTime(studyAppointmentResponseDTO.getStartTime());
+        existingStudyAppointment.updateEndTime(studyAppointmentResponseDTO.getEndTime());
+
+        // 스터디 회의 저장
+        studyAppointmentRepository.save(existingStudyAppointment);
+        return true; // 수정 성공
+    }
+
+    // 스터디 회의를 삭제하는 메서드
+    public boolean deleteStudyAppointment(Long studyInfoId, Long appointmentId) {
+        // 스터디 정보 조회 (studyInfoId를 사용하여 스터디 정보를 가져옴)
+        Optional<StudyInfo> targetStudy = studyRepository.findById(studyInfoId);
+        if (!targetStudy.isPresent()) {
+            return false; // 스터디 정보가 없으면 삭제 실패
+        }
+
+        // 스터디 회의 조회 (appointmentId를 사용하여 스터디 회의 정보를 가져옴)
+        Optional<StudyAppointment> targetAppointment = studyAppointmentRepository.findById(appointmentId);
+        if (!targetAppointment.isPresent()) {
+            return false; // 스터디 회의가 없으면 삭제 실패
+        }
+
+        StudyInfo studyInfo = targetStudy.get();
+        StudyAppointment studyAppointment = targetAppointment.get();
+
+        // 스터디 회의와 스터디 정보가 매칭되는지 확인
+        if (!studyAppointment.getStudyInfo().getId().equals(studyInfoId)) {
+            return false; // 스터디 회의와 스터디 정보가 매칭되지 않을 때 삭제 실패
+        }
+        
+        studyAppointmentRepository.delete(studyAppointment);
+
+        return true; // 삭제 성공
+    }
 
 
     /*

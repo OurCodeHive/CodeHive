@@ -18,10 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -178,41 +176,10 @@ public class StudyRoomController {
 
     // [스터디룸] 채팅에 첨부파일 전송
 
-    // [스터디룸] (스터디 장, 스터디 팀원) 일정 보기를 누르면 활성화된 달력 창이 보여짐
-    // [GET] [api/study/meeting/{study_info_id}
-    @GetMapping("/study/meeting/{study_info_id}")
-    public ResponseEntity<Map<String, Object>> getStudyMeeting(@PathVariable("study_info_id") Long studyInfoId) {
-        List<StudyAppointmentDTO> studyMeetingList = studyService.getStudyMeetingByStudyId(studyInfoId);
-
-        Map<String, Object> response = new HashMap<>();
-
-        if (!studyMeetingList.isEmpty()) {
-            List<Map<String, String>> calendar = new ArrayList<>();
-
-            for (StudyAppointmentDTO appointment : studyMeetingList) {
-                Map<String, String> entry = new HashMap<>();
-                entry.put("title", appointment.getTitle());
-                entry.put("day", appointment.getDay());
-                entry.put("start_time", appointment.getStartTime());
-                entry.put("end_time", appointment.getEndTime());
-                entry.put("date", appointment.getDate());
-                calendar.add(entry);
-            }
-
-            response.put("calendar", calendar);
-        } else {
-            response.put("status", 400);
-            response.put("message", "스터디 회의 일정을 불러오는데 실패하였습니다.");
-        }
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-     */
-
+*/
     // [스터디름] (스터디 장) 일정 보기를 누르면 활성화된 달력 창에서 스터디 회의 등록
     @PostMapping("/study/meeting/{studyinfo_id}")
-    public ResponseEntity<?> createStudyMeeting(
+    public ResponseEntity<?> createStudyAppointment(
             @PathVariable("studyinfo_id") Long studyInfoId,
             @RequestBody StudyAppointmentRequestDTO studyAppointmentRequestDTO) {
 
@@ -233,7 +200,7 @@ public class StudyRoomController {
                     studyAppointment.getEndTime()
             );
             return new ResponseEntity<>(studyAppointmentResponseDTO, HttpStatus.OK);
-        }  else {
+        } else {
             // 등록에 실패한 경우 에러 응답 반환
             StudyErrorResponseDTO studyErrorResponseDTO = new StudyErrorResponseDTO(
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
@@ -242,38 +209,84 @@ public class StudyRoomController {
             return new ResponseEntity<>(studyErrorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-}
 
-//    // [스터디룸] (스터디 장) 일정 보기를 누르면 활성화된 달력 창에서 스터디 회의 수정
-//    // [PUT] [api/study/meeting/{study_info_id}
-//    @PutMapping("/study/meeting/{study_info_id}")
-//    public ResponseEntity<Map<String, Object>> updateStudyMeeting(
-//            @PathVariable("study_info_id") Long studyInfoId,
-//            @RequestBody StudyUpdateDTO StudyUpdateDTO) {
-//
-//        // 요청으로 받아온 데이터를 추출
-//        String title = StudyUpdateDTO.getTitle();
-//        String description = StudyUpdateDTO.getDescription();
-//        LocalDate date = StudyUpdateDTO.getDate();
-//        LocalTime startTime = StudyUpdateDTO.getStartTime();
-//        LocalTime endTime = StudyUpdateDTO.getEndTime();
-//
-//        // 스터디 회의 수정 서비스 호출
-//        boolean isUpdated = studyService.updateStudyMeeting(studyInfoId, title, description, date, startTime, endTime);
-//
-//        // 응답 메시지 설정
-//        Map<String, Object> response = new HashMap<>();
-//        if (isUpdated) {
-//            response.put("status", 200);
-//            response.put("message", "스터디 회의가 성공적으로 수정되었습니다.");
-//        } else {
-//            response.put("status", 500);
-//            response.put("message", "스터디 회의 수정에 실패했습니다.");
-//        }
-//
-//        // HTTP 응답 반환
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
+    // [스터디룸] (스터디 장, 스터디 팀원) 일정 보기를 누르면 활성화된 달력 창이 보여짐
+    // [GET] [api/study/meeting/{studyinfo_id}
+    @GetMapping("/study/meeting/{studyinfo_id}")
+    public ResponseEntity<?> getAllStudyAppointmentsByStudyInfoId(@PathVariable("studyinfo_id") Long studyInfoId) {
+        // 해당 스터디에 생성된 모든 스터디 회의 조회 서비스 호출
+        List<StudyAppointment> studyAppointments = studyService.getAllStudyAppointmentsByStudyInfoId(studyInfoId);
+        if (!studyAppointments.isEmpty()) {
+            // 조회된 스터디 회의 정보들을 응답으로 반환
+            List<StudyAppointmentResponseDTO> studyAppointmentResponseDTO = studyAppointments.stream()
+                    .map(studyAppointment -> new StudyAppointmentResponseDTO(
+                            studyAppointment.getId(),
+                            studyAppointment.getTitle(),
+                            studyAppointment.getMeetingAt(),
+                            studyAppointment.getStartTime(),
+                            studyAppointment.getEndTime()
+                    ))
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(studyAppointmentResponseDTO, HttpStatus.OK);
+        } else {
+            // 조회된 스터디 회의 정보가 없을 때 에러 응답 반환
+            StudyErrorResponseDTO studyErrorResponseDTO = new StudyErrorResponseDTO(
+                    HttpStatus.NOT_FOUND.value(),
+                    "해당 스터디 정보에 묶인 스터디 회의 정보를 찾을 수 없습니다."
+            );
+            return new ResponseEntity<>(studyErrorResponseDTO, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // [스터디룸] (스터디 장) 일정 보기를 누르면 활성화된 달력 창에서 스터디 회의 수정
+    // [PUT] [api/study/meeting/{study_info_id}
+    @PutMapping("/study/{studyinfo_id}/meeting/{appointment_id}")
+    public ResponseEntity<?> updateStudyAppointment(
+            @PathVariable("studyinfo_id") Long studyInfoId,
+            @PathVariable("appointment_id") Long appointmentId,
+            @RequestBody StudyAppointmentRequestDTO studyAppointmentRequestDTO) {
+
+        // 스터디 회의 수정 정보를 StudyAppointmentRequestDTO로 받아옴
+        StudyAppointment studyAppointment = studyAppointmentRequestDTO.toEntity();
+
+        // 스터디 회의 수정 서비스 호출
+        boolean isUpdated = studyService.updateStudyAppointment(studyInfoId, appointmentId, studyAppointment);
+
+        // 수정 결과에 따라 응답 메시지 설정
+        if (isUpdated) {
+            return new ResponseEntity<>("스터디 회의가 성공적으로 수정되었습니다.", HttpStatus.OK);
+        } else {
+            StudyErrorResponseDTO studyErrorResponseDTO = new StudyErrorResponseDTO(
+                    HttpStatus.NOT_FOUND.value(),
+                    "해당 스터디 정보에 묶인 스터디 회의를 찾을 수 없거나 수정에 실패했습니다."
+            );
+            return new ResponseEntity<>(studyErrorResponseDTO, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // [스터디룸] (스터디 장) 일정 보기를 누르면 활성화된 달력 창에서 스터디 회의 삭제
+    // [DELETE] [api/study/{studyinfo_id}/meeting/{study_appointment_id}]
+    @DeleteMapping("/study/{studyinfo_id}/meeting/{appointment_id}")
+    public ResponseEntity<?> deleteStudyAppointment(
+            @PathVariable("studyinfo_id") Long studyInfoId,
+            @PathVariable("appointment_id") Long appointmentId) {
+
+        // 스터디 회의 삭제 서비스 호출
+        boolean isDeleted = studyService.deleteStudyAppointment(studyInfoId, appointmentId);
+
+        // 삭제 결과에 따라 응답 메시지 설정
+        if (isDeleted) {
+            return new ResponseEntity<>("스터디 회의가 성공적으로 삭제되었습니다.", HttpStatus.OK);
+        } else {
+            StudyErrorResponseDTO studyErrorResponseDTO = new StudyErrorResponseDTO(
+                    HttpStatus.NOT_FOUND.value(),
+                    "해당 스터디 정보에 묶인 스터디 회의를 찾을 수 없거나 삭제에 실패했습니다."
+            );
+            return new ResponseEntity<>(studyErrorResponseDTO, HttpStatus.NOT_FOUND);
+        }
+    }
+
+}
 //
 //    // [스터디룸] (스터디 장) 일정 보기를 누르면 활성화된 달력 창에서 스터디 회의 삭제
 //    // [DELETE] [api/study/{studyinfo_id}/meeting/{study_appointment_id}]
