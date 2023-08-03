@@ -3,6 +3,7 @@ package com.spoon.sok.domain.study.service;
 import com.spoon.sok.aws.S3Service;
 import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.entity.StudyNotice;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
@@ -151,10 +152,28 @@ public class StudyService {
         else return false;
     }
 
-    public List<StudyNotice> getStudyNoticeList(Long studyInfoId, Pageable pageRequest) {
+    public List<StudyNoticePreviewDTO> getStudyNoticeBoard(Long studyInfoId, Pageable pageRequest) {
         Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyInfoId);
         Page<StudyNotice> studyNoticePage = studyNoticeRepository.findByStudyInfo(findStudyInfo.get(), pageRequest);
-        return studyNoticePage.getContent();
+
+        List<StudyNoticePreviewDTO> list = new ArrayList<>();
+
+        for (StudyNotice sn : studyNoticePage) {
+            StudyNoticePreviewDTO data = new StudyNoticePreviewDTO();
+            data.setUploadAt(sn.getUploadAt());
+            data.setNoticeTitle(sn.getNoticeTitle());
+            data.setAuthorId(sn.getUser().getId());
+            data.setNickName(sn.getUser().getNickname());
+            data.setStudyboardId(sn.getId());
+
+            list.add(data);
+        }
+
+        return list;
+    }
+
+    public Optional<StudyNotice> getStudyNoticeList(Long studyboardId) {
+        return studyNoticeRepository.findById(studyboardId);
     }
 
     @Transactional
@@ -172,10 +191,19 @@ public class StudyService {
         return false;
     }
 
-    /*
-    public boolean deleteStudyNotice(Long studyInfoId, Long studyBoardId) {
+    @Transactional
+    public boolean deleteStudyNotice(Long studyBoardId) {
+        Optional<StudyNotice> findStudyNotice = studyNoticeRepository.findById(studyBoardId);
+
+        if (findStudyNotice.isPresent()) {
+            studyNoticeRepository.delete(findStudyNotice.get());
+            return true;
+        } else {
+            return false;
+        }
     }
 
+    /*
     public List<StudyDocumentDTO> getStudyDocuments(Long studyInfoId, int page, int size) {
     }
 
