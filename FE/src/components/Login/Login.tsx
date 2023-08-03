@@ -6,17 +6,26 @@ import { nonAuthHttp, authHttp } from '@/api/http';
 import style from "@/res/css/module/Login.module.css"
 import logo from "@/res/img/codehive_logo.png"
 import google from "@/res/img/google_logo.png"
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PassThrough } from 'stream';
 import moment from 'moment';
 import axios, {AxiosError, AxiosResponse} from 'axios';
 
 
+
 const Login = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
     let [email, setEmail] = useState("")
     let [pw, setPw] = useState("");
     let [userInfo, setUserInfo] = useRecoilState(userState);
 
+    useEffect(()=>{
+        const status = searchParams.get("status")
+        if(status==="406"){
+            alert("이미 가입된 계정 혹은 닉네임입니다. 일반 로그인으로 진행해주세요");
+            navigate("/login")
+        }
+    })
     const navigate = useNavigate();
 
     function signUpPage(event: React.MouseEvent<HTMLAnchorElement> ) {
@@ -139,7 +148,7 @@ const Login = () => {
         </div>
         <div className={`${style.btn_area}`}>
             {/* <button onClick={googleLogin} className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></button> */}
-            <a href='https://hiveapi.minsungblog.com/oauth2/authorize/google?redirect_uri=http://localhost:5173/study' className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></a>
+            <a href='https://codehive.shop:8080/oauth2/authorize/google?redirect_uri=http://localhost:5173/home' className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></a>
         </div>
     </section>
     </div>
