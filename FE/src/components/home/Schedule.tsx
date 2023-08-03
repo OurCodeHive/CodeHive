@@ -7,7 +7,7 @@ import { start } from 'repl';
 import { format } from 'path';
 
 const Schedule = () => {
-    let [schedules, setSchedules] = useState<string[]>([]);
+    let [schedules, setSchedules] = useState<ISchedule[] | undefined>();
 
     useEffect(()=>{
         // const today = new Date().toISOString().slice(0,10)
@@ -42,11 +42,24 @@ const Schedule = () => {
         </div>
     );
 };
-function ScheduleList(props:{schedules:string[]}){
-    interface ISchedule {
-        startTime? : string;
-    }
-    function getTimeLeft(startTime:ISchedule):string{
+interface ISchedule {
+    startTime? : string | undefined;
+}
+// interface ISchedule {
+//     schedule : {
+//         startTime? : string | undefined;
+//     }
+//     startTime? : string | undefined;
+// }
+const ScheduleList:any= (props:{schedules:ISchedule[] | void}) => {
+// function ScheduleList(props:{schedules:ISchedule[]}){
+    // interface ISchedules {
+    //     schedule : {
+    //         startTime? : string;
+    //     }
+    // }
+   
+    function getTimeLeft(startTime:string | undefined):string{
         let now = moment().toISOString();
         // let startAt = moment("2023-08-02T05:22:43.512Z");
         let startAt = moment(startTime);
@@ -65,7 +78,7 @@ function ScheduleList(props:{schedules:string[]}){
         }
     }
  
-    props.schedules.map((schedule)=>{
+    props.schedules?.map((schedule:ISchedule)=>{
         return (
             <>
             <div className={style.schedule_wrap}>

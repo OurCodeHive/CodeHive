@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import {useState} from 'react-router-dom'
+import React, { Component, useState } from 'react'
 import style from "@/res/css/module/Timer.module.css"
 
   const Timer = () => {
