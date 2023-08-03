@@ -5,60 +5,76 @@ export type PaginationType = {
     totalCnt : number;
     perSize : number;
     range : number;
-    curIdx : number;
     changeIdx : (idx : number) => void;
 }
 
 const Pagination = ({PaginationInfo} : {PaginationInfo : PaginationType}) => {
-
-    const remain = PaginationInfo.curIdx % PaginationInfo.range;
-    const [CurList, setCurList] = useState<number[]>([]);
-    const firstIdx = 1, lastIdx = Math.floor(PaginationInfo.totalCnt / PaginationInfo.perSize);
-    const prevIdx = (Math.floor(PaginationInfo.curIdx / PaginationInfo.range) != 0 ? PaginationInfo.curIdx - PaginationInfo.range - remain : 0) + 1;
-    const nextIdx = PaginationInfo.curIdx + PaginationInfo.range - remain < lastIdx ? PaginationInfo.curIdx + PaginationInfo.range - remain : lastIdx;
     
-    function changeRange(){
-        const tempList = [] as number[];
-        for(let i= prevIdx; i <= nextIdx; i++) tempList.push(i);
-        setCurList(tempList);
+    const [CurIdx, setCurIdx] = useState(1);
+    const firstIdx = 1, lastIdx = Math.floor(PaginationInfo.totalCnt / PaginationInfo.perSize);
+    let remain = CurIdx % PaginationInfo.range;
+    const [PrevIdx, setPrevIdx] = useState(CurIdx - remain > 0 ? CurIdx - remain : 1);
+    const [NextIdx, setNextIdx] = useState(CurIdx - remain + PaginationInfo.range + 1 < lastIdx ? CurIdx - remain + PaginationInfo.range + 1 : lastIdx);
+    
+    //처음 세팅
+    const initList = [] as number[];
+    for(let i= PrevIdx; i < NextIdx; i++) initList.push(i);
+    const [CurList, setCurList] = useState<number[]>(initList);
+    
+    function changeRange(idx: number) {
+        remain = idx % PaginationInfo.range;
+        if(remain !== 0){
+            const tempPrev = idx - remain > 0 ? idx - remain : 1;
+            const tempNext = idx - remain + PaginationInfo.range + 1 < lastIdx ? idx - remain + PaginationInfo.range + 1 : lastIdx;
+
+            const tempList = [] as number[];
+            for(let i=tempPrev + 1; i < tempNext; i++) tempList.push(i);
+            if(tempPrev == 1) tempList.unshift(tempPrev);
+            if(tempNext == lastIdx) tempList.push(tempNext);
+            setCurList(tempList);
+            setPrevIdx(() => tempPrev);
+            setNextIdx(() => tempNext);
+        }
+        setCurIdx(() => idx);
+        
     }
-    changeRange();
 
     //첫번째로 가기
     const goFirst = () => {
-        if(PaginationInfo.curIdx != firstIdx){
+        if(CurIdx != firstIdx){
             PaginationInfo.changeIdx(firstIdx);
-            changeRange();
+            changeRange(firstIdx);
         }
         
     }
 
     //이전으로 가기
     const goPrev = () => {
-        if(PaginationInfo.curIdx != 1){
-            PaginationInfo.changeIdx(prevIdx);
-            changeRange();
+        if(CurIdx != 1){
+            PaginationInfo.changeIdx(PrevIdx);
+            changeRange(PrevIdx);
         }
     }
 
     //마지막으로 가기
     const goLast = () => {
-        if(PaginationInfo.curIdx != lastIdx){
+        if(CurIdx != lastIdx){
             PaginationInfo.changeIdx(lastIdx);
-            changeRange();
+            changeRange(lastIdx);
         }
     }
 
     //다음으로 가기
     const goNext = () => {
-        if(PaginationInfo.curIdx != lastIdx){
-            PaginationInfo.changeIdx(nextIdx);
-            changeRange();
+        if(CurIdx != lastIdx){
+            PaginationInfo.changeIdx(NextIdx);
+            changeRange(NextIdx);
         }
     }
 
     const clickIdx = (idx: number) => {
         PaginationInfo.changeIdx(idx);
+        changeRange(idx);
     }
 
     return (
@@ -67,7 +83,7 @@ const Pagination = ({PaginationInfo} : {PaginationInfo : PaginationType}) => {
             <button type="button" onClick={goPrev} className={`${PaginationStyle.arrow_btn} ${PaginationStyle.to_prev}`}>이전으로 가기</button>
             <ul className={`${PaginationStyle.pagination_style_0}`}>
                 {CurList.map((item, index) => (
-                    item !== PaginationInfo.curIdx && true ?
+                    item !== CurIdx && true ?
                     (<li key={index} onClick={() => clickIdx(item)}>{item}</li>) :
                     (<li key={index} className={`${PaginationStyle.active}`}>{item}</li>)
                 ))}

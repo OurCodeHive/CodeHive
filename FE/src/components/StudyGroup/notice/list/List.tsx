@@ -9,25 +9,26 @@ import Pagination, { PaginationType } from '@/utils/Pagination/Pagination';
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
 
 const NoticeList = () => {
-    const [Page, setPage] = useState(1);
-    const [Size, setSize] = useState(10);
+    const param = {
+        page : 1,
+        size : 10
+    }
     const [ListContents, setListContents] = useState<StudyNoticeType[]>([]);
 
     const changePage = (idx: number) => {
-        setPage(() => idx);
+        param.page = idx;
         void getList();
     }
 
     const PaginationInfo:PaginationType = {
         totalCnt : 80,
-        perSize : Size,
+        perSize : param.size,
         range : 5,
-        curIdx : Page,
         changeIdx : changePage
     };
 
     const getList = async () => {
-        await getNoticeList(studyinfoId, {page : Page, size : Size}, ({data}) => {
+        await getNoticeList(studyinfoId, param, ({data}) => {
             setListContents(data.studyNoticeBoard);
         }, (error) => {console.log(error)})
     }
