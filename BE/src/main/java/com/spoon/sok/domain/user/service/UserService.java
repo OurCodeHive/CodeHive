@@ -20,7 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -73,33 +72,6 @@ public class UserService {
                 .tokenInfo(tokenInfo)
                 .userId(user.get().getId())
                 .nickname(user.get().getNickname())
-                .responseCode(0)
-                .build();
-    }
-
-    public UserResponseDto reissue(UserReissueRequestDto requestDto, String refreshToken) {
-        if (!jwtTokenProvider.validateToken(refreshToken)) {
-            return UserResponseDto.builder().responseCode(1).build();
-        }
-
-        Authentication authentication = jwtTokenProvider.getAuthentication(requestDto.getAccessToken());
-
-        String restRefreshToken = (String) redisTemplate.opsForValue().get("RT:" + authentication.getName());
-        if (ObjectUtils.isEmpty(restRefreshToken)) {
-            return UserResponseDto.builder().responseCode(2).build();
-        }
-
-        if (!restRefreshToken.equals(refreshToken)) {
-            return UserResponseDto.builder().responseCode(3).build();
-        }
-
-        UserResponseDto.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-
-        redisTemplate.opsForValue()
-                .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
-
-        return UserResponseDto.builder()
-                .tokenInfo(tokenInfo)
                 .responseCode(0)
                 .build();
     }
@@ -169,10 +141,6 @@ public class UserService {
     }
 
     public boolean logout(UserLogoutRequestDto requestDto) {
-        if (!jwtTokenProvider.validateToken(requestDto.getAccessToken())) {
-            return false;
-        }
-
         Authentication authentication = jwtTokenProvider.getAuthentication(requestDto.getAccessToken());
 
         if (redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {

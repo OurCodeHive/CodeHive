@@ -75,47 +75,6 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/reissue")
-    public ResponseEntity<?> reissue(@Validated @RequestBody UserReissueRequestDto requestDto, Errors errors, @RequestHeader("Cookie") String refreshToken) {
-        result = new HashMap<>();
-        System.out.println(refreshToken.substring(12));
-
-        refreshToken = refreshToken.substring(12);
-
-        if (errors.hasErrors()) {
-            System.out.println(errors.toString());
-            ;
-            result.put("status", 400);
-            result.put("message", "에러 발생!");
-            return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
-        }
-
-        UserResponseDto responseDto = userService.reissue(requestDto, refreshToken);
-
-        if (responseDto.getResponseCode() != 0) {
-            switch (responseDto.getResponseCode()) {
-                case 1:
-                    result.put("status", 400);
-                    result.put("message", "Refresh Token 정보가 유효하지 않습니다.");
-                    return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
-                case 2:
-                    result.put("status", 400);
-                    result.put("message", "잘못된 요청입니다.");
-                    return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
-                case 3:
-                    result.put("status", 400);
-                    result.put("message", "Refresh Token 정보가 일치하지 않습니다.");
-                    return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
-            }
-        }
-
-        result.put("status", 200);
-        result.put("message", "AccessToken 재발급 완료.");
-        result.put("accessToken", responseDto.getTokenInfo().getAccessToken());
-
-        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
-    }
-
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody UserSignupRequestDto requestDto) {
         int responseCode = userService.signup(requestDto);

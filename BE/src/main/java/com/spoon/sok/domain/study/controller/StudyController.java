@@ -99,7 +99,6 @@ public class StudyController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
-    //
     @PostMapping("/study")
     public ResponseEntity<Map<String, Object>> setStudyGroup(
             @RequestParam(value = "profile", required = false) List<MultipartFile> multipartFile,

@@ -92,7 +92,6 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
             String result = new ObjectMapper().writeValueAsString(responseToken);
             response.getWriter().write(result);
-
         } catch (UnsupportedJwtException e) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Unsupported JWT Token");
         } catch (IllegalArgumentException e) {
