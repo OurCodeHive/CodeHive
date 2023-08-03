@@ -10,7 +10,7 @@ public class WebCorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://ourcodehive.vercel.app", "http://localhost:5173", "https://codehive.shop:8080", "http://localhost:8080")
+                .allowedOrigins("https://ourcodehive.vercel.app", "http://localhost:5173", "https://codehive.shop:8080", "http://localhost:8080", "wss://codehive.shop:8080/ws", "wss://minsung.site/", "ws://localhost:8080/ws")
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true)
