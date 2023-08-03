@@ -135,7 +135,7 @@ function Code() {
   return(
     <div className={style.idePage}>
       <IDEHeader code={code} id={id} language={language}/>
-      <IDETerminal code={code} id={id} up={consoleUp} down={consoleDown}/>
+      <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown}/>
       <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} />
       <div className={style.ideContainer}>
         <QuillBox className={style.quillBox}>

@@ -164,7 +164,13 @@ function IDEHeader(props: IDEHeaderProps) {
 
 // 공지변경 알림 토스트메시지
 function notify(name: string) {
-  toast(name + '님이 공지를 변경하였습니다.', {
+
+  let sentence = name + '님이 공지를 변경하였습니다.';
+  if (name == undefined) {
+    sentence = '공지가 변경되었습니다.';
+  }
+
+  toast(sentence, {
     duration: 2000,
     icon: '👏',
     style: {
