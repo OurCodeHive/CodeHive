@@ -4,12 +4,33 @@ import refresh from '@/res/img/refresh.png';
 import { authHttp, nonAuthHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
 const Comedy = () => {
-    let [comedies, setComedies] = useState([]);
+    let [comedies, setComedies] = useState();
     let [writer, setWriter] = useState([]);
     let [comedy, setComedy] = useState<string>("testtest");
     let [idx, setIdx] = useState<number>(0);
     let random = 0;
+    interface IComedy {
+        response?: {
+           data?: {
+            comedy? : {
+                idx? : number;
+                content? : string;
+            };
+          };
+        };
+        comedy : any;
+     };
+    //  interface IComedy {
+    //      response?: {
+    //         data?: {
+    //          comedy? {
 
+    //          }
+    //         };
+    //         status: number;
+    //         headers: string;
+    //      };
+    //  }
     useEffect(()=>{
         // nonAuthHttp.get(`/comedy?random=${0}`).then((res)=>{
         //     setComedy(res.data.comedy);
@@ -25,9 +46,9 @@ const Comedy = () => {
             message : string,
         }
         // const url = import.meta.env.VITE_APP_SERVER + `email/auth?email=${email}`;
-        async function requestComedy(): Promise<userData | undefined> {
+        async function requestComedy(): Promise<IComedy | undefined> {
             try {
-                const response: AxiosResponse<userData> = await nonAuthHttp.get(`/comedy`);
+                const response: AxiosResponse<IComedy> = await nonAuthHttp.get(`/comedy`);
                 console.log(response.data.comedy);
                 setComedies(response.data.comedy); //전체 코미디 넣기
                 setComedy(response.data.comedy[idx]["content"]); //처음 로딩할 때 0번째 인덱스 코미디 등록하기
@@ -60,8 +81,10 @@ const Comedy = () => {
         await resetIdx();
         // setIdx(Math.floor(Math.random() * 10));
         console.log(idx);
-        setComedy(comedies[idx]['content']);
-        setWriter(comedies[idx]['writer']);
+        if(comedies){
+            setComedy(comedies[idx]['content']);
+            setWriter(comedies[idx]['writer']);
+        }
     }
     function resetIdx(){
         console.log(comedy.length);
@@ -78,7 +101,7 @@ const Comedy = () => {
         <div>
             <div className={style.subtitle_comedy}>코딩문학제 오늘의 작품 <img onClick={refreshComedy} src={refresh} alt="코딩문학제 새로고침" /></div>
                 <div className={style.box}>
-                    <textarea className={style.content_comedy} name="" id="" cols="40" rows="20" value={comedy}>
+                    <textarea className={style.content_comedy} name="" id="" cols={40} rows={20} value={comedy}>
                     </textarea>
                     {/* <div>{writer}</div> */}
                 </div>

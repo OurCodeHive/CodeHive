@@ -43,6 +43,9 @@ const Schedule = () => {
     );
 };
 function ScheduleList(props:{schedules:string[]}){
+    interface ISchedule {
+        startTime? : string;
+    }
     function getTimeLeft(startTime:string):string{
         let now = moment().toISOString();
         // let startAt = moment("2023-08-02T05:22:43.512Z");
@@ -61,7 +64,7 @@ function ScheduleList(props:{schedules:string[]}){
             return `남은 시간:${hours}시간 ${mins}분`;
         }
     }
-
+ 
     props.schedules.map((schedule)=>{
         return (
             <>
