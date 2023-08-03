@@ -3,7 +3,7 @@ import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import style from "@/res/css/module/Home.module.css";
 import {Cookies} from 'react-cookie';
-import { nonAuthHttp } from '@/api/http';
+import { authHttp, nonAuthHttp } from '@/api/http';
 import logout from "@/res/img/logout.png";
 import mypage from "@/res/img/30X30_mypage.png";
 import { useNavigate } from 'react-router-dom';
@@ -40,13 +40,13 @@ const Intro = () => {
     function doLogout(){
         alert("로그아웃 하시겠습니까?");
         const aT = localStorage.getItem("accessToken");
-        const rT = cookies.get("refreshToken");
+        console.log(aT);
         const data = {
             accessToken : aT,
-            refreshToken : rT,
+            // refreshToken : rT,
         }
         console.log(data);
-        nonAuthHttp.post('/logout').then(()=>{
+        authHttp.post('/logout',data).then(()=>{
             localStorage.removeItem("accessToken");
             localStorage.removeItem("expireAt");
             sessionStorage.removeItem("useState");
@@ -74,9 +74,9 @@ const Intro = () => {
         </div>
     );
 
-    function getDay(){
+    // function getDay(){
         
-    }
+    // }
 };
 
 export default Intro;

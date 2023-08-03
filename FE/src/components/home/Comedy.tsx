@@ -4,22 +4,28 @@ import refresh from '@/res/img/refresh.png';
 import { authHttp, nonAuthHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
 const Comedy = () => {
-    let [comedies, setComedies] = useState();
-    let [writer, setWriter] = useState([]);
+    let [comedies, setComedies] = useState<IComedy>();
+    let [writer, setWriter] = useState<string>();
     let [comedy, setComedy] = useState<string>("testtest");
     let [idx, setIdx] = useState<number>(0);
     let random = 0;
+    interface ComedyItem {
+        content: string; 
+        writer : string;
+        idx:number;
+      }
+
     interface IComedy {
         response?: {
            data?: {
-            comedy? : {
-                idx? : number;
-                content? : string;
-            };
+            [index:number]:{
+               comedy? : ComedyItem[];
+            }
+            comedy? : ComedyItem[];
           };
         };
-        comedy : any;
-     };
+        comedy : IComedy;
+     }
     //  interface IComedy {
     //      response?: {
     //         data?: {
@@ -32,10 +38,6 @@ const Comedy = () => {
     //      };
     //  }
     useEffect(()=>{
-        // nonAuthHttp.get(`/comedy?random=${0}`).then((res)=>{
-        //     setComedy(res.data.comedy);
-        //     console.log(res.data.comedy);
-        // })
         getComedy();
     }, [])
 
@@ -48,11 +50,14 @@ const Comedy = () => {
         // const url = import.meta.env.VITE_APP_SERVER + `email/auth?email=${email}`;
         async function requestComedy(): Promise<IComedy | undefined> {
             try {
-                const response: AxiosResponse<IComedy> = await nonAuthHttp.get(`/comedy`);
-                console.log(response.data.comedy);
-                setComedies(response.data.comedy); //전체 코미디 넣기
-                setComedy(response.data.comedy[idx]["content"]); //처음 로딩할 때 0번째 인덱스 코미디 등록하기
-                setWriter(response.data.comedy[idx]["writer"]);
+                const response: AxiosResponse<IComedy> = await authHttp.get<IComedy>(`/comedy`);
+                console.log(response.data);
+                const {comedy} = response.data;
+                if(comedy){
+                    setComedies(response.data.comedy); //전체 코미디 넣기
+                    setComedy(response.data.comedy[idx].content); //처음 로딩할 때 0번째 인덱스 코미디 등록하기
+                    setWriter(response.data.comedy[idx].writer);
+                }
                 console.log(comedy);
                 return response.data;
             } catch (error) {
@@ -65,12 +70,10 @@ const Comedy = () => {
             // console.log(res.comedy);
             // setComedy(res.message);
         })
-        .catch(()=>{
-
-        })
+        .catch(console.log)
             
     }
-    async function refreshComedy(){
+    function refreshComedy(){
         // console.log(comedy.length);
         // if(idx === 8){
         //     console.log("zero!");
@@ -78,7 +81,7 @@ const Comedy = () => {
         // } else {
         //     setIdx(++idx);
         // }
-        await resetIdx();
+        resetIdx();
         // setIdx(Math.floor(Math.random() * 10));
         console.log(idx);
         if(comedies){

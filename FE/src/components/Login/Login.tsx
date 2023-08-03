@@ -42,6 +42,14 @@ const Login = () => {
             login();
         }
     }
+    function loginPromise(key: string, value:string) {
+        return new Promise((res) => {
+            console.log(res);
+            setTimeout(res, 1000);
+        }).then(() => {
+            localStorage.setItem(key, value);
+        })
+    }
     ////////////////////////////
     //로그인 클릭 시 실행되는 함수
     ////////////////////////////
@@ -62,22 +70,44 @@ const Login = () => {
             userId : number,
             nickname : string,
         }
+      
         async function doLogin(): Promise<userData | undefined> {
             try {
               ///
               const response: AxiosResponse<userData> = await nonAuthHttp.post("login/user", user);
               console.log(response.data);
-              alert("로그인에 성공하였습니다");
+
+              let len = response.data.accessToken.length;
+            let accessToken = response.data.accessToken.slice(1,len-1);
+
+              
               //recoil!
               setUserInfo({
                 email : email,
                 userId : response.data.userId,
                 nickname : response.data.nickname,
-                accessToken : response.data.accessToken,
+                accessToken : accessToken,
                 refreshToken: response.data.refreshToken});
-               localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
-               localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
-               navigate("/home");
+
+                alert("로그인에 성공하였습니다");
+
+                // const aT = await loginPromise('accessToken', JSON.stringify(response.data.accessToken));
+                // await loginPromise('expireAt', moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
+
+                // aT.then(()=>{navigate("/home")}).catch(console.log)
+                // let setLocalStorage = new Promise((res, rej) =>{
+                    localStorage.setItem("accessToken", response.data.accessToken);
+                    localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
+                    navigate("/home");
+                setTimeout(()=>{
+                    navigate("/home");
+                },1000)
+
+            // })
+            // await setLocalStorage.then((res)=>{console.log(res)}).catch(console.log)
+            //    localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
+            //    localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
+               
               return response.data;
             } catch (error) {
                 // const err = error as any
@@ -90,6 +120,7 @@ const Login = () => {
           doLogin()
           .then((res)=>{
             console.log(res);
+            // navigate("/home")
             // alert("로그인 되었습니다");
           })
           .catch((err) => {console.log(err)})
