@@ -12,6 +12,6 @@ export type StudyType = {
 }
 
 export type StudyListType = {
-    studyList : StudyType[];
+    study_list : StudyType[];
     status? : number;
 }

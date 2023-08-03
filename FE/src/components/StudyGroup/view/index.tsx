@@ -22,7 +22,7 @@ const StudyView: React.FC = () => {
       }, (error) => {console.log(error)});
     }
     void fetchData();
-  });
+  }, []);
 
   return (
     <div className="col-12 pt50">
