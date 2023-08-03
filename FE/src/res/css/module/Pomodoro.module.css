@@ -1,16 +1,20 @@
 .container_timer {
     position: fixed;
-    left: 10%;
-    bottom: 70px;
+    /* left: 550px; */
+    left: 25%;
+    bottom: 130px;
     border: 1px solid orange;
-    width: 200px;
-    height: 200px;
+    /* width: 300px; */
+    /* height: 300px; */
+    width: 17%;
+    height: 35%;
 }
 .play {
     background-color: transparent;
     color: white;
     color: black;
     border: 0;
+    margin-left: 130px;
     display: inline-block;
     width: 40px;
     cursor: pointer;
