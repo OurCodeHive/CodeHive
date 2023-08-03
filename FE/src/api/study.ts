@@ -3,6 +3,7 @@
  * Date : 23/07/24
  * Contents : 스터디 관련 api 요청
 */
+import { StudyNoticeListType } from '@/type/StudyNoticeType';
 import {authHttp, formHttp} from './http';
 import { StudyType, StudyListType } from '@/type/StudyType';
 
@@ -49,7 +50,7 @@ const getView = async (studyinfoId: number, success: ({data} : {data: StudyType}
     await api.get(`/studyinfo/${studyinfoId}`).then(success).catch(fail);
 }
 
-const getNoticeList = async (studyinfoId: number, param: object, success: ({data} : {data : object}) => void, fail: (error: unknown) => void) => {
+const getNoticeList = async (studyinfoId: number, param: object, success: ({data} : {data : StudyNoticeListType}) => void, fail: (error: unknown) => void) => {
     await api.get(`/study/${studyinfoId}/board`, { params: param }).then(success).catch(fail);
 }
 
