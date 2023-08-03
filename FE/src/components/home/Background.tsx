@@ -15,7 +15,7 @@ function Background(){
                     <Comedy></Comedy>
 
                     <Schedule></Schedule>
-                    <Timer></Timer>
+                    {/* <Timer></Timer> */}
 
                 </div>
             </div>

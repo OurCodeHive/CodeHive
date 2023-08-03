@@ -87,7 +87,7 @@
 .box {
     display: flex;
     vertical-align: middle;
-    border: 1px solid red;
+    /* border: 1px solid red; */
     position: fixed;
     width: 32%;
     height: 190px;

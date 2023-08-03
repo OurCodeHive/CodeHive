@@ -43,7 +43,7 @@
 .semicircle:nth-child(3) {
     background-color: white;
     z-index: 4;
-    display: none;
+    /* display: none; */
 }
 .outermost_circle {
     width: 290px;

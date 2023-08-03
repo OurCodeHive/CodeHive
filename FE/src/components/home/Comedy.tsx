@@ -18,12 +18,6 @@ const Comedy = () => {
         getComedy();
     }, [])
 
-    useEffect(()=>{
-        setComedy(comedies[idx]['content']);
-        setWriter(comedies[idx]['writer']);
-        console.log(comedy);
-    }, [idx])
-
     function getComedy(){
         interface userData {
             status : number,
@@ -55,21 +49,38 @@ const Comedy = () => {
         })
             
     }
-    function refreshComedy(){
-        if(idx === comedy.length-1){
+    async function refreshComedy(){
+        // console.log(comedy.length);
+        // if(idx === 8){
+        //     console.log("zero!");
+        //     setIdx(0);
+        // } else {
+        //     setIdx(++idx);
+        // }
+        await resetIdx();
+        // setIdx(Math.floor(Math.random() * 10));
+        console.log(idx);
+        setComedy(comedies[idx]['content']);
+        setWriter(comedies[idx]['writer']);
+    }
+    function resetIdx(){
+        console.log(comedy.length);
+        if(idx === 8){
+            console.log("zero!");
             setIdx(0);
         } else {
-            setIdx(idx+1)
+            setIdx(++idx);
         }
-        console.log(idx);
+        // setIdx(Math.floor(Math.random() * 10));
     }
+
     return (
         <div>
             <div className={style.subtitle_comedy}>코딩문학제 오늘의 작품 <img onClick={refreshComedy} src={refresh} alt="코딩문학제 새로고침" /></div>
                 <div className={style.box}>
                     <textarea className={style.content_comedy} name="" id="" cols="40" rows="20" value={comedy}>
                     </textarea>
-                    <div>{writer}</div>
+                    {/* <div>{writer}</div> */}
                 </div>
         </div>
           
