@@ -3,6 +3,7 @@ package com.spoon.sok.domain.study.service;
 import com.spoon.sok.aws.S3Service;
 import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
+import com.spoon.sok.domain.study.dto.requestDTO.ForceLeaveRequestDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyUserListDTO;
@@ -228,12 +229,35 @@ public class StudyService {
     public boolean leaveStudy(String email, String nickname, Long studyInfoId) {
     }
 
-    public boolean forceLeaveStudy(String email, String nickname, Long studyInfoId) {
-    }
-
     public StudyUpdateResult studyUpdateResult(StudyMemberRequestDTO studyMemberRequestDTO) {
     }
      */
+
+    @Transactional
+    public boolean forceLeaveStudy(ForceLeaveRequestDTO forceLeaveRequestDTO) {
+
+        Optional<StudyInfo> si = studyRepository.findById(forceLeaveRequestDTO.getStudyinfoId());
+        if (si.isPresent()) {
+            // 방장만 강퇴시킨다.
+            if (!si.get().getUsers().getId().equals(forceLeaveRequestDTO.getFrom())) {
+                return false;
+            }
+        }
+
+        // 스터디 그룹과 강퇴할 유저 조건으로 중간테이블의 데이터를 불러온다.
+        Optional<UserStudy> us = userStudyRepository.findByStudyInfoIdAndUsersId(
+                forceLeaveRequestDTO.getStudyinfoId(), forceLeaveRequestDTO.getTarget()
+        );
+
+        if (us.isPresent()) {
+            if (us.get().getStatus().equals(CurrentStatus.ACCEPT)) {
+                us.get().updateStatus(CurrentStatus.BAN); // 중간테이블의 상태를 변경
+                userStudyRepository.save(us.get());
+                return true;
+            }
+        }
+        return false;
+    }
 
     public List<StudyUserListDTO> getStudyUsers(Long studyInfoId) {
         // 중간테이블 가져오기

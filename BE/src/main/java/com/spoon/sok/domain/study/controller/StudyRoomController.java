@@ -1,6 +1,7 @@
 package com.spoon.sok.domain.study.controller;
 
 import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
+import com.spoon.sok.domain.study.dto.requestDTO.ForceLeaveRequestDTO;
 import com.spoon.sok.domain.study.dto.requestDTO.StudyUpdateDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
@@ -329,18 +330,16 @@ public class StudyRoomController {
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+     */
 
     // [스터디룸] (스터디 장이 그룹원을 추방시킴) 스터디 그룹원 강퇴
     // [POST] [api/study/force/leave]
     @PostMapping("/study/force/leave")
-    public ResponseEntity<Map<String, Object>> forceLeaveStudy(@RequestBody LeaveStudyRequestDTO leaveStudyRequestDTO) {
-        // 요청으로 받아온 데이터를 추출
-        String email = leaveStudyRequestDTO.getEmail();
-        String nickname = leaveStudyRequestDTO.getNickname();
-        Long studyInfoId = leaveStudyRequestDTO.getStudyInfoId();
+    public ResponseEntity<Map<String, Object>> forceLeaveStudy(
+            @RequestBody ForceLeaveRequestDTO forceLeaveRequestDTO) {
 
         // 스터디 그룹원 강퇴 서비스 호출
-        boolean isForcedLeave = studyService.forceLeaveStudy(email, nickname, studyInfoId);
+        boolean isForcedLeave = studyService.forceLeaveStudy(forceLeaveRequestDTO);
 
         // 응답 메시지 설정
         Map<String, Object> response = new HashMap<>();
@@ -355,7 +354,6 @@ public class StudyRoomController {
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-     */
 
     @GetMapping("/study/user/list")
     public ResponseEntity<Map<String, Object>> getStudyUsers(@RequestParam("study") Long studyInfoId) {
