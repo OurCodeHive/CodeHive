@@ -46,7 +46,7 @@ function ScheduleList(props:{schedules:string[]}){
     interface ISchedule {
         startTime? : string;
     }
-    function getTimeLeft(startTime:string):string{
+    function getTimeLeft(startTime:ISchedule):string{
         let now = moment().toISOString();
         // let startAt = moment("2023-08-02T05:22:43.512Z");
         let startAt = moment(startTime);

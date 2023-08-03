@@ -84,35 +84,35 @@ authHttp.interceptors.request.use(
 //     }
 //   )
 
-// //인증이 불필요한 axios instance
-// const nonAuthHttp : AxiosInstance = axios.create({
-//     baseURL : import.meta.env.VITE_APP_SERVER as string,
-//     timeout: 10000,
-//     headers: {
-//         'Content-Type': 'application/json',
-//     },
-//     withCredentials : true,
-// })
+//인증이 불필요한 axios instance
+const nonAuthHttp : AxiosInstance = axios.create({
+    baseURL : import.meta.env.VITE_APP_SERVER as string,
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    withCredentials : true,
+})
 
-// //인증이 불필요한 axios instance
-// const formHttp : AxiosInstance = axios.create({
-//     baseURL : import.meta.env.VITE_APP_SERVER as string,
-//     timeout: 10000,
-//     headers: {
-//         'Content-Type': 'multipart/form-data',
-//     },
-// })
+//인증이 불필요한 axios instance
+const formHttp : AxiosInstance = axios.create({
+    baseURL : import.meta.env.VITE_APP_SERVER as string,
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'multipart/form-data',
+    },
+})
 
-// formHttp.interceptors.request.use(
-//     (config : InternalAxiosRequestConfig):InternalAxiosRequestConfig => {
-//         console.log(accessToken);
-//         if(config.headers && accessToken){
-//             config.headers.Authorization = `Bearer ${accessToken}`;
-//             console.log(config);
-//         }
-//       return config;
-//     }
-// )
+formHttp.interceptors.request.use(
+    (config : InternalAxiosRequestConfig):InternalAxiosRequestConfig => {
+        console.log(accessToken);
+        if(config.headers && accessToken){
+            config.headers.Authorization = `Bearer ${accessToken}`;
+            console.log(config);
+        }
+      return config;
+    }
+)
 
 export {authHttp, nonAuthHttp, formHttp};
 
