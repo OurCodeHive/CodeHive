@@ -158,7 +158,7 @@ function IDEHeader(props: IDEHeaderProps) {
       <ConfirmPopup PopupInfo={popupInfo}/>
       <div className={style.boxPadding}>
         <div className={style.boxSetting}>
-          <button onClick={() => { saveButton(saveDocx(), "코드"); }}
+          <button onClick={() => { saveButton(saveDocx(), "자료"); }}
             className={style.saveBtn}>문서저장</button>
           &nbsp;&nbsp;
           <button onClick={() => { saveCode(); }}

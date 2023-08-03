@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import toast, { Toaster } from 'react-hot-toast';
 import style from "@/res/css/module/IDETerminal.module.css";
-import { language } from "@codemirror/language";
+
 
 interface IDETerminalProps {
   id: string;
@@ -29,7 +29,7 @@ function IDETerminal(props: IDETerminalProps) {
 
   const [openConsole, setOpenConsole] = useState<boolean>(true);
   const [isConsole, setIsConsole] = useState<string>("6vh");
-  const [input, setInput] = useState<string>("1234");
+  const [input, setInput] = useState<string>("");
   const [consoleState, setConsoleState] = useState<string>("Input");
   const [inputColor, setInputColor] = useState<string>("wheat");
   const [resultColor, setResultColor] = useState<string>("gray");

@@ -139,7 +139,7 @@ const Login = () => {
         </div>
         <div className={`${style.btn_area}`}>
             {/* <button onClick={googleLogin} className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></button> */}
-            <a href='https://hiveapi.minsungblog.com/oauth2/authorize/google?redirect_uri=http://localhost:5173/study' className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></a>
+            <a href='https://codehive.shop:8080/oauth2/authorize/google?redirect_uri=https://ourcodehive.vercel.app/home' className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></a>
         </div>
     </section>
     </div>

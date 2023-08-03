@@ -23,6 +23,7 @@ import style from "@/res/css/module/AppIDE.module.css";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { codeEditTheme, highlightStyle, QuillBox, modulesRef } from './EditorStyle';
+import { useNavigate } from "react-router-dom";
 
 
 function getRandomColor() {
@@ -34,6 +35,8 @@ let quillRef = null;
 function Code() {
 
   let loginUser = useRecoilValue(userState);
+  
+  const navigate = useNavigate();
   
   const editorRef = useRef();
   let { id } = useParams();
@@ -52,6 +55,14 @@ function Code() {
   let [showChat, setShowChat] = useState("hidden");
 
   useEffect(() => {
+
+    const check = ["B201", "B202", "B203", "B204", "B205", "B206", "B207", "B208", "B209", "B210", "B304", "1", "2"]
+    if (!check.includes(id)){
+      alert("잘못된 접근입니다.")
+      navigate("/")
+      location.reload();  
+    }
+
     const provider = new WebsocketProvider(url, codeId, CodeDoc);
     const ytext = CodeDoc.getText('codemirror');
     setCode(ytext);
