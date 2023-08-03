@@ -6,6 +6,7 @@ import Comedy from './Comedy';
 import Timer from './Timer'
 import Schedule from './Schedule';
 import Lnb from '../inc/Lnb';
+import Pomodoro from './Pomodoro';
 function Background(){
     return (
         <div className={style.dash_background}>
@@ -17,6 +18,8 @@ function Background(){
                     {/* <Lnb></Lnb> */}
                     <Schedule></Schedule>
                     {/* <Timer></Timer> */}
+                    <Pomodoro></Pomodoro>
+
 
                 </div>
             </div>

@@ -11,10 +11,10 @@ const Schedule = () => {
 
     useEffect(()=>{
         // const today = new Date().toISOString().slice(0,10)
-        const today = "2023-08-02";
+        const today = "2023-08-03 18:00:00.000000";
         authHttp.get(`/today/study?today=${today}`).then((res)=>{
             setSchedules(res.data.today);//[{},{},{}]
-            console.log(res.data.today);
+            console.log(res);
         })
     },[])
 

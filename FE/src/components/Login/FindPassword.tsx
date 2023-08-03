@@ -79,7 +79,6 @@ const FindPassword = () => {
                 console.log(err);
             }
         }
-            
     }
     function verifyCode(){
         interface CustomError extends Error {

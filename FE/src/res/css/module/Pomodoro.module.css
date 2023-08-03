@@ -1,0 +1,26 @@
+.container_timer {
+    position: fixed;
+    left: 10%;
+    bottom: 70px;
+    border: 1px solid orange;
+    width: 200px;
+    height: 200px;
+}
+.play {
+    background-color: transparent;
+    color: white;
+    color: black;
+    border: 0;
+    display: inline-block;
+    width: 40px;
+    cursor: pointer;
+}
+.pause {
+    background-color: transparent;
+    color: white;
+    color: black;
+    border: 0;
+    display: inline-block;
+    width: 40px;
+    cursor: pointer;
+}
