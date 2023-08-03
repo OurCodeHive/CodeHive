@@ -49,4 +49,8 @@ const getView = async (studyinfoId: number, success: ({data} : {data: StudyType}
     await api.get(`/studyinfo/${studyinfoId}`).then(success).catch(fail);
 }
 
-export {getList, insertData, inviteMember, getView};
+const getNoticeList = async (studyinfoId: number, param: object, success: ({data} : {data : object}) => void, fail: (error: unknown) => void) => {
+    await api.get(`/study/${studyinfoId}/board`, { params: param }).then(success).catch(fail);
+}
+
+export {getList, insertData, inviteMember, getView, getNoticeList};

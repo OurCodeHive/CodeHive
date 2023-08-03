@@ -1,3 +1,6 @@
+import {useState} from 'react';
+
+const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
 
 const DocumentList = () => {
     return (

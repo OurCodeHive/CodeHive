@@ -3,9 +3,8 @@ import { StudyType } from '@/type/StudyType';
 import { getView } from '@/api/study';
 import StudyViewInfo from './info';
 import Tab, {TabType} from '@/utils/Tab/Tab';
-import NoticeList from '../notice/list';
-import DocumentList from '../document/list';
-
+import NoticeList from '../notice/list/List';
+import DocumentList from '../document/list/List';
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
 
 const StudyView: React.FC = () => {
