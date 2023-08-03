@@ -60,7 +60,6 @@ public class StudyService {
 
         // 웹 IDE 접속하기 위한 10글자 문자열 생성
         String enterName = UUID.randomUUID().toString().substring(0, 10);
-        System.out.println(enterName);
         studyCreationDto.setEnterName(enterName);
 
         String imgUrl = "https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/basicImage.png";
@@ -69,9 +68,6 @@ public class StudyService {
         if (fileList != null) {
             imgUrl = s3Service.upload(fileList.get(0));
         }
-        System.out.println(imgUrl);
-        System.out.println(studyCreationDto);
-//        return 1L;
 
         // 여기 코드 로직 몰라서 더이상 못짜겠슴
         studyRepository.saveStudyGroup(

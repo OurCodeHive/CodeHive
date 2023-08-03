@@ -122,7 +122,6 @@ public class StudyController {
         studyCreationDto.setDescription(description);
         studyCreationDto.setStartAt(formatStartAt);
         studyCreationDto.setEndAt(formatEndAt);
-        System.out.println(studyCreationDto);
 
         Map<String, Object> response = new HashMap<>();
 
