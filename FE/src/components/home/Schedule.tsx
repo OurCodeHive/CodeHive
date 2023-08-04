@@ -6,16 +6,26 @@ import moment, { ISO_8601 } from 'moment';
 import { start } from 'repl';
 import { format } from 'path';
 
+interface ISchedule {
+    startTime? : string | undefined;
+    today?:ISchedule[];
+}
 const Schedule = () => {
     let [schedules, setSchedules] = useState<ISchedule[] | undefined>();
 
     useEffect(()=>{
         // const today = new Date().toISOString().slice(0,10)
-        const today = "2023-08-02";
-        authHttp.get(`/today/study?today=${today}`).then((res)=>{
-            setSchedules(res.data.today);//[{},{},{}]
-            console.log(res.data.today);
-        })
+        const date = "2023-08-03 18:00:00.000000";
+        // const getSchedules = async() : Promise<getSchedule> => {
+
+        // }
+        // authHttp.get<ISchedule>(`/today/study?today=${date}`).then((res)=>{
+        //     const {today} = res.data;
+        //     if(today){
+        //         setSchedules(today);//[{},{},{}]
+        //     }
+        //     console.log(res);
+        // }).catch(console.log);
     },[])
 
     return (
@@ -42,9 +52,7 @@ const Schedule = () => {
         </div>
     );
 };
-interface ISchedule {
-    startTime? : string | undefined;
-}
+
 // interface ISchedule {
 //     schedule : {
 //         startTime? : string | undefined;
@@ -69,7 +77,7 @@ const ScheduleList:any= (props:{schedules:ISchedule[] | void}) => {
         let mins = moment.duration(startAt.diff(moment())).minutes();
         let seconds = moment.duration(startAt.diff(moment())).seconds();
         // let duration = moment(moment.utc(moment(startAt)).diff(moment(now))).days();
-        console.log(hours +" "+ mins +" "+ seconds);
+        console.log(`${hours} ${mins} ${seconds}`);
     
         if(hours<=0 && mins<=0 && seconds<=0){
             return "지난 스터디입니다";

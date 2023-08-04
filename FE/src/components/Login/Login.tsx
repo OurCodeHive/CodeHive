@@ -6,17 +6,26 @@ import { nonAuthHttp, authHttp } from '@/api/http';
 import style from "@/res/css/module/Login.module.css"
 import logo from "@/res/img/codehive_logo.png"
 import google from "@/res/img/google_logo.png"
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PassThrough } from 'stream';
 import moment from 'moment';
 import axios, {AxiosError, AxiosResponse} from 'axios';
 
 
+
 const Login = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
     let [email, setEmail] = useState("")
     let [pw, setPw] = useState("");
     let [userInfo, setUserInfo] = useRecoilState(userState);
 
+    useEffect(()=>{
+        const status = searchParams.get("status")
+        if(status==="406"){
+            alert("이미 가입된 계정 혹은 닉네임입니다. 일반 로그인으로 진행해주세요");
+            navigate("/login")
+        }
+    })
     const navigate = useNavigate();
 
     function signUpPage(event: React.MouseEvent<HTMLAnchorElement> ) {
@@ -32,6 +41,14 @@ const Login = () => {
         if(e.key === 'Enter'){
             login();
         }
+    }
+    function loginPromise(key: string, value:string) {
+        return new Promise((res) => {
+            console.log(res);
+            setTimeout(res, 1000);
+        }).then(() => {
+            localStorage.setItem(key, value);
+        })
     }
     ////////////////////////////
     //로그인 클릭 시 실행되는 함수
@@ -53,22 +70,44 @@ const Login = () => {
             userId : number,
             nickname : string,
         }
+      
         async function doLogin(): Promise<userData | undefined> {
             try {
               ///
               const response: AxiosResponse<userData> = await nonAuthHttp.post("login/user", user);
               console.log(response.data);
-              alert("로그인에 성공하였습니다");
+
+              let len = response.data.accessToken.length;
+            let accessToken = response.data.accessToken.slice(1,len-1);
+
+              
               //recoil!
               setUserInfo({
                 email : email,
                 userId : response.data.userId,
                 nickname : response.data.nickname,
-                accessToken : response.data.accessToken,
+                accessToken : accessToken,
                 refreshToken: response.data.refreshToken});
-               localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
-               localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
-               navigate("/home");
+
+                alert("로그인에 성공하였습니다");
+
+                // const aT = await loginPromise('accessToken', JSON.stringify(response.data.accessToken));
+                // await loginPromise('expireAt', moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
+
+                // aT.then(()=>{navigate("/home")}).catch(console.log)
+                // let setLocalStorage = new Promise((res, rej) =>{
+                    localStorage.setItem("accessToken", response.data.accessToken);
+                    localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
+                    navigate("/home");
+                setTimeout(()=>{
+                    navigate("/home");
+                },1000)
+
+            // })
+            // await setLocalStorage.then((res)=>{console.log(res)}).catch(console.log)
+            //    localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
+            //    localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
+               
               return response.data;
             } catch (error) {
                 // const err = error as any
@@ -81,6 +120,7 @@ const Login = () => {
           doLogin()
           .then((res)=>{
             console.log(res);
+            // navigate("/home")
             // alert("로그인 되었습니다");
           })
           .catch((err) => {console.log(err)})

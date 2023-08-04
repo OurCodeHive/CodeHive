@@ -22,7 +22,7 @@ const FindPassword = () => {
     let [isCodeValid, setIsCodeValid] = useState(false);
     let [showCodeMsg, setShowCodeMsg] = useState(false);
     let [codeMsg, setCodeMsg] = useState("");
-    
+    let [sending, setSending] = useState<boolean>(false);
 
     let navigate = useNavigate();
 
@@ -51,13 +51,14 @@ const FindPassword = () => {
         } else if (regex.test(email)) {
             sendVerificationCode()
                 .then((res)=> {
+                    setSending(false);
                 if(res){
                     alert(`${res.message}`)
                     console.log(res);
+                    setStartTimer(true);
                 }
             // startCodeTimer();
             setVerify(true);
-            setStartTimer(true);
             })
             .catch(console.log);
         } else {
@@ -72,14 +73,15 @@ const FindPassword = () => {
         // const url = import.meta.env.VITE_APP_SERVER + `email/auth?email=${email}`;
         async function sendVerificationCode(): Promise<userData | undefined> {
             try {
+                setSending(true);
                 const response: AxiosResponse<userData> = await api.get(`/email/find?email=${email}`);
                 return response.data;
             } catch (error) {
+                setSending(false);
                 const err = error as AxiosError
                 console.log(err);
             }
         }
-            
     }
     function verifyCode(){
         interface CustomError extends Error {
@@ -186,7 +188,17 @@ const FindPassword = () => {
                     required
                 />
                 <label htmlFor='email'>이메일 입력 후 인증해주세요</label>
-                <span onClick={()=>{verifyEmail(email)}}>인증</span>
+                <span onClick={()=>{
+                    verifyEmail(email); 
+                    }}
+                    style= {
+                        sending?
+                        {display : "none"}
+                         :
+                        {}
+                    }
+                    >인증</span>
+                <span style={sending? {} : {display : "none"}}>전송중</span>
             </div>
                 {
                     verify?
