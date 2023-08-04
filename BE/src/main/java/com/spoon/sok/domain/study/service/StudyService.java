@@ -160,6 +160,11 @@ public class StudyService {
         else return false;
     }
 
+    public Optional<StudyNotice> searchStudyNoticeBoard(Long studyInfoId, String title) {
+        Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyInfoId);
+        return studyNoticeRepository.findByStudyInfoAndNoticeTitle(findStudyInfo.get(), title);
+    }
+
     public Map<String, Object> getStudyNoticeBoard(Long studyInfoId, Pageable pageRequest) {
         Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyInfoId);
         Page<StudyNotice> studyNoticePage = studyNoticeRepository.findByStudyInfo(findStudyInfo.get(), pageRequest);

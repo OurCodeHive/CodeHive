@@ -70,6 +70,17 @@ public class StudyRoomController {
 
     @GetMapping("/study/{studyinfo_id}/board")
     public ResponseEntity<Map<String, Object>> getStudyNoticeBoard(
+            @PathVariable("studyinfo_id") Long studyInfoId, @RequestParam("title") String title) {
+
+        studyService.searchStudyNoticeBoard(studyInfoId, title);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("searchStudyNotice", response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/study/{studyinfo_id}/board")
+    public ResponseEntity<Map<String, Object>> getStudyNoticeBoard(
             @PathVariable("studyinfo_id") Long studyInfoId,
             @RequestParam("page") int page,
             @RequestParam("size") int size) {
