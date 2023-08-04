@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from "@/res/css/module/AppWelcome.module.css"
-import video from '@/res/video/Welcome.mp4'
+import video from '@/res/video/welcome_resized2.mp4'
 // import "../res/video/Welcome.mp4"
 function Welcome() {
     const navigate = useNavigate();
@@ -19,7 +19,7 @@ function Welcome() {
             <source src={video} type="video/mp4"/>
         </video>
         <div></div>
-        <button onClick={()=>navigate("/login")} className={style.enter_login}>here!</button>
+        <button onClick={()=>navigate("/login")} className={style.enter_login}></button>
 {/*         
         <img src="../public/contents/CodeHiveMainPic.png" alt="" /> */}
         </>
