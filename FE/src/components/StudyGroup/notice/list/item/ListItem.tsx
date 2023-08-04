@@ -6,10 +6,10 @@ const NoticeListItem = ({item} : {item : StudyNoticeType}) => {
     return (
         <tr>
             <td className={`tl ${TableListStyle.title_link}`}>
-                <a href="javascript:void(0)">{NoticeContent.noticeTitle}</a>
+                <a href="javascript:void(0)"></a>
             </td>
-            <td>{NoticeContent.nickName}</td>
-            <td>{NoticeContent.uploadAt}</td>
+            <td></td>
+            <td></td>
         </tr>
     )
 }
