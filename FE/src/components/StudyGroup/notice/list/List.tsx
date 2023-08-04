@@ -57,7 +57,6 @@ const NoticeList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {ListContents.map((item, index) => <NoticeListItem key={index} item={item} />)}
                     </tbody>
                 </table>
             </div>
