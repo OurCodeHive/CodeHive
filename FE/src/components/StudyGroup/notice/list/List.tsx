@@ -5,6 +5,7 @@ import NoticeFilter from './item/Filter';
 import NoticeListItem from './item/ListItem';
 import Pagination, { PaginationType } from '@/utils/Pagination/Pagination';
 import {ContentsPopup} from "@/utils/Popup";
+import NoticeView from '../view/View';
 import TableListStyle from '@/utils/List/Table/css/ListTable.module.css';
 
 
@@ -30,8 +31,10 @@ const NoticeList = () => {
     };
 
     const getList = async () => {
+        const tempList = [{studyboardId : 1, authorId : 1, nickName : "테스트", noticeTitle : "테스트제목", "uploadAt" : "2023-08-04", "content" : "테스트내용"}]
+        setListContents(tempList);
         await getNoticeList(studyinfoId, param, ({data}) => {
-            setListContents(data.studyNoticeBoard);
+            //setListContents(data.studyNoticeBoard);
         }, (error) => {console.log(error)})
     }
 
@@ -42,6 +45,27 @@ const NoticeList = () => {
     const keywordInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
     const WidGroup = ["auto", "100px", "150px"];
     const ListTitle = ["제목", "작성자", "작성일"];
+
+    const [popupFlag, setPopupFlag] = useState(false);
+    const [ViewStudyBoardId, setViewStudyBoardId] = useState(-1);
+
+    const PopupInfo = {
+        PopupStatus : popupFlag,
+        zIndex : 9999,
+        maxWidth: 800,
+        PopupTitle : "공지사항 상세",
+        ClosePopupProp : () => changePopupFlag(false),
+        PopupContents : <NoticeView studyBoardId={ViewStudyBoardId} closePopup={() => changePopupFlag(false)}/>,
+    }
+
+    const changePopupFlag = (flag: boolean) => {
+        setPopupFlag(() => flag);
+    };
+
+    const openViewPopup = (idx: number) => {
+        setViewStudyBoardId(() => idx);
+        setPopupFlag(() => true);
+    }
 
     return (
         <div className="col-12 pt50 pr20 pb20 pl20">
@@ -57,13 +81,15 @@ const NoticeList = () => {
                         </tr>
                     </thead>
                     <tbody>
+                        {ListContents.map((item, index) => <NoticeListItem key={index} item={item} clickEvent={openViewPopup} />)}
                     </tbody>
                 </table>
             </div>
             <div className="col-12">
                 <Pagination PaginationInfo={PaginationInfo} />
-                <button className={`plus_btn`}>공지사항 추가 버튼</button>
+                <button type="button" className={`plus_btn`}>공지사항 추가 버튼</button>
             </div>
+            <ContentsPopup PopupInfo={PopupInfo}/>
         </div>
     )
 }

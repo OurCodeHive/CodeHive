@@ -15,7 +15,7 @@ const Lnb: React.FC = () => {
         maxWidth: 800,
         PopupTitle : "스터디 만들기",
         ClosePopupProp : () => changePopupFlag(false),
-        PopupContents : StudyInsert
+        PopupContents : <StudyInsert closePopup={() => changePopupFlag(false)} />
     }
 
     const changePopupFlag = (flag: boolean) => {
