@@ -75,13 +75,10 @@ public class StudyRoomController {
             @RequestParam("size") int size) {
 
         Pageable pageRequest = PageRequest.of(page, size);
-        List<StudyNoticePreviewDTO> studyNoticeBoard = studyService.getStudyNoticeBoard(studyInfoId, pageRequest);
+        Map<String, Object> response = studyService.getStudyNoticeBoard(studyInfoId, pageRequest);
 
-        // 응답 메시지 설정
-        Map<String, Object> response = new HashMap<>();
-        if (studyNoticeBoard != null) {
+        if (response != null) {
             response.put("status", 200);
-            response.put("studyNoticeBoard", studyNoticeBoard);
         } else {
             response.put("status", 400);
             response.put("message", "공지사항 조회에 실패하였습니다.");

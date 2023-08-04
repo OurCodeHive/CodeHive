@@ -29,10 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -163,14 +160,16 @@ public class StudyService {
         else return false;
     }
 
-    public List<StudyNoticePreviewDTO> getStudyNoticeBoard(Long studyInfoId, Pageable pageRequest) {
+    public Map<String, Object> getStudyNoticeBoard(Long studyInfoId, Pageable pageRequest) {
         Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyInfoId);
         Page<StudyNotice> studyNoticePage = studyNoticeRepository.findByStudyInfo(findStudyInfo.get(), pageRequest);
 
         List<StudyNoticePreviewDTO> list = new ArrayList<>();
+        Map<String, Object> result = new HashMap<>();
 
         for (StudyNotice sn : studyNoticePage) {
             StudyNoticePreviewDTO data = new StudyNoticePreviewDTO();
+
             data.setUploadAt(sn.getUploadAt());
             data.setNoticeTitle(sn.getNoticeTitle());
             data.setAuthorId(sn.getUser().getId());
@@ -180,7 +179,10 @@ public class StudyService {
             list.add(data);
         }
 
-        return list;
+        result.put("studyNoticeList", list);
+        result.put("totalCnt", studyNoticePage.getTotalElements());
+
+        return result;
     }
 
     public Optional<StudyNotice> getStudyNoticeList(Long studyboardId) {
