@@ -7,8 +7,8 @@ const Comedy = () => {
     let [comedies, setComedies] = useState<ComedyItem[]>();
     let [writer, setWriter] = useState<string>();
     let [comedy, setComedy] = useState<string>("testtest");
-    let [idx, setIdx] = useState<number>(0);
-    let random = 0;
+    let random = Math.floor(Math.random() * 10);
+    let [idx, setIdx] = useState<number>(random);
     interface ComedyItem {
         content: string; 
         writer : string;
@@ -90,6 +90,7 @@ const Comedy = () => {
         }
     }
     function resetIdx(){
+        // random = Math.floor(Math.random() * 10)
         console.log(comedy.length);
         if(idx === 8){
             console.log("zero!");

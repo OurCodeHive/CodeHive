@@ -1,12 +1,12 @@
 .container_timer {
     position: fixed;
     /* left: 550px; */
-    left: 25%;
-    bottom: 130px;
+    left: 33%;
+    bottom: 50px;
     border: 1px solid orange;
     /* width: 300px; */
     /* height: 300px; */
-    width: 17%;
+    width: 15%;
     height: 35%;
 }
 .play {
