@@ -25,7 +25,7 @@ const StudyView: React.FC = () => {
 
   return (
     <div className="col-12 pt50">
-      <div className="col-12 col-md-8">
+      <div className="col-12 col-md-8 pl30">
           <StudyViewInfo Contents={ViewContents} />
           <Tab initIdx={initIdx} TabList={TabContents} />
       </div>      
