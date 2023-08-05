@@ -4,6 +4,7 @@ import { EditorState } from '@codemirror/state';
 import { keymap } from '@codemirror/view';
 import { indentWithTab } from '@codemirror/commands';
 import { python } from '@codemirror/lang-python';
+// import { java } from '@codemirror/lang-java';
 import * as Y from "yjs";
 import { WebsocketProvider } from 'y-websocket'
 import { syntaxHighlighting } from '@codemirror/language';
@@ -23,7 +24,6 @@ import style from "@/res/css/module/AppIDE.module.css";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { codeEditTheme, highlightStyle, QuillBox, modulesRef } from './EditorStyle';
-import { useNavigate } from "react-router-dom";
 
 
 function getRandomColor() {
@@ -35,8 +35,6 @@ let quillRef = null;
 function Code() {
 
   let loginUser = useRecoilValue(userState);
-  
-  const navigate = useNavigate();
   
   const editorRef = useRef();
   let { id } = useParams();
@@ -53,19 +51,14 @@ function Code() {
   let [codeHeight, setCodeHeight] = useState("93.3vh");
   let [code, setCode] = useState("");
   let [showChat, setShowChat] = useState("hidden");
+  let [chatRedPoint, setChatRedPoint] = useState(false);
+  
 
   useEffect(() => {
-
-    const check = ["201", "202", "203", "204", "205", "206", "207", "208", "209", "210", "304", "1", "2"]
-    if (!check.includes(id)){
-      alert("잘못된 접근입니다.")
-      navigate("/")
-      location.reload();  
-    }
-
     const provider = new WebsocketProvider(url, codeId, CodeDoc);
     const ytext = CodeDoc.getText('codemirror');
     setCode(ytext);
+    
     provider.awareness.setLocalStateField('user', {
       name: loginUser.nickname,
       color: getRandomColor(),
@@ -119,11 +112,14 @@ function Code() {
   };
 
   function toggleChat() {
-    if (showChat === "hidden") {
+    console.log(showChat)
+    if (showChat == "hidden") {
       setShowChat("visible");
     } else {
       setShowChat("hidden");
     }
+    console.log(showChat)
+    setChatRedPoint(false);
   }
 
   function consoleUp() {
@@ -138,15 +134,15 @@ function Code() {
     if (language == "Python") {
       setLanguage("Java")
     } else {
-      setLanguage("Python")
+      setLanguage("Python")    
     }
   }
 
   return(
     <div className={style.idePage}>
       <IDEHeader code={code} id={id} language={language}/>
-      <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown}/>
-      <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} />
+      <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown} setLanguage={setLanguage}/>
+      {/* <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} /> */}
       <div className={style.ideContainer}>
         <QuillBox className={style.quillBox}>
           <ReactQuill
@@ -166,12 +162,20 @@ function Code() {
         <div className={style.leftSpace}>
         </div>
       </div>
-      <img src='https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/chat.png'
-        onClick={() => { toggleChat() }}
-        className={style.chatIcon}>
-      </img>
+      {
+        chatRedPoint && showChat == 'hidden'? 
+        <img src='https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/chaton.png'
+          onClick={() => { toggleChat() }}
+          className={style.chatIcon}>
+        </img>
+        :
+        <img src='https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/chat.png'
+          onClick={() => { toggleChat() }}
+          className={style.chatIcon}>
+        </img>
+      }
         <div style={{ visibility:showChat }}>
-          <ChatComp id={id}/>
+          <ChatComp id={id} chatRedPoint={chatRedPoint} setChatRedPoint={setChatRedPoint}/>
         </div>
     </div>
   )

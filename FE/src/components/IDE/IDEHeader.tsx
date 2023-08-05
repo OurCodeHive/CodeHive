@@ -68,6 +68,10 @@ function IDEHeader(props: IDEHeaderProps) {
     if (value === "" || value === null) {
       return;
     }
+    if (value.length > 50) {
+      notifyMaxLengthAlert();
+      return;
+    }
     const message = {
       userId: loginUser.userId,
       studyRoomId: props.id,
@@ -188,6 +192,27 @@ function notify(name: string) {
   toast(sentence, {
     duration: 2000,
     icon: '👏',
+    style: {
+      fontSize: "15px",
+    },
+    iconTheme: {
+      primary: '#000',
+      secondary: '#fff',
+    },
+    ariaProps: {
+      role: 'status',
+      'aria-live': 'polite',
+    },
+  });
+}
+
+// 공지변경 알림 토스트메시지
+function notifyMaxLengthAlert() {
+
+  let sentence = "최대 길이를 초과하였습니다.";
+  toast(sentence, {
+    duration: 2000,
+    icon: '⚠️',
     style: {
       fontSize: "15px",
     },

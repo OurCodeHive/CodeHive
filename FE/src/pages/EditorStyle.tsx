@@ -1,5 +1,5 @@
 import { EditorView } from 'codemirror';
-import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
+import { HighlightStyle } from '@codemirror/language';
 import { tags as t } from '@lezer/highlight';
 import styled from "styled-components";
 

@@ -12,6 +12,7 @@ interface IDETerminalProps {
   up: () => void;
   down: () => void;
   language: string;
+  setLanguage: (lang:string) => void;
 }
 
 function IDETerminal(props: IDETerminalProps) {
@@ -39,6 +40,10 @@ function IDETerminal(props: IDETerminalProps) {
 
   // input 변경
   function handleInput(event: ChangeEvent<HTMLTextAreaElement>) {
+    // 글자수 제한
+    if (event.target.value.length > 2000) {
+      return
+    }
     setInput(event.target.value);
   }
 
@@ -69,7 +74,9 @@ function IDETerminal(props: IDETerminalProps) {
     const message = {
       userId: loginUser.userId,
       studyRoomId: props.id,
+      language: props.language
     };
+    console.log(props.language)
     publish(message);
   }
 
@@ -141,6 +148,8 @@ function IDETerminal(props: IDETerminalProps) {
       const message = json_body;
       notify(dic[message.userId]);
       setIsRunning(true);
+      // console.log(message)
+      props.setLanguage(message.language)
     });
   }
 
@@ -176,6 +185,10 @@ function IDETerminal(props: IDETerminalProps) {
   }
 
   function submitAndRun() {
+    if (props.code.length > 15000) {
+      warningCodeLen()
+      return
+    }
     if (isRunning) {
       runningCode();
       return;
@@ -191,7 +204,9 @@ function IDETerminal(props: IDETerminalProps) {
       {
         isConsole === "6vh" ? null :
           <>
-            <p onClick={() => { selectInput() }} className={style.inputText} style={{ color: inputColor }}>
+            <p onClick={() => { selectInput() }}
+              className={style.inputText}
+              style={{ color: inputColor }}>
               Input
             </p>
             <p
@@ -209,6 +224,7 @@ function IDETerminal(props: IDETerminalProps) {
                     handleInput(event);
                   }}
                   value={input}
+                  placeholder="input을 입력해주세요"
                 ></textarea> :
                 // result
                 <textarea
@@ -219,6 +235,7 @@ function IDETerminal(props: IDETerminalProps) {
                     handleInput(event);
                   }}
                   value={compileResult}
+                  placeholder="input에 대한 결과가 나타나는 곳입니다."
                 ></textarea>
             }
           </>
@@ -291,6 +308,7 @@ function runNotice(name: string) {
   });
 }
 
+// 실행중 코드 표시 토스트메시지
 function runningCode() {
 
   let sentence = "이미 실행중인 코드가 있습니다.";
@@ -299,7 +317,31 @@ function runningCode() {
     sentence, 
     {
       duration: 2000,
-      icon: '💻',
+      icon: '⚠️',
+      style: 
+        {
+          fontSize: "14px",
+          width: "60vh",
+        },
+        iconTheme: {
+          primary: '#000',
+          secondary: '#fff',
+        },
+        ariaProps: {
+          role: 'status',
+          'aria-live': 'polite',
+        },
+  });
+}
+
+// 실행 코드 길이 제한
+function warningCodeLen() {
+  let sentence = "용량이 큰 코드는 실행이 불가능합니다.";
+  toast(
+    sentence, 
+    {
+      duration: 2000,
+      icon: '⚠️',
       style: 
         {
           fontSize: "14px",

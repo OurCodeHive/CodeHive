@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 
+
 interface ChatMessage {
   userId: number;
   studyRoomId: string;
@@ -14,6 +15,8 @@ interface ChatMessage {
 
 interface Props {
   id: string;
+  chatRedPoint: boolean;
+  setChatRedPoint: (arg0: boolean) => void;
 }
 
 function ChatFrameComp(props: Props) {
@@ -84,6 +87,9 @@ function ChatFrameComp(props: Props) {
 
   // chat 입력시 값 변경
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    if (event.target.value.length > 300) {
+      return
+    }
     setChat(event.target.value);
   }
   
@@ -118,6 +124,7 @@ function ChatFrameComp(props: Props) {
       setChatList((chat_list) => [
         ...chat_list, message
       ]);
+      props.setChatRedPoint(true);
     });
   }
   
