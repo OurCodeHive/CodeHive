@@ -32,6 +32,8 @@ public class StudyRoomController {
 
     private final StudyService studyService;
 
+    // [스터디룸] 스터디 일정을 수정함
+    // [GET] [api/study/meeting/{studyinfo_id}
     @PutMapping("/study/{studyinfoId}")
     public ResponseEntity<Map<String, Object>> updateStudyGroup(
             @PathVariable("studyinfoId") Long studyinfoId, @RequestBody StudyMeetingRequestDTO studyMeetingRequestDTO) {
@@ -49,6 +51,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // [스터디룸] 스터디 공지사항을 등록함
     @PostMapping("/study/{studyinfo_id}/board")
     public ResponseEntity<?> createStudyNotice(
             @PathVariable("studyinfo_id") Long studyInfoId,
@@ -68,6 +71,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 스터디 공지사항 목록을 조회함
     @GetMapping("/study/{studyinfo_id}/board")
     public ResponseEntity<Map<String, Object>> getStudyNoticeBoard(
             @PathVariable("studyinfo_id") Long studyInfoId,
@@ -91,6 +95,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 스터디의 공지사항의 세부 내용을 조회함
     @GetMapping("/study/{studyinfo_id}/board/{studyboard_id}")
     public ResponseEntity<Map<String, Object>> getStudyNotice(
             @PathVariable("studyinfo_id") Long studyInfoId,
@@ -113,6 +118,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 스터디 공지사항의 세부 내용을 수정함
     @PutMapping("/study/{studyinfo_id}/board/{studyboard_id}")
     public ResponseEntity<Map<String, Object>> updateStudyNotice(
             @PathVariable("studyinfo_id") Long studyInfoId,
@@ -136,6 +142,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 스터디 공지사항의 세부 내용을 삭제함
     @DeleteMapping("/study/{studyinfo_id}/board/{studyboard_id}")
     public ResponseEntity<Map<String, Object>> deleteStudyNotice(
             @PathVariable("studyinfo_id") Long studyInfoId,
@@ -158,7 +165,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    /*
+/*
 //     [스터디룸] 스터디 자료 조회
 //     [GET] api/study/{studyinfo_id}/document?page={int}&size={int}
     @GetMapping("/study/{studyinfo_id}/document")
@@ -221,6 +228,7 @@ public class StudyRoomController {
                     "스터디 회의 등록에 실패했습니다."
             );
             return new ResponseEntity<>(studyErrorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
     }
 

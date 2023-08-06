@@ -29,6 +29,7 @@ public class StudyController {
     private final StudyService studyService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    //
     @GetMapping("/calendar/study")
     public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("user") String userId) {
         List<StudyAppointmentDTO> studyMeetingList = studyService.getStudyMeeting(userId);
