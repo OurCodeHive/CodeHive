@@ -64,8 +64,8 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/study/{studyinfo_id}/board")
-    public ResponseEntity<Map<String, Object>> getStudyNoticeBoard(
+    @GetMapping("/study/{studyinfo_id}/board/search")
+    public ResponseEntity<Map<String, Object>> searchStudyNoticeBoard(
             @PathVariable("studyinfo_id") Long studyInfoId, @RequestParam("title") String title) {
 
         studyService.searchStudyNoticeBoard(studyInfoId, title);
