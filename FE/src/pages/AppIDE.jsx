@@ -31,7 +31,7 @@ function getRandomColor() {
 }
 
 let quillRef = null;
-
+Quill.register("modules/cursors", QuillCursors);
 function Code() {
 
   let loginUser = useRecoilValue(userState);
@@ -45,7 +45,7 @@ function Code() {
 
   let reactQuillRef = null;
   const docxDoc = new Y.Doc();
-  Quill.register("modules/cursors", QuillCursors);
+
 
   let [language, setLanguage] = useState("Python");
   let [codeHeight, setCodeHeight] = useState("93.3vh");
@@ -112,13 +112,11 @@ function Code() {
   };
 
   function toggleChat() {
-    console.log(showChat)
     if (showChat == "hidden") {
       setShowChat("visible");
     } else {
       setShowChat("hidden");
     }
-    console.log(showChat)
     setChatRedPoint(false);
   }
 
@@ -142,7 +140,7 @@ function Code() {
     <div className={style.idePage}>
       <IDEHeader code={code} id={id} language={language}/>
       <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown} setLanguage={setLanguage}/>
-      {/* <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} /> */}
+      <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} />
       <div className={style.ideContainer}>
         <QuillBox className={style.quillBox}>
           <ReactQuill

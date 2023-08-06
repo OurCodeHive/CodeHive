@@ -228,12 +228,12 @@ class VoiceCallComp extends Component {
     const pub = this.state.publisher;
     if (pub === undefined) {
     } else {
-      list.push(JSON.parse(pub.stream.connection.data).clientData);
+      list.push(JSON.parse(pub.stream.connection.data).clientData + " 방장");
     }
     if (subscribers === undefined) {
     } else {
       for (let sub of subscribers) {
-        list.push(JSON.parse(sub.stream.connection.data).clientData);
+        list.push(JSON.parse(sub.stream.connection.data).clientData + " 구독자");
       }
     }
     return (

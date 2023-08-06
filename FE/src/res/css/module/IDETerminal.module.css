@@ -6,6 +6,7 @@
   left: 25%;
   bottom: 0;
   color: wheat;
+  display: flex;
 }
 
 .consoleBtn {
@@ -25,23 +26,23 @@
 }
 
 .inputText {
+  cursor: pointer;
   padding: 10px;
   padding-left: 18px;
   font-size: 16px;
 }
 
 .resultText {
+  cursor: pointer;
   padding: 10px;
   padding-left: 15px;
   font-size: 16px;  
 }
 
 .inputTextArea {
-  position: absolute;
-  height: 18vh;
-  top: 1vh;
   width: 85.5%;
-  left: 10vh;
+  margin-top: 1%;
+  margin-bottom: 1%;
   margin-left: 1vh;
   background-color: #222326;
   border: 2px solid #6272A4;
@@ -53,14 +54,14 @@
 }
 
 .runBtn {
-  position: absolute;
-  right: 1vh;
-  top: 1vh;
+  margin-top: 1%;
+  margin-left: 1%;
+  margin-right: 1%;
   width: 40px;
+  height: fit-content;
   background-color: #225904;
   border-radius: 4px;
   border: 1px solid #225904;
-  display: inline-block;
   cursor: pointer;
   color: #ffffff;
   font-size: 15px;

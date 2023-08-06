@@ -76,7 +76,6 @@ function IDETerminal(props: IDETerminalProps) {
       studyRoomId: props.id,
       language: props.language
     };
-    console.log(props.language)
     publish(message);
   }
 
@@ -116,9 +115,8 @@ function IDETerminal(props: IDETerminalProps) {
 
   // 결과 받기
   function submitCodeAndInput() {
-    client.current.subscribe('/sub/run/' + props.id, (body:any) => {
-      const json_body = JSON.parse(body.body);
-      const message = json_body;
+    client.current.subscribe('/sub/run/' + props.id, (body:StompJs.Message) => {
+      const message = JSON.parse(body.body);
       runNotice(dic[message.userId]);
       setIsConsole("20vh");
       setConsoleState("Result");
@@ -143,12 +141,10 @@ function IDETerminal(props: IDETerminalProps) {
 
   // 제출알림받고 제출 기다리기
   function noticeSubmit() {
-    client.current.subscribe('/sub/submit/' + props.id, (body:any) => {
-      const json_body = JSON.parse(body.body);
-      const message = json_body;
+    client.current.subscribe('/sub/submit/' + props.id, (body:StompJs.Message) => {
+      const message = JSON.parse(body.body);
       notify(dic[message.userId]);
       setIsRunning(true);
-      // console.log(message)
       props.setLanguage(message.language)
     });
   }
@@ -185,6 +181,7 @@ function IDETerminal(props: IDETerminalProps) {
   }
 
   function submitAndRun() {
+    // 입력 길이 제한
     if (props.code.length > 15000) {
       warningCodeLen()
       return
@@ -204,17 +201,19 @@ function IDETerminal(props: IDETerminalProps) {
       {
         isConsole === "6vh" ? null :
           <>
-            <p onClick={() => { selectInput() }}
-              className={style.inputText}
-              style={{ color: inputColor }}>
-              Input
-            </p>
-            <p
-              onClick={() => { selectResult() }}
-              className={style.resultText}
-              style={{ color: resultColor }}>
-              Result
-            </p>
+            <div>
+              <p onClick={() => { selectInput() }}
+                className={style.inputText}
+                style={{ color: inputColor }}>
+                Input
+              </p>
+              <p
+                onClick={() => { selectResult() }}
+                className={style.resultText}
+                style={{ color: resultColor }}>
+                Result
+              </p>
+            </div>
             {
               consoleState === "Input" ?
                 // input
@@ -247,7 +246,10 @@ function IDETerminal(props: IDETerminalProps) {
               submitAndRun();
             }}
               className={style.runBtn}
-            >run</button> : null
+            >run</button> :
+            <button 
+              style={{visibility:"hidden"}}
+              className={style.runBtn}>run</button>
       }
     </div>
   );

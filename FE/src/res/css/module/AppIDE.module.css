@@ -43,6 +43,7 @@
 }
 
 .languageBtn {
+  cursor: pointer;
   color: wheat;
   background-color: #222326;
   border: none;
@@ -56,6 +57,7 @@
 }
 
 .chatIcon {
+  cursor: pointer;
   position: absolute;
   z-index: 2;
   right: 5vh;

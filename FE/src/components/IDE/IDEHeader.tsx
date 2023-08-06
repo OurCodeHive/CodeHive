@@ -27,19 +27,33 @@ function IDEHeader(props: IDEHeaderProps) {
   }, []);
 
   const [popupStatus, setPopupStatus] = useState(false);
+  // const [popupStatusNotice, setPopupStatusNotice] = useState(false);
 
-  const popupInfo = {
+  const popupInfoExit = {
     PopupStatus: popupStatus,
     zIndex: 999,
-    maxWidth: 600,
-    PopupTitle: "정말로 나가시겠습니까?",
-    ClosePopupProp : () => changePopupFlag(false),
+    maxWidth: 400,
+    PopupTitle: "<br>스터디?",
+    ClosePopupProp : () => setPopupStatus(false),
     ConfirmPopupProp : () => exit()
   }
 
-  const changePopupFlag = (flag: boolean) => {
-    setPopupStatus(() => flag);
-  };
+  // const popupInfoNotice = {
+  //   PopupStatus: popupStatusNotice,
+  //   zIndex: 999,
+  //   maxWidth: 600,
+  //   PopupTitle: "<div>공지사항을 입력해 주세요.<div>",
+  //   ClosePopupProp : () => setPopupStatusNotice(false),
+  //   ConfirmPopupProp : () => exit()
+  // }
+
+  // const changePopupFlagExit = (flag: boolean) => {
+  //   setPopupStatus(() => flag);
+  // };
+
+  // const changePopupFlagNotice = (flag: boolean) => {
+  //   setPopupStatusNotice(() => flag);
+  // };
 
   function exit() {
     navigate("/");
@@ -113,9 +127,8 @@ function IDEHeader(props: IDEHeaderProps) {
 
   // 받은 공지 변경
   function getNotice() {
-    client.current.subscribe('/sub/notice/' + props.id, (body:any) => {
-      const json_body = JSON.parse(body.body);
-      const message = json_body;
+    client.current.subscribe('/sub/notice/' + props.id, (body:StompJs.Message) => {
+      const message = JSON.parse(body.body);
       setNotice(message.notice)
       notify(dic[message.userId]);
     });
@@ -143,7 +156,7 @@ function IDEHeader(props: IDEHeaderProps) {
       extension = ".java";
     }
 
-    const fileName = presentTime() + name + extension;
+    const fileName = presentTime() + extension;
     const output = props.code;
 
     const element = document.createElement('a');
@@ -159,7 +172,8 @@ function IDEHeader(props: IDEHeaderProps) {
   return (
     <div className={style.background}>
       <Toaster position="top-right" />
-      <ConfirmPopup PopupInfo={popupInfo}/>
+      {/* <ConfirmPopup PopupInfo={popupInfoNotice}/> */}
+      <ConfirmPopup PopupInfo={popupInfoExit}/>
       <div className={style.boxPadding}>
         <div className={style.boxSetting}>
           <button onClick={() => { saveButton(saveDocx(), "자료"); }}

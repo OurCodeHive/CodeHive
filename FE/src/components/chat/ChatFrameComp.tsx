@@ -118,12 +118,9 @@ function ChatFrameComp(props: Props) {
 
   // 메시지 받기
   function getMessage() {
-    client.current.subscribe('/sub/chat/' + props.id, (body:any) => {
-      const json_body = JSON.parse(body.body);
-      const message: ChatMessage = json_body;
-      setChatList((chat_list) => [
-        ...chat_list, message
-      ]);
+    client.current.subscribe('/sub/chat/' + props.id, (body:StompJs.Message) => {
+      const message = JSON.parse(body.body) as ChatMessage;
+      setChatList((chat_list) => [...chat_list, message]);
       props.setChatRedPoint(true);
     });
   }

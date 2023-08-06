@@ -241,5 +241,7 @@ a:hover .demo-logo {
 	position: absolute;
 	color: wheat;
 	font-size: 16px;
-	right: 17vh;
+	top: 8vh;
+	left: 86%;
+	z-index: 1;
 }
