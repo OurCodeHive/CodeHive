@@ -9,14 +9,23 @@ import { timerState } from "@/atom/TimerAtom";
 const TimerApp: React.FC = () => {
 //   const [realTimer, setRealTimer] = useRecoilState(timerState);
   const { timer, setTimer, startTimer, stopTimer, resetTimer } = useTimerState();
+  const [bar, setBar] = useState<number>(100);
   const navigate = useNavigate();
 
-  const calculateProgress = (): number => {
+  // const calculateProgress = () => {
+  //   const initialTotalSeconds =
+  //     timer.initialHours * 3600 + timer.initialMinutes * 60 + timer.initialSeconds;
+  //   const currentTotalSeconds = timer.hours * 3600 + timer.minutes * 60 + timer.seconds;
+  //   // return ((initialTotalSeconds - currentTotalSeconds) / initialTotalSeconds) * 100;
+  //   setBar(((initialTotalSeconds - currentTotalSeconds) / initialTotalSeconds) * 100);
+  // };
+  useEffect(()=>{
     const initialTotalSeconds =
       timer.initialHours * 3600 + timer.initialMinutes * 60 + timer.initialSeconds;
     const currentTotalSeconds = timer.hours * 3600 + timer.minutes * 60 + timer.seconds;
-    return ((initialTotalSeconds - currentTotalSeconds) / initialTotalSeconds) * 100;
-  };
+    // return ((initialTotalSeconds - currentTotalSeconds) / initialTotalSeconds) * 100;
+    setBar(((initialTotalSeconds - currentTotalSeconds) / initialTotalSeconds) * 100);
+  }, [bar, timer])
 
 //   useEffect(() => {
 //     const storedTimerState = localStorage.getItem("timerState");
@@ -65,10 +74,11 @@ const TimerApp: React.FC = () => {
           }
         }
       }, 1000);
+      console.log(bar);
     }
 
     return () => clearInterval(interval);
-  }, [timer, setTimer, stopTimer]);
+  }, [timer, setTimer, stopTimer, bar]);
 
 //   const handleStartStopClick = () => {
 //     setRealTimer((prevTimer) => ({
@@ -115,7 +125,8 @@ const handleResetClick = () => {
             //   timer.initialMinutes * 60 +
             //   timer.initialSeconds) *
             // 100
-            calculateProgress()
+            // calculateProgress()
+            bar
           
           }
           text={`${formatTime(timer.hours)}:${formatTime(timer.minutes)}:${formatTime(timer.seconds)}`}
@@ -134,6 +145,7 @@ const handleResetClick = () => {
           onChange={(e) =>
             setTimer((prevTimer) => ({
               ...prevTimer,
+              initialHours: parseInt(e.target.value, 10),
               hours: parseInt(e.target.value, 10),
             }))
           }
@@ -148,6 +160,7 @@ const handleResetClick = () => {
           onChange={(e) =>
             setTimer((prevTimer) => ({
               ...prevTimer,
+              initialMinutes: parseInt(e.target.value, 10),
               minutes: parseInt(e.target.value, 10),
             }))
           }
@@ -162,6 +175,7 @@ const handleResetClick = () => {
           onChange={(e) =>
             setTimer((prevTimer) => ({
               ...prevTimer,
+              initialSeconds: parseInt(e.target.value, 10),
               seconds: parseInt(e.target.value, 10),
             }))
           }

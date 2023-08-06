@@ -19,6 +19,9 @@
 import { useEffect } from "react";
 import { atom, useRecoilState } from "recoil";
 interface TimerState {
+    resetHours: number;
+    resetMinutes: number;
+    resetSeconds: number;
     initialHours: number;
     initialMinutes: number;
     initialSeconds: number;
@@ -54,6 +57,9 @@ function getInitialTimerState(): TimerState {
     } else {
       // Set your initial timer state here
       return {
+        resetHours: 0,
+        resetMinutes: 0,
+        resetSeconds: 0,
         initialHours: 0,
         initialMinutes: 0,
         initialSeconds: 0,
@@ -86,9 +92,12 @@ export const useTimerState = () => {
     setTimer((prevTimer) => ({
       ...prevTimer,
       isRunning: false,
-      hours: prevTimer.initialHours,
-      minutes: prevTimer.initialMinutes,
-      seconds: prevTimer.initialSeconds,
+      initialHours: prevTimer.resetHours,
+      initialMinutes: prevTimer.resetMinutes,
+      initialSeconds: prevTimer.resetSeconds,
+      hours: prevTimer.resetHours,
+      minutes: prevTimer.resetMinutes,
+      seconds: prevTimer.resetSeconds,
     }));
   };
 
