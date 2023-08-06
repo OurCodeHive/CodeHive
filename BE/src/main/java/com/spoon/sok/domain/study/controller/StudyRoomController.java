@@ -66,18 +66,26 @@ public class StudyRoomController {
 
     @GetMapping("/study/{studyinfo_id}/board")
     public ResponseEntity<Map<String, Object>> getStudyNoticeBoard(
+            @PathVariable("studyinfo_id") Long studyInfoId, @RequestParam("title") String title) {
+
+        studyService.searchStudyNoticeBoard(studyInfoId, title);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("searchStudyNotice", response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/study/{studyinfo_id}/board")
+    public ResponseEntity<Map<String, Object>> getStudyNoticeBoard(
             @PathVariable("studyinfo_id") Long studyInfoId,
             @RequestParam("page") int page,
             @RequestParam("size") int size) {
 
         Pageable pageRequest = PageRequest.of(page, size);
-        List<StudyNoticePreviewDTO> studyNoticeBoard = studyService.getStudyNoticeBoard(studyInfoId, pageRequest);
+        Map<String, Object> response = studyService.getStudyNoticeBoard(studyInfoId, pageRequest);
 
-        // 응답 메시지 설정
-        Map<String, Object> response = new HashMap<>();
-        if (studyNoticeBoard != null) {
+        if (response != null) {
             response.put("status", 200);
-            response.put("studyNoticeBoard", studyNoticeBoard);
         } else {
             response.put("status", 400);
             response.put("message", "공지사항 조회에 실패하였습니다.");

@@ -6,7 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface StudyNoticeRepository extends JpaRepository<StudyNotice, Long> {
 
     Page<StudyNotice> findByStudyInfo(StudyInfo studyInfo, Pageable pageable);
+
+    Optional<StudyNotice> findByStudyInfoAndNoticeTitle(StudyInfo studyInfo, String title);
 }
