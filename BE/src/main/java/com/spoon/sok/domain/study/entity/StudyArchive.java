@@ -1,7 +1,5 @@
 package com.spoon.sok.domain.study.entity;
 
-//import com.spoon.sok.domain.user.entity.User;
-
 import com.spoon.sok.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,8 +35,8 @@ public class StudyArchive {
 
     // users 유저 테이블과 다대일 관계
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false) // 스터디 정보키
-    private com.spoon.sok.domain.user.entity.User user;
+    @JoinColumn(name = "users_id", nullable = false) // 스터디 정보키
+    private User user;
 
     //file 파일 테이블과 일대다 관계
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyArchive")
