@@ -163,9 +163,10 @@ public class StudyService {
         else return false;
     }
 
-    public Optional<StudyNotice> searchStudyNoticeBoard(Long studyInfoId, String title) {
+    public List<StudyNotice> searchStudyNoticeBoard(Long studyInfoId, String title) {
         Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyInfoId);
-        return studyNoticeRepository.findByStudyInfoAndNoticeTitle(findStudyInfo.get(), title);
+        title = "%" + title + "%";
+        return studyNoticeRepository.findByStudyInfoAndNoticeTitleContaining(studyInfoId, title);
     }
 
     public Map<String, Object> getStudyNoticeBoard(Long studyInfoId, Pageable pageRequest) {

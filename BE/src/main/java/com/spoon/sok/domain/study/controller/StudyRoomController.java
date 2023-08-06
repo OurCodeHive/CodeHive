@@ -68,10 +68,9 @@ public class StudyRoomController {
     public ResponseEntity<Map<String, Object>> searchStudyNoticeBoard(
             @PathVariable("studyinfo_id") Long studyInfoId, @RequestParam("title") String title) {
 
-        studyService.searchStudyNoticeBoard(studyInfoId, title);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("searchStudyNotice", response);
+        response.put("searchStudyNotice", studyService.searchStudyNoticeBoard(studyInfoId, title));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
