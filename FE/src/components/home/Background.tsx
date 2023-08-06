@@ -5,7 +5,7 @@ import Intro from './Intro';
 import Comedy from './Comedy';
 import Schedule from './Schedule';
 import Lnb from '../inc/Lnb';
-import { useRecoilState } from "recoil";
+import Timer from './Timer';
 import {useTimerState} from "@/atom/TimerAtom";
 
 function Background(){
@@ -58,7 +58,7 @@ function Background(){
                     <Comedy></Comedy>
                     {/* <Lnb></Lnb> */}
                     <Schedule></Schedule>
-
+                    <Timer></Timer>
 
                 </div>
             </div>
