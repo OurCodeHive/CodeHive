@@ -5,9 +5,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { useRecoilState } from "recoil";
 import {useTimerState} from "@/atom/TimerAtom";
 import { useNavigate } from "react-router-dom";
-import { timerState } from "@/atom/TimerAtom";
 const TimerApp: React.FC = () => {
-//   const [realTimer, setRealTimer] = useRecoilState(timerState);
   const { timer, setTimer, startTimer, stopTimer, resetTimer } = useTimerState();
   const [bar, setBar] = useState<number>(100);
   const navigate = useNavigate();
@@ -23,21 +21,8 @@ const TimerApp: React.FC = () => {
     const initialTotalSeconds =
       timer.initialHours * 3600 + timer.initialMinutes * 60 + timer.initialSeconds;
     const currentTotalSeconds = timer.hours * 3600 + timer.minutes * 60 + timer.seconds;
-    // return ((initialTotalSeconds - currentTotalSeconds) / initialTotalSeconds) * 100;
     setBar(((initialTotalSeconds - currentTotalSeconds) / initialTotalSeconds) * 100);
   }, [bar, timer])
-
-//   useEffect(() => {
-//     const storedTimerState = localStorage.getItem("timerState");
-//     console.log(storedTimerState);
-//     if (storedTimerState) {
-//         setTimer(JSON.parse(storedTimerState));
-//     }
-//   }, []);
-
-//   useEffect(() => {
-//     localStorage.setItem("timerState", JSON.stringify(timer));
-//   }, [timer]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -65,10 +50,11 @@ const TimerApp: React.FC = () => {
                 seconds: 59,
               }));
             } else {
-                setTimer((prevTimer) => ({
-                ...prevTimer,
-                isRunning: false,
-              }));
+              //   setTimer((prevTimer) => ({
+              //   ...prevTimer,
+              //   isRunning: false,
+              // }));
+              handleResetClick();
               alert("Timer has ended!");
             }
           }
@@ -78,14 +64,8 @@ const TimerApp: React.FC = () => {
     }
 
     return () => clearInterval(interval);
-  }, [timer, setTimer, stopTimer, bar]);
+  }, [timer, setTimer, stopTimer, bar, resetTimer]);
 
-//   const handleStartStopClick = () => {
-//     setRealTimer((prevTimer) => ({
-//       ...prevTimer,
-//       isRunning: !prevTimer.isRunning,
-//     }));
-//   };
 const handleStartStopClick = () => {
     if (timer.isRunning) {
       stopTimer();
@@ -94,17 +74,9 @@ const handleStartStopClick = () => {
     }
   };
 
-//   const handleResetClick = () => {
-//     setRealTimer((prevTimer) => ({
-//       ...prevTimer,
-//       isRunning: false,
-//       hours: prevTimer.initialHours,
-//       minutes: prevTimer.initialMinutes,
-//       seconds: prevTimer.initialSeconds,
-//     }));
-//   };
 const handleResetClick = () => {
     resetTimer();
+    setBar(100);
   };
 
   const formatTime = (time: number): string => {
@@ -112,23 +84,11 @@ const handleResetClick = () => {
   };
 
   return (
-    <div className={style.timer_containe}>
+    <div className={style.timer_container}>
       <h1>Timer</h1>
       <div className={style.progress_bar_container}>
         <CircularProgressbar
-          value={
-            // (timer.initialHours * 3600 +
-            //   timer.initialMinutes * 60 +
-            //   timer.initialSeconds -
-            //   (timer.hours * 3600 + timer.minutes * 60 + timer.seconds)) /
-            // (timer.initialHours * 3600 +
-            //   timer.initialMinutes * 60 +
-            //   timer.initialSeconds) *
-            // 100
-            // calculateProgress()
-            bar
-          
-          }
+          value={bar}
           text={`${formatTime(timer.hours)}:${formatTime(timer.minutes)}:${formatTime(timer.seconds)}`}
           styles={buildStyles({
             textColor: "black",

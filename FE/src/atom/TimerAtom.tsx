@@ -1,21 +1,3 @@
-
-// import { atom } from "recoil";
-
-// const timerState = atom({
-//     key: "timerState",
-//     default: {
-//       initialHours: 0,
-//       initialMinutes: 5,
-//       initialSeconds: 0,
-//       hours: 0,
-//       minutes: 5,
-//       seconds: 0,
-//       isRunning: false,
-//     },
-//   });
-
-//   export default timerState;
-
 import { useEffect } from "react";
 import { atom, useRecoilState } from "recoil";
 interface TimerState {
@@ -33,16 +15,7 @@ interface TimerState {
 
 const timerState = atom<TimerState>({
   key: "timerState",
-//   default: {
-//     initialHours: 0,
-//     initialMinutes: 5,
-//     initialSeconds: 0,
-//     hours: 0,
-//     minutes: 5,
-//     seconds: 0,
-//     isRunning: false,
-//   },
-    default : getInitialTimerState(),
+  default : getInitialTimerState(),
 });
 
 const saveTimerStateToLocalStorage = (timerState: TimerState) => {
