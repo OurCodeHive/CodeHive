@@ -91,9 +91,10 @@ const handleResetClick = () => {
           value={bar}
           text={`${formatTime(timer.hours)}:${formatTime(timer.minutes)}:${formatTime(timer.seconds)}`}
           styles={buildStyles({
-            textColor: "black",
-            pathColor: "#007bff",
-            trailColor: "#ddd",
+            textSize : "1.4rem",
+            textColor: "#222",
+            pathColor: "#1f95afaf",
+            trailColor: "#9999995a",
           })}
         />
       </div>
@@ -111,7 +112,7 @@ const handleResetClick = () => {
           }
           disabled={timer.isRunning}
         />
-        <span>h</span>
+        <span>시간</span>
         <input
           type="number"
           min="0"
@@ -126,7 +127,7 @@ const handleResetClick = () => {
           }
           disabled={timer.isRunning}
         />
-        <span>m</span>
+        <span>분</span>
         <input
           type="number"
           min="0"
@@ -141,7 +142,7 @@ const handleResetClick = () => {
           }
           disabled={timer.isRunning}
         />
-        <span>s</span>
+        <span>초</span>
       </div>
       <div className={style.timer_buttons}>
         <button onClick={handleStartStopClick}>{timer.isRunning ? "Stop" : "Start"}</button>

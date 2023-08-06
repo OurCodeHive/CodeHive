@@ -1,7 +1,7 @@
 .timer_container {
-    position: fixed;
-    top: 50%;
-    left: 300px;
+    position: relative;
+    top: 52%;
+    left: 370px;
     /* transform: translate(-50%, -50%);
     display: flex; */
     flex-direction: column;
@@ -9,8 +9,10 @@
   }
   
   .progress_bar_container {
-    width: 200px;
-    height: 200px;
+    /* width: 280px;
+    height: 280px; */
+    width: 30vh;
+    height: 30vh;
   }
   
   .timer_inputs {
@@ -20,7 +22,7 @@
   }
   
   .timer_inputs input {
-    font-size: 1rem;
+    font-size: 1.3rem;
     width: 40px;
     padding: 5px;
     text-align: center;
@@ -30,7 +32,7 @@
   }
   
   .timer_inputs span {
-    font-size: 1rem;
+    font-size: 1.3rem;
     margin-right: 5px;
   }
   
@@ -39,13 +41,13 @@
   }
   
   .timer_buttons button {
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin-right: 10px;
     padding: 5px 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #007bff;
+    background-color: #1f839abb;
     color: #fff;
   }
   
@@ -55,6 +57,6 @@
   }
   
   .timer_buttons button:hover {
-    background-color: #0056b3;
+    background-color: #1f839aec;
   }
   
