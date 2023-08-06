@@ -40,7 +40,7 @@ public class StudyArchive {
 
     //file 파일 테이블과 일대다 관계
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyArchive")
-    private List<File> fileList = new ArrayList<>();
+    private List<File> fileList;
 
     @Builder
     public StudyArchive(Long id, Date uploadAt, String title, String content, StudyInfo studyInfo) {
