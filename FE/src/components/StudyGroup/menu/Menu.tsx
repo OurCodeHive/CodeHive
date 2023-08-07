@@ -7,7 +7,7 @@ import StudyQuitIcon from '@/res/img/logout.png';
 import MyPageIcon from '@/res/img/30x30_mypage.png';
 
 const StudyViewMenu = ({Contents} : {Contents: StudyType}) => {
-  const leaderFlag = CheckUserId(Contents?.users_id as number);
+  const leaderFlag:boolean = CheckUserId(Contents?.users_id as number);
   const [PopupFlag, setPopupFlag] = useState(false);
 
   const AlertPopupInfo = {
