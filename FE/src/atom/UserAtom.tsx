@@ -1,10 +1,5 @@
-import { atom } from "recoil";
+import { atom, useRecoilValue } from "recoil";
 import { recoilPersist } from 'recoil-persist';
-function getAccessToken(){
-    //유효하지 않으면
-    //api로 보내기 
-    // return accessToken
-}
 interface userType {
     email : string,
     userId : number,
@@ -35,3 +30,6 @@ export const changePasswordUserState = atom<string>({
     default : "",
 })
 
+export function CheckUserId(checkId: number){
+  return checkId == useRecoilValue(userState).userId;
+}

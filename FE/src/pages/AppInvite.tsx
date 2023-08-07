@@ -1,7 +1,8 @@
 function AppInvite() {
   return (
     <div className="col-12 sub_wrap">
-      초대링크
+      <button type="button">수락</button>
+      <button type="button">거절</button>
     </div>
   )
 }

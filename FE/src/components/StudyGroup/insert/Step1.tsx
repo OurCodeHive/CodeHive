@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { AlertPopup } from "@/utils/Popup";
 import CustomEditor from "@/utils/CustomEditor/CustomEditor";
-import CustomDatePickcer from "@/utils/CustomDatePicker";
+import CustomDatePicker from "@/utils/CustomDatePicker";
 import FileInput from "@/utils/FileInfo/Input";
 
 
@@ -64,7 +64,6 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
         param.append("startAt", startDateInput.current.value);
         param.append("endAt", endDateInput.current.value);
         param.append("description", String(descInput.current?.value));
-        console.log(profileInput.current?.files)
         
         // 파일 존재하는 경우만 업로드
         if (profileInput.current?.files) {
@@ -104,11 +103,13 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
                         <span className="essential">기간</span>
                     </div>
                     <div className="col-12 col-md-0 input_box">
-                        <input type="hidden" ref={startDateInput} />
-                        <CustomDatePickcer resultInput={startDateInput} settingDate={today} />
+                        <div className="col-12 date_box">
+                            <CustomDatePicker resultInput={startDateInput} settingDate={today} minDate={today}/>
+                        </div>
                         <span className="addr_text">-</span>
-                        <input type="hidden" ref={endDateInput} />
-                        <CustomDatePickcer resultInput={endDateInput} settingDate={today} />
+                        <div className="col-12 date_box">
+                            <CustomDatePicker resultInput={endDateInput} settingDate={today} minDate={today}/>
+                        </div>
                     </div>
                 </div>
                 <div className="col-12 form_style_0 type_file">

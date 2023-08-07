@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import './css/DatePicker.module.css';
+import './css/DatePicker.css';
 import { ko } from 'date-fns/esm/locale';
 
 interface DatePickerProps {
@@ -11,9 +11,13 @@ interface DatePickerProps {
   maxDate? : Date;
 }
 
+const CustomInput = forwardRef(({ value, onclick }, ref) => {
+  return <button onClick={onclick} ref={ref}>{value}</button>;
+});
+
 
 const CustomDatePicker = (Props : DatePickerProps) => {
-  const [selectDate, setSelectDate] = useState<Date>(Props.settingDate);
+  const [selectDate, setSelectDate] = useState<Date>();
 
   const changeDate = (date : Date) => {
     setSelectDate(date);
@@ -27,6 +31,7 @@ const CustomDatePicker = (Props : DatePickerProps) => {
       minDate={Props.minDate ? Props.minDate : selectDate}
       selected={selectDate}
       onChange={(date: Date) => changeDate(date)}
+      customInput={<CustomInput/>}
       renderCustomHeader={({ // custom header 만들어주기
         monthDate,
         decreaseMonth,
