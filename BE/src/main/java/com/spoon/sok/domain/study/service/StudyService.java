@@ -423,4 +423,8 @@ public class StudyService {
             return false;
         }
     }
+
+    public Optional<StudyArchive> getStudyArchive(Long studyarchiveId) {
+        return studyArchiveRepository.findById(studyarchiveId);
+    }
 }

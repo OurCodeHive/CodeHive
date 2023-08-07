@@ -3,6 +3,7 @@ package com.spoon.sok.domain.study.controller;
 import com.spoon.sok.domain.study.dto.requestDTO.*;
 import com.spoon.sok.domain.study.dto.responseDTO.*;
 import com.spoon.sok.domain.study.entity.StudyAppointment;
+import com.spoon.sok.domain.study.entity.StudyArchive;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.enums.StudyUpdateResult;
 import com.spoon.sok.domain.study.entity.StudyNotice;
@@ -161,7 +162,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-//     [스터디룸] 스터디 자료 조회
+    //     [스터디룸] 스터디 자료 조회
 //     [GET] api/study/{studyinfo_id}/document?page={int}&size={int}
     @GetMapping("/study/{studyinfo_id}/document")
     public ResponseEntity<Map<String, Object>> getStudyDocuments(
@@ -182,6 +183,31 @@ public class StudyRoomController {
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    // [스터디룸] 스터디 자료 상세 조회
+    // [GET] api/study/{studyinfo_id}/document/{studyarchive_id}
+    @GetMapping("/study/{studyinfo_id}/document/{studyarchive_id}")
+    public ResponseEntity<Map<String, Object>> getStudyDocuments(
+            @PathVariable("studyinfo_id") Long studyInfoId,
+            @PathVariable("studyarchive_id") Long studyarchiveId) {
+
+        // 스터디 공지사항 조회 서비스 호출
+        Optional<StudyArchive> studyDocument = studyService.getStudyArchive(studyarchiveId);
+
+        // 응답 메시지 설정
+        Map<String, Object> response = new HashMap<>();
+        if (studyDocument.isPresent()) {
+            response.put("status", 200);
+            response.put("studyDocument", studyDocument);
+        } else {
+            response.put("status", 400);
+            response.put("message", "공지사항 조회에 실패하였습니다.");
+        }
+
+        // HTTP 응답 반환
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
     // [스터디룸] 스터디 자료 다운로드
 

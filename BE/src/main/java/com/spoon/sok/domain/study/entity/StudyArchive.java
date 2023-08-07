@@ -1,5 +1,6 @@
 package com.spoon.sok.domain.study.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spoon.sok.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,11 +31,13 @@ public class StudyArchive {
     private String content;
 
     // study_info 스터디 정보 테이블과 다대일 관계
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyinfo_id", nullable = false) // 스터디 정보키
     private StudyInfo studyInfo;
 
     // users 유저 테이블과 다대일 관계
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", nullable = false) // 스터디 정보키
     private User user;
