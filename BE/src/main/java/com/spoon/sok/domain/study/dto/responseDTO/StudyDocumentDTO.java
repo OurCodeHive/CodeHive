@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,5 +17,5 @@ public class StudyDocumentDTO {
     private String content;
     private String author;
     private Date uploadAt;
-    private List<String> documentUrl;
+    private List<String> documentUrl = new ArrayList<>();
 }
