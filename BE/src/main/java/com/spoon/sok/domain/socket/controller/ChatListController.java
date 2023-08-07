@@ -1,8 +1,8 @@
-package com.spoon.sok.domain.chat.controller;
+package com.spoon.sok.domain.socket.controller;
 
-import com.spoon.sok.domain.chat.dto.ChatWebSocketDto;
-import com.spoon.sok.domain.chat.repository.ChatRepository;
-import com.spoon.sok.domain.chat.service.ChatService;
+import com.spoon.sok.domain.socket.dto.ChatWebSocketDto;
+import com.spoon.sok.domain.socket.repository.ChatRepository;
+import com.spoon.sok.domain.socket.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/chat")
-public class ChatController {
+public class ChatListController {
 
     private final ChatService chatService;
     private final ChatRepository chatRepository;

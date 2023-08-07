@@ -1,7 +1,10 @@
-package com.spoon.sok.domain.chat.dto;
+package com.spoon.sok.domain.socket.dto;
 
 import lombok.Getter;
 
+/**
+ * 프론트에서 오는 정보 받는 DTO
+ */
 @Getter
 public class RunCodeRequestDto {
 

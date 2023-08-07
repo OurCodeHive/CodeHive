@@ -40,8 +40,7 @@ public class File {
     private StudyArchive studyArchive;
 
     @Builder
-    public File (Long id, Long fileSize, String originName, String realName, String path, String etc, StudyArchive studyArchive) {
-        this.id = id;
+    public File (Long fileSize, String originName, String realName, String path, String etc, StudyArchive studyArchive) {
         this.fileSize = fileSize;
         this.originName = originName;
         this.realName = realName;

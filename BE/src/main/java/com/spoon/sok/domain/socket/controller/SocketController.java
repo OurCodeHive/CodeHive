@@ -1,8 +1,8 @@
-package com.spoon.sok.domain.chat.controller;
+package com.spoon.sok.domain.socket.controller;
 
-import com.spoon.sok.CodeExecuteService;
-import com.spoon.sok.domain.chat.dto.*;
-import com.spoon.sok.domain.chat.service.ChatService;
+import com.spoon.sok.domain.socket.service.CodeExecuteService;
+import com.spoon.sok.domain.socket.dto.*;
+import com.spoon.sok.domain.socket.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -30,10 +30,7 @@ public class SocketController {
 
     @MessageMapping("/submit")
     public void submitNotice(SubmitWebSocketDto compileRequestDto, SimpMessageHeaderAccessor accessor) {
-        SubmitWebSocketDto responseDto = new SubmitWebSocketDto();
-        responseDto.setUserId(compileRequestDto.getUserId());
-        responseDto.setStudyRoomId(compileRequestDto.getStudyRoomId());
-        simpMessagingTemplate.convertAndSend("/sub/submit/" + responseDto.getStudyRoomId(), responseDto);
+        simpMessagingTemplate.convertAndSend("/sub/submit/" + compileRequestDto.getStudyRoomId(), compileRequestDto);
     }
 
     @MessageMapping("/run")
