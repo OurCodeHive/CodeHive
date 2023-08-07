@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import { inviteMember } from "@/api/study";
 import { AlertPopup } from "@/utils/Popup";
-import { EmailCheck } from "@/utils/Valid/Valid";
+import { EmailCheck } from "@/utils/valid/Valid";
 import InviteEmailStyle from '@/res/css/module/InviteEmail.module.css';
 
-const StudyInsert2Step = ({closePop, studyInfoId} : {closePop: () => void, studyInfoId: number}) => {
+const StudyInsert2Step = ({refreshList, closePop, studyInfoId} : {refreshList: () => void, closePop: () => void, studyInfoId: number}) => {
     const [CompleteStatus, setCompleteStatus] = useState(false);
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
     const [AlertPopupTitle, setAlertPopupTitle] = useState("");
@@ -20,9 +20,8 @@ const StudyInsert2Step = ({closePop, studyInfoId} : {closePop: () => void, study
 
     const changePopupFlag = ( flag:boolean ) => {
         setAlertPopupFlag(() => flag);
-        if(CompleteStatus){ //전송완료일 때
-            closePop();
-        }
+        refreshList();
+        closePop();
     };
 
     //이메일 input 추가 함수
@@ -100,7 +99,7 @@ const StudyInsert2Step = ({closePop, studyInfoId} : {closePop: () => void, study
             <button type="button" className="btn_style_0 bg_point0" onClick={(e) => void inviteEmail(e)}>초대링크 전송</button>
             </div>
             <div className="col-12 tc btn_style_0_con">
-                <button type="button" className="btn_style_0 bg_black" onClick={closePop}>닫기</button>
+                <button type="button" className="btn_style_0 bg_black" onClick={() => changePopupFlag(true)}>닫기</button>
             </div>
             <AlertPopup PopupInfo={AlertPopupInfo} />
         </div>

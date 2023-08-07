@@ -1,9 +1,8 @@
 .point0{color: #FFDF2B !important;}
 .bg_point0{background-color: #FFDF2B !important;}
 
-.sub_wrap{display: flex; min-height: 100vh;}
-.sub_wrap .bg_wrap{position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh; z-index: -1; height: 100%;}
-.sub_wrap .bg_wrap > img{width: 100%; height: 100%;}
+.sub_wrap{display: flex; height: 100vh; align-items: center; justify-content: center; background-color: #E0E0E0;}
+.sub_wrap .sub_con{width: 90%; height: 90%; padding: 50px 40px; display: flex; border-radius: 20px; border: 10px solid rgb(207, 217, 187); overflow: hidden; overflow-y: auto; background-repeat: no-repeat; background-size: cover; background-position: center center;}
 
 .headline{font-size: 33px; font-size: 3.3rem; line-height: 39px; line-height: 3.9rem; font-weight: 700; letter-spacing: -0.02em; color: #17181d;}
 .title{font-size: 25px; font-size: 2.5rem; line-height: 31px; line-height: 3.1rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d;}
@@ -37,13 +36,15 @@
 .form_style_0_con .form_style_0 .addr_text{font-size: 15px; font-size: 1.5rem; line-height: 21px; line-height: 2.1rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d;}
 /*기간*/
 .form_style_0_con .form_style_0.type_date_range .input_box{display: flex; align-items: center;}
-.form_style_0_con .form_style_0.type_date_range .input_box > input{flex: 1;}
+.form_style_0_con .form_style_0.type_date_range .input_box > .date_box{flex: 1;}
 .form_style_0_con .form_style_0.type_date_range .addr_text{margin-left: 7px; margin-right: 7px;}
 
+.form_style_0_con.type_view .form_style_0 .input_box{font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 400; letter-spacing: -0.02em;}
+
 @media all and (min-width: 992px){
-    
     /* form_style_0 */
     .form_style_0_con .form_style_0 .label_box{width: 200px; margin-top: 7px; margin-bottom: 0;}
     .form_style_0_con .form_style_0 .input_box{width: calc(100% - 200px);}
+    .form_style_0_con.type_view .form_style_0 .label_box{margin-top: 0;}
 }
 

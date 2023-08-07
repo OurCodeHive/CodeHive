@@ -6,7 +6,7 @@ import StudyViewEnterIcon from '@/res/img/study_view_enter_icon_img.png';
 import StudyViewMemberIcon from '@/res/img/study_view_member_icon_img.png';
 import StudyViewCalendarIcon from '@/res/img/study_view_calendar_icon_img.png';
 
-const StudyViewInfo = ({Contents} : {Contents: StudyType}) => {
+const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag: boolean}) => {
   const enterName = Contents.enterName ? Contents.enterName : "notFound";
 
   return (
@@ -20,18 +20,22 @@ const StudyViewInfo = ({Contents} : {Contents: StudyType}) => {
                   <span>입장하기</span>
                 </a>
               </div>
-              <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}>
-                <div className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
-                  <img src={StudyViewMemberIcon} alt="멤버 아이콘" /><br/>
-                  <span>멤버보기</span>
+              {LeaderFlag
+                ? 
+                <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}>
+                  <div className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
+                    <img src={StudyViewMemberIcon} alt="멤버 아이콘" /><br/>
+                    <span>멤버보기</span>
+                  </div>
                 </div>
-              </div>
+                : null
+              }
               <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}>
-                <div className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
-                  <img src={StudyViewCalendarIcon} alt="시계 아이콘" /><br/>
-                  <span>일정보기</span>
-                </div>
-              </div>
+                    <div className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
+                      <img src={StudyViewCalendarIcon} alt="시계 아이콘" /><br/>
+                      <span>일정보기</span>
+                    </div>
+                  </div>
             </div>
           </div>
           <div className={`col-12 ${StudyViewStyle.study_view_top_info_con}`}>

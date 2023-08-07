@@ -6,7 +6,7 @@ export type StudyType = {
     createdAt? : string;
     startAt? : string;
     endAt? : string;
-    userId? : number;
+    users_id? : number;
     enterName? : string;
     description? : string;
 }

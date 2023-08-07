@@ -4,7 +4,7 @@ import TabStyle from './css/Tab.module.css';
 
 export type TabType = {
   title : string;
-  contents : React.FC;
+  contents : JSX.Element;
 }
 
 const Tab = ({initIdx, TabList} : {initIdx: number, TabList: TabType[]}) => {   
@@ -30,7 +30,7 @@ const Tab = ({initIdx, TabList} : {initIdx: number, TabList: TabType[]}) => {
         </div>
       </div>
       <div className={`col-12 ${TabStyle.tab_contents_con}`}>
-        <Content />
+        {Content}
       </div>
     </div>
     )
