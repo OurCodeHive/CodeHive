@@ -25,7 +25,8 @@ public class StudyArchive {
     @Column(name = "title") // 스터디 제목
     private String title;
 
-    @Column(name = "content") // 스터디 내용
+    @Lob
+    @Column(name = "content", columnDefinition = "LONGTEXT") // 스터디 내용
     private String content;
 
     // study_info 스터디 정보 테이블과 다대일 관계

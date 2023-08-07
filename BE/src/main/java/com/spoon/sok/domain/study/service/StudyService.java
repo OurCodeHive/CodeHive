@@ -299,11 +299,12 @@ public class StudyService {
         }
     }
 
-    public List<StudyDocumentDTO> getStudyDocuments(Long studyInfoId, Pageable pageRequest) {
+    public Map<String, Object> getStudyDocuments(Long studyInfoId, Pageable pageRequest) {
         Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyInfoId);
         Page<StudyArchive> studyArchivePage = studyArchiveRepository.findByStudyInfo(findStudyInfo.get(), pageRequest);
 
         List<StudyDocumentDTO> list = new ArrayList<>();
+        Map<String, Object> result = new HashMap<>();
 
         for (StudyArchive sa : studyArchivePage) {
             StudyDocumentDTO data = new StudyDocumentDTO();
@@ -320,7 +321,11 @@ public class StudyService {
 
             list.add(data);
         }
-        return list;
+
+        result.put("studyArchives", list);
+        result.put("totalCnt", studyArchivePage.getTotalElements());
+
+        return result;
     }
 
     /*

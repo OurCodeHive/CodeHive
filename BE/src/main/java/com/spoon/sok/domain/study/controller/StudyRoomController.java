@@ -170,18 +170,15 @@ public class StudyRoomController {
             @RequestParam("size") int size) {
 
         Pageable pageRequest = PageRequest.of(page, size);
-        List<StudyDocumentDTO> studyDocuments = studyService.getStudyDocuments(studyInfoId, pageRequest);
+        Map<String, Object> response = studyService.getStudyDocuments(studyInfoId, pageRequest);
 
         // 응답 메세지 설정
-        Map<String, Object> response = new HashMap<>();
-        if (studyDocuments != null) {
+        if (response != null) {
             response.put("status", 200);
-            response.put("study_documents", studyDocuments);
         } else {
             response.put("status", 400);
             response.put("message", "스터디 자료 조회에 실패하였습니다.");
         }
-
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
