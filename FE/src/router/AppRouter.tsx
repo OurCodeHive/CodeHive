@@ -10,6 +10,9 @@ import FindPassword from "@/components/Login/FindPassword";
 import ChangePassword from "@/components/Login/ChangePassword";
 import AppHome from "@/pages/AppHome";
 import TimerApp from "@/components/home/Timer";
+import Mouse from '@/components/IDE/UserMouseCursor';
+
+
 const AppRouter = () => {
   return (
     <>
@@ -27,7 +30,7 @@ const AppRouter = () => {
           <Route path="/changepassword" element={<ChangePassword/>}/>
           <Route path="/home" element={<AppHome/>}/>
           <Route path="/timer" element={<TimerApp/>}/>
-
+          <Route path="/mouse/:id" element={<Mouse/>}/>
         </Routes>
       </BrowserRouter>
     </>
