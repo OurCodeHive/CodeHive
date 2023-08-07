@@ -4,17 +4,17 @@ import com.spoon.sok.aws.S3Service;
 import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.dto.requestDTO.LeaveStudyRequestDTO;
 import com.spoon.sok.domain.study.dto.requestDTO.StudyMeetingRequestDTO;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyDocumentDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
-import com.spoon.sok.domain.study.entity.StudyAppointment;
+import com.spoon.sok.domain.study.entity.*;
 import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
 import com.spoon.sok.domain.study.dto.requestDTO.ForceLeaveRequestDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyUserListDTO;
-import com.spoon.sok.domain.study.entity.StudyInfo;
-import com.spoon.sok.domain.study.entity.StudyNotice;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.enums.StudyUpdateResult;
 import com.spoon.sok.domain.study.repository.StudyAppointmentRepository;
+import com.spoon.sok.domain.study.repository.StudyArchiveRepository;
 import com.spoon.sok.domain.study.repository.StudyNoticeRepository;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
@@ -29,10 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -40,12 +37,15 @@ import java.util.UUID;
 @Transactional
 public class StudyService {
 
+    private final S3Service s3Service;
+
+    private final UserRepository userRepository;
+    private final UserStudyRepository userStudyRepository;
+
     private final StudyRepository studyRepository;
     private final StudyNoticeRepository studyNoticeRepository;
-    private final UserStudyRepository userStudyRepository;
-    private final UserRepository userRepository;
+    private final StudyArchiveRepository studyArchiveRepository;
     private final StudyAppointmentRepository studyAppointmentRepository;
-    private final S3Service s3Service;
 
     public List<StudyAppointmentDTO> getStudyMeeting(String userId) {
         return studyRepository.findByUserIdStudyMeetingsQuery(userId);
@@ -163,14 +163,22 @@ public class StudyService {
         else return false;
     }
 
-    public List<StudyNoticePreviewDTO> getStudyNoticeBoard(Long studyInfoId, Pageable pageRequest) {
+    public List<StudyNotice> searchStudyNoticeBoard(Long studyInfoId, String title) {
+        Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyInfoId);
+        title = "%" + title + "%";
+        return studyNoticeRepository.findByStudyInfoAndNoticeTitleContaining(studyInfoId, title);
+    }
+
+    public Map<String, Object> getStudyNoticeBoard(Long studyInfoId, Pageable pageRequest) {
         Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyInfoId);
         Page<StudyNotice> studyNoticePage = studyNoticeRepository.findByStudyInfo(findStudyInfo.get(), pageRequest);
 
         List<StudyNoticePreviewDTO> list = new ArrayList<>();
+        Map<String, Object> result = new HashMap<>();
 
         for (StudyNotice sn : studyNoticePage) {
             StudyNoticePreviewDTO data = new StudyNoticePreviewDTO();
+
             data.setUploadAt(sn.getUploadAt());
             data.setNoticeTitle(sn.getNoticeTitle());
             data.setAuthorId(sn.getUser().getId());
@@ -180,7 +188,10 @@ public class StudyService {
             list.add(data);
         }
 
-        return list;
+        result.put("studyNoticeList", list);
+        result.put("totalCnt", studyNoticePage.getTotalElements());
+
+        return result;
     }
 
     public Optional<StudyNotice> getStudyNoticeList(Long studyboardId) {
@@ -288,9 +299,31 @@ public class StudyService {
         }
     }
 
-    /*
-    public List<StudyDocumentDTO> getStudyDocuments(Long studyInfoId, int page, int size) {
+    public List<StudyDocumentDTO> getStudyDocuments(Long studyInfoId, Pageable pageRequest) {
+        Optional<StudyInfo> findStudyInfo = studyRepository.findById(studyInfoId);
+        Page<StudyArchive> studyArchivePage = studyArchiveRepository.findByStudyInfo(findStudyInfo.get(), pageRequest);
+
+        List<StudyDocumentDTO> list = new ArrayList<>();
+
+        for (StudyArchive sa : studyArchivePage) {
+            StudyDocumentDTO data = new StudyDocumentDTO();
+
+            data.setId(sa.getId());
+            data.setTitle(sa.getTitle());
+            data.setContent(sa.getContent());
+            data.setAuthor(sa.getUser().getNickname());
+            data.setUploadAt(sa.getUploadAt());
+
+            for (File file : sa.getFileList()) {
+                data.getDocumentUrl().add(file.getPath());
+            }
+
+            list.add(data);
+        }
+        return list;
     }
+
+    /*
 
     public List<StudyAppointmentDTO> getStudyMeetingByStudyId(Long studyInfoId) {
     }

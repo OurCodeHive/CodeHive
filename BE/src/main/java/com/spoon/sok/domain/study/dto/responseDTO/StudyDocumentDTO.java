@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,6 +15,6 @@ public class StudyDocumentDTO {
     private String title;
     private String content;
     private String author;
-    private LocalDate uploadAt;
-    private String documentUrl;
+    private Date uploadAt;
+    private List<String> documentUrl;
 }
