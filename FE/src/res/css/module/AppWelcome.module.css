@@ -2,6 +2,7 @@
     color: palevioletred;
 }
 .video {
+    cursor: auto;
     /* width: 40px; */
     position: fixed;
     right: 0;
