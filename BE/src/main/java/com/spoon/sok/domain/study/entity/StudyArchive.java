@@ -1,7 +1,6 @@
 package com.spoon.sok.domain.study.entity;
 
-//import com.spoon.sok.domain.user.entity.User;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spoon.sok.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,22 +26,25 @@ public class StudyArchive {
     @Column(name = "title") // 스터디 제목
     private String title;
 
-    @Column(name = "content") // 스터디 내용
+    @Lob
+    @Column(name = "content", columnDefinition = "LONGTEXT") // 스터디 내용
     private String content;
 
     // study_info 스터디 정보 테이블과 다대일 관계
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyinfo_id", nullable = false) // 스터디 정보키
     private StudyInfo studyInfo;
 
     // users 유저 테이블과 다대일 관계
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false) // 스터디 정보키
-    private com.spoon.sok.domain.user.entity.User user;
+    @JoinColumn(name = "users_id", nullable = false) // 스터디 정보키
+    private User user;
 
     //file 파일 테이블과 일대다 관계
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyArchive")
-    private List<File> fileList = new ArrayList<>();
+    private List<File> fileList;
 
     @Builder
     public StudyArchive(Long id, Date uploadAt, String title, String content, StudyInfo studyInfo) {
