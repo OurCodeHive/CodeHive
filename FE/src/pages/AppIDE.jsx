@@ -23,7 +23,7 @@ import ChatComp from '@/components/chat/ChatFrameComp';
 import style from "@/res/css/module/AppIDE.module.css";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
-import { codeEditTheme, highlightStyle, QuillBox, modulesRef } from './EditorStyle';
+import { codeEditTheme, highlightStyle, QuillBox, modulesRef } from '../components/IDE/EditorStyle';
 
 
 function getRandomColor() {
