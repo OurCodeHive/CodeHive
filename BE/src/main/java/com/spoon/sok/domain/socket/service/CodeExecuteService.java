@@ -1,7 +1,7 @@
-package com.spoon.sok;
+package com.spoon.sok.domain.socket.service;
 
-import com.spoon.sok.domain.chat.dto.CodeAPIRequestDto;
-import com.spoon.sok.domain.chat.dto.RunCodeRequestDto;
+import com.spoon.sok.domain.socket.dto.CodeAPIRequestDto;
+import com.spoon.sok.domain.socket.dto.RunCodeRequestDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;

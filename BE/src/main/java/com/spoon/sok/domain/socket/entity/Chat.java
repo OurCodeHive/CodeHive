@@ -1,6 +1,6 @@
-package com.spoon.sok.domain.chat.entity;
+package com.spoon.sok.domain.socket.entity;
 
-import com.spoon.sok.domain.chat.dto.ChatWebSocketDto;
+import com.spoon.sok.domain.socket.dto.ChatWebSocketDto;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
