@@ -7,8 +7,12 @@ import { start } from 'repl';
 import { format } from 'path';
 
 interface ISchedule {
-    startTime? : string | undefined;
     today?:ISchedule[];
+    endTime : string,
+    startTime : string,
+    studyappointmentId : number,
+    studyinfoId : number,
+    title : string,
 }
 const Schedule = () => {
     let [schedules, setSchedules] = useState<ISchedule[] | undefined>();
@@ -16,16 +20,13 @@ const Schedule = () => {
     useEffect(()=>{
         // const today = new Date().toISOString().slice(0,10)
         const date = "2023-08-03";
-        // const getSchedules = async() : Promise<getSchedule> => {
-
-        // }
-        // authHttp.get<ISchedule>(`/today/study?today=${date}`).then((res)=>{
-        //     const {today} = res.data;
-        //     if(today){
-        //         setSchedules(today);//[{},{},{}]
-        //     }
-        //     console.log(res);
-        // }).catch(console.log);
+        authHttp.get<ISchedule>(`/today/study?today=${date}`).then((res)=>{
+            const {today} = res.data;
+            if(today){
+                setSchedules(today);//[{},{},{}]
+                console.log(today);
+            }
+        }).catch(console.log);
     },[])
 
     return (
@@ -45,9 +46,8 @@ const Schedule = () => {
                 </div>
 
                 </div>
-                    <ScheduleList schedules={schedules} />
-                    <ScheduleList schedules={schedules} />
                 </div>
+                    {/* <ScheduleList schedules={schedules} /> */}
             </div>
         </div>
     );
@@ -60,22 +60,17 @@ const Schedule = () => {
 //     startTime? : string | undefined;
 // }
 const ScheduleList:any= (props:{schedules:ISchedule[] | void}) => {
-// function ScheduleList(props:{schedules:ISchedule[]}){
-    // interface ISchedules {
-    //     schedule : {
-    //         startTime? : string;
-    //     }
-    // }
-   
+
     function getTimeLeft(startTime:string | undefined):string{
-        let now = moment().toISOString();
+        let now = "2023-08-03T06:20:06.739Z"
+        // let now = moment().toISOString();
         // let startAt = moment("2023-08-02T05:22:43.512Z");
         let startAt = moment(startTime);
         console.log("now = "+now);
         console.log("startAt = "+startAt.toISOString());
-        let hours = moment.duration(startAt.diff(moment())).hours();
-        let mins = moment.duration(startAt.diff(moment())).minutes();
-        let seconds = moment.duration(startAt.diff(moment())).seconds();
+        let hours = moment.duration(startAt.diff(moment(now))).hours();
+        let mins = moment.duration(startAt.diff(moment(now))).minutes();
+        let seconds = moment.duration(startAt.diff(moment(now))).seconds();
         // let duration = moment(moment.utc(moment(startAt)).diff(moment(now))).days();
         console.log(`${hours} ${mins} ${seconds}`);
     
@@ -89,15 +84,17 @@ const ScheduleList:any= (props:{schedules:ISchedule[] | void}) => {
     props.schedules?.map((schedule:ISchedule)=>{
         return (
             <>
+            <div className={style.content}>
             <div className={style.schedule_wrap}>
                 <div className={style.time_info}>
-                    <div className={style.from_to}><span>06:43</span><img src={arrow} alt="" /> <span>09:10 </span></div>
-                    <div className={style.duration}>2h 27m</div>
+                    <div className={style.from_to}><span>{schedule.startTime.slice(11,16)}</span><img src={arrow} alt="" /> <span>{schedule.endTime.slice(11,16)}</span></div>
+                    <div className={style.duration}>{}</div>
                 </div>
     
                 <div className={style.timer_wrap}>
                     <div className={style.timer_text}>{getTimeLeft(schedule.startTime)}</div>
                 </div>
+            </div>
             </div>
         </>
     )})

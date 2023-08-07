@@ -60,7 +60,6 @@ const TimerApp: React.FC = () => {
           }
         }
       }, 1000);
-      console.log(bar);
     }
 
     return () => clearInterval(interval);

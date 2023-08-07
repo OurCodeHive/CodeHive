@@ -56,7 +56,7 @@ function Background(){
 
                     <Intro></Intro>
                     <Comedy></Comedy>
-                    <Lnb></Lnb>
+                    {/* <Lnb></Lnb> */}
                     <Schedule></Schedule>
                     <Timer></Timer>
 
