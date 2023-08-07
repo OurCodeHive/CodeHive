@@ -4,6 +4,7 @@ import { EditorState } from '@codemirror/state';
 import { keymap } from '@codemirror/view';
 import { indentWithTab } from '@codemirror/commands';
 import { python } from '@codemirror/lang-python';
+// import { java } from '@codemirror/lang-java';
 import * as Y from "yjs";
 import { WebsocketProvider } from 'y-websocket'
 import { syntaxHighlighting } from '@codemirror/language';
@@ -22,7 +23,7 @@ import ChatComp from '@/components/chat/ChatFrameComp';
 import style from "@/res/css/module/AppIDE.module.css";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
-import { codeEditTheme, highlightStyle, QuillBox, modulesRef } from './EditorStyle';
+import { codeEditTheme, highlightStyle, QuillBox, modulesRef } from '../components/IDE/EditorStyle';
 
 
 function getRandomColor() {
@@ -30,7 +31,7 @@ function getRandomColor() {
 }
 
 let quillRef = null;
-
+Quill.register("modules/cursors", QuillCursors);
 function Code() {
 
   let loginUser = useRecoilValue(userState);
@@ -44,17 +45,20 @@ function Code() {
 
   let reactQuillRef = null;
   const docxDoc = new Y.Doc();
-  Quill.register("modules/cursors", QuillCursors);
+
 
   let [language, setLanguage] = useState("Python");
   let [codeHeight, setCodeHeight] = useState("93.3vh");
   let [code, setCode] = useState("");
   let [showChat, setShowChat] = useState("hidden");
+  let [chatRedPoint, setChatRedPoint] = useState(false);
+  
 
   useEffect(() => {
     const provider = new WebsocketProvider(url, codeId, CodeDoc);
     const ytext = CodeDoc.getText('codemirror');
     setCode(ytext);
+    
     provider.awareness.setLocalStateField('user', {
       name: loginUser.nickname,
       color: getRandomColor(),
@@ -108,11 +112,12 @@ function Code() {
   };
 
   function toggleChat() {
-    if (showChat === "hidden") {
+    if (showChat == "hidden") {
       setShowChat("visible");
     } else {
       setShowChat("hidden");
     }
+    setChatRedPoint(false);
   }
 
   function consoleUp() {
@@ -127,14 +132,14 @@ function Code() {
     if (language == "Python") {
       setLanguage("Java")
     } else {
-      setLanguage("Python")
+      setLanguage("Python")    
     }
   }
 
   return(
     <div className={style.idePage}>
       <IDEHeader code={code} id={id} language={language}/>
-      <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown}/>
+      <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown} setLanguage={setLanguage}/>
       <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} />
       <div className={style.ideContainer}>
         <QuillBox className={style.quillBox}>
@@ -155,12 +160,20 @@ function Code() {
         <div className={style.leftSpace}>
         </div>
       </div>
-      <img src='https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/chat.png'
-        onClick={() => { toggleChat() }}
-        className={style.chatIcon}>
-      </img>
+      {
+        chatRedPoint && showChat == 'hidden'? 
+        <img src='https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/chaton.png'
+          onClick={() => { toggleChat() }}
+          className={style.chatIcon}>
+        </img>
+        :
+        <img src='https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/chat.png'
+          onClick={() => { toggleChat() }}
+          className={style.chatIcon}>
+        </img>
+      }
         <div style={{ visibility:showChat }}>
-          <ChatComp id={id}/>
+          <ChatComp id={id} chatRedPoint={chatRedPoint} setChatRedPoint={setChatRedPoint}/>
         </div>
     </div>
   )

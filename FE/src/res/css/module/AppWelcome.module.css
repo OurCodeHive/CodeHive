@@ -2,6 +2,7 @@
     color: palevioletred;
 }
 .video {
+    cursor: auto;
     /* width: 40px; */
     position: fixed;
     right: 0;
@@ -23,9 +24,8 @@
     display: block;
     background-color: transparent;
     width: 300px;
-    height: 50px;
+    height: 70px;
     border: none;
-    
 }
 /* div:first-child {
     position: fixed;

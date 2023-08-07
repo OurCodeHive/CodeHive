@@ -13,12 +13,16 @@ const { persistAtom } = recoilPersist({
     storage: sessionStorage,
   });
 
+function getRandomNumber() {
+  return Math.floor(Math.random() * 16777215).toString(16);
+}
+
 export const userState = atom<userType>({
   key: "useState", // 전역적으로 고유한 값
   default: {
-    email : "jiminsung@naver.com",
+    email : "",
     userId : 15,
-    nickname : "Minsung",
+    nickname : "USER " + getRandomNumber(),
     accessToken : "",
     refreshToken:"",
   }, // 초깃값

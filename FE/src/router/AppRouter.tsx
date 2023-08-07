@@ -10,7 +10,7 @@ import Login from "@/components/Login/Login";
 import FindPassword from "@/components/Login/FindPassword";
 import ChangePassword from "@/components/Login/ChangePassword";
 import AppHome from "@/pages/AppHome";
-
+import TimerApp from "@/components/home/Timer";
 const AppRouter = () => {
   return (
     <>
@@ -28,6 +28,8 @@ const AppRouter = () => {
           <Route path="/findpassword" element={<FindPassword/>}/>
           <Route path="/changepassword" element={<ChangePassword/>}/>
           <Route path="/home" element={<AppHome/>}/>
+          <Route path="/timer" element={<TimerApp/>}/>
+
         </Routes>
       </BrowserRouter>
     </>

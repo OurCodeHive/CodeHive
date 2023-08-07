@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import toast, { Toaster } from 'react-hot-toast';
 import style from "@/res/css/module/IDETerminal.module.css";
-import { language } from "@codemirror/language";
+
 
 interface IDETerminalProps {
   id: string;
@@ -12,6 +12,7 @@ interface IDETerminalProps {
   up: () => void;
   down: () => void;
   language: string;
+  setLanguage: (lang:string) => void;
 }
 
 function IDETerminal(props: IDETerminalProps) {
@@ -29,7 +30,7 @@ function IDETerminal(props: IDETerminalProps) {
 
   const [openConsole, setOpenConsole] = useState<boolean>(true);
   const [isConsole, setIsConsole] = useState<string>("6vh");
-  const [input, setInput] = useState<string>("1234");
+  const [input, setInput] = useState<string>("");
   const [consoleState, setConsoleState] = useState<string>("Input");
   const [inputColor, setInputColor] = useState<string>("wheat");
   const [resultColor, setResultColor] = useState<string>("gray");
@@ -39,6 +40,10 @@ function IDETerminal(props: IDETerminalProps) {
 
   // input 변경
   function handleInput(event: ChangeEvent<HTMLTextAreaElement>) {
+    // 글자수 제한
+    if (event.target.value.length > 2000) {
+      return
+    }
     setInput(event.target.value);
   }
 
@@ -69,6 +74,7 @@ function IDETerminal(props: IDETerminalProps) {
     const message = {
       userId: loginUser.userId,
       studyRoomId: props.id,
+      language: props.language
     };
     publish(message);
   }
@@ -93,6 +99,7 @@ function IDETerminal(props: IDETerminalProps) {
       code: props.code,
       input: input,
     };
+    console.log(codeAndInput)
     runCodeAndInput(codeAndInput);
   }
 
@@ -109,9 +116,8 @@ function IDETerminal(props: IDETerminalProps) {
 
   // 결과 받기
   function submitCodeAndInput() {
-    client.current.subscribe('/sub/run/' + props.id, (body:any) => {
-      const json_body = JSON.parse(body.body);
-      const message = json_body;
+    client.current.subscribe('/sub/run/' + props.id, (body:StompJs.Message) => {
+      const message = JSON.parse(body.body);
       runNotice(dic[message.userId]);
       setIsConsole("20vh");
       setConsoleState("Result");
@@ -119,7 +125,14 @@ function IDETerminal(props: IDETerminalProps) {
       setResultColor("wheat");
       setInputColor("gray");
       setIsRunning(false);
+      console.log(message)
       props.up();
+      if (message.output[0] === '') {
+        setResultColor("red");
+        setConsoleResultColor("red");
+        setCompileResult(message.output);
+        return
+      }
       // 성공인 경우
       if (message.state) {
         setResultColor("green");
@@ -136,11 +149,11 @@ function IDETerminal(props: IDETerminalProps) {
 
   // 제출알림받고 제출 기다리기
   function noticeSubmit() {
-    client.current.subscribe('/sub/submit/' + props.id, (body:any) => {
-      const json_body = JSON.parse(body.body);
-      const message = json_body;
+    client.current.subscribe('/sub/submit/' + props.id, (body:StompJs.Message) => {
+      const message = JSON.parse(body.body);
       notify(dic[message.userId]);
       setIsRunning(true);
+      props.setLanguage(message.language)
     });
   }
 
@@ -176,6 +189,11 @@ function IDETerminal(props: IDETerminalProps) {
   }
 
   function submitAndRun() {
+    // 입력 길이 제한
+    if (props.code.length > 15000) {
+      warningCodeLen()
+      return
+    }
     if (isRunning) {
       runningCode();
       return;
@@ -191,15 +209,19 @@ function IDETerminal(props: IDETerminalProps) {
       {
         isConsole === "6vh" ? null :
           <>
-            <p onClick={() => { selectInput() }} className={style.inputText} style={{ color: inputColor }}>
-              Input
-            </p>
-            <p
-              onClick={() => { selectResult() }}
-              className={style.resultText}
-              style={{ color: resultColor }}>
-              Result
-            </p>
+            <div>
+              <p onClick={() => { selectInput() }}
+                className={style.inputText}
+                style={{ color: inputColor }}>
+                Input
+              </p>
+              <p
+                onClick={() => { selectResult() }}
+                className={style.resultText}
+                style={{ color: resultColor }}>
+                Result
+              </p>
+            </div>
             {
               consoleState === "Input" ?
                 // input
@@ -209,6 +231,7 @@ function IDETerminal(props: IDETerminalProps) {
                     handleInput(event);
                   }}
                   value={input}
+                  placeholder="input을 입력해주세요"
                 ></textarea> :
                 // result
                 <textarea
@@ -219,6 +242,7 @@ function IDETerminal(props: IDETerminalProps) {
                     handleInput(event);
                   }}
                   value={compileResult}
+                  placeholder="input에 대한 결과가 나타나는 곳입니다."
                 ></textarea>
             }
           </>
@@ -230,7 +254,10 @@ function IDETerminal(props: IDETerminalProps) {
               submitAndRun();
             }}
               className={style.runBtn}
-            >run</button> : null
+            >run</button> :
+            <button 
+              style={{visibility:"hidden"}}
+              className={style.runBtn}>run</button>
       }
     </div>
   );
@@ -291,6 +318,7 @@ function runNotice(name: string) {
   });
 }
 
+// 실행중 코드 표시 토스트메시지
 function runningCode() {
 
   let sentence = "이미 실행중인 코드가 있습니다.";
@@ -299,7 +327,31 @@ function runningCode() {
     sentence, 
     {
       duration: 2000,
-      icon: '💻',
+      icon: '⚠️',
+      style: 
+        {
+          fontSize: "14px",
+          width: "60vh",
+        },
+        iconTheme: {
+          primary: '#000',
+          secondary: '#fff',
+        },
+        ariaProps: {
+          role: 'status',
+          'aria-live': 'polite',
+        },
+  });
+}
+
+// 실행 코드 길이 제한
+function warningCodeLen() {
+  let sentence = "용량이 큰 코드는 실행이 불가능합니다.";
+  toast(
+    sentence, 
+    {
+      duration: 2000,
+      icon: '⚠️',
       style: 
         {
           fontSize: "14px",
