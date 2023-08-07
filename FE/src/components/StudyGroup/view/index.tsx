@@ -10,9 +10,9 @@ import StudyViewMenu from '../menu/Menu';
 
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
 
-const StudyView: React.FC = () => {
+const StudyView = () => {
   const [ViewContents, setViewContents] = useState<StudyType>({} as StudyType);
-  const LeaderFlag = CheckUserId(ViewContents?.users_id as number);
+  const LeaderFlag: boolean = CheckUserId(ViewContents?.users_id as number);
   const initIdx = 0;
   const TabContents = [] as TabType[];
   TabContents.push({title : "공지사항", contents : <NoticeList studyinfoId={studyinfoId} LeaderFlag={LeaderFlag}/>});

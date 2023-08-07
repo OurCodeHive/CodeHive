@@ -29,7 +29,7 @@ const StudyViewMenu = ({Contents} : {Contents: StudyType}) => {
         <li>
           <div>
             <img src={SettingIcon} alt="세팅 아이콘"/><br/>
-            스터디 정보
+            스터디 변경
           </div>
         </li>
         : null

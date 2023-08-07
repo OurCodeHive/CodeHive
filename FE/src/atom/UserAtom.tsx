@@ -30,6 +30,6 @@ export const changePasswordUserState = atom<string>({
     default : "",
 })
 
-export function CheckUserId(checkId: number){
+export function CheckUserId(checkId: number): boolean{
   return checkId == useRecoilValue(userState).userId;
 }
