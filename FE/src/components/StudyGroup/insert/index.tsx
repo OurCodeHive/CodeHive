@@ -1,9 +1,8 @@
 import {useState} from "react";
-import { PopupContentsProps } from "@/utils/Popup";
 import Step1Contents from "./Step1";
 import Step2Contents from "./Step2";
 
-const StudyInsert: React.FC<PopupContentsProps> = ({closePopup} : {closePopup: (flag: boolean) => void}) => {
+const StudyInsert = ({refreshList, closePopup} : {refreshList: () => void, closePopup: (flag: boolean) => void}) => {
     const [StudyInfoId, setStudyInfoId] = useState(-1);
     const [StepIdx, setStepIdx] = useState(1);
     const closePop = () => {
@@ -20,7 +19,7 @@ const StudyInsert: React.FC<PopupContentsProps> = ({closePopup} : {closePopup: (
          {StepIdx === 1 ? (
             <Step1Contents closePop={closePop} updateIdx={updateIdx} />
          ) : (
-            <Step2Contents closePop={closePop} studyInfoId={StudyInfoId} />
+            <Step2Contents refreshList={refreshList} closePop={closePop} studyInfoId={StudyInfoId} />
          )}
         </>
     )

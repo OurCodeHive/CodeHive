@@ -40,10 +40,10 @@ let accessToken:string|null = localStorage.getItem("accessToken");
 
 authHttp.interceptors.request.use(
     (config : InternalAxiosRequestConfig):InternalAxiosRequestConfig => {
-        console.log(accessToken);
+        //console.log(accessToken);
         if(config.headers && accessToken){
             config.headers.Authorization = `Bearer ${accessToken}`;
-            console.log(config);
+            //console.log(config);
         }
       return config;
     }
@@ -63,7 +63,7 @@ authHttp.interceptors.response.use(
     
       const { config, status } = response; //response의 config 파일
       const originalRequest = config;
-      console.log(response);
+      //console.log(response);
       if(response.data.accessToken){//반환값에 access token이 있으면
         const accessToken = response.data.accessToken;
         localStorage.setItem("accessToken", accessToken);
