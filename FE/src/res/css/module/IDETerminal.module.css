@@ -15,15 +15,21 @@
   bottom: 1vh;
   background-color: #423423;
   border-radius: 4px;
-  border: 1px solid #423423;
+  border: 0px solid #423423;
   display: inline-block;
   cursor: pointer;
   color: #ffffff;
   font-size: 14px;
-  padding: 3px;
+  padding: 4px;
   text-decoration: none;
   text-shadow: 0px 1px 0px #2f6627;
 }
+
+.consoleBtn:hover{
+  background-color: rebeccapurple;
+  transition: 0.5s;
+}
+
 
 .inputText {
   cursor: pointer;
@@ -32,12 +38,24 @@
   font-size: 16px;
 }
 
+.inputText:hover{
+  color: #A18DC6 !important;
+  transition: 0.5s;
+}
+
+
 .resultText {
   cursor: pointer;
   padding: 10px;
   padding-left: 15px;
   font-size: 16px;  
 }
+
+.resultText:hover{
+  color: #A18DC6 !important;
+  transition: 0.5s;
+}
+
 
 .inputTextArea {
   width: 85.5%;
@@ -61,13 +79,18 @@
   height: fit-content;
   background-color: #225904;
   border-radius: 4px;
-  border: 1px solid #225904;
+  border: 0px solid #225904;
   cursor: pointer;
   color: #ffffff;
   font-size: 15px;
   padding: 3px;
   text-decoration: none;
   text-shadow: 0px 1px 0px #2f6627;
+}
+
+.runBtn:hover{
+  background-color: rebeccapurple;
+  transition: 0.5s;
 }
 
 

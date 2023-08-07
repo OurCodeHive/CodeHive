@@ -236,6 +236,7 @@ class VoiceCallComp extends Component {
         list.push(JSON.parse(sub.stream.connection.data).clientData);
       }
     }
+    
     return (
       <>
         <JoinUser user={list}/> 
