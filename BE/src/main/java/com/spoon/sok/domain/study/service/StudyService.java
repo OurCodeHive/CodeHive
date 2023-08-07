@@ -29,10 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -51,9 +48,10 @@ public class StudyService {
         return studyRepository.findByUserIdStudyMeetingsQuery(userId);
     }
 
-    public List<StudyAppointmentDTO> getTodayStudyMeeting(String today, String userId) {
+    public List<StudyAppointmentDTO> getTodayStudyMeeting(Date today, String userId) {
         return studyRepository.findByTodayStudyMeetingsQuery(today, userId);
     }
+
 
     public List<StudyInfoDto> getUserStudyGroupProceeding(String userId) {
         return studyRepository.findByUserIdStudyInfoProceedingQuery(userId);
