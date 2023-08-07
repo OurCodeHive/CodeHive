@@ -40,18 +40,18 @@ public class StudyArchive {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", nullable = false) // 스터디 정보키
-    private User user;
+    private User users;
 
     //file 파일 테이블과 일대다 관계
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyArchive")
     private List<File> fileList;
 
     @Builder
-    public StudyArchive(Long id, Date uploadAt, String title, String content, StudyInfo studyInfo) {
-        this.id = id;
+    public StudyArchive(Date uploadAt, String title, String content, StudyInfo studyInfo, User user) {
         this.uploadAt = uploadAt;
         this.title = title;
         this.content = content;
         this.studyInfo = studyInfo;
+        this.users = user;
     }
 }

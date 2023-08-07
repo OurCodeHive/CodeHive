@@ -1,4 +1,4 @@
-package com.spoon.sok.domain.chat.dto;
+package com.spoon.sok.domain.socket.dto;
 
 import lombok.Getter;
 import lombok.Setter;

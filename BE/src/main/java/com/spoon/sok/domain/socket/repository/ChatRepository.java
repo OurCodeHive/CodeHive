@@ -1,6 +1,6 @@
-package com.spoon.sok.domain.chat.repository;
+package com.spoon.sok.domain.socket.repository;
 
-import com.spoon.sok.domain.chat.entity.Chat;
+import com.spoon.sok.domain.socket.entity.Chat;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

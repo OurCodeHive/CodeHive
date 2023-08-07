@@ -1,9 +1,9 @@
-package com.spoon.sok.domain.chat.service;
+package com.spoon.sok.domain.socket.service;
 
 
-import com.spoon.sok.domain.chat.dto.ChatWebSocketDto;
-import com.spoon.sok.domain.chat.entity.Chat;
-import com.spoon.sok.domain.chat.repository.ChatRepository;
+import com.spoon.sok.domain.socket.dto.ChatWebSocketDto;
+import com.spoon.sok.domain.socket.entity.Chat;
+import com.spoon.sok.domain.socket.repository.ChatRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
