@@ -99,6 +99,7 @@ function IDETerminal(props: IDETerminalProps) {
       code: props.code,
       input: input,
     };
+    console.log(codeAndInput)
     runCodeAndInput(codeAndInput);
   }
 
@@ -124,7 +125,14 @@ function IDETerminal(props: IDETerminalProps) {
       setResultColor("wheat");
       setInputColor("gray");
       setIsRunning(false);
+      console.log(message)
       props.up();
+      if (message.output[0] === '') {
+        setResultColor("red");
+        setConsoleResultColor("red");
+        setCompileResult(message.output);
+        return
+      }
       // 성공인 경우
       if (message.state) {
         setResultColor("green");
