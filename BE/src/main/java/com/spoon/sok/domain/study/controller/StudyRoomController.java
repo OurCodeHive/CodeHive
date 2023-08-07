@@ -191,7 +191,6 @@ public class StudyRoomController {
             @PathVariable("studyinfo_id") Long studyInfoId,
             @PathVariable("studyarchive_id") Long studyarchiveId) {
 
-        // 스터디 공지사항 조회 서비스 호출
         Optional<StudyArchive> studyDocument = studyService.getStudyArchive(studyarchiveId);
 
         // 응답 메시지 설정
