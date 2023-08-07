@@ -85,10 +85,11 @@ const handleResetClick = () => {
 
   return (
     <div className={style.timer_container}>
-      <h1>Timer</h1>
       <div className={style.progress_bar_container}>
-        <CircularProgressbar
+        <div className={style.custom_progress_bar}>
+        <CircularProgressbar 
           value={bar}
+          
           text={`${formatTime(timer.hours)}:${formatTime(timer.minutes)}:${formatTime(timer.seconds)}`}
           styles={buildStyles({
             textSize : "1.4rem",
@@ -96,8 +97,11 @@ const handleResetClick = () => {
             pathColor: "#1f95afaf",
             trailColor: "#9999995a",
           })}
+          strokeWidth={5}
         />
+        </div>
       </div>
+      <div className={style.controller}>
       <div className={style.timer_inputs}>
         <input
           type="number"
@@ -112,7 +116,7 @@ const handleResetClick = () => {
           }
           disabled={timer.isRunning}
         />
-        <span>시간</span>
+        <span>hr</span>
         <input
           type="number"
           min="0"
@@ -127,7 +131,7 @@ const handleResetClick = () => {
           }
           disabled={timer.isRunning}
         />
-        <span>분</span>
+        <span>min</span>
         <input
           type="number"
           min="0"
@@ -142,7 +146,7 @@ const handleResetClick = () => {
           }
           disabled={timer.isRunning}
         />
-        <span>초</span>
+        <span>sec</span>
       </div>
       <div className={style.timer_buttons}>
         <button onClick={handleStartStopClick}>{timer.isRunning ? "Stop" : "Start"}</button>
@@ -150,6 +154,7 @@ const handleResetClick = () => {
           Reset
         </button>
       </div>
+    </div>
       <button onClick={()=>{navigate("/home")}}>home</button>
     </div>
   );

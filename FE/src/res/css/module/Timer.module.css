@@ -1,24 +1,42 @@
+/* timer.css */
 .timer_container {
     position: relative;
-    top: 52%;
-    left: 370px;
-    /* transform: translate(-50%, -50%);
-    display: flex; */
-    flex-direction: column;
+    top: 75%;
+    left: 73%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: row;
     align-items: center;
   }
-  
+  .custom_progress_bar {
+    text-shadow: 0 0 20px #1f95afaf, 0 0 30px #1f95afaf, 0 0 30px #1f95afaf;
+}
+/* @keyframes glowing {
+  0% {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.8);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.8);
+  }
+}
+   */
   .progress_bar_container {
-    /* width: 280px;
-    height: 280px; */
     width: 30vh;
     height: 30vh;
   }
-  
+  .controller {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+  }
   .timer_inputs {
     display: flex;
     align-items: center;
     margin-top: 10px;
+    justify-content: left; /* Align inputs to the right */
   }
   
   .timer_inputs input {
@@ -26,23 +44,26 @@
     width: 40px;
     padding: 5px;
     text-align: center;
-    margin-right: 5px;
+    margin-left: 5px; /* Adjust margin to create space between inputs */
     border: 1px solid #ddd;
     border-radius: 5px;
   }
   
   .timer_inputs span {
     font-size: 1.3rem;
-    margin-right: 5px;
+    margin-left: 5px; /* Adjust margin to create space between inputs and labels */
   }
   
   .timer_buttons {
     margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content:left; /* Align buttons to the right */
   }
   
   .timer_buttons button {
     font-size: 1.2rem;
-    margin-right: 10px;
+    margin-left: 5px; /* Adjust margin to create space between buttons */
     padding: 5px 10px;
     border: none;
     border-radius: 5px;

@@ -15,7 +15,7 @@ const Schedule = () => {
 
     useEffect(()=>{
         // const today = new Date().toISOString().slice(0,10)
-        const date = "2023-08-03 18:00:00.000000";
+        const date = "2023-08-03";
         // const getSchedules = async() : Promise<getSchedule> => {
 
         // }
