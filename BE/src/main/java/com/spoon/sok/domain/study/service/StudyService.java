@@ -311,7 +311,7 @@ public class StudyService {
             data.setId(sa.getId());
             data.setTitle(sa.getTitle());
             data.setContent(sa.getContent());
-            data.setAuthor(sa.getUser().getNickname());
+            data.setAuthor(sa.getUsers().getNickname());
             data.setUploadAt(sa.getUploadAt());
 
             for (File file : sa.getFileList()) {
