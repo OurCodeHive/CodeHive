@@ -33,7 +33,7 @@ public class StudyRoomController {
     private final StudyService studyService;
 
     // [스터디룸] 스터디 일정을 수정함
-    // [GET] [api/study/meeting/{studyinfo_id}
+    // [PUT] [api/study/meeting/{studyinfo_id}
     @PutMapping("/study/{studyinfoId}")
     public ResponseEntity<Map<String, Object>> updateStudyGroup(
             @PathVariable("studyinfoId") Long studyinfoId, @RequestBody StudyMeetingRequestDTO studyMeetingRequestDTO) {

@@ -143,6 +143,8 @@ public class StudyService {
 //            studyInfo.updateTitle(studyUpdateDTO.getTitle());
             studyInfo.updateStartAt(studyUpdateDTO.getStartAt());
             studyInfo.updateEndAt(studyUpdateDTO.getEndAt());
+
+
             studyRepository.save(studyInfo); // 생략 가능
             return StudyUpdateResult.SUCCESS;
         }
