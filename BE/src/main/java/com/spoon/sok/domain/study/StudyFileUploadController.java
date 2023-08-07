@@ -37,7 +37,6 @@ public class StudyFileUploadController {
         requestDto.setTitle(title);
         requestDto.setContent(content);
         studyFileUploadService.createStudyArchiveAndstudyFileUpload(requestDto);
-        
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }
