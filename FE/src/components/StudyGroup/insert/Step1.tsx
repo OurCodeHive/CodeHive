@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { AlertPopup } from "@/utils/Popup";
 import CustomEditor from "@/utils/CustomEditor/CustomEditor";
-import CustomDatePickcer from "@/utils/CustomDatePicker";
+import CustomDatePicker from "@/utils/CustomDatePicker";
 import FileInput from "@/utils/FileInfo/Input";
 
 
@@ -15,8 +15,8 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
     const today = new Date();
     const titleInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
     const descInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
-    const startDateInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
-    const endDateInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
     const profileInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
 
     const AlertPopupInfo = {
@@ -46,14 +46,20 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
             return;
         }
 
-        if(startDateInput.current == null ||  startDateInput.current.value == ''){
+        if(startDate == null ||  startDate == ""){
             setAlertPopupTitle("시작날짜를 설정해주세요");
             changePopupFlag(true);
             return;
         }
 
-        if(endDateInput.current == null ||  endDateInput.current.value == ''){
+        if(endDate == null ||  endDate == ""){
             setAlertPopupTitle("종료날짜를 설정해주세요");
+            changePopupFlag(true);
+            return;
+        }
+
+        if(new Date(startDate) > new Date(endDate)){
+            setAlertPopupTitle("시작날짜가 종료날짜보다 미래에 있습니다");
             changePopupFlag(true);
             return;
         }
@@ -61,10 +67,9 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
         let param = new FormData();
         param.append("userId", String(userId));
         param.append("title", titleInput.current.value);
-        param.append("startAt", startDateInput.current.value);
-        param.append("endAt", endDateInput.current.value);
+        param.append("startAt", startDate);
+        param.append("endAt", endDate);
         param.append("description", String(descInput.current?.value));
-        console.log(profileInput.current?.files)
         
         // 파일 존재하는 경우만 업로드
         if (profileInput.current?.files) {
@@ -104,11 +109,13 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
                         <span className="essential">기간</span>
                     </div>
                     <div className="col-12 col-md-0 input_box">
-                        <input type="hidden" ref={startDateInput} />
-                        <CustomDatePickcer resultInput={startDateInput} settingDate={today} />
+                        <div className="col-12 date_box">
+                            <CustomDatePicker setData={setStartDate} settingDate={today} minDate={today}/>
+                        </div>
                         <span className="addr_text">-</span>
-                        <input type="hidden" ref={endDateInput} />
-                        <CustomDatePickcer resultInput={endDateInput} settingDate={today} />
+                        <div className="col-12 date_box">
+                            <CustomDatePicker setData={setEndDate} settingDate={today} minDate={today}/>
+                        </div>
                     </div>
                 </div>
                 <div className="col-12 form_style_0 type_file">
