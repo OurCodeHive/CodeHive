@@ -33,7 +33,7 @@ function IDEHeader(props: IDEHeaderProps) {
     PopupStatus: popupStatus,
     zIndex: 999,
     maxWidth: 400,
-    PopupTitle: "<br>스터디?",
+    PopupTitle: "<br>스터디를 종료하시겠습니까?",
     ClosePopupProp : () => setPopupStatus(false),
     ConfirmPopupProp : () => exit()
   }
