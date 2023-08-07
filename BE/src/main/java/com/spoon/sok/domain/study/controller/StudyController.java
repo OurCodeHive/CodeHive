@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -29,6 +30,7 @@ public class StudyController {
     private final StudyService studyService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    //
     @GetMapping("/calendar/study")
     public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("user") String userId) {
         List<StudyAppointmentDTO> studyMeetingList = studyService.getStudyMeeting(userId);
@@ -49,10 +51,17 @@ public class StudyController {
 
     @GetMapping("/today/study")
     public ResponseEntity<Map<String, Object>> getTodayStudyMeeting(@RequestParam("today") String today, HttpServletRequest request) {
+        // Date 형식으로 파싱
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date todayDate;
+        try {
+            todayDate = dateFormat.parse(today);
+        } catch (ParseException e) {
+            todayDate = null;
+        }
 
         Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
-
-        List<StudyAppointmentDTO> todayMeetingList = studyService.getTodayStudyMeeting(today, (String) token.get("users_id"));
+        List<StudyAppointmentDTO> todayMeetingList = studyService.getTodayStudyMeeting(todayDate, (String) token.get("users_id"));
 
         Map<String, Object> response = new HashMap<>();
 
@@ -67,6 +76,7 @@ public class StudyController {
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
+
 
     @GetMapping("/study")
     public ResponseEntity<Map<String, Object>> getStudyGroup(@RequestParam("user") String userId) {

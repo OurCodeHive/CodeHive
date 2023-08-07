@@ -51,9 +51,10 @@ public class StudyService {
         return studyRepository.findByUserIdStudyMeetingsQuery(userId);
     }
 
-    public List<StudyAppointmentDTO> getTodayStudyMeeting(String today, String userId) {
+    public List<StudyAppointmentDTO> getTodayStudyMeeting(Date today, String userId) {
         return studyRepository.findByTodayStudyMeetingsQuery(today, userId);
     }
+
 
     public List<StudyInfoDto> getUserStudyGroupProceeding(String userId) {
         return studyRepository.findByUserIdStudyInfoProceedingQuery(userId);
@@ -145,6 +146,8 @@ public class StudyService {
 //            studyInfo.updateTitle(studyUpdateDTO.getTitle());
             studyInfo.updateStartAt(studyUpdateDTO.getStartAt());
             studyInfo.updateEndAt(studyUpdateDTO.getEndAt());
+
+
             studyRepository.save(studyInfo); // 생략 가능
             return StudyUpdateResult.SUCCESS;
         }
