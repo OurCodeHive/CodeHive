@@ -84,6 +84,7 @@ const handleResetClick = () => {
   };
 
   return (
+    <>
     <div className={style.timer_container}>
       <div className={style.progress_bar_container}>
         <div className={style.custom_progress_bar}>
@@ -93,15 +94,17 @@ const handleResetClick = () => {
           text={`${formatTime(timer.hours)}:${formatTime(timer.minutes)}:${formatTime(timer.seconds)}`}
           styles={buildStyles({
             textSize : "1.4rem",
-            textColor: "#222",
+            textColor: "#fff",
             pathColor: "#1f95afaf",
             trailColor: "#9999995a",
+            
           })}
           strokeWidth={5}
         />
         </div>
       </div>
       <div className={style.controller}>
+      <div className={style.subtitle_timer} >타이머로 공부 시간을 관리해보세요</div>
       <div className={style.timer_inputs}>
         <input
           type="number"
@@ -155,8 +158,8 @@ const handleResetClick = () => {
         </button>
       </div>
     </div>
-      <button onClick={()=>{navigate("/home")}}>home</button>
     </div>
+    </>
   );
 };
 
