@@ -6,7 +6,7 @@ interface Props {
   userstudyId: number;
 }
 
-function AppInvite({usersId, userstudyId}) {
+function AppInvite() {
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [isAccepted, setIsAccepted] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
