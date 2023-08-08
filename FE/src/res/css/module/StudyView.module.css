@@ -11,6 +11,7 @@
 .study_view_menu_con > li > div > img{margin-bottom: 5px;}
 .study_view_menu_con > li:last-child{margin-right: 0;}
 
+.study_plus_btn{position: absolute; top: -1px; right: 0; border: 0px none; overflow: hidden; border-radius: 11px; padding: 2px 15px; font-size: 23px; font-size: 2.3rem; line-height: 29px; line-height: 2.9rem; font-weight: 400; letter-spacing: -0.02em; color: #17181d;}
 
 @media all and (min-width: 992px) {
     .study_view_top_content_con{flex-wrap: nowrap; width: calc(100% + 20px); margin-left: -20px;}

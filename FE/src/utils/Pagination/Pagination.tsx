@@ -11,14 +11,15 @@ export type PaginationType = {
 const Pagination = ({PaginationInfo} : {PaginationInfo : PaginationType}) => {
     
     const [CurIdx, setCurIdx] = useState(1);
-    const FirstIdx = 1, LastIdx = Math.floor(PaginationInfo.totalCnt / PaginationInfo.perSize);
+    const FirstIdx = 1, LastIdx = Math.floor(PaginationInfo.totalCnt / PaginationInfo.perSize) > 0 ? Math.floor(PaginationInfo.totalCnt / PaginationInfo.perSize) : 1;
     let remain = CurIdx % PaginationInfo.range;
     const [PrevIdx, setPrevIdx] = useState(CurIdx - remain > 0 ? CurIdx - remain : 1);
     const [NextIdx, setNextIdx] = useState(CurIdx - remain + PaginationInfo.range + 1 < LastIdx ? CurIdx - remain + PaginationInfo.range + 1 : LastIdx);
-    
+
     //처음 세팅
     const initList = [] as number[];
     for(let i= PrevIdx; i < NextIdx; i++) initList.push(i);
+    if(initList.length == 0) initList.push(1);
     const [CurList, setCurList] = useState<number[]>(initList);
     
     function paginationClick(idx: number) {
@@ -37,6 +38,8 @@ const Pagination = ({PaginationInfo} : {PaginationInfo : PaginationType}) => {
         for(let i=tempPrev + 1; i < tempNext; i++) tempList.push(i);
         if(tempPrev == FirstIdx) tempList.unshift(tempPrev);
         if(tempNext == LastIdx) tempList.push(tempNext);
+        if(tempPrev == tempNext) tempList.shift();
+        if(tempList.length == 0) tempList.push(1);
         setCurList(tempList);
         setPrevIdx(() => tempPrev);
         setNextIdx(() => tempNext);

@@ -58,4 +58,14 @@ const getNoticeView = async (studyinfoId: number, studyboardId: number, success:
     await api.get(`/study/${studyinfoId}/board/${studyboardId}`).then(success).catch(fail);
 }
 
-export {getList, insertData, inviteMember, getView, getNoticeList, getNoticeView};
+/**
+ * insert study
+ * @param param { param : FormData }
+ * @param success 
+ * @param fail 
+ */
+const insertNoticeData = async (studyinfoId: number, param: object, success: ({data} : {data: StudyType}) => void, fail: () => void) => {
+    await api.post(`/study/${studyinfoId}/board`, JSON.stringify(param)).then(success).catch(fail);
+}
+
+export {getList, insertData, inviteMember, getView, getNoticeList, getNoticeView, insertNoticeData};
