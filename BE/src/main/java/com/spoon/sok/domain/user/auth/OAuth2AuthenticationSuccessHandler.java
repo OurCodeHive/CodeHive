@@ -1,8 +1,11 @@
 package com.spoon.sok.domain.user.auth;
 
 import com.spoon.sok.domain.user.dto.response.UserResponseDto;
+import com.spoon.sok.domain.user.entity.User;
 import com.spoon.sok.domain.user.repository.CookieAuthorizationRequestRepository;
+import com.spoon.sok.domain.user.repository.UserRepository;
 import com.spoon.sok.util.JwtTokenProvider;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,6 +36,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisTemplate redisTemplate;
     private final CookieAuthorizationRequestRepository cookieAuthorizationRequestRepository;
+    private final UserRepository userRepository;
 
     private UserResponseDto.TokenInfo tokenInfo;
 
@@ -69,13 +73,19 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         tokenInfo = jwtTokenProvider.generateToken(authentication);
 
-        System.out.println(tokenInfo.getRefreshTokenExpirationTime());
+        Claims claims = jwtTokenProvider.parseClaims(tokenInfo.getAccessToken());
+        Long userId = Long.parseLong((String) claims.get("users_id"));
+        System.out.println(userId);
+        Optional<User> user = userRepository.findById(userId);
 
         redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", tokenInfo.getAccessToken())
+                .queryParam("email", authentication.getName())
+                .queryParam("userId", userId)
+                .queryParam("nickname", user.get().getNickname())
                 .build().toUriString();
     }
 
