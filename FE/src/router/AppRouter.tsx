@@ -11,7 +11,7 @@ import ChangePassword from "@/components/Login/ChangePassword";
 import AppHome from "@/pages/AppHome";
 import TimerApp from "@/components/home/Timer";
 import Calendar from "@/components/home/Calendar";
-import CalenTest from "@/components/home/CalenTest";
+import CalenTest from "@/components/home/Calendar";
 import RedirectLogin from "@/components/Login/RedirectLogin";
 
 const AppRouter = () => {

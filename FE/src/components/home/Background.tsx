@@ -7,8 +7,7 @@ import Schedule from './Schedule';
 import Lnb from '../inc/Lnb';
 import Timer from './Timer';
 import {useTimerState} from "@/atom/TimerAtom";
-import CalenTest from "@/components/home/CalenTest";
-
+import CalendarApp from './Calendar';
 
 function Background(){
     const { timer, setTimer, startTimer, stopTimer, resetTimer } = useTimerState();
@@ -61,8 +60,7 @@ function Background(){
                     {/* <Lnb></Lnb> */}
                     <Schedule></Schedule>
                     <Timer></Timer>
-                    <CalenTest></CalenTest>
-
+                    <CalendarApp></CalendarApp>
                 </div>
             </div>
         </div>
