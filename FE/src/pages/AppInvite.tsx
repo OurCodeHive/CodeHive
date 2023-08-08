@@ -1,7 +1,12 @@
 import MessagePopUp from "@/components/StudyGroup/invite/Message";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function AppInvite() {
+interface Props {
+  usersId: number;
+  userstudyId: number;
+}
+
+function AppInvite({usersId, userstudyId}) {
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [isAccepted, setIsAccepted] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
@@ -19,15 +24,9 @@ function AppInvite() {
     setIsPopUpOpen(true);
   }
 
-  // const handleAccept = () => {
-  //   setIsAccepted(true);
-  //   setIsRejected(false);
-  //   handleOpenPopUp();
-  // }
-
   const handleAccept = () => {
     // POST 요청 보내기
-    fetch("https://localhost:8080/api/study/invite", {
+    fetch("http://localhost:8080/api/study/invite", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -48,12 +47,23 @@ function AppInvite() {
       });
   };
 
-
   const handleReject = () => {
     setIsAccepted(true);
     setIsRejected(true);
-    handleOpenPopUp();
-  }
+  };
+
+    // 렌더링 후에 팝업을 열거나 상태 업데이트 처리
+    useEffect(() => {
+      if (isPopUpOpen) {
+        handleOpenPopUp();
+      }
+    }, [isPopUpOpen]);
+  
+    useEffect(() => {
+      if (isAccepted || isRejected) {
+        handleOpenPopUp();
+      }
+    }, [isAccepted, isRejected]);
 
   return (
     <div className="col-12 sub_wrap">
@@ -65,8 +75,7 @@ function AppInvite() {
         </>
       )}
 
-      {isPopUpOpen && (<MessagePopUp message={isRejected ? message.rejected : message.accepted} 
-                                     onClose={handleClosePopUp}/>)}
+      {isPopUpOpen && (<MessagePopUp message={isRejected ? message.rejected : message.accepted}/>)}
 
     </div>
   )
