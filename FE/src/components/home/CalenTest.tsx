@@ -15,7 +15,8 @@ function CalendarApp() {
   const [currMonth, setCurrMonth] = useState(currentDate.getMonth());
   const [currYear, setCurrYear] = useState(currentDate.getFullYear());
 //   const [data, setData] = useState<Schedule[]>([]);
-
+  const [selectedDateInfo, setSelectedDateInfo] = useState<Schedule[]>([]);
+  const [showPopover, setShowPopover] = useState(false); // State to control popover visibility
   useEffect(()=>{
     // setData(data);
   },[])
@@ -36,14 +37,14 @@ function CalendarApp() {
     }
 
     for (let i = 1; i <= lastDateOfMonth; i++) {
-      console.log(data);
       const isToday = i === currentDate.getDate() && currMonth === currentDate.getMonth() && currYear === currentDate.getFullYear();
     //   const scheduleTitle = data.find(schedule => schedule.date === `${currYear}-${(currMonth + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`)?.study_title || '';
       const daySchedules = data.filter(schedule => {
         const scheduleDate = new Date(schedule.date);
         return scheduleDate.getFullYear() === currYear && scheduleDate.getMonth() === currMonth && scheduleDate.getDate() === i;
       });
-      console.log(daySchedules);
+      // console.log(daySchedules);
+    
       const scheduleElements = daySchedules.map((schedule, index) => (
         <div key={`schedule-${i}-${index}`}>
           {schedule.study_title}
@@ -52,12 +53,14 @@ function CalendarApp() {
       
       liTags.push(
         <li key={`curr-${i}`} 
-        className={isToday ? style.active : ""}
+        className={`${isToday ? style.active : ''} ${daySchedules.length > 0 ? style.hasSchedule : ''}`}
+        onClick={() => handleDateClick(i, daySchedules)}
         // data-schedule={scheduleTitle}
         >{i}
-        {scheduleElements}
+        {/* {scheduleElements} */}
         </li>);
     }
+    
 
     for (let i = lastDayOfMonth; i < 6; i++) {
       liTags.push(<li key={`next-${i}`} className={style.inactive}>{i - lastDayOfMonth + 1}</li>);
@@ -67,6 +70,20 @@ function CalendarApp() {
 
     
   };
+  const handleDateClick = (day:number, daySchedules:Schedule[]) => {
+    const selectedDate = new Date(currYear, currMonth, day+1);
+    const formattedDate = selectedDate.toISOString().split('T')[0];
+    console.log(`Schedules for ${formattedDate}:`);
+    console.log(daySchedules);
+    if (selectedDateInfo.length === 0) {
+      setSelectedDateInfo(daySchedules);
+      setShowPopover(true);
+    } else {
+      setSelectedDateInfo([]);
+      setShowPopover(false);
+    }
+
+  }
 
   const handleIconClick = (iconId:string) => {
     setCurrMonth(prevMonth => iconId === "prev" ? prevMonth - 1 : prevMonth + 1);
@@ -79,6 +96,20 @@ function CalendarApp() {
       setCurrentDate(new Date());
     }
   };
+  const renderPopover = () => (
+    showPopover && (
+    <div className={style.popover}>
+      {selectedDateInfo.map((schedule, index) => (
+        <>
+        <div key={`popover-schedule-${index}`}>
+          {schedule.study_title} 
+        </div>
+        <div>({schedule.start_time} - {schedule.end_time})</div>
+        </>
+      ))}
+    </div>
+    )
+  );
 
   return (
     <div className={style.wrapper}>
@@ -103,6 +134,7 @@ function CalendarApp() {
           {renderCalendar()}
         </ul>
       </div>
+      {selectedDateInfo.length > 0 && renderPopover()}
     </div>
 
   );

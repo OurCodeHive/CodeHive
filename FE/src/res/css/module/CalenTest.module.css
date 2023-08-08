@@ -1,9 +1,12 @@
 
 .wrapper{
-  margin-top: 50px;
-  margin-left: 50px;
+  position: fixed;
+  top: 100px;
+  right: 100px;
+  /* margin-top: 50px;
+  margin-left: 50px; */
   width: 400px;
-  background: #fff;
+  background: #ffffffa5;
   border-radius: 10px;
   box-shadow: 0 15px 40px rgba(0,0,0,0.12);
 }
@@ -44,7 +47,7 @@ header .current-date{
   font-weight: 500;
 }
 .calendar{
-  padding: 20px;
+  padding: 15px;
 }
 .calendar ul{
   display: flex;
@@ -68,9 +71,17 @@ header .current-date{
   z-index: 1;
   cursor: pointer;
   position: relative;
-  /* margin-top: 30px; */
-  /**/
+  height: 45px;
   padding: 10px;
+  padding-bottom: 5px;
+    /* margin-top: 30px; */
+  /**/
+  /* line-height: 40px; */
+  /* padding: 5px 0; */
+}
+.calendar .days li div {
+  line-height: 12px;
+  font-size: 10px;
 }
 .days li.inactive{
   color: #aaa;
@@ -97,5 +108,37 @@ header .current-date{
   background: #45a5b8bf;
 }
 .days li:not(.active):hover::before{
-  background: #f2f2f2;
+  background: #45a5b875;
+}
+
+.popover {
+  position: absolute;
+  background-color: #45a5b84f;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  top: 0;
+  right: 100%; /* Adjust the positioning to the left side */
+  width: 100px;
+  height: 300px;
+  transform: translate(-10px, 0); /* Adjust the translation as needed */
+}
+
+.popover div {
+  margin-bottom: 5px;
+}
+.hasSchedule::after {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 30px;
+  /* bottom: 5px; */
+  left: 50%;
+  transform: translateX(-50%);
 }
