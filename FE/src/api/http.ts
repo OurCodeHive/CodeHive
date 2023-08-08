@@ -40,17 +40,9 @@ let accessToken : string|null = localStorage.getItem("accessToken");
 
 authHttp.interceptors.request.use(
     (config : InternalAxiosRequestConfig):InternalAxiosRequestConfig => {
-<<<<<<< Updated upstream
-        console.log(accessToken);
-        if(config.headers && accessToken){
-            config.headers.Authorization = `Bearer ${accessToken}`;
-            console.log(config);
-=======
-        // console.log(accessToken);
         if (config.headers){
             config.headers.Authorization = 'Bearer ' + localStorage.getItem("accessToken");
             //console.log(config);
->>>>>>> Stashed changes
         }
       return config;
     }
@@ -64,15 +56,10 @@ interface IResponse extends AxiosResponse {
        headers: string;
     };
  }
-<<<<<<< Updated upstream
 // authHttp.interceptors.response.use(
     
 //     async (response : IResponse): Promise<any> => {
-=======
 
-authHttp.interceptors.response.use(
-    async (response : IResponse): Promise<any> => {
->>>>>>> Stashed changes
     
 //       const { config, status } = response; //response의 config 파일
 //       const originalRequest = config;
