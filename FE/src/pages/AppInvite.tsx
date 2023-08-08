@@ -2,7 +2,6 @@ import MessagePopUp from "@/components/StudyGroup/invite/Message";
 import { useState } from "react";
 
 function AppInvite() {
-
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [isAccepted, setIsAccepted] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
@@ -20,11 +19,35 @@ function AppInvite() {
     setIsPopUpOpen(true);
   }
 
+  // const handleAccept = () => {
+  //   setIsAccepted(true);
+  //   setIsRejected(false);
+  //   handleOpenPopUp();
+  // }
+
   const handleAccept = () => {
-    setIsAccepted(true);
-    setIsRejected(false);
-    handleOpenPopUp();
-  }
+    // POST 요청 보내기
+    fetch("https://localhost:8080/api/study/invite", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "usersId": 2,
+        "userstudyId": 12
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        setIsAccepted(true); // 성공적으로 수락했을 때 상태 업데이트
+        handleOpenPopUp(); // 팝업 열기
+        console.log(data);
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
+  };
+
 
   const handleReject = () => {
     setIsAccepted(true);
