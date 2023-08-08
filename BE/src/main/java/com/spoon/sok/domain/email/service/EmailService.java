@@ -90,6 +90,16 @@ public class EmailService {
         Map<String, Object> result = new HashMap<>();
         HttpStatus status;
 
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if (user.isEmpty()) {
+            result.put("status", 400);
+            result.put("message", "등록되지 않는 이메일 입니다.");
+            status = HttpStatus.BAD_REQUEST;
+
+            return new ResponseEntity<Map<String, Object>>(result, status);
+        }
+
         if (!email.contains("@")) {
             result.put("status", 400);
             result.put("message", "올바른 이메일 형식이 아닙니다.");
