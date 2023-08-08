@@ -34,7 +34,7 @@ function CalendarApp() {
    
     async function requestCalendar(): Promise<void> {
         try {
-            const response: AxiosResponse<CalendarData> = await authHttp.get<CalendarData>(`/calendar/study?user=${pk}`);
+            const response: AxiosResponse<CalendarData> = await authHttp.get<CalendarData>(`/calendar/study?user={pk}`);
             console.log(response.data);
             const {calendar} = response.data;
             if(calendar){
