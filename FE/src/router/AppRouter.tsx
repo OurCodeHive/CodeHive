@@ -10,8 +10,12 @@ import FindPassword from "@/components/Login/FindPassword";
 import ChangePassword from "@/components/Login/ChangePassword";
 import AppHome from "@/pages/AppHome";
 import TimerApp from "@/components/home/Timer";
+<<<<<<< Updated upstream
 import Calendar from "@/components/home/Calendar";
 import CalenTest from "@/components/home/CalenTest";
+=======
+import RedirectLogin from "@/components/Login/RedirectLogin";
+>>>>>>> Stashed changes
 const AppRouter = () => {
   return (
     <>
@@ -29,9 +33,13 @@ const AppRouter = () => {
           <Route path="/changepassword" element={<ChangePassword/>}/>
           <Route path="/home" element={<AppHome/>}/>
           <Route path="/timer" element={<TimerApp/>}/>
+<<<<<<< Updated upstream
           <Route path="/calendar" element={<Calendar/>}/>
           <Route path="/calentest" element={<CalenTest/>}/>
 
+=======
+          <Route path="/login/redirect" element={<RedirectLogin/>}/>
+>>>>>>> Stashed changes
         </Routes>
       </BrowserRouter>
     </>

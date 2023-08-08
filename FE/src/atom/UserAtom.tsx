@@ -6,11 +6,10 @@ function getAccessToken(){
     // return accessToken
 }
 interface userType {
-    email : string,
+    email : string | null,
     userId : number,
-    nickname : string,
-    accessToken : string,
-    refreshToken:string
+    nickname : string | null,
+    accessToken : string | null,
 }
 
 const { persistAtom } = recoilPersist({
@@ -25,7 +24,6 @@ export const userState = atom<userType>({
     userId : 15,
     nickname : "Minsung",
     accessToken : "",
-    refreshToken:"",
   }, // 초깃값
   effects_UNSTABLE: [persistAtom],
 });

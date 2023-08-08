@@ -42,10 +42,11 @@ const Login = () => {
             login();
         }
     }
+
     function loginPromise(key: string, value:string) {
         return new Promise((res) => {
             console.log(res);
-            setTimeout(res, 1000);
+            setTimeout(res, 500);
         }).then(() => {
             localStorage.setItem(key, value);
         })
@@ -86,22 +87,17 @@ const Login = () => {
                 email : email,
                 userId : response.data.userId,
                 nickname : response.data.nickname,
-                accessToken : accessToken,
-                refreshToken: response.data.refreshToken});
+                accessToken : accessToken});
 
                 alert("로그인에 성공하였습니다");
 
                 // const aT = await loginPromise('accessToken', JSON.stringify(response.data.accessToken));
-                // await loginPromise('expireAt', moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
+                await loginPromise('expireAt', moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
+                await loginPromise('accessToken', response.data.accessToken);
 
                 // aT.then(()=>{navigate("/home")}).catch(console.log)
                 // let setLocalStorage = new Promise((res, rej) =>{
-                    localStorage.setItem("accessToken", response.data.accessToken);
-                    localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
-                    navigate("/home");
-                setTimeout(()=>{
-                    navigate("/home");
-                },1000)
+                navigate("/home");
 
             // })
             // await setLocalStorage.then((res)=>{console.log(res)}).catch(console.log)
@@ -117,6 +113,7 @@ const Login = () => {
                 return;
             }
           }
+
           doLogin()
           .then((res)=>{
             console.log(res);
@@ -179,7 +176,11 @@ const Login = () => {
         </div>
         <div className={`${style.btn_area}`}>
             {/* <button onClick={googleLogin} className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></button> */}
+<<<<<<< Updated upstream
             <a href='https://codehive.shop:8080/oauth2/authorize/google?redirect_uri=http://localhost:5173/home' className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></a>
+=======
+            <a href='http://localhost:8080/oauth2/authorize/google?redirect_uri=http://localhost:5173/login/redirect' className={style.google}  type="submit"><img src={google} alt="구글 아이콘" /><span style={{fontSize:"16px"}}>Google로 로그인</span></a>
+>>>>>>> Stashed changes
         </div>
     </section>
     </div>
