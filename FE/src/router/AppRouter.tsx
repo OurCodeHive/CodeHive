@@ -11,6 +11,10 @@ import FindPassword from "@/components/Login/FindPassword";
 import ChangePassword from "@/components/Login/ChangePassword";
 import AppHome from "@/pages/AppHome";
 import TimerApp from "@/components/home/Timer";
+import Calendar from "@/components/home/Calendar";
+import CalenTest from "@/components/home/Calendar";
+import RedirectLogin from "@/components/Login/RedirectLogin";
+
 const AppRouter = () => {
   return (
     <>
@@ -29,7 +33,9 @@ const AppRouter = () => {
           <Route path="/changepassword" element={<ChangePassword/>}/>
           <Route path="/home" element={<AppHome/>}/>
           <Route path="/timer" element={<TimerApp/>}/>
-
+          <Route path="/calendar" element={<Calendar/>}/>
+          <Route path="/calentest" element={<CalenTest/>}/>
+          <Route path="/login/redirect" element={<RedirectLogin/>}/>
         </Routes>
       </BrowserRouter>
     </>

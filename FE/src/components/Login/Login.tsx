@@ -42,10 +42,11 @@ const Login = () => {
             login();
         }
     }
+
     function loginPromise(key: string, value:string) {
         return new Promise((res) => {
             console.log(res);
-            setTimeout(res, 1000);
+            setTimeout(res, 500);
         }).then(() => {
             localStorage.setItem(key, value);
         })
@@ -78,7 +79,7 @@ const Login = () => {
               console.log(response.data);
 
               let len = response.data.accessToken.length;
-            let accessToken = response.data.accessToken.slice(1,len-1);
+              let accessToken = response.data.accessToken.slice(1,len-1);
 
               
               //recoil!
@@ -86,22 +87,17 @@ const Login = () => {
                 email : email,
                 userId : response.data.userId,
                 nickname : response.data.nickname,
-                accessToken : accessToken,
-                refreshToken: response.data.refreshToken});
+                accessToken : accessToken});
 
                 alert("로그인에 성공하였습니다");
 
                 // const aT = await loginPromise('accessToken', JSON.stringify(response.data.accessToken));
-                // await loginPromise('expireAt', moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
+                await loginPromise('expireAt', moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
+                await loginPromise('accessToken', response.data.accessToken);
 
                 // aT.then(()=>{navigate("/home")}).catch(console.log)
                 // let setLocalStorage = new Promise((res, rej) =>{
-                    localStorage.setItem("accessToken", response.data.accessToken);
-                    localStorage.setItem("expireAt", moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
-                    navigate("/home");
-                setTimeout(()=>{
-                    navigate("/home");
-                },1000)
+                navigate("/home");
 
             // })
             // await setLocalStorage.then((res)=>{console.log(res)}).catch(console.log)
@@ -117,6 +113,7 @@ const Login = () => {
                 return;
             }
           }
+
           doLogin()
           .then((res)=>{
             console.log(res);
