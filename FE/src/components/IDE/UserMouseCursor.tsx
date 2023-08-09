@@ -1,8 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import * as StompJs from '@stomp/stompjs';
-import { useParams } from 'react-router-dom';
 
-function UserMouseCursor() {
+function UserMouseCursor(props:any) {
 
   const client = useRef<any>({});
 
@@ -17,18 +16,16 @@ function UserMouseCursor() {
 
   let [check, setCheck] = useState(true);
 
-  let { id } = useParams();
-
   const mouseFunc = (e:any) => {
     let x = e.clientX;
     let y = e.clientY;
     setX(x);
     setY(y);
     const spot = {
-      userId:id,
-      studyRoomId:1,
-      x:x,
-      y:y,
+      userId: props.userId,
+      studyRoomId: props.id,
+      x: x,
+      y: y,
     }
     if (check) {
       emitMoveCursor(spot)
@@ -68,7 +65,7 @@ function UserMouseCursor() {
     client.current.subscribe('/sub/cursor/' + 1, (body:StompJs.Message) => {
       const message = JSON.parse(body.body);
       console.log(message)
-      if (message.userId === 2) {
+      if (message.userId !== props.userId) {
         setYourX(message.x);
         setYourY(message.y);
       } else {
@@ -91,19 +88,21 @@ function UserMouseCursor() {
   
   return(
     <>
-      <img 
+      {/* <img 
         src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/cursor.png"
         id="cursor"
         style={{
+          zIndex:"999",
           position: "absolute",
           left:myX + "px",
           top:myY + "px"
         }}
-      ></img>
+      ></img> */}
       <img 
-        src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/cursor2.png"
+        src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/cursor.png"
         id="cursor"
         style={{
+          zIndex:"999",
           position: "absolute",
           left:yourX + "px",
           top:yourY + "px"

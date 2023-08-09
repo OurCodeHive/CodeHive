@@ -2,10 +2,13 @@ import { OpenVidu } from 'openvidu-browser';
 import axios from 'axios';
 import { Component } from 'react';
 import UserVideoComponent from './UserVideoComponent';
-import JoinUser from './JoinUserListComp';
+import JoinUser from '../IDE/JoinUserListComp';
+import JoinUserMouse from '../IDE/JoinUserMouse';
+
 
 // APPLICATION_SERVER_URL을 상수로 정의하고 타입을 명시합니다.
 const APPLICATION_SERVER_URL = import.meta.env.VITE_RTC;
+const accessToken = localStorage.getItem("accessToken");
 
 class VoiceCallComp extends Component {
   constructor(props) {
@@ -15,6 +18,7 @@ class VoiceCallComp extends Component {
     this.state = {
       mySessionId: this.props.mySessionId,
       myUserName: this.props.myUserName,
+      userId:this.props.userId,
       session: undefined,
       mainStreamManager: undefined,  // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
       publisher: undefined,
@@ -123,7 +127,13 @@ class VoiceCallComp extends Component {
         this.getToken().then((token) => {
           // 첫 번째 매개변수는 OpenVidu 배포로부터 얻은 토큰이며, 두 번째 매개변수는 'streamCreated' 이벤트에서
           // 각 사용자의 클라이언트 데이터로 사용됩니다. DOM에 사용자의 닉네임으로 추가됩니다.
-          mySession.connect(token, { clientData: this.state.myUserName })
+          mySession.connect(token, { clientData: 
+            {
+             name: this.state.myUserName,
+             id: this.state.userId
+            }
+          
+          })
           .then(async () => {
 
             // --- 5) 자신의 카메라 스트림을 얻습니다. ---
@@ -181,6 +191,7 @@ class VoiceCallComp extends Component {
       subscribers: [],
       mySessionId: this.props.mySessionId,
       myUserName: this.props.myUserName,
+      userId: this.props.userId,
       mainStreamManager: undefined,
       publisher: undefined
     });
@@ -222,24 +233,35 @@ class VoiceCallComp extends Component {
 
   render() {
    
-    let list = [];
+    const userNameList = [];
+    const userIdList = [];
 
     const subscribers = this.state.subscribers;
     const pub = this.state.publisher;
     if (pub === undefined) {
     } else {
-      list.push(JSON.parse(pub.stream.connection.data).clientData);
+      userNameList.push(JSON.parse(pub.stream.connection.data).clientData.name);
+      userIdList.push(JSON.parse(pub.stream.connection.data).clientData.id);
     }
     if (subscribers === undefined) {
     } else {
       for (let sub of subscribers) {
-        list.push(JSON.parse(sub.stream.connection.data).clientData);
+        userNameList.push(JSON.parse(sub.stream.connection.data).clientData.name);
+        userIdList.push(JSON.parse(sub.stream.connection.data).clientData.id);
       }
     }
     
     return (
       <>
-        <JoinUser user={list}/> 
+        {
+         userNameList.length === 0?
+         null
+         : 
+         <div>
+           <JoinUser userNameList={userNameList}/>
+           <JoinUserMouse userIdList={userIdList} studyRoomId={this.state.mySessionId}/>
+         </div>
+        }
         <div style={{
           display:"none"
         }}>
@@ -277,15 +299,24 @@ class VoiceCallComp extends Component {
   }
 
   async createSession(sessionId) {
-    const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions', { customSessionId: sessionId }, {
-      headers: { 'Content-Type': 'application/json', },
+    const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions',
+      { customSessionId: sessionId },{
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${accessToken}`
+      },
     });
     return response.data; // The sessionId
   }
 
   async createToken(sessionId) {
-    const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections', {}, {
-      headers: { 'Content-Type': 'application/json', },
+    const response = await axios.post
+    (APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections',
+    {}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
     });
     return response.data; // The token
   }
