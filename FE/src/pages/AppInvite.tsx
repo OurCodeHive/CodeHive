@@ -1,10 +1,12 @@
 import MessagePopUp from "@/components/StudyGroup/invite/Message";
 import { useState, useEffect } from "react";
 
-interface Props {
-  usersId: number;
-  userstudyId: number;
-}
+// 1. (수락버튼) handleAccept라는 요청함수 만들어 둠.
+//     1-1. http://localhost:8080/ 형태니까 꼭! 실서버로 변경
+// 2. (거절버튼) 요청함수 안만들었음.
+// 3.  async 필요.
+// 4. Message의 "닫기" 누르면 URL이 invite로 유지되어있음. 여기도 redirct?
+// 5. useState나 Recoil에 유저 정보를 넣어줘야하는데 이건 모르겠음.
 
 function AppInvite() {
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
