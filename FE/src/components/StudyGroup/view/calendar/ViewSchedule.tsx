@@ -25,7 +25,7 @@ function ViewSchedule() {
   const [data, setData] = useState<Schedule[]>([]);
   const [selectedDateInfo, setSelectedDateInfo] = useState<Schedule[]>([]);
   const [showPopover, setShowPopover] = useState(false); // State to control popover visibility
-
+  const [showAddPopover, setShowAddPopover] = useState(false);
   const parsedPk = JSON.parse(sessionStorage.getItem("sessionStorage") as string);
   const pk = parsedPk.useState.userId;
 
@@ -173,14 +173,14 @@ function ViewSchedule() {
           </>
         ))
       )}
-        <div className={style.add_icon}>&#43;</div> {/* Add icon */}
+        <div onClick={handleShowAddPopover} className={style.add_icon}>&#43;</div> {/* Add icon */}
       </div>
     )
   );
   
-  
-  
-  
+  const handleShowAddPopover = () => {
+    setShowAddPopover(true);
+  };
 
   return (
     <div className={style.wrapper}>
@@ -206,6 +206,11 @@ function ViewSchedule() {
         </ul>
       </div>
       {showPopover && renderPopover()}
+      {showAddPopover && (
+        <div className={` ${style.add_popover}`}>
+          <div>add a schedule</div>
+        </div>
+      )}
     </div>
 
   );
