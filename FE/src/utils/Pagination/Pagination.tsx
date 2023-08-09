@@ -23,7 +23,7 @@ const Pagination = ({PaginationInfo} : {PaginationInfo : PaginationType}) => {
     const [CurList, setCurList] = useState<number[]>(initList);
     
     function paginationClick(idx: number) {
-        PaginationInfo.changeIdx(idx);
+        PaginationInfo.changeIdx(idx - 1);
         remain = idx % PaginationInfo.range;
         let tempPrev = 0, tempNext = 0;
         if(remain !== 0){

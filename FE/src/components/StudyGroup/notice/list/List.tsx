@@ -11,7 +11,7 @@ import NoticeInsert from '../insert/Insert';
 
 const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag: boolean}) => {
     const param = {
-        page : 1,
+        page : 0,
         size : 10
     }
     const [ListContents, setListContents] = useState<JSX.Element[]>([]);
@@ -66,7 +66,7 @@ const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag:
     const openViewPopup = (idx: number) => {
         setViewStudyBoardId(() => idx);
         PopupInfo.PopupTitle = "공지사항 상세";
-        setPopupContents(<NoticeView studyBoardId={ViewStudyBoardId} closePopup={() => changePopupFlag(false)}/>);
+        setPopupContents(<NoticeView studyBoardId={idx} closePopup={() => changePopupFlag(false)}/>);
         changePopupFlag(true);
     }
 
@@ -77,7 +77,7 @@ const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag:
     }
 
     const completeInsert = () => {
-        changePage(1);
+        changePage(0);
         changePopupFlag(false);
     }
 
