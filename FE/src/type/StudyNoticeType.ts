@@ -8,7 +8,7 @@ export type StudyNoticeType = {
 }
 
 export type StudyNoticeListType = {
-    studyNoticeBoard : StudyNoticeType[];
+    studyNoticeList : StudyNoticeType[];
     totalCnt : number;
     status? : number;
 }

@@ -55,17 +55,16 @@ function Background(){
             <div className={style.home_background}>
                 <div className={style.home_filter}>
 
-                    {/* <Lnb></Lnb> */}
+                    <Lnb></Lnb>
                     {/* <Intro></Intro> */}
                     <div className={style.first_divisor}> 
                       <Comedy></Comedy>
                       <Timer></Timer>
                       <div>flex test</div>
                     </div >
-
                     <div className={style.first_divisor}>
                       <div>flex test</div>
-                      <CalendarApp class="popover"></CalendarApp>
+                      <CalendarApp isPopoverRight={false}></CalendarApp>
                       <Schedule></Schedule>
                     </div>
 

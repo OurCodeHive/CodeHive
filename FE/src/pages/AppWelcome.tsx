@@ -13,13 +13,13 @@ function Welcome() {
             <img src="../public/contents/MainText.png" alt="" />
             <img src="../public/contents/ScrollText.png" alt="" />
 
-        </div> */}
-        
+    </div> */}
+    <div className='background-video'>
         <video className={style.video} autoPlay muted>
             <source src={video} type="video/mp4"/>
         </video>
-        <div></div>
         <button onClick={()=>navigate("/login")} className={style.enter_login}></button>
+    </div>
 {/*         
         <img src="../public/contents/CodeHiveMainPic.png" alt="" /> */}
         </>

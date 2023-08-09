@@ -1,12 +1,13 @@
 /* timer.css */
 .timer_container {
-    /* position: inherit; */
-    position: relative;
+    /* position: relative;
     top: 77%;
-    /* bottom: 0px; */
-    left: 40%;
-    transform: translate(-50%, -50%);
+    left: 40%; */
+    align-self: center;
     display: flex;
+    height: 300px;
+    position: inherit;
+    transform: translate(-50%, -50%);
     flex-direction: row;
     align-items: center;
   }
