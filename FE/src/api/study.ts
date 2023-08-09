@@ -3,9 +3,10 @@
  * Date : 23/07/24
  * Contents : 스터디 관련 api 요청
 */
-import { StudyNoticeType, StudyNoticeListType } from '@/type/StudyNoticeType';
 import {authHttp, formHttp} from './http';
 import { StudyType, StudyListType } from '@/type/StudyType';
+import { StudyNoticeType, StudyNoticeListType } from '@/type/StudyNoticeType';
+import { StudyDocumentType, StudyDocumentListType } from '@/type/StudyDocumentType';
 
 const api = authHttp;
 const formApi = formHttp;
@@ -58,4 +59,22 @@ const getNoticeView = async (studyinfoId: number, studyboardId: number, success:
     await api.get(`/study/${studyinfoId}/board/${studyboardId}`).then(success).catch(fail);
 }
 
-export {getList, insertData, inviteMember, getView, getNoticeList, getNoticeView};
+/**
+ * insert study
+ * @param param { param : FormData }
+ * @param success 
+ * @param fail 
+ */
+const insertNoticeData = async (studyinfoId: number, param: object, success: ({data} : {data: StudyType}) => void, fail: () => void) => {
+    await api.post(`/study/${studyinfoId}/board`, JSON.stringify(param)).then(success).catch(fail);
+}
+
+const getDocumentList = async (studyinfoId: number, param: object, success: ({data} : {data : StudyDocumentListType}) => void, fail: (error: unknown) => void) => {
+    await api.get(`/study/${studyinfoId}/document`, { params: param }).then(success).catch(fail);
+}
+
+const getDocumentView = async (studyinfoId: number, studyDocumentId: number, success: ({data} : {data : StudyDocumentType}) => void, fail: (error: unknown) => void) => {
+    await api.get(`/study/${studyinfoId}/document/${studyDocumentId}`).then(success).catch(fail);
+}
+
+export {getList, insertData, inviteMember, getView, getNoticeList, getNoticeView, insertNoticeData, getDocumentList, getDocumentView};
