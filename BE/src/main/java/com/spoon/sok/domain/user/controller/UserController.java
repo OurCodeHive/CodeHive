@@ -3,6 +3,7 @@ package com.spoon.sok.domain.user.controller;
 import com.spoon.sok.domain.user.dto.request.*;
 import com.spoon.sok.domain.user.dto.response.GetUserInfoResponseDto;
 import com.spoon.sok.domain.user.dto.response.UserResponseDto;
+import com.spoon.sok.domain.user.entity.UserStudy;
 import com.spoon.sok.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j

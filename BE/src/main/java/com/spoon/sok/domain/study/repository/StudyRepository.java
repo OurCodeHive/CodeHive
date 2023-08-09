@@ -5,6 +5,7 @@ import com.spoon.sok.domain.study.dto.queryDTO.StudyAppointmentDTO;
 import com.spoon.sok.domain.study.dto.queryDTO.StudyInfoDetailDto;
 import com.spoon.sok.domain.study.dto.queryDTO.StudyInfoDto;
 import com.spoon.sok.domain.study.entity.StudyInfo;
+import com.spoon.sok.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -121,7 +122,6 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "si.description as description " +
             "FROM study_info si where studyinfo_id = :studyInfoId", nativeQuery = true)
     Optional<StudyInfoDetailDto> findByStudyInfoIdQuery(String studyInfoId);
-
 
 
 }

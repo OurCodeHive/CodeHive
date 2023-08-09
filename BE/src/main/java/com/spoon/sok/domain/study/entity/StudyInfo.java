@@ -66,7 +66,6 @@ public class StudyInfo {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
     private List<StudyNotice> noticeList = new ArrayList<>(); // 스터디 공지사항
 
-
     @Builder
     public StudyInfo(Long id, String title, String studyroomSize, String description, String profileImage, String enterName, Date startAt, Date endAt, List<StudyAppointment> meetingList, User users) {
         this.id = id;
