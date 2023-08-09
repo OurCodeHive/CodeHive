@@ -5,8 +5,14 @@ export type ChatMessage = {
   dateTime: string;
 }
 
-
-export type studyUser = {
+export type studyUser= {
+  email: string;
   userId: number;
-  nickname: string;
+  status: string;
+  nickName: string;
+}
+
+export type studyUserList = {
+  studyUserList: studyUser[];
+  status? : number;
 }

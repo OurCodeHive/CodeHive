@@ -4,16 +4,20 @@ import * as StompJs from '@stomp/stompjs';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { ChatMessage } from '@/type/ChatType';
-import { getChatList } from '@/api/chat';
+import { getChatList, getStudyUserList } from '@/api/chat';
+import { useNavigate } from "react-router-dom";
 
 
 interface Props {
   id: string;
   chatRedPoint?: boolean;
-  setChatRedPoint?: (arg0: boolean) => void;
+  setChatRedPoint?: (arg: boolean) => void;
+  setIsShow?: (arg: boolean) => void;
 }
 
 function ChatFrameComp(props: Props) {
+
+  const navigate = useNavigate();
 
   const loginUser = useRecoilValue(userState);
   const client = useRef<any>({});
@@ -21,6 +25,7 @@ function ChatFrameComp(props: Props) {
 
   const [chatList, setChatList] = useState<ChatMessage[]>([]);
   const [chat, setChat] = useState<string>("");
+  const [dic, setDic] = useState<{ [userId: number]: string }>("");
 
   function getDate(): string {
     const date = new Date();
@@ -39,20 +44,36 @@ function ChatFrameComp(props: Props) {
     (err) => {console.log(err)});
 	}
 
+  async function fetchStudyUserList() {
+
+    await getStudyUserList(props.id, ({data}) => {
+      const userList = data.studyUserList;
+      const temp: { [userId: number]: string } = {}
+
+      for (const item of userList) {
+        temp[item.userId] = item.nickName;
+      }
+
+      if (props.setIsShow) {
+        props.setIsShow(true);
+      }
+
+      setDic(temp);
+    },
+    (err) => {
+      navigate("/notFound");
+    })
+  }
+
   // 채팅 데이터, 현재 참여유저 받아오기 => 딕셔너리에 저장
   useEffect(() => {
+    fetchStudyUserList();
     fetchChatData();
     connect();
     return () => {
       disconnect();
     };
   }, []);
-
-  // 유저 정보저장 dic
-  let dic: { [key: number]: string } = {
-    1: "Hayoung",
-    2: "MinSung"
-  };
 
   // 스크롤
   useEffect(() => {
