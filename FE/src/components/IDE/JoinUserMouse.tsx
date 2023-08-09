@@ -65,7 +65,7 @@ function JoinUserMouse({ userIdList, studyRoomId }:{ userIdList:number[], studyR
 
   // 상대위치 받기
   function getCursorSpot() {
-    client.current.subscribe('/sub/cursor/' + 1, (body:StompJs.Message) => {
+    client.current.subscribe('/sub/cursor/' + studyRoomId, (body:StompJs.Message) => {
       const message = JSON.parse(body.body);
       console.log(message)
       // if (message.userId !== props.userId) {

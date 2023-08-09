@@ -21,7 +21,7 @@ const StudyView = () => {
   const initIdx = 0;
   const TabContents = [] as TabType[];
   TabContents.push({title : "공지사항", contents : <NoticeList studyinfoId={studyinfoId} LeaderFlag={LeaderFlag}/>});
-  TabContents.push({title : "자료", contents : <DocumentList id={id}/>});
+  TabContents.push({title : "자료", contents : <DocumentList studyinfoId={studyinfoId} />});
 
   useEffect(() => {
     async function fetchData() {
@@ -45,7 +45,7 @@ const StudyView = () => {
         position:"absolute",
         right:"-7%"
       }}>
-        <ChatFrameComp id={id + ""} />
+        <ChatFrameComp id={String(studyinfoId)} />
       </div>
     </div>
   )
