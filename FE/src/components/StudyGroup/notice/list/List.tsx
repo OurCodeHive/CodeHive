@@ -6,6 +6,8 @@ import Pagination, { PaginationType } from '@/utils/Pagination/Pagination';
 import {ContentsPopup} from "@/utils/Popup";
 import NoticeView from '../view/View';
 import TableList from '@/utils/List/Table/List';
+import StudyStyle from '@/res/css/module/StudyView.module.css';
+import NoticeInsert from '../insert/Insert';
 
 const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag: boolean}) => {
     const param = {
@@ -13,6 +15,7 @@ const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag:
         size : 10
     }
     const [ListContents, setListContents] = useState<JSX.Element[]>([]);
+    const [TotalCnt, setTotalCnt] = useState(0);
 
     const changePage = (idx: number) => {
         param.page = idx;
@@ -20,18 +23,17 @@ const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag:
     }
 
     const PaginationInfo:PaginationType = {
-        totalCnt : 80,
+        totalCnt : TotalCnt,
         perSize : param.size,
         range : 5,
         changeIdx : changePage
     };
 
     const getList = async () => {
-        const tempList = [{studyboardId : 1, authorId : 1, nickName : "테스트", noticeTitle : "테스트제목", "uploadAt" : "2023-08-04", "content" : "테스트내용"}]
-        const tempList2 = tempList.map((item, index) => <NoticeListItem key={index} item={item} clickEvent={openViewPopup} />);
-        setListContents(tempList2);
         await getNoticeList(studyinfoId, param, ({data}) => {
-            //setListContents(data.studyNoticeBoard);
+            setTotalCnt(data.totalCnt);
+            const tempList = data.studyNoticeList.map((item, index) => <NoticeListItem key={index} item={item} clickEvent={openViewPopup} />);
+            setListContents(tempList);
         }, (error) => {console.log(error)})
     }
 
@@ -45,6 +47,7 @@ const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag:
 
     const [popupFlag, setPopupFlag] = useState(false);
     const [ViewStudyBoardId, setViewStudyBoardId] = useState(-1);
+    const [PopupContents, setPopupContents] = useState(<NoticeView studyBoardId={ViewStudyBoardId} closePopup={() => changePopupFlag(false)}/>);
 
     const PopupInfo = {
         PopupStatus : popupFlag,
@@ -52,25 +55,41 @@ const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag:
         maxWidth: 800,
         PopupTitle : "공지사항 상세",
         ClosePopupProp : () => changePopupFlag(false),
-        PopupContents : <NoticeView studyBoardId={ViewStudyBoardId} closePopup={() => changePopupFlag(false)}/>,
+        PopupContents : PopupContents,
     }
 
     const changePopupFlag = (flag: boolean) => {
         setPopupFlag(() => flag);
     };
 
+    //상세 팝업 열기
     const openViewPopup = (idx: number) => {
         setViewStudyBoardId(() => idx);
-        setPopupFlag(() => true);
+        PopupInfo.PopupTitle = "공지사항 상세";
+        setPopupContents(<NoticeView studyBoardId={ViewStudyBoardId} closePopup={() => changePopupFlag(false)}/>);
+        changePopupFlag(true);
+    }
+
+    const openInsertPopup = () => {
+        PopupInfo.PopupTitle = "공지사항 등록";
+        setPopupContents(<NoticeInsert studyinfoId={studyinfoId} closePop={() => changePopupFlag(false)} completePop={completeInsert} />);
+        changePopupFlag(true);
+    }
+
+    const completeInsert = () => {
+        changePage(1);
+        changePopupFlag(false);
     }
 
     return (
         <div className="col-12 pt50 pr20 pb20 pl20">
             <NoticeFilter />
-            <TableList WidGroup={WidGroup} ListTitle={ListTitle} ListContents={ListContents}/>
+            <div className="col-12 mb50">
+                <TableList WidGroup={WidGroup} ListTitle={ListTitle} ListContents={ListContents}/>
+            </div>
             <div className="col-12">
                 <Pagination PaginationInfo={PaginationInfo} />
-                {LeaderFlag ? <button type="button" className={`plus_btn`}>공지사항 추가 버튼</button> : null}
+                {LeaderFlag ? <button type="button" className={`${StudyStyle.study_plus_btn} bg_point0`} onClick={openInsertPopup}>+</button> : null}
             </div>
             <ContentsPopup PopupInfo={PopupInfo}/>
         </div>
