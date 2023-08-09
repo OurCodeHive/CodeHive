@@ -202,13 +202,13 @@ public class StudyRoomController {
             @PathVariable("studyinfo_id") Long studyInfoId,
             @PathVariable("studyarchive_id") Long studyarchiveId) {
 
-        Optional<StudyArchive> studyDocument = studyService.getStudyArchive(studyarchiveId);
+        StudyArchiveDTO studyDocument = studyService.getStudyArchive(studyarchiveId);
 
         // 응답 메시지 설정
-        if (studyDocument.isPresent()) {
-            return ResponseEntity.ok(studyDocument.get());
+        if (studyDocument != null) {
+            return new ResponseEntity<>(studyDocument, HttpStatus.OK);
         } else {
-            return ResponseEntity.badRequest().body("공지사항 조회에 실패하였습니다.");
+            return new ResponseEntity<>("공지사항 조회에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
