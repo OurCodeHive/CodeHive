@@ -1,17 +1,15 @@
 import style from "@/res/css/module/UserVideo.module.css";
 
+function JoinUser({ userNameList }:{ userNameList:string[] }) {
 
-function JoinUser(props:any) {
-
-  let userList = props.user;
-  userList.sort();
-  
   return (
     <>
       <div className={style.joinUserName}>
         {
-          userList.map((item:any, index:number) => {
-            return <p key={index}>{item}</p>
+          userNameList.map((item:string, index:number) => {
+            return (
+              <p key={item}>{item}</p>
+            )
           })
         }
       </div>

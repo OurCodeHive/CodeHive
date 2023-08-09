@@ -1,25 +1,20 @@
 import { useRef, useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import style from "@/res/css/module/ChatPage.module.css";
 import * as StompJs from '@stomp/stompjs';
-import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
+import { ChatMessage } from '@/type/ChatType';
+import { getChatList } from '@/api/chat';
 
-
-interface ChatMessage {
-  userId: number;
-  studyRoomId: string;
-  message: string;
-  dateTime: string;
-}
 
 interface Props {
   id: string;
-  chatRedPoint: boolean;
-  setChatRedPoint: (arg0: boolean) => void;
+  chatRedPoint?: boolean;
+  setChatRedPoint?: (arg0: boolean) => void;
 }
 
 function ChatFrameComp(props: Props) {
+
   const loginUser = useRecoilValue(userState);
   const client = useRef<any>({});
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -37,23 +32,21 @@ function ChatFrameComp(props: Props) {
     return `${String(year).slice(-2)}-${month}-${day} ${hour}:${minute}`;
   }
 
+  async function fetchChatData() {
+		await getChatList(props.id, ({data}) => {
+      setChatList(data);
+    },
+    (err) => {console.log(err)});
+	}
+
   // 채팅 데이터, 현재 참여유저 받아오기 => 딕셔너리에 저장
   useEffect(() => {
-    const studyInfoId = props.id;
-    const url = import.meta.env.VITE_RTC + "api/chat/" + studyInfoId;
-    
-    axios.get<ChatMessage[]>(url)
-      .then((result) => {
-        setChatList(result.data);
-      })
-      .then(() => {
-        connect();
-      });
-
+    fetchChatData();
+    connect();
     return () => {
       disconnect();
     };
-  }, [props.id]);
+  }, []);
 
   // 유저 정보저장 dic
   let dic: { [key: number]: string } = {
@@ -66,7 +59,7 @@ function ChatFrameComp(props: Props) {
     scrollRef.current?.scrollIntoView({ behavior : 'smooth' });
   }, [chatList]);
   
-  // 제출 눌렀을때
+  // 채팅 보내기
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -121,7 +114,9 @@ function ChatFrameComp(props: Props) {
     client.current.subscribe('/sub/chat/' + props.id, (body:StompJs.Message) => {
       const message = JSON.parse(body.body) as ChatMessage;
       setChatList((chat_list) => [...chat_list, message]);
-      props.setChatRedPoint(true);
+      if (props.setChatRedPoint) {
+        props.setChatRedPoint(true);
+      }
     });
   }
   

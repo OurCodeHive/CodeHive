@@ -7,7 +7,6 @@ function App() {
     <RecoilRoot>
      <AppRouter />
     </RecoilRoot>
-
   )
 }
 export default App;
