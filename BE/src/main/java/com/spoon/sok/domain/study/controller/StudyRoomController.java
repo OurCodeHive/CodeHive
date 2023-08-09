@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
 import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.List;
@@ -29,8 +31,9 @@ public class StudyRoomController {
 
     private final StudyService studyService;
 
-    // [스터디룸] 스터디 일정을 수정함
-    // [PUT] [api/study/meeting/{studyinfo_id}
+
+    // [스터디룸] 스터디 기간을 수정함
+    // [PUT] [api/study/studyinfo_id}
     @PutMapping("/study/{studyinfoId}")
     public ResponseEntity<Map<String, Object>> updateStudyGroup(
             @PathVariable("studyinfoId") Long studyinfoId, @RequestBody StudyMeetingRequestDTO studyMeetingRequestDTO) {
@@ -79,7 +82,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 스터디 공지사항 목록 조회(조회 후 출력(페이징))
+    // 스터디 공지사항 목록 조회(페이징)
     @GetMapping("/study/{studyinfo_id}/board")
     public ResponseEntity<Map<String, Object>> getStudyNoticeBoard(
             @PathVariable("studyinfo_id") Long studyInfoId,
@@ -100,7 +103,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 스터디의 공지사항의 세부 내용을 조회함
+    // 스터디 공지사항 상세조회
     @GetMapping("/study/{studyinfo_id}/board/{studyboard_id}")
     public ResponseEntity<Map<String, Object>> getStudyNotice(
             @PathVariable("studyinfo_id") Long studyInfoId,
@@ -123,7 +126,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 스터디 공지사항의 세부 내용을 수정함
+    // 스터디 공지사항 수정
     @PutMapping("/study/{studyinfo_id}/board/{studyboard_id}")
     public ResponseEntity<Map<String, Object>> updateStudyNotice(
             @PathVariable("studyinfo_id") Long studyInfoId,
@@ -246,9 +249,10 @@ public class StudyRoomController {
                     "스터디 회의 등록에 실패했습니다."
             );
             return new ResponseEntity<>(studyErrorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
-
         }
     }
+
+
 
     // [스터디룸] (스터디 장, 스터디 팀원) 일정 보기를 누르면 활성화된 달력 창이 보여짐
     // [GET] [api/study/meeting/{studyinfo_id}
@@ -278,13 +282,14 @@ public class StudyRoomController {
         }
     }
 
+
     // [스터디룸] (스터디 장) 일정 보기를 누르면 활성화된 달력 창에서 스터디 회의 수정
     // [PUT] [api/study/meeting/{study_info_id}
     @PutMapping("/study/{studyinfo_id}/meeting/{appointment_id}")
     public ResponseEntity<?> updateStudyAppointment(
             @PathVariable("studyinfo_id") Long studyInfoId,
             @PathVariable("appointment_id") Long appointmentId,
-            @RequestBody StudyAppointmentRequestDTO studyAppointmentRequestDTO) {
+            @RequestBody StudyAppointmentRequestDTO studyAppointmentRequestDTO) throws ParseException {
 
         // 스터디 회의 수정 정보를 StudyAppointmentRequestDTO로 받아옴
         StudyAppointment studyAppointment = studyAppointmentRequestDTO.toEntity();
@@ -325,6 +330,8 @@ public class StudyRoomController {
             return new ResponseEntity<>(studyErrorResponseDTO, HttpStatus.NOT_FOUND);
         }
     }
+
+
 
     // [스터디룸] 스터디 나가기
     // [POST] [api/study/leave]

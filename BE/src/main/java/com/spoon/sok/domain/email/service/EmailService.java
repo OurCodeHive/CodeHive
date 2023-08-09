@@ -208,7 +208,7 @@ public class EmailService {
         // Email로 user_id를 찾았다.
         Optional<User> user = userRepository.findByEmail(email);
 
-        sb.append("https://codehive.shop:8080/invite?studyinfo_id=").append(studyinfo_id);
+        sb.append("https://ourcodehive.netlify.app/invite?studyinfo_id=").append(studyinfo_id);
 
         if (!user.isPresent()) {
             sb.append("&").append("users_id=null");

@@ -22,6 +22,7 @@ public class ComedyController {
 
     private final ComedyService comedyService;
 
+    // 코딩문학제 조회해서 가지고오기
     @GetMapping("comedy")
     public ResponseEntity<?> comedy() {
         List<CodingLiterature> comedyList = comedyService.getComedy();
