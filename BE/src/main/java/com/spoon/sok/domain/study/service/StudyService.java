@@ -396,7 +396,7 @@ public class StudyService {
 
     public List<StudyUserListDTO> getStudyUsers(Long studyInfoId) {
         // 중간테이블 가져오기
-        List<UserStudy> userStudyList = userStudyRepository.findByStudyInfoIdEquals(studyInfoId);
+        List<UserStudy> userStudyList = userStudyRepository.findBelongingUser(studyInfoId, CurrentStatus.ACCEPT);
         List<StudyUserListDTO> result = new ArrayList<>();
 
         for (UserStudy us : userStudyList) {

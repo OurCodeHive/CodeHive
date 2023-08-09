@@ -162,6 +162,7 @@ public class UserService {
             return false;
         }
 
+
         user.get().updateUserStatus(UserStatus.LEAVE);
 
         return true;
