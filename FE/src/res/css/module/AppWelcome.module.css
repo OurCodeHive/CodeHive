@@ -1,71 +1,62 @@
 .main {
     color: palevioletred;
 }
-.video {
-    cursor: auto;
-    /* width: 40px; */
-    position: fixed;
-    right: 0;
-    top: 0;
+.background-video {
+    position: relative;
     width: 100%;
-    /* min-width: 100%; */
-    /* min-height: 100%; */
-    display: block;
-    margin: auto;
+    height: 100%;
+    z-index: -1;
+}
+.video {
+    object-fit: cover;
+    cursor: default;
+    height: 100vh;
+    width: 100%;
 }
 .enter_login {
     cursor: pointer;
-    position: fixed;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    bottom: 5px;
+    position: absolute;
+    bottom: 6vh;
+    left: 40%;
     z-index: 5;
     display: block;
     background-color: transparent;
-    width: 300px;
-    height: 70px;
+    width: 25%;
+    height: 5vh;
     border: none;
 }
-/* div:first-child {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-} */
+
 .frame {
     /* margin: 0px;
     padding: 0px; */
     background-image: url("../../public/contents/CodeHiveMainPic.png");
     background-size: cover;
-
 }
-
-
 
 /* img:first-child {
     display: block;
     margin: auto;
     padding-top: 200px;
-   
-} */
-/* img:nth-child(2) {
+
+} /
+/ img:nth-child(2) {
     display: block;
     margin: auto;
     padding-top: 50px;
 
-} */
-/* img:nth-child(3) {
+} /
+/ img:nth-child(3) {
     display: block;
     margin: auto;
     padding-top: 100px;
-} */
-/* img:nth-child(4) {
+} /
+/ img:nth-child(4) {
     display: block;
     position: fixed;
     bottom: 20px;
     left: 45%;
-} */
-/* img {
+} /
+/ img {
     width: 100%;
     height: 1127px;
 } */
