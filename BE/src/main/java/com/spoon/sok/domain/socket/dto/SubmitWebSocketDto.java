@@ -1,4 +1,4 @@
-package com.spoon.sok.domain.chat.dto;
+package com.spoon.sok.domain.socket.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,5 +9,6 @@ public class SubmitWebSocketDto {
 
     private Long userId;
     private Long studyRoomId;
+    private String language;
 
 }

@@ -1,5 +1,6 @@
 package com.spoon.sok.domain.study.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -33,13 +34,13 @@ public class File {
     private String etc;
 
     // study_archive 스터디자료 테이블과 다대일 관계
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyarchive_id", nullable = false)
     private StudyArchive studyArchive;
 
     @Builder
-    public File (Long id, Long fileSize, String originName, String realName, String path, String etc, StudyArchive studyArchive) {
-        this.id = id;
+    public File (Long fileSize, String originName, String realName, String path, String etc, StudyArchive studyArchive) {
         this.fileSize = fileSize;
         this.originName = originName;
         this.realName = realName;
