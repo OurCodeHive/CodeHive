@@ -6,7 +6,7 @@
 import {authHttp, formHttp} from './http';
 import { StudyType, StudyListType } from '@/type/StudyType';
 import { StudyNoticeType, StudyNoticeListType } from '@/type/StudyNoticeType';
-import { StudyDocumentType, StudyDocumentListType } from '@/type/StudyDocumentType';
+import { StudyDocumentType, StudyDocumentListType, StudyDocumentDetailType } from '@/type/StudyDocumentType';
 
 const api = authHttp;
 const formApi = formHttp;
@@ -73,7 +73,7 @@ const getDocumentList = async (studyinfoId: number, param: object, success: ({da
     await api.get(`/study/${studyinfoId}/document`, { params: param }).then(success).catch(fail);
 }
 
-const getDocumentView = async (studyinfoId: number, studyDocumentId: number, success: ({data} : {data : StudyDocumentType}) => void, fail: (error: unknown) => void) => {
+const getDocumentView = async (studyinfoId: number, studyDocumentId: number, success: ({data} : {data : StudyDocumentDetailType}) => void, fail: (error: unknown) => void) => {
     await api.get(`/study/${studyinfoId}/document/${studyDocumentId}`).then(success).catch(fail);
 }
 

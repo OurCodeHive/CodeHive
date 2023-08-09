@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import { StudyDocumentType } from '@/type/StudyDocumentType';
+import { StudyDocumentType, StudyDocumentDetailType, StudyDocumentDetailItemType } from '@/type/StudyDocumentType';
 import { CheckUserId } from '@/atom/UserAtom';
 import { getDocumentView } from '@/api/study';
 import CustomEditorResult from '@/utils/CustomEditor/CustomEditorResult';
 import { ConfirmPopup } from '@/utils/Popup';
 
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
-
+// 
 const DocumentView = ({studyDocumentId, closePopup} : {studyDocumentId : number, closePopup: (flag: boolean) => void}) => {
 
-    const [DocumentContents, setDocumentContents] = useState<StudyDocumentType>({} as StudyDocumentType);
+    const [DocumentContents, setDocumentContents] = useState<StudyDocumentDetailItemType>({} as StudyDocumentDetailItemType);
     
     const AuthorFlag = useState(CheckUserId(DocumentContents.authorId));
 
@@ -34,13 +34,12 @@ const DocumentView = ({studyDocumentId, closePopup} : {studyDocumentId : number,
 
     const removeNotice = () => {
         setPopupFlag(() => true);
-
     };
 
     const getView = async () => {
-        console.log(studyDocumentId);
         await getDocumentView(studyinfoId, studyDocumentId, ({data}) => {
-            setDocumentContents(data);
+            setDocumentContents(data.studyDocument);
+            console.log(data.studyDocument);
         }, (error) => {console.log(error)})
     }
 
@@ -52,7 +51,7 @@ const DocumentView = ({studyDocumentId, closePopup} : {studyDocumentId : number,
         <div className="col-12 pt50 pr20 pb20 pl20">
             <div className="col-12 mb50 form_style_0_con type_view">
                 <div className="col-12 form_style_0">
-                    <div className="col-12 col-md-0 label_box"><span>제목</span></div>
+                    <div className="col-12 col-md-0 label_box"><span>제목2</span></div>
                     <div className="col-12 col-md-0 input_box">{DocumentContents.title}</div>
                 </div>
                 <div className="col-12 form_style_0">
@@ -75,5 +74,6 @@ const DocumentView = ({studyDocumentId, closePopup} : {studyDocumentId : number,
         </div>
     )
 }
+
 
 export default DocumentView;

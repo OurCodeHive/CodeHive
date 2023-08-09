@@ -142,7 +142,7 @@ function Code() {
     <div className={style.idePage}>
       <IDEHeader code={code} id={id} language={language}/>
       <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown} setLanguage={setLanguage}/>
-      {/* <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} userId={loginUser.userId}/> */}
+      <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} userId={loginUser.userId}/>
       <div className={style.ideContainer}>
         <QuillBox className={style.quillBox}>
           <ReactQuill
