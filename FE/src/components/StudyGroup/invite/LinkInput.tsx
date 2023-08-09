@@ -1,4 +1,6 @@
 import React from "react";
+import { useRecoilValue } from "recoil";
+import { userState } from '@/atom/UserAtom';
 
 function LinkInputPopUp(){
     const handlePreCheck = () => {
@@ -17,23 +19,34 @@ function LinkInputPopUp(){
           .then(response => response.json())
           .then(data => {
             console.log(data); // 확인용 log
-            
 
-            // 1. 비회원이면서, 
+            // 로그인 여부를 알아야함.
+            const userInfo = useRecoilValue(userState);
+
+            // 1. 비회원이면서, 로그인 안한 사람.
             // "isOurUser" : false,
-            // "possible_access": false
+            if (!data.isOurUser){
+                // 로그인 페이지로 이동
+            }
 
-            // 2. 비회원이면서, 
+            // 2. 비회원이면서, 로그인했음.
             // "isOurUser" : false,
-            // "possible_access": true
+            if (!data.isOurUser){
+                
+            }
 
-            // 3. 회원이면서, 
+            // 3. 회원이면서, 로그인 안한 사람
             // "isOurUser" : true,
-            // "possible_access": false
+            if (data.isOurUser){
+                // 로그인 페이지 이동
+            }
 
-            // 4. 회원이면서, 
+            // 4. 회원이면서, 로그인했음.
             // "isOurUser" : true,
-            // "possible_access": true
+            if (data.isOurUser){
+                // 
+            }
+
 
           })
           .catch(error => {
