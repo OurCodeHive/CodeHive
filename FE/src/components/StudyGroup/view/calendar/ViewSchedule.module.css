@@ -181,3 +181,14 @@
   .study_schedules {
     font-size: 12px;
   }
+
+  .add_icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .no_study_text {
+    font-size: 14px;
+  }

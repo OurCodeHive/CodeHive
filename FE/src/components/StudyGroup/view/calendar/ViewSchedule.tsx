@@ -4,6 +4,7 @@ import style from './ViewSchedule.module.css';
 // import Schedule from './Schedule';
 import { authHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
+const studyinfo_id = 3;
 
 interface Schedule {
     endTime: string;
@@ -37,7 +38,7 @@ function ViewSchedule() {
    
     async function requestCalendar(): Promise<void> {
         try {
-            const response: AxiosResponse<Schedule[]> = await authHttp.get<Schedule[]>(`/study/meeting/2`);
+            const response: AxiosResponse<Schedule[]> = await authHttp.get<Schedule[]>(`/study/meeting/${studyinfo_id}`);
             console.log(response.data);
             const calendar = response.data;
             if(calendar){
@@ -75,7 +76,6 @@ function ViewSchedule() {
         const scheduleDate = new Date(schedule.meetingAt);
         return scheduleDate.getFullYear() === currYear && scheduleDate.getMonth() === currMonth && scheduleDate.getDate() === i;
       });
-      console.log(daySchedules);
       const scheduleElements = daySchedules.map((schedule, index) => (
         <div key={`schedule-${i}-${index}`}>
           {schedule.title}
@@ -106,13 +106,14 @@ function ViewSchedule() {
     const formattedDate = selectedDate.toISOString().split('T')[0];
     console.log(`Schedules for ${formattedDate}:`);
     console.log(daySchedules);
-    if (selectedDateInfo.length === 0) {
+    // if (selectedDateInfo.length === 0 || selectedDateInfo[0].meetingAt.slice(0,10) !== formattedDate) {
       setSelectedDateInfo(daySchedules);
       setShowPopover(true);
-    } else {
-      setSelectedDateInfo([]);
-      setShowPopover(false);
-    }
+    // } 
+    // else {
+    //   setSelectedDateInfo([]);
+    //   setShowPopover(false);
+    // }
 
   }
 
@@ -127,16 +128,40 @@ function ViewSchedule() {
       setCurrentDate(new Date());
     }
   };//
+
+  const handleDeleteSchedule = (id: number) => {
+    return new Promise<void>( (resolve, reject) => {
+      if (confirm("스터디 일정을 삭제하시겠습니까?")) {
+        try {
+          void authHttp.delete(`/study/${studyinfo_id}/meeting/${id}`);
+          setSelectedDateInfo(prevSelectedDateInfo =>
+            prevSelectedDateInfo.filter(schedule => schedule.id !== id)
+          );
+          resolve(); // Resolve the Promise if successful
+        } catch (error) {
+          console.error("Error deleting schedule:", error);
+          reject(error); // Reject the Promise if an error occurs
+        }
+      } else {
+        resolve(); // Resolve the Promise if user cancels deletion
+      }
+    });
+  };
+  
+  
   const renderPopover = () => (
     showPopover && (
       <div className={style.popover_right}>
-        {selectedDateInfo.map((schedule, index) => (
+        {selectedDateInfo.length === 0 ? (
+          <div className={style.no_study_text}>예정된 스터디가 없습니다</div>
+        ) : (
+        selectedDateInfo.map((schedule, index) => (
         <>
           <div key={`popover-schedule-${index}`} className={style.schedule_item}>
             <div className={style.study_info}>
               <div className={style.study_title}>{schedule.title}</div>
               <div className={style.actions}>
-                <span className={style.action_icon}>&#128465;</span> {/* Trashcan icon */}
+                <span onClick={() => handleDeleteSchedule(schedule.id)} className={style.action_icon}>&#128465;</span> {/* Trashcan icon */}
                 <span className={style.action_icon}>&#9998;</span> {/* Pencil icon */}
               </div>
             </div>
@@ -146,7 +171,9 @@ function ViewSchedule() {
           </div>
           <hr />
           </>
-        ))}
+        ))
+      )}
+        <div className={style.add_icon}>&#43;</div> {/* Add icon */}
       </div>
     )
   );
@@ -178,7 +205,7 @@ function ViewSchedule() {
           {renderCalendar()}
         </ul>
       </div>
-      {selectedDateInfo.length > 0 && renderPopover()}
+      {showPopover && renderPopover()}
     </div>
 
   );
