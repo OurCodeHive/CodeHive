@@ -195,24 +195,18 @@ public class StudyRoomController {
     // [스터디룸] 스터디 자료 상세 조회
     // [GET] api/study/{studyinfo_id}/document/{studyarchive_id}
     @GetMapping("/study/{studyinfo_id}/document/{studyarchive_id}")
-    public ResponseEntity<Map<String, Object>> getStudyDocuments(
+    public ResponseEntity<Object> getStudyDocuments(
             @PathVariable("studyinfo_id") Long studyInfoId,
             @PathVariable("studyarchive_id") Long studyarchiveId) {
 
         Optional<StudyArchive> studyDocument = studyService.getStudyArchive(studyarchiveId);
 
         // 응답 메시지 설정
-        Map<String, Object> response = new HashMap<>();
         if (studyDocument.isPresent()) {
-            response.put("status", 200);
-            response.put("studyDocument", studyDocument);
+            return ResponseEntity.ok(studyDocument.get());
         } else {
-            response.put("status", 400);
-            response.put("message", "공지사항 조회에 실패하였습니다.");
+            return ResponseEntity.badRequest().body("공지사항 조회에 실패하였습니다.");
         }
-
-        // HTTP 응답 반환
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
