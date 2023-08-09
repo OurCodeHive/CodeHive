@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import style from "@/res/css/module/ChatPage.module.css";
+import chatStyle from "@/res/css/module/ChatPage.module.css";
 import * as StompJs from '@stomp/stompjs';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   id: string;
+  chatMaxHeight: string;
   chatRedPoint?: boolean;
   setChatRedPoint?: (arg: boolean) => void;
   setIsShow?: (arg: boolean) => void;
@@ -21,7 +22,7 @@ function ChatFrameComp(props: Props) {
 
   const loginUser = useRecoilValue(userState);
   const client = useRef<any>({});
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLLIElement>(null);
 
   const [chatList, setChatList] = useState<ChatMessage[]>([]);
   const [chat, setChat] = useState<string>("");
@@ -77,7 +78,7 @@ function ChatFrameComp(props: Props) {
 
   // 스크롤
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior : 'smooth' });
+    scrollRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [chatList]);
   
   // 채팅 보내기
@@ -148,46 +149,30 @@ function ChatFrameComp(props: Props) {
 
   return (
     <>
-      <div className={style.backGround}>
-        <div className={style.boxSize}>
-          <div className={style.container}>
-            {
-              chatList.map((value, index) => {
-                return (
-                  <div key={index} className={style.boxPadding}>
-                    <div ref={scrollRef}></div>
-                    {
-                      value.userId === loginUser.userId ?
-                      <>
-                        <p className={style.talkItem}>
-                          {dic[value.userId]}&nbsp;&nbsp;&nbsp;{value.dateTime}
-                        </p>
-                        <p className={style.talkDetailItem}>{value.message}</p>
-                      </>
-                      :
-                      <>
-                        <p className={style.talkItem}>
-                          {dic[value.userId]}&nbsp;&nbsp;&nbsp;{value.dateTime}
-                        </p>
-                        <p className={style.talkDetailItem}>{value.message}</p>
-                      </>
-                    }
-                  </div>
-                )
-              })
-            }
+      <div className={`col-12 ${chatStyle.chat_con}`}>
+        <div className={`col-12 ${chatStyle.chat_box}`}>
+          <div className={`col-12 ${chatStyle.chat_list_con}`} style={{maxHeight : props.chatMaxHeight}}>
+            <ul className={`col-12 ${chatStyle.chat_list}`}>
+              {
+                chatList.map((value, index) => {
+                  return (
+                    <li key={index} className={value.userId === loginUser.userId ? chatStyle.talk_my : ''} ref={scrollRef}>
+                      <div className={chatStyle.chat_info}>
+                        <span className={chatStyle.chat_name}>{dic[value.userId]}</span>
+                        <span>{value.dateTime}</span>
+                      </div>
+                      <div className={chatStyle.chat_contents}>{value.message}</div>
+                    </li>
+                  )
+                })
+              }
+            </ul>
           </div>
         </div>
-        <div className={style.messages}>
-          <form className={style.send} onSubmit={(event) => handleSubmit(event)}>
-            <input className={style.input} placeholder="메시지를 입력하세요" type={'text'} onChange={handleChange} value={chat} />
-            <button className={style.btn} type={'submit'}>
-              <img src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/secondlife/send.png"
-                className={style.sendImg}
-              />
-            </button>
+        <form className={`col-12 ${chatStyle.input_box}`} onSubmit={(event) => handleSubmit(event)}>
+            <input placeholder="메시지를 입력하세요" type={'text'} onChange={handleChange} value={chat} />
+            <button type="submit"><img src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/secondlife/send.png"/></button>
           </form>
-        </div>
       </div>
     </>
   )
