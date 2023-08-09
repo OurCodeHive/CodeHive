@@ -1,3 +1,4 @@
+
 .dash_background {
     position: fixed;
     z-index: -10;
@@ -9,11 +10,10 @@
     background-color: #E0E0D0;
 }
 .home_background {
-    display: block;
-    margin: auto;
-    margin-top: 40px;
-    height: 90%;
-    width: 90%;
+    box-sizing: border-box;
+    height: 1080px;
+    /* width: 1920px; */
+    /* height: 100vh; */
     /* after보다 커야함 */
     z-index: -7; 
     background-image: url("../../img/home_background.jpg");
@@ -21,9 +21,18 @@
     /* opacity: 0.5; */
     border: 10px solid rgb(207, 217, 187);
     border-radius: 20px;
+    /* display: block; */
+    /* margin: auto; */
+    /* margin-top: 40px; */
 }
+.first_divisor {
+    display: flex;
+    flex-direction: column;
+    /* align-content: space-between; */
+}
+
 .home_filter {
-    display: block;
+    display: flex;
     z-index: -5;
     height: 100%;
     width: 100%;
@@ -63,12 +72,11 @@
 
 }
 .subtitle_comedy {
+    margin-left: 30px;
+    margin-top: 10px;
     color: #333;
-    position: fixed;
     font-size: 1.7rem;
     font-weight: 800;
-    margin-left: 300px;
-    margin-top: 140px;
 }
 .subtitle_comedy img {
     margin-top: 5px;
@@ -78,7 +86,6 @@
 }
 .subtitle_schedule {
     color: #333;
-    position: fixed;
     font-size: 1.7rem;
     font-weight: 800;
     margin-left: 20px;
@@ -86,14 +93,15 @@
     margin-bottom: 10px;
 }
 .box_comedy {
+    /* position: fixed;
+    margin-left: 300px;
+    margin-top: 170px; */
     display: flex;
+    flex-direction: column;
     vertical-align: middle;
     /* border: 1px solid red; */
-    position: fixed;
-    width: 32%;
-    height: 190px;
-    margin-left: 300px;
-    margin-top: 170px;
+    width: 65vh;
+    height: 250px;
     border-radius: 15px;
     background-color: #ffffff6d;
 }
@@ -102,15 +110,13 @@
     border: 2px solid rgba(78, 110, 78, 0.737);
     border-radius: 10px;
     width: 90%;
-    height: 85%;
+    height: 20vh;
 }
 .box_schedule {
-    position: fixed;
+    /* position: fixed;
     bottom: 10%;
-    right: 10%;
-    /* bottom: 90px;
-    right: 170px; */
-    width: 30%;
+    right: 10%; */
+    width: 60vh;
     height: 170px;
     border-radius: 15px;
     background-color: #ffffff6d;

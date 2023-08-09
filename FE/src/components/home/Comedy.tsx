@@ -102,16 +102,16 @@ const Comedy = () => {
     }
 
     return (
-        <div>
-            <div className={style.subtitle_comedy}>코딩문학제 오늘의 작품 <img onClick={refreshComedy} src={refresh} alt="코딩문학제 새로고침" /></div>
+        <>
                 <div className={style.box_comedy}>
+                <div className={style.subtitle_comedy}>코딩문학제 오늘의 작품 <img onClick={refreshComedy} src={refresh} alt="코딩문학제 새로고침" /></div>
                     <div className={style.box_outline}>
                     <textarea className={style.content_comedy} name="" id="" cols={40} rows={20} value={comedy}>
                     </textarea>
                     <div className={style.content_writer}>{writer}</div>
                     </div>
                 </div>
-        </div>
+        </>
           
         
     );
