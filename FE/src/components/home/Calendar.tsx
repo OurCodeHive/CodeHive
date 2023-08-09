@@ -132,14 +132,14 @@ function CalendarApp(props:PopoverProps) {
     showPopover && (
     <div className={isPopoverRight? `${style.popover} ${style.popover_right}` : `${style.popover}`}>
       {selectedDateInfo.map((schedule, index) => (
-        <>
+        <div key={`popover-schedule-${index}`}>
         <br />
         <div className={style.study_title} key={`popover-schedule-${index}`}>
           {schedule.study_title} 
         </div>
         <div>{schedule.start_time} - {schedule.end_time}</div>
         <hr />
-        </>
+        </div>
       ))}
     </div>
     )
