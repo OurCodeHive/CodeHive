@@ -1,5 +1,183 @@
-.test {
+
+.wrapper{
+    position: fixed;
+    top: 100px;
+    left: 100px;
+    /* margin-top: 50px;
+    margin-left: 50px; */
+    width: 400px;
+    background: #ffffffa5;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+  }
+  .wrapper header{
+    display: flex;
+    align-items: center;
+    padding: 25px 30px 10px;
+    justify-content: space-between;
+  }
+  .header {
+      color: #45A4B8;
+      font-size: 16px;
+      font-weight: bold;
+  }
+  header .icons{
+    display: flex;
+  }
+  header .icons span{
+    height: 38px;
+    width: 38px;
+    margin: 0 1px;
+    cursor: pointer;
+    color: #45A4B8;
+    text-align: center;
+    line-height: 38px;
+    font-size: 1.9rem;
+    user-select: none;
+    border-radius: 50%;
+  }
+  .icons span:last-child{
+    margin-right: -10px;
+  }
+  header .icons span:hover{
+    background: #f2f2f2;
+  }
+  header .current-date{
+    font-size: 1.45rem;
+    font-weight: 500;
+  }
+  .calendar{
+    padding: 15px;
+  }
+  .calendar ul{
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    text-align: center;
+  }
+  .calendar .days{
+    margin-bottom: 20px;
+  }
+  .calendar li{
+    color: #333;
+    width: calc(100% / 7);
+    font-size: 1.07rem;
+  }
+  .calendar .weeks li{
+    font-weight: 500;
+    cursor: default;
+  }
+  .calendar .days li{
+    z-index: 1;
+    cursor: pointer;
+    position: relative;
+    height: 45px;
+    padding: 10px;
+    padding-bottom: 5px;
+      /* margin-top: 30px; */
+    /**/
+    /* line-height: 40px; */
+    /* padding: 5px 0; */
+  }
+  .calendar .days li div {
+    line-height: 12px;
+    font-size: 10px;
+  }
+  .days li.inactive{
+    color: #aaa;
+    cursor: default;
+  }
+  .days li.inactive:hover {
+      background: transparent;
+  }
+  .days li.active{
+    color: #fff;
+  }
+  .days li::before{
     position: absolute;
-    top: 10px;
-    left: 50px;
-}
+    content: "";
+    left: 50%;
+    top: 50%;
+    height: 40px;
+    width: 40px;
+    z-index: -1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .days li.active::before{
+    background: #45a5b8bf;
+  }
+  .days li:not(.active):hover::before{
+    background: #45a5b875;
+  }
+  
+  .popover_right {
+    overflow-y: scroll;
+    position: absolute;
+    background-color: #6aa3ae4f;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    top: 0;
+    left: 100%;
+    width: 200px;
+    height: 365px;
+    transform: translate(10px, 0); 
+  }
+  .study_title {
+    font-weight: bold;
+    font-size: 13px;
+  }
+  .popover div {
+    margin-bottom: 5px;
+    text-align: center;
+    font-size: 13px;
+  }
+  .hasSchedule::after {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 30px;
+    /* bottom: 5px; */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .schedule_item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .study_info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    margin-top: 10px;
+  }
+  
+  .actions {
+    display: flex;
+  }
+  
+  .action_icon {
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .study_title {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .study_schedules {
+    font-size: 12px;
+  }

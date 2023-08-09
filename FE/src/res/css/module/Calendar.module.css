@@ -2,7 +2,7 @@
 .wrapper{
   /* position: fixed;
   top: 100px;
-  right: 100px; */
+  left: 100px; */
   /* margin-top: 50px;
   margin-left: 50px; */
   width: 400px;
@@ -126,7 +126,18 @@ header .current-date{
   transform: translate(-10px, 0); /* Adjust the translation as needed */
 }
 .popover_right {
+  position: absolute;
+  background-color: #45a5b84f;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  top: 0;
   left: 100%;
+  width: 150px;
+  height: 365px;
+  transform: translate(10px, 0); 
 }
 .study_title {
   font-weight: bold;
