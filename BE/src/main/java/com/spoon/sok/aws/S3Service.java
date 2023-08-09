@@ -2,7 +2,7 @@ package com.spoon.sok.aws;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.spoon.sok.domain.study.FileInfoDto;
+import com.spoon.sok.domain.study.dto.responseDTO.FileInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

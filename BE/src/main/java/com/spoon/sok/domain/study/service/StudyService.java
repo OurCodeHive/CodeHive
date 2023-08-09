@@ -4,13 +4,10 @@ import com.spoon.sok.aws.S3Service;
 import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.dto.requestDTO.LeaveStudyRequestDTO;
 import com.spoon.sok.domain.study.dto.requestDTO.StudyMeetingRequestDTO;
-import com.spoon.sok.domain.study.dto.responseDTO.StudyDocumentDTO;
-import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticeDTO;
+import com.spoon.sok.domain.study.dto.responseDTO.*;
 import com.spoon.sok.domain.study.entity.*;
 import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
 import com.spoon.sok.domain.study.dto.requestDTO.ForceLeaveRequestDTO;
-import com.spoon.sok.domain.study.dto.responseDTO.StudyNoticePreviewDTO;
-import com.spoon.sok.domain.study.dto.responseDTO.StudyUserListDTO;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.enums.StudyUpdateResult;
 import com.spoon.sok.domain.study.repository.StudyAppointmentRepository;
@@ -427,7 +424,20 @@ public class StudyService {
         }
     }
 
-    public Optional<StudyArchive> getStudyArchive(Long studyarchiveId) {
-        return studyArchiveRepository.findById(studyarchiveId);
+    public StudyArchiveDTO getStudyArchive(Long studyarchiveId) {
+        Optional<StudyArchive> sa = studyArchiveRepository.findById(studyarchiveId);
+
+        StudyArchiveDTO data = new StudyArchiveDTO();
+        if (sa.isPresent()) {
+            data.setId(sa.get().getId());
+            data.setTitle(sa.get().getTitle());
+            data.setContent(sa.get().getContent());
+            data.setUploadAt(sa.get().getUploadAt());
+            data.setUserId(sa.get().getUsers().getId());
+            data.setNickname(sa.get().getUsers().getNickname());
+            data.setFileList(sa.get().getFileList());
+        }
+
+        return data;
     }
 }

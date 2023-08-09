@@ -38,7 +38,9 @@ public class EmailController {
         return emailService.verify(requestDto);
     }
 
-    @PostMapping("study/invite")
+    // 스터디 초대 이메일 발송
+    // http://localhost:8080/api/email/study/invite
+    @PostMapping("/study/invite")
     public ResponseEntity<?> sendInviteEmail(@RequestBody InviteEmailDto inviteEmailDto) {
         // 초대할 이메일 여러개를 받음
         List<String> inviteList = inviteEmailDto.getEmail();
