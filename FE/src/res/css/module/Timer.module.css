@@ -1,17 +1,6 @@
 /* timer.css */
-.timer_container {
-    /* position: relative;
-    top: 77%;
-    left: 40%; */
-    align-self: center;
-    display: flex;
-    height: 300px;
-    position: inherit;
-    transform: translate(-50%, -50%);
-    flex-direction: row;
-    align-items: center;
-  }
-  .subtitle_timer {
+.timer_container {display: flex; align-items: center;}
+.subtitle_timer {
     display: inline-block;
     margin-left: 5px;
     font-size: 15px;
@@ -20,22 +9,7 @@
   .custom_progress_bar {
     text-shadow: 0 0 20px #1f95afaf, 0 0 30px #1f95afaf, 0 0 30px #1f95afaf;
   }
-/* @keyframes glowing {
-  0% {
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.8);
-  }
-  50% {
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.8);
-  }
-  100% {
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.8);
-  }
-}
-   */
-  .progress_bar_container {
-    width: 30vh;
-    height: 30vh;
-  }
+.progress_bar_container {}
   .controller {
     display: flex;
     flex-direction: column;
