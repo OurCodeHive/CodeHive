@@ -84,8 +84,8 @@ const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag:
     return (
         <div className="col-12 pt50 pr20 pb20 pl20">
             <NoticeFilter />
-            <div className="col-12 mb50">
-                <TableList WidGroup={WidGroup} ListTitle={ListTitle} ListContents={ListContents}/>
+            <div className="col-12 mb30">
+                <TableList WidGroup={WidGroup} ListTitle={ListTitle} ListContents={ListContents} NoDataText='해당하는 공지사항이 없습니다.'/>
             </div>
             <div className="col-12">
                 <Pagination PaginationInfo={PaginationInfo} />
