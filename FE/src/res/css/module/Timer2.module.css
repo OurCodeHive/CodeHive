@@ -1,0 +1,62 @@
+.timer_container {
+    position: relative;
+    top: 52%;
+    left: 370px;
+    /* transform: translate(-50%, -50%);
+    display: flex; */
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .progress_bar_container {
+    /* width: 280px;
+    height: 280px; */
+    width: 30vh;
+    height: 30vh;
+  }
+  
+  .timer_inputs {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .timer_inputs input {
+    font-size: 1.3rem;
+    width: 40px;
+    padding: 5px;
+    text-align: center;
+    margin-right: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .timer_inputs span {
+    font-size: 1.3rem;
+    margin-right: 5px;
+  }
+  
+  .timer_buttons {
+    margin-top: 10px;
+  }
+  
+  .timer_buttons button {
+    font-size: 1.2rem;
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #1f839abb;
+    color: #fff;
+  }
+  
+  .timer_buttons button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .timer_buttons button:hover {
+    background-color: #1f839aec;
+  }
+  

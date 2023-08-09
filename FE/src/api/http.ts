@@ -36,13 +36,12 @@ const authHttp =  axios.create({
     withCredentials : true,
 });
 
-let accessToken:string|null = localStorage.getItem("accessToken");
+let accessToken : string|null = localStorage.getItem("accessToken");
 
 authHttp.interceptors.request.use(
     (config : InternalAxiosRequestConfig):InternalAxiosRequestConfig => {
-        //console.log(accessToken);
-        if(config.headers && accessToken){
-            config.headers.Authorization = `Bearer ${accessToken}`;
+        if (config.headers){
+            config.headers.Authorization = 'Bearer ' + localStorage.getItem("accessToken");
             //console.log(config);
         }
       return config;
@@ -57,51 +56,52 @@ interface IResponse extends AxiosResponse {
        headers: string;
     };
  }
-authHttp.interceptors.response.use(
+// authHttp.interceptors.response.use(
     
-    async (response : IResponse): Promise<any> => {
+//     async (response : IResponse): Promise<any> => {
+
     
-      const { config, status } = response; //response의 config 파일
-      const originalRequest = config;
-      //console.log(response);
-      if(response.data.accessToken){//반환값에 access token이 있으면
-        const accessToken = response.data.accessToken;
-        localStorage.setItem("accessToken", accessToken);
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`
-        console.log("access renewed!");
-        return await axios(originalRequest).then((res)=>{
-            console.log(res);
-        }).catch((err)=>{
-            console.log("errr");
-            console.log(err);
-        })
-      }
-    //   if (status === 403) {//에러 = 엑세스 토큰 만료. 확인 후 validate
-    //     const refreshToken = cookies.get("refreshToken");
-    //     const reIssueData = {
-    //         accessToken : accessToken,
-    //         refreshToken : refreshToken
-    //     }
-    //     return await authHttp.post(`reissue`, reIssueData)
-    //       .then((res:IResponse) => {
-    //         if(res.status == 200){
-    //             accessToken = res.data.accessToken;
-    //             localStorage.setItem("accessToken", accessToken);
-    //             originalRequest.headers.Authorization = `Bearer${accessToken}`;
-    //             return axios(originalRequest);
-    //         }
-    //       }).catch((err) => {
-    //         console.log(err)
-    //       })
-    //   }
-      return response;
-    },
-    // 에러
-    (error) => {
-      console.log(error, '^^***')
-      throw error
-    }
-  )
+//       const { config, status } = response; //response의 config 파일
+//       const originalRequest = config;
+//       console.log(response);
+//       if(response.data.accessToken){//반환값에 access token이 있으면
+//         const accessToken = response.data.accessToken;
+//         localStorage.setItem("accessToken", accessToken);
+//         originalRequest.headers.Authorization = `Bearer ${accessToken}`
+//         console.log("access renewed!");
+//         return await axios(originalRequest).then((res)=>{
+//             console.log(res);
+//         }).catch((err)=>{
+//             console.log("errr");
+//             console.log(err);
+//         })
+//       }
+//     //   if (status === 403) {//에러 = 엑세스 토큰 만료. 확인 후 validate
+//     //     const refreshToken = cookies.get("refreshToken");
+//     //     const reIssueData = {
+//     //         accessToken : accessToken,
+//     //         refreshToken : refreshToken
+//     //     }
+//     //     return await authHttp.post(`reissue`, reIssueData)
+//     //       .then((res:IResponse) => {
+//     //         if(res.status == 200){
+//     //             accessToken = res.data.accessToken;
+//     //             localStorage.setItem("accessToken", accessToken);
+//     //             originalRequest.headers.Authorization = `Bearer${accessToken}`;
+//     //             return axios(originalRequest);
+//     //         }
+//     //       }).catch((err) => {
+//     //         console.log(err)
+//     //       })
+//     //   }
+//       return response;
+//     },
+//     // 에러
+//     (error) => {
+//       console.log(error, '^^***')
+//       throw error
+//     }
+//   )
 
 //인증이 불필요한 axios instance
 const nonAuthHttp : AxiosInstance = axios.create({
@@ -124,7 +124,6 @@ const formHttp : AxiosInstance = axios.create({
 
 formHttp.interceptors.request.use(
     (config : InternalAxiosRequestConfig):InternalAxiosRequestConfig => {
-        console.log(accessToken);
         if(config.headers && accessToken){
             config.headers.Authorization = `Bearer ${accessToken}`;
             console.log(config);

@@ -11,7 +11,6 @@ import ChangePassword from "@/components/Login/ChangePassword";
 import AppHome from "@/pages/AppHome";
 import TimerApp from "@/components/home/Timer";
 
-
 const AppRouter = () => {
   return (
     <>
