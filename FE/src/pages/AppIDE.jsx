@@ -24,7 +24,6 @@ import style from "@/res/css/module/AppIDE.module.css";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { codeEditTheme, highlightStyle, QuillBox, modulesRef } from '../components/IDE/EditorStyle';
-import UserMouseCursor from '@/components/IDE/UserMouseCursor';
 
 
 function getRandomColor() {
@@ -53,11 +52,10 @@ function Code() {
   let [code, setCode] = useState("");
   let [showChat, setShowChat] = useState("hidden");
   let [chatRedPoint, setChatRedPoint] = useState(false);
+  let [isShow, setIsShow] = useState(false);
   
 
   useEffect(() => {
-
-    
 
     const provider = new WebsocketProvider(url, codeId, CodeDoc);
     const ytext = CodeDoc.getText('codemirror');
@@ -144,8 +142,7 @@ function Code() {
     <div className={style.idePage}>
       <IDEHeader code={code} id={id} language={language}/>
       <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown} setLanguage={setLanguage}/>
-      <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} userId={loginUser.userId}/>
-      {/* <UserMouseCursor id={id} userId={loginUser.userId}/> */}
+      {/* <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} userId={loginUser.userId}/> */}
       <div className={style.ideContainer}>
         <QuillBox className={style.quillBox}>
           <ReactQuill
@@ -178,7 +175,7 @@ function Code() {
         </img>
       }
         <div style={{ visibility:showChat }}>
-          <ChatComp id={id} chatRedPoint={chatRedPoint} setChatRedPoint={setChatRedPoint}/>
+          <ChatComp id={id} chatRedPoint={chatRedPoint} setChatRedPoint={setChatRedPoint} setIsShow={setIsShow}/>
         </div>
     </div>
   )

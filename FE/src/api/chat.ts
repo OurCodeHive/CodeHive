@@ -4,8 +4,7 @@
  * Contents : 채팅 관련 api 요청
 */
 import { authHttp } from './http';
-import { ChatMessage, studyUser } from '@/type/ChatType';
-
+import { ChatMessage, studyUserList } from '@/type/ChatType';
 const api = authHttp;
 
 /**
@@ -24,14 +23,14 @@ const getChatList = async (
 /**
  * 스터디원 목록 받기
  * @param param { studyInfoId : number }
- * @param success 
+ * @param success
  * @param fail
  */
 const getStudyUserList = async (
   studyInfoId: string,
-  success: ({data} : {data: studyUser[]}) => void,
+  success: ({data} : {data: studyUserList}) => void,
   fail: (err: unknown) => void) => {
-  await api.get(`/study//${studyInfoId}`).then(success).catch(fail);
+  await api.get(`/study/user/list?study=${studyInfoId}`).then(success).catch(fail);
 }
 
 
