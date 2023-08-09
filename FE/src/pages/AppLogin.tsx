@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { nonAuthHttp, authHttp } from '@/api/http';
-import style from "@/res/css/module/Login.module.css"
+import style from "@/res/css/page/AppLogin.module.css"
 import logo from "@/res/img/codehive_logo.png"
 import google from "@/res/img/google_logo.png"
 import { useNavigate, useSearchParams } from 'react-router-dom';

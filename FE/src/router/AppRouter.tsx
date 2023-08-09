@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppWelcome from "@/pages/AppWelcome";
-import IDE from "@/pages/AppIDE";
+import AppIDE from "@/pages/AppIDE";
 import AppStudy from "@/pages/AppStudy";
 import AppInvite from "@/pages/AppInvite";
 import AppNotFound from "@/error/AppNotFound";
 import Signup from "@/components/Login/Signup";
-import Login from "@/components/Login/Login";
+import AppLogin from "@/pages/AppLogin";
 import FindPassword from "@/components/Login/FindPassword";
 import ChangePassword from "@/components/Login/ChangePassword";
 import AppHome from "@/pages/AppHome";
@@ -17,10 +17,10 @@ const AppRouter = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<AppWelcome/>}></Route>
-          <Route path="/login" element={<Login/>}></Route>
+          <Route path="/login" element={<AppLogin/>}></Route>
           <Route path="/study" element={<AppStudy/>}></Route>
           <Route path="/invite" element={<AppInvite/>}></Route>
-          <Route path="/ide/:id" element={ <IDE/> }></Route>
+          <Route path="/ide/:id" element={ <AppIDE/> }></Route>
           <Route path="/*" element={<AppNotFound/>}/>
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/findpassword" element={<FindPassword/>}/>
