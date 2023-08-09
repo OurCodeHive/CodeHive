@@ -122,8 +122,11 @@ header .current-date{
   top: 0;
   right: 100%; /* Adjust the positioning to the left side */
   width: 150px;
-  height: 300px;
+  height: 365px;
   transform: translate(-10px, 0); /* Adjust the translation as needed */
+}
+.popover_right {
+  left: 100%;
 }
 .study_title {
   font-weight: bold;

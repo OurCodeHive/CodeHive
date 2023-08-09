@@ -51,20 +51,28 @@ function Background(){
         return () => clearInterval(interval);
       }, [timer, setTimer]);
     return (
-        <div className={style.dash_background}>
+        // <div className={style.dash_background}>
             <div className={style.home_background}>
                 <div className={style.home_filter}>
 
-                    <Intro></Intro>
-                    <Comedy></Comedy>
                     {/* <Lnb></Lnb> */}
-                    <Schedule></Schedule>
-                    <Timer></Timer>
-                    <CalendarApp></CalendarApp>
+                    {/* <Intro></Intro> */}
+                    <div className={style.first_divisor}> 
+                      <Comedy></Comedy>
+                      <Timer></Timer>
+                      <div>flex test</div>
+                    </div >
+
+                    <div className={style.first_divisor}>
+                      <div>flex test</div>
+                      <CalendarApp class="popover"></CalendarApp>
+                      <Schedule></Schedule>
+                    </div>
+
                 </div>
-            </div>
-        </div>
+             </div>
+        // </div>
     );
-};
+}
 
 export default Background;

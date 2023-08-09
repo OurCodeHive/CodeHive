@@ -31,7 +31,7 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
                 : null
               }
               <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}>
-                    <div className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
+                    <div onClick={console.log} className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
                       <img src={StudyViewCalendarIcon} alt="시계 아이콘" /><br/>
                       <span>일정보기</span>
                     </div>
