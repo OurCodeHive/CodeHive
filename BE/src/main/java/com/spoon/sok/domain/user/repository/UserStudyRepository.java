@@ -18,8 +18,8 @@ public interface UserStudyRepository  extends JpaRepository<UserStudy, Long> {
 
     @Query(value = "select u " +
             "from UserStudy u " +
-            "left join fetch StudyInfo s " +
-            "where s.users.id = :id and u.users.id != :id")
+            "left join fetch u.studyInfo " +
+            "where u.studyInfo.users.id = :id and u.users.id != :id")
     List<UserStudy> findByStudyLeader(@Param("id") Long userId);
 
     Optional<UserStudy> findByStudyInfoIdAndUsersId(Long studyInfoId, Long usersId);

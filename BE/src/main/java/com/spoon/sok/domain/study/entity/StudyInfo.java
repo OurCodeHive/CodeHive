@@ -13,7 +13,6 @@ import java.util.*;
 @Table(name = "study_info")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyInfo {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "studyinfo_id") // 스터디 정보키
