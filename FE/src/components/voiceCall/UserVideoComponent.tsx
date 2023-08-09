@@ -14,7 +14,7 @@ function UserVideoComponent(props:any) {
 					</>
 				) : null
 			}
-			{JSON.parse(props.streamManager.stream.connection.data).clientData}
+			{/* {JSON.parse(props.streamManager.stream.connection.data).clientData.name} */}
 		</div>
 	);
 }

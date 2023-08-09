@@ -24,6 +24,7 @@ import style from "@/res/css/module/AppIDE.module.css";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { codeEditTheme, highlightStyle, QuillBox, modulesRef } from '../components/IDE/EditorStyle';
+import UserMouseCursor from '@/components/IDE/UserMouseCursor';
 
 
 function getRandomColor() {
@@ -55,6 +56,9 @@ function Code() {
   
 
   useEffect(() => {
+
+    
+
     const provider = new WebsocketProvider(url, codeId, CodeDoc);
     const ytext = CodeDoc.getText('codemirror');
     setCode(ytext);
@@ -130,9 +134,9 @@ function Code() {
 
   function toggleLanguage() {
     if (language == "Python") {
-      setLanguage("Java")
+      setLanguage("Java");
     } else {
-      setLanguage("Python")    
+      setLanguage("Python");
     }
   }
 
@@ -140,7 +144,8 @@ function Code() {
     <div className={style.idePage}>
       <IDEHeader code={code} id={id} language={language}/>
       <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown} setLanguage={setLanguage}/>
-      <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} />
+      <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} userId={loginUser.userId}/>
+      {/* <UserMouseCursor id={id} userId={loginUser.userId}/> */}
       <div className={style.ideContainer}>
         <QuillBox className={style.quillBox}>
           <ReactQuill
