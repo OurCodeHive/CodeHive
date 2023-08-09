@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
 
-    @Query(value = "SELECT sa.start_time as startTime, " +
+    @Query(value = "SELECT DISTINCT sa.start_time as startTime, " +
             "sa.end_time as endTime, " +
             "sa.meeting_at as meetingAt, " +
             "sa.study_appointment_title as title, " +

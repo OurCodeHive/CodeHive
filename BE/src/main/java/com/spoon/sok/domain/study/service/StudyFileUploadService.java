@@ -1,6 +1,8 @@
-package com.spoon.sok.domain.study;
+package com.spoon.sok.domain.study.service;
 
 import com.spoon.sok.aws.S3Service;
+import com.spoon.sok.domain.study.dto.requestDTO.StudyFileUploadRequestDto;
+import com.spoon.sok.domain.study.dto.responseDTO.FileInfoDto;
 import com.spoon.sok.domain.study.entity.File;
 import com.spoon.sok.domain.study.entity.StudyArchive;
 import com.spoon.sok.domain.study.entity.StudyInfo;
@@ -9,7 +11,6 @@ import com.spoon.sok.domain.study.repository.StudyFileRepository;
 import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.entity.User;
 import com.spoon.sok.domain.user.repository.UserRepository;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,7 +43,7 @@ public class StudyFileUploadService {
         StudyArchive studyArchive = StudyArchive.builder()
                 .uploadAt(uploadAt)
                 .title(requestDto.getTitle())
-                .content(requestDto.getTitle())
+                .content(requestDto.getContent())
                 .studyInfo(studyInfo)
                 .user(user)
                 .build();

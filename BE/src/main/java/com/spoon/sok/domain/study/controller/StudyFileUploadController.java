@@ -1,5 +1,7 @@
-package com.spoon.sok.domain.study;
+package com.spoon.sok.domain.study.controller;
 
+import com.spoon.sok.domain.study.dto.requestDTO.StudyFileUploadRequestDto;
+import com.spoon.sok.domain.study.service.StudyFileUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ public class StudyFileUploadController {
     private final StudyFileUploadService studyFileUploadService;
 
     // 스터디 아카이브 만든후 스터디 자료 업로드
+    // 스터디 아카이브 &  파일 동시 생성(업로드)
     @PostMapping("/study/file")
     public ResponseEntity<?> stydyFileUploadAPI(
         @RequestParam(value = "studyFile", required = false) List<MultipartFile> multipartFile,

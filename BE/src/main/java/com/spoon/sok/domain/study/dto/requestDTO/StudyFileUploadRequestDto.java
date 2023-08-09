@@ -1,4 +1,4 @@
-package com.spoon.sok.domain.study;
+package com.spoon.sok.domain.study.dto.requestDTO;
 
 import lombok.Getter;
 import lombok.Setter;

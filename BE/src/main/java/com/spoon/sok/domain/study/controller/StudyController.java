@@ -30,85 +30,8 @@ public class StudyController {
     private final StudyService studyService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    //
-    @GetMapping("/calendar/study")
-    public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("user") String userId) {
-        List<StudyAppointmentDTO> studyMeetingList = studyService.getStudyMeeting(userId);
-
-        Map<String, Object> response = new HashMap<>();
-
-        if (studyMeetingList.size() != 0) {
-            response.put("status", 200);
-            response.put("calendar", studyMeetingList);
-        } else {
-            response.put("status", 200);
-            response.put("calendar", studyMeetingList);
-            response.put("message", "예정된 study가 없습니다.");
-        }
-
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-    }
-
-    @GetMapping("/today/study")
-    public ResponseEntity<Map<String, Object>> getTodayStudyMeeting(@RequestParam("today") String today, HttpServletRequest request) {
-        // Date 형식으로 파싱
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date todayDate;
-        try {
-            todayDate = dateFormat.parse(today);
-        } catch (ParseException e) {
-            todayDate = null;
-        }
-
-        Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
-        List<StudyAppointmentDTO> todayMeetingList = studyService.getTodayStudyMeeting(todayDate, (String) token.get("users_id"));
-
-        Map<String, Object> response = new HashMap<>();
-
-        if (todayMeetingList.size() != 0) {
-            response.put("status", 200);
-            response.put("today", todayMeetingList);
-        } else {
-            response.put("status", 200);
-            response.put("today", todayMeetingList);
-            response.put("message", "오늘 예정된 스터디가 없습니다.");
-        }
-
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-    }
-
-
-    @GetMapping("/study")
-    public ResponseEntity<Map<String, Object>> getStudyGroup(@RequestParam("user") String userId) {
-        List<StudyInfoDto> userStudyGroupProceedingList = studyService.getUserStudyGroupProceeding(userId);
-        List<StudyInfoDto> userStudyGroupCloseList = studyService.getUserStudyGroupClose(userId);
-
-        List<StudyInfoDto> mergedList = new ArrayList<>();
-
-        Collections.addAll(mergedList, userStudyGroupProceedingList.toArray(new StudyInfoDto[0]));
-        Collections.addAll(mergedList, userStudyGroupCloseList.toArray(new StudyInfoDto[0]));
-
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("status", 200);
-        response.put("studyList", mergedList);
-
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-    }
-
-    @GetMapping("/study/search")
-    public ResponseEntity<Map<String, Object>> searchStudyGroup(@RequestParam("user") String userId,
-                                                                @RequestParam("title") String title) {
-        List<StudyInfoDto> userStudyGroupList = studyService.searchUserStudyGroup(userId, title);
-
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("status", 200);
-        response.put("search", userStudyGroupList);
-
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-    }
-
+    // 스터디 생성
+    // http://localhost:8080/api/study
     @PostMapping("/study")
     public ResponseEntity<Map<String, Object>> setStudyGroup(
             @RequestParam(value = "profile", required = false) List<MultipartFile> multipartFile,
@@ -123,7 +46,6 @@ public class StudyController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date formatStartAt = format.parse(startAt);
         Date formatEndAt = format.parse(endAt);
-
 
         StudyCreationDto studyCreationDto = new StudyCreationDto();
         studyCreationDto.setUsersId(usersId);
@@ -141,10 +63,27 @@ public class StudyController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
-    // 올바르지 않은 접근을 검사
+    // 스터디 초대 수락/거절
+    @PostMapping("/study/invite")
+    public ResponseEntity<?> setMemberStudyGroup(@RequestBody ChangeUserStudyDto changeUserStudyDto) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            studyService.updateStudyGroupStatus(changeUserStudyDto);
+            response.put("status", 200);
+            response.put("message", "스터디에 가입되었습니다.");
+        } catch (Exception e) {
+            response.put("status", 400);
+            response.put("message", "관리자에게 문의해주세요.");
+        }
+
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    // 스터디 가입관련 올바른 접근 확인
     @GetMapping("/study/invite/pre-check")
     public ResponseEntity<Map<String, Object>> getEnterStudyGroupConditionCheck(
-            @RequestParam("userstudy_id") Long userstudy_id) {
+            @RequestParam("userstudyId") Long userstudy_id) {
 
         Map<String, Object> response = new HashMap<>();
 
@@ -171,22 +110,42 @@ public class StudyController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/study/invite")
-    public ResponseEntity<?> setMemberStudyGroup(@RequestBody ChangeUserStudyDto changeUserStudyDto) {
+    // 사용자가 가입한 스터디 전부 조회
+    // http://localhost:8080/api/study?user=<사용자ID>
+    @GetMapping("/study")
+    public ResponseEntity<Map<String, Object>> getStudyGroup(@RequestParam("user") String userId) {
+        List<StudyInfoDto> userStudyGroupProceedingList = studyService.getUserStudyGroupProceeding(userId);
+        List<StudyInfoDto> userStudyGroupCloseList = studyService.getUserStudyGroupClose(userId);
+
+        List<StudyInfoDto> mergedList = new ArrayList<>();
+
+        Collections.addAll(mergedList, userStudyGroupProceedingList.toArray(new StudyInfoDto[0]));
+        Collections.addAll(mergedList, userStudyGroupCloseList.toArray(new StudyInfoDto[0]));
+
         Map<String, Object> response = new HashMap<>();
 
-        try {
-            studyService.updateStudyGroupStatus(changeUserStudyDto);
-            response.put("status", 200);
-            response.put("message", "스터디에 가입되었습니다.");
-        } catch (Exception e) {
-            response.put("status", 400);
-            response.put("message", "관리자에게 문의해주세요.");
-        }
+        response.put("status", 200);
+        response.put("studyList", mergedList);
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
+    // 사용자의 스터디 중 제목으로 조회
+    // http://localhost:8080/api/study/search?user=<사용자ID>&title=<검색할_스터디_제목>
+    @GetMapping("/study/search")
+    public ResponseEntity<Map<String, Object>> searchStudyGroup(@RequestParam("user") String userId,
+                                                                @RequestParam("title") String title) {
+        List<StudyInfoDto> userStudyGroupList = studyService.searchUserStudyGroup(userId, title);
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("status", 200);
+        response.put("search", userStudyGroupList);
+
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    // 스터디 상세정보 조회
     @GetMapping("/studyinfo/{studyinfoId}")
     public ResponseEntity<?> getStudyInfo(@PathVariable("studyinfoId") String studyinfo_id) {
         Map<String, Object> response = new HashMap<>();
@@ -204,8 +163,58 @@ public class StudyController {
             response.put("title", studyInfo.get().getTitle());
             response.put("description", studyInfo.get().getDescription());
         } else {
-            response.put("status", 200);
+            response.put("status", 400);
             response.put("message", "존재하지 않은 스터디 그룹입니다.");
+        }
+
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    // 사용자의 모든 일정 조회
+    // http://localhost:8080/api/calendar/study?user=<사용자ID>
+    @GetMapping("/calendar/study")
+    public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("user") String userId) {
+        List<StudyAppointmentDTO> studyMeetingList = studyService.getStudyMeeting(userId);
+        log.info("유저유저 {}",userId);
+        Map<String, Object> response = new HashMap<>();
+
+        if (studyMeetingList.size() != 0) {
+            response.put("status", 200);
+            response.put("calendar", studyMeetingList);
+        } else {
+            response.put("status", 200);
+            response.put("calendar", studyMeetingList);
+            response.put("message", "예정된 study가 없습니다.");
+        }
+
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    // 사용자의 모든 일정 중 특정 날짜로 조회
+    // http://localhost:8080/api/today/study?today=yyyy-MM-dd
+    @GetMapping("/today/study")
+    public ResponseEntity<Map<String, Object>> getTodayStudyMeeting(@RequestParam("today") String today, HttpServletRequest request) {
+        // Date 형식으로 파싱
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date todayDate;
+        try {
+            todayDate = dateFormat.parse(today);
+        } catch (ParseException e) {
+            todayDate = null;
+        }
+
+        Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
+        List<StudyAppointmentDTO> todayMeetingList = studyService.getTodayStudyMeeting(todayDate, (String) token.get("users_id"));
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (todayMeetingList.size() != 0) {
+            response.put("status", 200);
+            response.put("today", todayMeetingList);
+        } else {
+            response.put("status", 200);
+            response.put("today", todayMeetingList);
+            response.put("message", "오늘 예정된 스터디가 없습니다.");
         }
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
