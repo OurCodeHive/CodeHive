@@ -255,10 +255,10 @@ public class StudyRoomController {
 
 
     // [스터디룸] (스터디 장, 스터디 팀원) 일정 보기를 누르면 활성화된 달력 창이 보여짐
+    // 해당 스터디에 생성된 모든 스터디 일정 목록을 조회한다.
     // [GET] [api/study/meeting/{studyinfo_id}
     @GetMapping("/study/meeting/{studyinfo_id}")
     public ResponseEntity<?> getAllStudyAppointmentsByStudyInfoId(@PathVariable("studyinfo_id") Long studyInfoId) {
-        // 해당 스터디에 생성된 모든 스터디 회의 조회 서비스 호출
         List<StudyAppointment> studyAppointments = studyService.getAllStudyAppointmentsByStudyInfoId(studyInfoId);
         if (!studyAppointments.isEmpty()) {
             // 조회된 스터디 회의 정보들을 응답으로 반환

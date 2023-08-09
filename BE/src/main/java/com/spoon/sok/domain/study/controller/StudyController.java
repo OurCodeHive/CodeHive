@@ -83,7 +83,7 @@ public class StudyController {
     // 스터디 가입관련 올바른 접근 확인
     @GetMapping("/study/invite/pre-check")
     public ResponseEntity<Map<String, Object>> getEnterStudyGroupConditionCheck(
-            @RequestParam("userstudy_id") Long userstudy_id) {
+            @RequestParam("userstudyId") Long userstudy_id) {
 
         Map<String, Object> response = new HashMap<>();
 
@@ -175,7 +175,7 @@ public class StudyController {
     @GetMapping("/calendar/study")
     public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("user") String userId) {
         List<StudyAppointmentDTO> studyMeetingList = studyService.getStudyMeeting(userId);
-
+        log.info("유저유저 {}",userId);
         Map<String, Object> response = new HashMap<>();
 
         if (studyMeetingList.size() != 0) {
