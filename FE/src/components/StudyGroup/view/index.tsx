@@ -14,8 +14,6 @@ import { useParams } from 'react-router-dom';
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
 
 const StudyView = () => {
-
-  const { id } = useParams();
   const [ViewContents, setViewContents] = useState<StudyType>({} as StudyType);
   const LeaderFlag: boolean = CheckUserId(ViewContents?.users_id as number);
   const initIdx = 0;
@@ -34,18 +32,15 @@ const StudyView = () => {
 
   return (
     <div className="col-12">
-      <div className={`col-12`}>
+      <div className="col-12 mb30">
         <StudyViewMenu Contents={ViewContents} />
       </div>
-      <div className="col-12 col-md-8 pl30">
+      <div className="col-12 col-md-8 pl30 pr15">
           <StudyViewInfo Contents={ViewContents} LeaderFlag={LeaderFlag} />
           <Tab initIdx={initIdx} TabList={TabContents} />
       </div>
-      <div style={{
-        position:"absolute",
-        right:"-7%"
-      }}>
-        <ChatFrameComp id={String(studyinfoId)} />
+      <div className="col-12 col-md-4 pl15">
+        <ChatFrameComp id={String(studyinfoId)} chatMaxHeight='300px' />
       </div>
     </div>
   )

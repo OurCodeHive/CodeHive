@@ -50,7 +50,7 @@ function Code() {
   let [language, setLanguage] = useState("Python");
   let [codeHeight, setCodeHeight] = useState("93.3vh");
   let [code, setCode] = useState("");
-  let [showChat, setShowChat] = useState("hidden");
+  let [showChat, setShowChat] = useState("none");
   let [chatRedPoint, setChatRedPoint] = useState(false);
   let [isShow, setIsShow] = useState(false);
   
@@ -114,11 +114,8 @@ function Code() {
   };
 
   function toggleChat() {
-    if (showChat == "hidden") {
-      setShowChat("visible");
-    } else {
-      setShowChat("hidden");
-    }
+    if (showChat == "none") setShowChat("block");
+    else setShowChat("none");
     setChatRedPoint(false);
   }
 
@@ -174,8 +171,8 @@ function Code() {
           className={style.chatIcon}>
         </img>
       }
-        <div style={{ visibility:showChat }}>
-          <ChatComp id={id} chatRedPoint={chatRedPoint} setChatRedPoint={setChatRedPoint} setIsShow={setIsShow}/>
+        <div className={`col-12 ${style.chat_con}`} style={{ display:showChat }}>
+          <ChatComp id={id} chatRedPoint={chatRedPoint} setChatRedPoint={setChatRedPoint} setIsShow={setIsShow} chatMaxHeight='65vh'/>
         </div>
     </div>
   )

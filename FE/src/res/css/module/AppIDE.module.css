@@ -65,11 +65,5 @@
   background-color: #222326;
 }
 
-.chatIcon {
-  cursor: pointer;
-  position: absolute;
-  z-index: 2;
-  right: 5vh;
-  bottom: 4vh;
-  width: 50px;
-}
+.chatIcon {cursor: pointer; position: absolute; z-index: 2; right: 30px; bottom: 30px; width: 50px;}
+.chat_con{position: absolute; z-index: 3; right: 30px; bottom: 80px; max-width: 350px;}

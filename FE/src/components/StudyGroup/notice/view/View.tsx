@@ -34,13 +34,9 @@ const NoticeView = ({studyBoardId, closePopup} : {studyBoardId : number, closePo
 
     const removeNotice = () => {
         setPopupFlag(() => true);
-
     };
 
     const getView = async () => {
-        //const tempList = {studyboardId : 1, authorId : 1, nickName : "테스트", noticeTitle : "테스트제목", "uploadAt" : "2023-08-04", "content" : "테스트내용"};
-        //setNoticeContents(tempList);
-        //setAuthorFlag(CheckUserId(tempList.authorId));
         await getNoticeView(studyinfoId, studyBoardId, ({data}) => {
             setNoticeContents(data);
         }, (error) => {console.log(error)})

@@ -1,5 +1,5 @@
 import { StudyDocumentType } from '@/type/StudyDocumentType';
-import TableListStyle from '@/utils/List/Table/css/ListTable.module.css';
+import TableListStyle from '@/utils/List/Table/res/css/ListTable.module.css';
 
 const DocumentListItem = ({item, clickEvent} : {item : StudyDocumentType, clickEvent: (idx: number) => void}) => {
 
