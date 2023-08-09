@@ -1,3 +1,4 @@
+import LinkInputPopUp from "@/components/StudyGroup/invite/LinkInput";
 import MessagePopUp from "@/components/StudyGroup/invite/Message";
 import { useState, useEffect } from "react";
 
@@ -9,21 +10,10 @@ import { useState, useEffect } from "react";
 // 5. useState나 Recoil에 유저 정보를 넣어줘야하는데 이건 모르겠음.
 
 function AppInvite() {
-  const [isPopUpOpen, setIsPopUpOpen] = useState(false);
-  const [isAccepted, setIsAccepted] = useState(false);
-  const [isRejected, setIsRejected] = useState(false);
 
   const message = {
     accepted: "환영합니다.",
     rejected: "거절하였습니다."
-  }
-
-  const handleClosePopUp = () =>{
-    setIsPopUpOpen(false);
-  }
-
-  const handleOpenPopUp = () =>{
-    setIsPopUpOpen(true);
   }
 
   const handleAccept = () => {
@@ -40,9 +30,8 @@ function AppInvite() {
     })
       .then(response => response.json())
       .then(data => {
-        setIsAccepted(true); // 성공적으로 수락했을 때 상태 업데이트
-        handleOpenPopUp(); // 팝업 열기
-        console.log(data);
+        // 성공적으로 수락했을 때 상태 업데이트
+        console.log(data); // response 확인용 log
       })
       .catch(error => {
         console.error("Error:", error);
@@ -50,34 +39,28 @@ function AppInvite() {
   };
 
   const handleReject = () => {
-    setIsAccepted(true);
-    setIsRejected(true);
+    // status를 바꿔야 하지만, 따로 URL 없습니다.
+    // 바로 home과 같은 곳으로 페이지 이동으로 생각합니다.
   };
-
-    // 렌더링 후에 팝업을 열거나 상태 업데이트 처리
-    useEffect(() => {
-      if (isPopUpOpen) {
-        handleOpenPopUp();
-      }
-    }, [isPopUpOpen]);
-  
-    useEffect(() => {
-      if (isAccepted || isRejected) {
-        handleOpenPopUp();
-      }
-    }, [isAccepted, isRejected]);
 
   return (
     <div className="col-12 sub_wrap">
-      {!isAccepted && (
+
+      {/* 1. 이메일에서 링크를 클릭하면, 여기 페이지에 도달합니다.
+      2. input 창에서 사용자는 이메일 링크의 URL을 복붙해서 기입합니다. */}
+      <LinkInputPopUp></LinkInputPopUp>
+
+      {/* 3. 수락, 거절 버튼을 누릅니다.
+      3-1. 수락은 POST 요청을 보냄.
+      3-2. 거절은 다른 페이지로 이동 */}
         <>
           수락하시겠습니까?
           <button type="button" onClick={handleAccept}>수락</button>
           <button type="button" onClick={handleReject}>거절</button>
         </>
-      )}
 
-      {isPopUpOpen && (<MessagePopUp message={isRejected ? message.rejected : message.accepted}/>)}
+      {/* 4. 메세지를 alert에 넣어서 줍니다. */}
+      <MessagePopUp message={message.accepted}/>
 
     </div>
   )
