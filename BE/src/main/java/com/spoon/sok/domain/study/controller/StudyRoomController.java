@@ -105,7 +105,7 @@ public class StudyRoomController {
 
     // 스터디 공지사항 상세조회
     @GetMapping("/study/{studyinfo_id}/board/{studyboard_id}")
-    public ResponseEntity<Map<String, Object>> getStudyNotice(
+    public ResponseEntity<?> getStudyNotice(
             @PathVariable("studyinfo_id") Long studyInfoId,
             @PathVariable("studyboard_id") Long studyboardId) {
 
@@ -117,6 +117,7 @@ public class StudyRoomController {
         if (studyNotice != null) {
             response.put("status", 200);
             response.put("studyNotice", studyNotice);
+            return new ResponseEntity<>(studyNotice.get(), HttpStatus.OK);
         } else {
             response.put("status", 400);
             response.put("message", "공지사항 조회에 실패하였습니다.");
