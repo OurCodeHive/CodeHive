@@ -1,7 +1,7 @@
 import React from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
-import style from "@/res/css/module/FindPassword.module.css"
+import style from "@/res/css/page/FindPassword.module.css"
 import logo from "@/res/img/codehive_logo.png"
 import {nonAuthHttp} from '../../api/http';
 import { useNavigate } from 'react-router-dom';

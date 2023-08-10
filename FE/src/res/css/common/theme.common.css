@@ -1,8 +1,8 @@
 .point0{color: #FFDF2B !important;}
 .bg_point0{background-color: #FFDF2B !important;}
 
-.sub_wrap{display: flex; height: 100vh; align-items: center; justify-content: center; background-color: #E0E0E0;}
-.sub_wrap .sub_con{width: 90%; height: 90%; padding: 50px 40px; display: flex; border-radius: 20px; border: 10px solid rgb(207, 217, 187); overflow: hidden; overflow-y: auto; background-repeat: no-repeat; background-size: cover; background-position: center center;}
+.sub_wrap{display: flex; padding: 30px; height: 100vh; align-items: center; justify-content: center; background-color: #E0E0E0;}
+.sub_wrap .sub_con{max-width: 1600px; max-height: 900px; padding: 50px 40px; display: flex; border-radius: 20px; border: 10px solid rgb(207, 217, 187); overflow: hidden; overflow-y: auto; background-repeat: no-repeat; background-size: cover; background-position: center center;}
 
 .headline{font-size: 33px; font-size: 3.3rem; line-height: 39px; line-height: 3.9rem; font-weight: 700; letter-spacing: -0.02em; color: #17181d;}
 .title{font-size: 25px; font-size: 2.5rem; line-height: 31px; line-height: 3.1rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d;}

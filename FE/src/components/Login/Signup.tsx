@@ -1,7 +1,7 @@
 import React from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState, useCallback} from 'react';
-import style from "@/res/css/module/Signin.module.css"
+import style from "@/res/css/page/Signin.module.css"
 import logo from "@/res/img/codehive_logo.png"
 import {nonAuthHttp} from '../../api/http';
 import { useNavigate } from 'react-router-dom';
