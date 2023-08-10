@@ -1,13 +1,25 @@
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
-import React, { useState, } from "react";
-import { EditorState, convertToRaw } from 'draft-js';
+import htmlToDraft from 'html-to-draftjs';
+import React, { useState, useEffect } from "react";
+import { EditorState, convertToRaw, convertFromHTML, ContentState } from 'draft-js';
 import EditorStyle from "./css/Editor.module.css";
 
-const CustomEditor = ({editorRef} : {editorRef : React.RefObject<HTMLInputElement>}) => {
+const CustomEditor = ({editorRef, content} : {editorRef : React.RefObject<HTMLInputElement>, content?: string}) => {
+
 	// EditorState.createEmpty() 로 초기값 설정
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty())
+
+  useEffect(() => {
+    const blocksFromHtml = convertFromHTML(content ? content : "");
+    console.dir(blocksFromHtml);
+    if (blocksFromHtml && blocksFromHtml.contentBlocks.length > 0) {
+        const contentState = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
+        const editorState = EditorState.createWithContent(contentState);
+        onEditorStateChange(editorState);
+    }
+}, [])
 
   const onEditorStateChange = (editorState: EditorState) => {
       setEditorState(editorState);
