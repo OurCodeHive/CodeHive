@@ -15,17 +15,23 @@ interface CalendarData {
   calendar : Schedule[],
   message : string,
 }
-function CalendarApp() {
+interface PopoverProps {
+  isPopoverRight : boolean,
+}
+function CalendarApp(props:PopoverProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currMonth, setCurrMonth] = useState(currentDate.getMonth());
   const [currYear, setCurrYear] = useState(currentDate.getFullYear());
 //   const [data, setData] = useState<Schedule[]>([]);
   const [selectedDateInfo, setSelectedDateInfo] = useState<Schedule[]>([]);
   const [showPopover, setShowPopover] = useState(false); // State to control popover visibility
+  const isPopoverRight = props.isPopoverRight
+
+  const parsedPk = JSON.parse(sessionStorage.getItem("sessionStorage") as string);
+  const pk = parsedPk.useState.userId;
 
   useEffect(()=>{
-    
-
+    getCalendar();
 
     // setData(data);
   },[])
@@ -34,13 +40,12 @@ function CalendarApp() {
    
     async function requestCalendar(): Promise<void> {
         try {
-            const response: AxiosResponse<CalendarData> = await authHttp.get<CalendarData>(`/calendar/study?user={pk}`);
+            const response: AxiosResponse<CalendarData> = await authHttp.get<CalendarData>(`/calendar/study?user=${pk}`);
             console.log(response.data);
             const {calendar} = response.data;
             if(calendar){
-                
+              console.log(calendar);
             }
-            console.log(calendar);
         } catch (error) {
             const err = error as AxiosError
             console.log(err);
@@ -122,19 +127,19 @@ function CalendarApp() {
     } else {
       setCurrentDate(new Date());
     }
-  };
+  };//
   const renderPopover = () => (
     showPopover && (
-    <div className={style.popover}>
+    <div className={isPopoverRight? `${style.popover} ${style.popover_right}` : `${style.popover}`}>
       {selectedDateInfo.map((schedule, index) => (
-        <>
+        <div key={`popover-schedule-${index}`}>
         <br />
         <div className={style.study_title} key={`popover-schedule-${index}`}>
           {schedule.study_title} 
         </div>
         <div>{schedule.start_time} - {schedule.end_time}</div>
         <hr />
-        </>
+        </div>
       ))}
     </div>
     )

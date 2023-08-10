@@ -84,6 +84,7 @@ const Signup = () => {
                 .then((res)=> {
                     setSending(false);
                 if(res){
+                    setTime("180");
                     startCodeTimer();
                     // setSending(false);
                 }

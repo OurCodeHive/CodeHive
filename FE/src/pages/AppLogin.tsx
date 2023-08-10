@@ -45,7 +45,7 @@ const Login = () => {
 
     function loginPromise(key: string, value:string) {
         return new Promise((res) => {
-            console.log(res);
+            // console.log(res);
             setTimeout(res, 500);
         }).then(() => {
             localStorage.setItem(key, value);

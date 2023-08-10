@@ -20,7 +20,7 @@ const Schedule = () => {
 
     useEffect(()=>{
         // const today = new Date().toISOString().slice(0,10)
-        const date = "2023-08-03";
+        const date = "2023-08-09";
         authHttp.get<ScheduleData>(`/today/study?today=${date}`).then((res)=>{
             const {today} = res.data;
             if(today){
