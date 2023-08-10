@@ -9,7 +9,8 @@ import TableList from '@/utils/List/Table/List';
 import StudyStyle from '@/res/css/page/StudyView.module.css';
 import NoticeInsert from '../insert/Insert';
 
-const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag: boolean}) => {
+const NoticeList = ({studyinfoId, studyLeaderId} : {studyinfoId:number, studyLeaderId: number}) => {
+
     const param = {
         page : 0,
         size : 10
@@ -41,13 +42,18 @@ const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag:
         void getList();
     }, []);
 
+    const changePopup = () => {
+        changePage(0);
+        changePopupFlag(false);
+    }
+
     const keywordInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
     const WidGroup = ["auto", "100px", "150px"];
     const ListTitle = ["제목", "작성자", "작성일"];
 
     const [popupFlag, setPopupFlag] = useState(false);
     const [ViewStudyBoardId, setViewStudyBoardId] = useState(-1);
-    const [PopupContents, setPopupContents] = useState(<NoticeView studyBoardId={ViewStudyBoardId} closePopup={() => changePopupFlag(false)}/>);
+    const [PopupContents, setPopupContents] = useState(<NoticeView studyBoardId={ViewStudyBoardId} changePopup={changePopup} closePopup={() => changePopupFlag(false)} LeaderFlag={LeaderFlag} />);
 
     const PopupInfo = {
         PopupStatus : popupFlag,
@@ -66,19 +72,14 @@ const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag:
     const openViewPopup = (idx: number) => {
         setViewStudyBoardId(() => idx);
         PopupInfo.PopupTitle = "공지사항 상세";
-        setPopupContents(<NoticeView studyBoardId={idx} closePopup={() => changePopupFlag(false)}/>);
+        setPopupContents(<NoticeView studyBoardId={idx} closePopup={() => changePopupFlag(false)} changePopup={changePopup} LeaderFlag={LeaderFlag}/>);
         changePopupFlag(true);
     }
 
     const openInsertPopup = () => {
         PopupInfo.PopupTitle = "공지사항 등록";
-        setPopupContents(<NoticeInsert studyinfoId={studyinfoId} closePop={() => changePopupFlag(false)} completePop={completeInsert} />);
+        setPopupContents(<NoticeInsert studyinfoId={studyinfoId} closePop={() => changePopupFlag(false)} completePop={changePopup} />);
         changePopupFlag(true);
-    }
-
-    const completeInsert = () => {
-        changePage(0);
-        changePopupFlag(false);
     }
 
     return (

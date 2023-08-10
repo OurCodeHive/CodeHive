@@ -8,7 +8,6 @@ import NoticeList from '../notice/list/List';
 import DocumentList from '../document/list/List';
 import StudyViewMenu from '../menu/Menu';
 import ChatFrameComp from '@/components/chat/ChatFrameComp';
-import { useParams } from 'react-router-dom';
 
 
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
