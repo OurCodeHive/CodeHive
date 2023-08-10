@@ -3,6 +3,7 @@ import AppWelcome from "@/pages/AppWelcome";
 import AppIDE from "@/pages/AppIDE";
 import AppStudy from "@/pages/AppStudy";
 import AppInvite from "@/pages/AppInvite";
+import AppQuit from "@/pages/AppQuit";
 import AppNotFound from "@/error/AppNotFound";
 import Signup from "@/components/Login/Signup";
 import AppLogin from "@/pages/AppLogin";
@@ -20,6 +21,7 @@ const AppRouter = () => {
           <Route path="/login" element={<AppLogin/>}></Route>
           <Route path="/study" element={<AppStudy/>}></Route>
           <Route path="/invite" element={<AppInvite/>}></Route>
+          <Route path="/quit" element={<AppQuit/>}></Route>
           <Route path="/ide/:id" element={ <AppIDE/> }></Route>
           <Route path="/*" element={<AppNotFound/>}/>
           <Route path="/signup" element={<Signup/>}/>
