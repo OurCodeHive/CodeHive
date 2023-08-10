@@ -84,22 +84,22 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
     @Query(value = "INSERT INTO user_study (studyinfo_id, users_id, status, invite_email) " +
             "VALUES (:studyinfo_id, :userId, :status, :email)", nativeQuery = true)
     void saveUserStudyQuery(@Param("studyinfo_id") Long newStudy,
-                       @Param("userId") String userid,
-                       @Param("status") String status,
-                       @Param("email") String email);
+                            @Param("userId") String userid,
+                            @Param("status") String status,
+                            @Param("email") String email);
 
     @Query(value = "SELECT userstudy_id " +
             "FROM user_study " +
             "WHERE studyinfo_id = :studyinfo_id AND status = :status AND invite_email = :email", nativeQuery = true)
     Long findByStudyInfoAndStatusAndEmailQuery(@Param("studyinfo_id") Long newStudy,
-                                  @Param("status") String status,
-                                  @Param("email") String email);
+                                               @Param("status") String status,
+                                               @Param("email") String email);
 
-    @Query(value = "SELECT us.studyinfo_id, " +
-            "us.users_id, " +
-            "us.userstudy_id, " +
-            "us.invite_email, " +
-            "us.status " +
+    @Query(value = "SELECT us.studyinfo_id as studyInfoId, " +
+            "us.users_id as usersId, " +
+            "us.userstudy_id as userstudyId, " +
+            "us.invite_email as inviteEmail, " +
+            "us.status as status " +
             "FROM user_study us " +
             "WHERE userstudy_id = :userstudy_id", nativeQuery = true)
     Optional<PreCheckUserStudyDto> findByUserStudyIdQuery(Long userstudy_id);
@@ -110,7 +110,7 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "SET user_study.status = 'ACCEPT', user_study.users_id = :users_id " +
             "WHERE user_study.userstudy_id = :userstudy_id", nativeQuery = true)
     void saveUserStudyStatusQuery(@Param("users_id") Long usersId,
-                             @Param("userstudy_id") Long userstudyId);
+                                  @Param("userstudy_id") Long userstudyId);
 
     @Query(value = "SELECT DATE_FORMAT(si.start_at, '%Y-%m-%d') as startAt, " +
             "DATE_FORMAT(si.end_at, '%Y-%m-%d') as endAt, " +
