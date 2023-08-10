@@ -86,7 +86,7 @@ const DocumentList = ({studyinfoId} : {studyinfoId: number}) => {
 		<div className="col-12 pt50 pr20 pb20 pl20">
 			<DocumentFilter />
 			<div className="col-12 mb50">
-				<TableList WidGroup={WidGroup} ListTitle={ListTitle} ListContents={ListContents}/>
+				<TableList WidGroup={WidGroup} ListTitle={ListTitle} ListContents={ListContents} NoDataText="자료가 없습니다."/>
 			</div>
 			<div className="col-12">
 				<Pagination PaginationInfo={PaginationInfo} />

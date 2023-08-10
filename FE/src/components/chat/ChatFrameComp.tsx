@@ -63,6 +63,7 @@ function ChatFrameComp(props: Props) {
     },
     (err) => {
       navigate("/notFound");
+      location.reload();
     })
   }
 
