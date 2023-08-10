@@ -64,7 +64,7 @@ function Background(){
                     </div >
                     <div className={style.first_divisor}>
                       <div>flex test</div>
-                      <CalendarApp></CalendarApp>
+                      <CalendarApp isPopoverRight={false}></CalendarApp>
                       <Schedule></Schedule>
                     </div>
 

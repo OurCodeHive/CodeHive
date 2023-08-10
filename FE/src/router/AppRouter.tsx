@@ -11,6 +11,7 @@ import FindPassword from "@/components/Login/FindPassword";
 import ChangePassword from "@/components/Login/ChangePassword";
 import AppHome from "@/pages/AppHome";
 import TimerApp from "@/components/home/Timer";
+import ViewSchedule from "@/components/StudyGroup/view/calendar/ViewSchedule";
 
 const AppRouter = () => {
   return (
@@ -29,6 +30,7 @@ const AppRouter = () => {
           <Route path="/changepassword" element={<ChangePassword/>}/>
           <Route path="/home" element={<AppHome/>}/>
           <Route path="/timer" element={<TimerApp/>}/>
+          <Route path="/viewschedule" element={<ViewSchedule isPopoverRight={true}/>}/>
         </Routes>
       </BrowserRouter>
     </>
