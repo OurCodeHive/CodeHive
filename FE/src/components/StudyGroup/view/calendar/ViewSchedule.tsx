@@ -6,7 +6,7 @@ import { authHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
 import { render } from 'react-dom';
 import Schedule from '@/components/home/Schedule';
-const studyinfo_id = 4;
+const studyinfo_id = 3;
 
 interface Schedule {
     endTime: string;

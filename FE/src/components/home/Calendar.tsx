@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import style from '@/res/css/module/Calendar.module.css';
-import data from './CalendarData';
 import Schedule from './Schedule';
 import { authHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
 
 interface Schedule {
-    study_title: string;
-    date: string;
-    start_time: string;
-    end_time: string;
+  endTime: string;
+  id: number;
+  meetingAt: string;
+  startTime: string;
+  title : string,
 }
 interface CalendarData {
   calendar : Schedule[],
@@ -18,22 +18,20 @@ interface CalendarData {
 interface PopoverProps {
   isPopoverRight : boolean,
 }
-function CalendarApp(props:PopoverProps) {
+function CalendarApp() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currMonth, setCurrMonth] = useState(currentDate.getMonth());
   const [currYear, setCurrYear] = useState(currentDate.getFullYear());
-//   const [data, setData] = useState<Schedule[]>([]);
+  const [data, setData] = useState<Schedule[]>([]);
   const [selectedDateInfo, setSelectedDateInfo] = useState<Schedule[]>([]);
   const [showPopover, setShowPopover] = useState(false); // State to control popover visibility
-  const isPopoverRight = props.isPopoverRight
+  const [clickedDate, setClickedDate] = useState<string>("");
 
-  const parsedPk = JSON.parse(sessionStorage.getItem("sessionStorage") as string);
+  const parsedPk = JSON.parse(sessionStorage.getItem("sessionStorage") as string) as { useState: { userId: string } };
   const pk = parsedPk.useState.userId;
 
   useEffect(()=>{
     getCalendar();
-
-    // setData(data);
   },[])
 
   function getCalendar(){
@@ -41,10 +39,9 @@ function CalendarApp(props:PopoverProps) {
     async function requestCalendar(): Promise<void> {
         try {
             const response: AxiosResponse<CalendarData> = await authHttp.get<CalendarData>(`/calendar/study?user=${pk}`);
-            console.log(response.data);
             const {calendar} = response.data;
             if(calendar){
-              console.log(calendar);
+              setData(calendar)
             }
         } catch (error) {
             const err = error as AxiosError
@@ -73,13 +70,13 @@ function CalendarApp(props:PopoverProps) {
       const isToday = i === currentDate.getDate() && currMonth === currentDate.getMonth() && currYear === currentDate.getFullYear();
     //   const scheduleTitle = data.find(schedule => schedule.date === `${currYear}-${(currMonth + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`)?.study_title || '';
       const daySchedules = data.filter(schedule => {
-        const scheduleDate = new Date(schedule.date);
+        const scheduleDate = new Date(schedule.startTime);
         return scheduleDate.getFullYear() === currYear && scheduleDate.getMonth() === currMonth && scheduleDate.getDate() === i;
       });
     
       const scheduleElements = daySchedules.map((schedule, index) => (
         <div key={`schedule-${i}-${index}`}>
-          {schedule.study_title}
+          {schedule.title}
         </div>
       ));
       
@@ -105,6 +102,7 @@ function CalendarApp(props:PopoverProps) {
   const handleDateClick = (day:number, daySchedules:Schedule[]) => {
     const selectedDate = new Date(currYear, currMonth, day+1);
     const formattedDate = selectedDate.toISOString().split('T')[0];
+    setClickedDate(formattedDate);
     console.log(`Schedules for ${formattedDate}:`);
     console.log(daySchedules);
     if (selectedDateInfo.length === 0) {
@@ -130,14 +128,14 @@ function CalendarApp(props:PopoverProps) {
   };//
   const renderPopover = () => (
     showPopover && (
-    <div className={isPopoverRight? `${style.popover} ${style.popover_right}` : `${style.popover}`}>
+    <div className={style.popover}>
+      <div className={style.popover_title}>{clickedDate}</div>
       {selectedDateInfo.map((schedule, index) => (
         <div key={`popover-schedule-${index}`}>
-        <br />
         <div className={style.study_title} key={`popover-schedule-${index}`}>
-          {schedule.study_title} 
+          {schedule.title} 
         </div>
-        <div>{schedule.start_time} - {schedule.end_time}</div>
+        <div>{schedule.startTime.slice(11,16)} - {schedule.endTime.slice(11,16)}</div>
         <hr />
         </div>
       ))}

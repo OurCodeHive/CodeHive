@@ -26,17 +26,7 @@ const Comedy = () => {
         };
         comedy : ComedyItem[];
      }
-    //  interface IComedy {
-    //      response?: {
-    //         data?: {
-    //          comedy? {
 
-    //          }
-    //         };
-    //         status: number;
-    //         headers: string;
-    //      };
-    //  }
     useEffect(()=>{
         getComedy();
     }, [])
@@ -51,14 +41,12 @@ const Comedy = () => {
         async function requestComedy(): Promise<IComedy | undefined> {
             try {
                 const response: AxiosResponse<IComedy> = await authHttp.get<IComedy>(`/comedy`);
-                console.log(response.data);
                 const {comedy} = response.data;
                 if(comedy){
                     setComedies(comedy); //전체 코미디 넣기
                     setComedy(response.data.comedy[idx].content); //처음 로딩할 때 0번째 인덱스 코미디 등록하기
                     setWriter(response.data.comedy[idx].writer);
                 }
-                console.log(comedy);
                 return response.data;
             } catch (error) {
                 const err = error as AxiosError
@@ -67,22 +55,12 @@ const Comedy = () => {
         }
         requestComedy()
         .then((res)=>{
-            // console.log(res.comedy);
-            // setComedy(res.message);
         })
         .catch(console.log)
             
     }
     function refreshComedy(){
-        // console.log(comedy.length);
-        // if(idx === 8){
-        //     console.log("zero!");
-        //     setIdx(0);
-        // } else {
-        //     setIdx(++idx);
-        // }
         resetIdx();
-        // setIdx(Math.floor(Math.random() * 10));
         console.log(idx);
         if(comedies){
             setComedy(comedies[idx]['content']);

@@ -50,25 +50,24 @@
   z-index: 2;
   top: 0;
   right: 100%; /* Adjust the positioning to the left side */
-  width: 150px;
+  width: 170px;
   height: 365px;
   transform: translate(-10px, 0); /* Adjust the translation as needed */
+  overflow-y: scroll;
 }
-.popover_right {
-  position: absolute;
-  background-color: #45a5b84f;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 2;
-  top: 0;
-  left: 100%;
-  width: 150px;
-  height: 365px;
-  transform: translate(10px, 0); 
+.popover::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+.popover_title {
+  background-color: #33758279 ;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  padding: 3px 3px;
+  border-radius: 6px;
 }
 .study_title {
+  margin-top: 10px;
   font-weight: bold;
 }
 .popover div {

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import style from '@/res/css/module/Schedule.module.css';
 import arrow from '@/res/img/icon_arrow.png';
-import { authHttp, nonAuthHttp } from '@/api/http';
-import moment, { ISO_8601 } from 'moment';
-import { start } from 'repl';
-import { format } from 'path';
+import { authHttp } from '@/api/http';
+import moment from 'moment';
 interface ScheduleData {
     today : ISchedule[],
 }
@@ -19,14 +17,12 @@ const Schedule = () => {
     let [data, setData] = useState<ISchedule[]>([] as ISchedule[]);
 
     useEffect(()=>{
-        // const today = new Date().toISOString().slice(0,10)
-        const date = "2023-08-09";
-        authHttp.get<ScheduleData>(`/today/study?today=${date}`).then((res)=>{
+        const today = new Date().toISOString().slice(0,10)
+        // const date = "2023-08-09";
+        authHttp.get<ScheduleData>(`/today/study?today=${today}`).then((res)=>{
             const {today} = res.data;
             if(today){
                 setData(today);//[{},{},{}]
-                console.log(today);
-                console.log(data);
             }
         }).catch(console.log);
     },[])
@@ -55,9 +51,14 @@ const ScheduleListItem = ({data} : {data: ISchedule}) => {
       </div>
     );
   };
-
+  function getUTCTime(){
+    const curr = new Date();
+    const offset = 1000 * 60 * 60 * 9
+    const seoul = new Date((new Date()).getTime() + offset)
+    return seoul.toISOString();
+  }
   function getTimeLeft(startTime:string | undefined):string{
-    let now = "2023-08-03T06:20:06.739Z"
+    let now = getUTCTime();
     let startAt = moment(startTime);
     console.log("now = "+now);
     console.log("startAt = "+startAt.toISOString());
