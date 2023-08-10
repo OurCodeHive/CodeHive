@@ -11,20 +11,21 @@ export type StudyDocumentType = {
 
 export type StudyDocumentDetailItemType = {
     id : number;
-    authorId : number;
-    title: string;
     uploadAt: string;
+    title: string;
     content: string;
+    userId : number;
+    nickname : string;
     fileList: file[];
 }
 
 export type file = {
-    etc: string;
-    fileSize: number;
     id: number;
+    fileSize: number;
     originName: string;
-    path: string;
     realName: string;
+    path: string;
+    etc: string;
 }
 
 
