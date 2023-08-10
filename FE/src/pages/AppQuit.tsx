@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 // 4. Message의 "닫기" 누르면 URL이 invite로 유지되어있음. 여기도 redirct?
 // 5. useState나 Recoil에 유저 정보를 넣어줘야하는데 이건 모르겠음.
 
-function AppInvite() {
+const AppQuit = () => {
 
   const message = {
     accepted: "환영합니다.",
@@ -66,4 +66,4 @@ function AppInvite() {
   )
 }
 
-export default AppInvite;
+export default AppQuit;
