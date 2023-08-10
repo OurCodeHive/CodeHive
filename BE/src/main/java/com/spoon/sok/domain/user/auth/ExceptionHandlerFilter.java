@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
     @Value("${jwt.secret}") String secretKey;
-    @Value("${front_login_url}") String loginUrl;
+    @Value("${FRONT_LOGIN_URL}") String loginUrl;
 
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisTemplate redisTemplate;
@@ -98,7 +98,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "JWT claims string is empty.");
         } catch (RuntimeException e) {
             log.error("회원가입을 할 수 없습니다.");
-            String uri = UriComponentsBuilder.fromUriString("https://ourcodehive.vercel.app/login")
+            String uri = UriComponentsBuilder.fromUriString(loginUrl)
                     .queryParam("status", 406)
                     .build().toUriString();
 

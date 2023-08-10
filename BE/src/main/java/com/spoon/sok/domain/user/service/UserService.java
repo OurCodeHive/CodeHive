@@ -2,14 +2,19 @@ package com.spoon.sok.domain.user.service;
 
 import com.spoon.sok.domain.email.entity.Email;
 import com.spoon.sok.domain.email.repository.EmailRepository;
+import com.spoon.sok.domain.study.entity.StudyInfo;
+import com.spoon.sok.domain.study.enums.CurrentStatus;
+import com.spoon.sok.domain.study.repository.StudyRepository;
 import com.spoon.sok.domain.user.auth.AuthProvider;
 import com.spoon.sok.domain.user.dto.request.*;
 import com.spoon.sok.domain.user.dto.response.GetUserInfoResponseDto;
 import com.spoon.sok.domain.user.dto.response.UserResponseDto;
 import com.spoon.sok.domain.user.entity.User;
+import com.spoon.sok.domain.user.entity.UserStudy;
 import com.spoon.sok.domain.user.enums.Authority;
 import com.spoon.sok.domain.user.enums.UserStatus;
 import com.spoon.sok.domain.user.repository.UserRepository;
+import com.spoon.sok.domain.user.repository.UserStudyRepository;
 import com.spoon.sok.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +44,8 @@ public class UserService {
     private final RedisTemplate redisTemplate;
 
     private final UserRepository userRepository;
+    private final UserStudyRepository userStudyRepository;
+    private final StudyRepository studyRepository;
     private final EmailRepository emailRepository;
 
     public UserResponseDto login(UserLoginRequestDto requestDto) {
@@ -160,6 +168,32 @@ public class UserService {
 
         if (user.isEmpty()) {
             return false;
+        }
+
+        List<UserStudy> userStudyList = userStudyRepository.findBelongingUser(requestDto.getUserId(), CurrentStatus.ACCEPT);
+
+        if (!userStudyList.isEmpty()) {
+            for (UserStudy userStudy : userStudyList) {
+                userStudy.updateStatus(CurrentStatus.RESIGN);
+            }
+
+            List<UserStudy> userLeadStudies = userStudyRepository.findByStudyLeader(user.get().getId());
+
+            if (!userLeadStudies.isEmpty()) {
+                StudyInfo tmpStudyInfo = userLeadStudies.get(0).getStudyInfo();
+                User newLeader = userLeadStudies.get(0).getUsers();
+
+                tmpStudyInfo.updateUsers(newLeader);
+
+                for (UserStudy us : userLeadStudies) {
+                    if (!us.getStudyInfo().equals(tmpStudyInfo)) {
+                        tmpStudyInfo = us.getStudyInfo();
+                        newLeader = us.getUsers();
+
+                        tmpStudyInfo.updateUsers(newLeader);
+                    }
+                }
+            }
         }
 
         user.get().updateUserStatus(UserStatus.LEAVE);

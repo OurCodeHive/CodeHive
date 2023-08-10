@@ -104,7 +104,11 @@ public class StudyController {
             }
         } else {
             response.put("possible_access", false);            // 초대 받은 사람이 아니다.
-            response.put("isOurUser", false);                  // 회원가입도 안했다.
+            if (us.get().getUsersId() == null) {
+                response.put("isOurUser", false);
+            } else {
+                response.put("isOurUser", true);
+            }
         }
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
@@ -151,6 +155,7 @@ public class StudyController {
         Map<String, Object> response = new HashMap<>();
 
         Optional<StudyInfoDetailDto> studyInfo = studyService.getStudyInfoAll(studyinfo_id);
+
 
         if (studyInfo.isPresent()) {
             response.put("status", 200);

@@ -13,7 +13,6 @@ import java.util.*;
 @Table(name = "study_info")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyInfo {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "studyinfo_id") // 스터디 정보키
@@ -65,7 +64,6 @@ public class StudyInfo {
     //study_notice 스터디공지사항과 일대다 관계
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyInfo")
     private List<StudyNotice> noticeList = new ArrayList<>(); // 스터디 공지사항
-
 
     @Builder
     public StudyInfo(Long id, String title, String studyroomSize, String description, String profileImage, String enterName, Date startAt, Date endAt, List<StudyAppointment> meetingList, User users) {
