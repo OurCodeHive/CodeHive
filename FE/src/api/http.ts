@@ -68,7 +68,7 @@ authHttp.interceptors.request.use(
         }
 
         if (config.headers && accessToken){
-            config.headers.Authorization = `Bearer ${accessToken}`;
+            config.headers.Authorization = `Bearer ` + localStorage.getItem('accessToken');
         }
 
       return config;
@@ -120,7 +120,7 @@ formHttp.interceptors.request.use(
       }
 
       if (config.headers && accessToken){
-          config.headers.Authorization = `Bearer ${accessToken}`;
+          config.headers.Authorization = `Bearer ` + localStorage.getItem('accessToken');
       }
 
     return config;
