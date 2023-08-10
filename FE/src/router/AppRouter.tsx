@@ -30,7 +30,7 @@ const AppRouter = () => {
           <Route path="/changepassword" element={<ChangePassword/>}/>
           <Route path="/home" element={<AppHome/>}/>
           <Route path="/timer" element={<TimerApp/>}/>
-          <Route path="/viewschedule" element={<ViewSchedule isPopoverRight={true}/>}/>
+          <Route path="/viewschedule" element={<ViewSchedule/>}/>
         </Routes>
       </BrowserRouter>
     </>
