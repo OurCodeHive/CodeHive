@@ -17,7 +17,7 @@ const StudyView = () => {
   const LeaderFlag: boolean = CheckUserId(ViewContents?.users_id as number);
   const initIdx = 0;
   const TabContents = [] as TabType[];
-  TabContents.push({title : "공지사항", contents : <NoticeList studyinfoId={studyinfoId} LeaderFlag={LeaderFlag}/>});
+  TabContents.push({title : "공지사항", contents : <NoticeList studyinfoId={studyinfoId} studyLeaderId={ViewContents.users_id} />});
   TabContents.push({title : "자료", contents : <DocumentList studyinfoId={studyinfoId} />});
 
   useEffect(() => {
