@@ -53,6 +53,8 @@ public class StudyAppointmentRequestDTO {
         Date startDate = Date.from(startDateTime.atZone(ZoneId.systemDefault()).toInstant());
         Date endDate = Date.from(endDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
+
+
         return StudyAppointment.builder()
                 .title(title)
                 .meetingAt(startDate)

@@ -156,6 +156,7 @@ public class StudyController {
 
         Optional<StudyInfoDetailDto> studyInfo = studyService.getStudyInfoAll(studyinfo_id);
 
+
         if (studyInfo.isPresent()) {
             response.put("status", 200);
             response.put("startAt", studyInfo.get().getStartAt());
