@@ -107,10 +107,11 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
 
     @Modifying
     @Query(value = "UPDATE user_study " +
-            "SET user_study.status = 'ACCEPT', user_study.users_id = :users_id " +
+            "SET user_study.status = :status, user_study.users_id = :users_id " +
             "WHERE user_study.userstudy_id = :userstudy_id", nativeQuery = true)
     void saveUserStudyStatusQuery(@Param("users_id") Long usersId,
-                                  @Param("userstudy_id") Long userstudyId);
+                                  @Param("userstudy_id") Long userstudyId,
+                                  @Param("status") String status);
 
     @Query(value = "SELECT DATE_FORMAT(si.start_at, '%Y-%m-%d') as startAt, " +
             "DATE_FORMAT(si.end_at, '%Y-%m-%d') as endAt, " +
