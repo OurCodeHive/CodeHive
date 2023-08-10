@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { StudyNoticeType } from '@/type/StudyNoticeType';
-import { getNoticeView } from '@/api/study';
+import { getNoticeView, removeNoticeData } from '@/api/study';
+import { CheckUserId } from '@/atom/UserAtom';
 import CustomEditorResult from '@/utils/CustomEditor/CustomEditorResult';
 import { ConfirmPopup, ContentsPopup } from '@/utils/Popup';
 import NoticeUpdate from '../update/Update';
 
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
 
-const NoticeView = ({studyBoardId, changePopup, closePopup, LeaderFlag} : {studyBoardId : number, changePopup: () => void, closePopup: (flag: boolean) => void, LeaderFlag : boolean}) => {
-    const LeaderFlag: boolean = CheckUserId(ViewContents?.users_id as number);
+const NoticeView = ({studyBoardId, changePopup, closePopup, studyLeaderId} : {studyBoardId : number, changePopup: () => void, closePopup: (flag: boolean) => void, studyLeaderId : number}) => {
+    const LeaderFlag = useRef(CheckUserId(studyLeaderId));
 
     const [NoticeContents, setNoticeContents] = useState<StudyNoticeType>({} as StudyNoticeType);
 
@@ -29,7 +30,7 @@ const NoticeView = ({studyBoardId, changePopup, closePopup, LeaderFlag} : {study
         maxWidth: 800,
         PopupTitle : "공지사항 변경",
         ClosePopupProp : () => changePopupFlag(false),
-        PopupContents : <NoticeUpdate studyBoardId={studyBoardId} closePop={() => changePopupFlag(false)} completePop={() => completeUpdate()} />
+        PopupContents : <NoticeUpdate studyinfoId={studyinfoId} data={NoticeContents} closePop={() => changePopupFlag(false)} completePop={() => completeUpdate()} />
     };
 
     const changePopupFlag = (flag: boolean) => {
@@ -41,9 +42,13 @@ const NoticeView = ({studyBoardId, changePopup, closePopup, LeaderFlag} : {study
     };
 
     //삭제하기 눌렀을 때
-    const removeConfirm = () => {
-        changeConfirmPopupFlag(false);
-        changePopup();
+    const removeConfirm = async () => {
+
+        await removeNoticeData(studyinfoId, studyBoardId, ({data}) => {
+            changeConfirmPopupFlag(false);
+            changePopup();
+        }, (error) => {console.log(error)});
+        
     }
 
     //삭제 시도
@@ -70,10 +75,6 @@ const NoticeView = ({studyBoardId, changePopup, closePopup, LeaderFlag} : {study
         void getView();
     }, []);
 
-    useEffect(() => {
-        setLeaderFlag(() => LeaderFlag);
-    },[LeaderFlag]);
-
     return (
         <div className="col-12 pt50 pr20 pb20 pl20">
             <div className="col-12 mb50 form_style_0_con type_view">
@@ -88,7 +89,7 @@ const NoticeView = ({studyBoardId, changePopup, closePopup, LeaderFlag} : {study
             </div>
             <div className="col-12 tc btn_style_0_con">
                 <button type="button" className="btn_style_0 bg_a2a2a2" onClick={() => closePopup(false)}>닫기</button>
-                {leaderFlag
+                {LeaderFlag
                     ?
                     <div className='ml15 show'>
                         <button type="button" className="btn_style_0 bg_point0" onClick={() => updateNotice()}>변경</button>

@@ -65,8 +65,16 @@ const getNoticeView = async (studyinfoId: number, studyboardId: number, success:
  * @param success 
  * @param fail 
  */
-const insertNoticeData = async (studyinfoId: number, param: object, success: ({data} : {data: StudyType}) => void, fail: () => void) => {
+const insertNoticeData = async (studyinfoId: number, param: object, success: ({data} : {data: object}) => void, fail: () => void) => {
     await api.post(`/study/${studyinfoId}/board`, JSON.stringify(param)).then(success).catch(fail);
+}
+
+const updateNoticeData = async (studyinfoId: number, studyboardId: number, param: object, success: ({data} : {data: object}) => void, fail: () => void) => {
+    await api.put(`/study/${studyinfoId}/board/${studyboardId}`, JSON.stringify(param)).then(success).catch(fail);
+}
+
+const removeNoticeData = async (studyinfoId: number, studyboardId: number, success: ({data} : {data: object}) => void, fail: (error: unknown) => void) => {
+    await api.delete(`/study/${studyinfoId}/board/${studyboardId}`).then(success).catch(fail);
 }
 
 const getDocumentList = async (studyinfoId: number, param: object, success: ({data} : {data : StudyDocumentListType}) => void, fail: (error: unknown) => void) => {
@@ -77,4 +85,4 @@ const getDocumentView = async (studyinfoId: number, studyDocumentId: number, suc
     await api.get(`/study/${studyinfoId}/document/${studyDocumentId}`).then(success).catch(fail);
 }
 
-export {getList, insertData, inviteMember, getView, getNoticeList, getNoticeView, insertNoticeData, getDocumentList, getDocumentView};
+export {getList, insertData, inviteMember, getView, getNoticeList, getNoticeView, insertNoticeData, updateNoticeData, removeNoticeData, getDocumentList, getDocumentView};

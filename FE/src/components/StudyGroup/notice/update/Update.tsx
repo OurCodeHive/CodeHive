@@ -1,13 +1,17 @@
 import { useState, useRef } from 'react';
-import { insertNoticeData } from "@/api/study";
+import { StudyNoticeType } from '@/type/StudyNoticeType';
+import { updateNoticeData } from "@/api/study";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { AlertPopup } from "@/utils/Popup";
 import CustomEditor from "@/utils/CustomEditor/CustomEditor";
 
 
-const NoticeUpdate = ({studyBoardId, closePop, completePop} : { studyBoardId: number, closePop: () => void, completePop: () => void }) => {
+const NoticeUpdate = ({studyinfoId, data, closePop, completePop} : { studyinfoId: number, data: StudyNoticeType, closePop: () => void, completePop: () => void }) => {
+    //const studyboardId = data.studyboardId as number;
+    const studyboardId = 3;
     const userId = useRecoilValue(userState).userId;
+    const [titleContents, setTitleContents] = useState(data.noticeTitle);
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
     const [AlertPopupTitle, setAlertPopupTitle] = useState("");
     const titleInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
@@ -54,7 +58,7 @@ const NoticeUpdate = ({studyBoardId, closePop, completePop} : { studyBoardId: nu
             content : String(descInput.current?.value),
             uploadAt : todayText
         }
-        await insertNoticeData(studyinfoId, param, ({data}) => {
+        await updateNoticeData(studyinfoId, studyboardId, param, ({data}) => {
             completePop();
         }, () => {
             alert("생성에 실패했습니다.");
@@ -70,7 +74,7 @@ const NoticeUpdate = ({studyBoardId, closePop, completePop} : { studyBoardId: nu
                         <label htmlFor="studyInsertTitle" className="essential">제목</label>
                     </div>
                     <div className="col-12 col-md-0 input_box">
-                        <input type="text" id="studyInsertTitle" className="input_style_0" placeholder="제목을 입력해주세요" ref={titleInput} />
+                        <input type="text" id="studyInsertTitle" className="input_style_0" placeholder="제목을 입력해주세요" ref={titleInput} value={titleContents} onChange={(e) => setTitleContents(e.target.value)} />
                     </div>
                 </div>
                 <div className="col-12 form_style_0">
@@ -78,7 +82,7 @@ const NoticeUpdate = ({studyBoardId, closePop, completePop} : { studyBoardId: nu
                         <span>내용</span>
                     </div>
                     <div className="col-12 col-md-0 input_box">
-                        <CustomEditor editorRef={descInput} />
+                        <CustomEditor editorRef={descInput} content={data.content} />
                     </div>
                 </div>
             </div>

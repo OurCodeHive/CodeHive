@@ -1,5 +1,6 @@
 import {useEffect, useState, useRef} from 'react';
 import { getNoticeList } from '@/api/study';
+import { CheckUserId } from '@/atom/UserAtom';
 import NoticeFilter from './item/Filter';
 import NoticeListItem from './item/ListItem';
 import Pagination, { PaginationType } from '@/utils/Pagination/Pagination';
@@ -10,7 +11,8 @@ import StudyStyle from '@/res/css/page/StudyView.module.css';
 import NoticeInsert from '../insert/Insert';
 
 const NoticeList = ({studyinfoId, studyLeaderId} : {studyinfoId:number, studyLeaderId: number}) => {
-
+    const LeaderFlag = useRef(CheckUserId(studyLeaderId));
+    const [StudyLeaderId, setStudyLeaderId] = useState(studyLeaderId);
     const param = {
         page : 0,
         size : 10
@@ -42,6 +44,10 @@ const NoticeList = ({studyinfoId, studyLeaderId} : {studyinfoId:number, studyLea
         void getList();
     }, []);
 
+    useEffect(() => {
+        setStudyLeaderId(() => studyLeaderId);
+    }, [studyLeaderId]);
+
     const changePopup = () => {
         changePage(0);
         changePopupFlag(false);
@@ -53,7 +59,7 @@ const NoticeList = ({studyinfoId, studyLeaderId} : {studyinfoId:number, studyLea
 
     const [popupFlag, setPopupFlag] = useState(false);
     const [ViewStudyBoardId, setViewStudyBoardId] = useState(-1);
-    const [PopupContents, setPopupContents] = useState(<NoticeView studyBoardId={ViewStudyBoardId} changePopup={changePopup} closePopup={() => changePopupFlag(false)} LeaderFlag={LeaderFlag} />);
+    const [PopupContents, setPopupContents] = useState(<NoticeView studyBoardId={ViewStudyBoardId} changePopup={changePopup} closePopup={() => changePopupFlag(false)} studyLeaderId={studyLeaderId} />);
 
     const PopupInfo = {
         PopupStatus : popupFlag,
@@ -69,10 +75,10 @@ const NoticeList = ({studyinfoId, studyLeaderId} : {studyinfoId:number, studyLea
     };
 
     //상세 팝업 열기
-    const openViewPopup = (idx: number) => {
+    function openViewPopup(idx: number){
         setViewStudyBoardId(() => idx);
         PopupInfo.PopupTitle = "공지사항 상세";
-        setPopupContents(<NoticeView studyBoardId={idx} closePopup={() => changePopupFlag(false)} changePopup={changePopup} LeaderFlag={LeaderFlag}/>);
+        setPopupContents(<NoticeView studyBoardId={idx} closePopup={() => changePopupFlag(false)} changePopup={changePopup} studyLeaderId={StudyLeaderId} leaderFlag={LeaderFlag} />);
         changePopupFlag(true);
     }
 
