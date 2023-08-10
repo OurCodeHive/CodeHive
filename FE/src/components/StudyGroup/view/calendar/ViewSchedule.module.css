@@ -126,6 +126,9 @@
     height: 365px;
     transform: translate(10px, 0); 
   }
+  .popover_right::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
   .study_title {
     font-weight: bold;
     font-size: 13px;
@@ -183,7 +186,7 @@
   }
 
   .add_icon {
-    position: absolute;
+    position: fixed;
     bottom: 10px;
     right: 10px;
     font-size: 24px;
@@ -191,6 +194,8 @@
   }
   .no_study_text {
     font-size: 14px;
+    margin-top: 30px;
+    text-align: center;
   }
   .add_popover {
     display: flex;
@@ -233,7 +238,14 @@
     margin-bottom: 2px;
     width: 40px;
   }
-  
+  .popover_title {
+    background-color: #33758279 ;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    padding: 3px 3px;
+    border-radius: 6px;
+  }
   .add_popover input {
     font-size: 12px;
     width: 100%;
@@ -242,6 +254,9 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 5px;
+  }
+  .title_input {
+    margin-left: -3px;
   }
 
   .input_wrapper {
@@ -260,12 +275,12 @@
   }
   .button_wrapper button:nth-child(1){
     color: #333;
-    background-color: transparent;
-    border: 0.5px solid #333;
+    background-color: #ddd;
+    border: none;
     border-radius: 5px;
   }
   .button_wrapper button:nth-child(1):hover {
-    background-color: #fff7db;
+    background-color: #ccc;
   } 
   .button_wrapper button:nth-child(2){
     color: black;

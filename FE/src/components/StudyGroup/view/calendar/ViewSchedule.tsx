@@ -5,6 +5,7 @@ import style from './ViewSchedule.module.css';
 import { authHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
 import { render } from 'react-dom';
+import Schedule from '@/components/home/Schedule';
 const studyinfo_id = 4;
 
 interface Schedule {
@@ -140,10 +141,7 @@ function ViewSchedule() {
           setSelectedDateInfo(prevSelectedDateInfo =>
             prevSelectedDateInfo.filter(schedule => schedule.id !== id)
           );
-          getCalendar();
-          renderCalendar();
-          renderPopover();
-
+          setData((prevData)=>{return prevData.filter(schedule => schedule.id !== id)})
           resolve(); // Resolve the Promise if successful
         } catch (error) {
           console.error("Error deleting schedule:", error);
@@ -166,6 +164,7 @@ function ViewSchedule() {
   const renderPopover = () => (
     showPopover && (
       <div className={style.popover_right}>
+        <div className={style.popover_title}>{clickedDate}</div>
         {selectedDateInfo.length === 0 ? (
           <div className={style.no_study_text}>예정된 스터디가 없습니다</div>
         ) : (
@@ -215,10 +214,10 @@ function ViewSchedule() {
 
         // Create the new schedule with the calculated ID
         const newSchedule = {
-            endTime : `YYYY-mm-dd ${studyEndTime}`,
+            endTime : `1970-01-01 ${studyEndTime}`,
             id : newId,
             meetingAt : clickedDate,
-            startTime : `YYYY-mm-dd ${studyStartTime}`,
+            startTime : `1970-01-01 ${studyStartTime}`,
             title : studyTitle,
         };
         console.log(newSchedule);
@@ -271,7 +270,7 @@ function ViewSchedule() {
           <div className={style.add_popover_title}>스터디 일정 추가</div>
           <div className={style.input_wrapper}>
             <label htmlFor="addStudyTitle">제목</label>
-            <input onChange={(e)=>{setStudyTitle(e.target.value)}} type="text" id='addStudyTitle'/>
+            <input className={style.title_input} onChange={(e)=>{setStudyTitle(e.target.value)}} type="text" id='addStudyTitle'/>
           </div>
           <div className={style.input_wrapper}>
             <label htmlFor="addStudyStart">시작</label>
