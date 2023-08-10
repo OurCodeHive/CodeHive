@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import style from '@/res/css/module/Home.module.css';
+import ComedyStyle from '@/res/css/module/Comedy.module.css';
 import refresh from '@/res/img/refresh.png';
 import { authHttp, nonAuthHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
@@ -102,18 +102,16 @@ const Comedy = () => {
     }
 
     return (
-        <>
-                <div className={style.box_comedy}>
-                <div className={style.subtitle_comedy}>코딩문학제 오늘의 작품 <img onClick={refreshComedy} src={refresh} alt="코딩문학제 새로고침" /></div>
-                    <div className={style.box_outline}>
-                    <textarea className={style.content_comedy} name="" id="" cols={40} rows={20} value={comedy}>
-                    </textarea>
-                    <div className={style.content_writer}>{writer}</div>
-                    </div>
-                </div>
-        </>
-          
-        
+        <div className={`col-12 ${ComedyStyle.comedy_con}`}>
+            <div className={`col-12 mb10 ${ComedyStyle.comedy_title}`}>
+                <span>코딩문학제 오늘의 작품</span>
+                <img onClick={refreshComedy} src={refresh} alt="코딩문학제 새로고침" />
+            </div>
+            <div className={`col-12 tc ${ComedyStyle.comedy_desc}`}>
+                <textarea className='col-12' name="" id="" readOnly={true} value={comedy}></textarea>
+                <div className={`col-12 ${ComedyStyle.writer_name}`}>{writer}</div>
+            </div>
+        </div>
     );
 };
 

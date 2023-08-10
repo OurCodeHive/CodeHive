@@ -141,15 +141,15 @@ function CalendarApp() {
   );
 
   return (
-    <div className={style.wrapper}>
-      <header className={style.header}>
+    <div className={`col-12 ${style.wrapper}`}>
+      <header className={`col-12 ${style.header}`}>
         <p className={style.current_date}>{months[currMonth]} {currYear}</p>
         <div className={style.icons}>
           <span id="prev" className={style.material_symbols_rounded} onClick={() => handleIconClick("prev")}>&#9664;</span>
           <span id="next" className={style.material_symbols_rounded} onClick={() => handleIconClick("next")}>&#9654;</span>
         </div>
       </header>
-      <div className={style.calendar}>
+      <div className={`col-12 ${style.calendar}`}>
         <ul className={style.weeks}>
           <li>Sun</li>
           <li>Mon</li>

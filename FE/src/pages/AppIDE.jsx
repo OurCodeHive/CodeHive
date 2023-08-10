@@ -20,7 +20,7 @@ import IDEHeader from '@/components/IDE/IDEHeader';
 import IDETerminal from '@/components/IDE/IDETerminal';
 import { useState } from "react";
 import ChatComp from '@/components/chat/ChatFrameComp';
-import style from "@/res/css/module/AppIDE.module.css";
+import style from "@/res/css/page/AppIDE.module.css";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { codeEditTheme, highlightStyle, QuillBox, modulesRef } from '../components/IDE/EditorStyle';
