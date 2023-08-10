@@ -108,7 +108,7 @@ const Comedy = () => {
                 <img onClick={refreshComedy} src={refresh} alt="코딩문학제 새로고침" />
             </div>
             <div className={`col-12 tc ${ComedyStyle.comedy_desc}`}>
-                <textarea className='col-12' name="" id="" readOnly={true}>{comedy}</textarea>
+                <textarea className='col-12' name="" id="" readOnly={true} value={comedy}></textarea>
                 <div className={`col-12 ${ComedyStyle.writer_name}`}>{writer}</div>
             </div>
         </div>

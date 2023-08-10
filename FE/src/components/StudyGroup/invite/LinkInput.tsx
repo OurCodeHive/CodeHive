@@ -12,6 +12,7 @@ function LinkInputPopUp(){
         // 로그인 여부를 알아야함.
         const userInfo = useRecoilValue(userState);
 
+
         // GET 요청 보내기
         // 이메일함 초대링크의 URL에 userstudy_id=4를 가져와서 fetch 함수의 QueryString에 넣어주기
         // 이메일에 첨부된 URL 입니다. -> http://localhost:8080/invte?studyinfo_id=2&users_id=2&userstudy_id=4&invite_email=gleehave@gmail.com
