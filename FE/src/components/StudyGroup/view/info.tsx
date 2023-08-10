@@ -1,6 +1,6 @@
 import React from 'react';
 import { StudyType } from '@/type/StudyType';
-import StudyViewStyle from '@/res/css/module/StudyView.module.css';
+import StudyViewStyle from '@/res/css/page/StudyView.module.css';
 import CustomEditorResult from '@/utils/CustomEditor/CustomEditorResult';
 import StudyViewEnterIcon from '@/res/img/study_view_enter_icon_img.png';
 import StudyViewMemberIcon from '@/res/img/study_view_member_icon_img.png';

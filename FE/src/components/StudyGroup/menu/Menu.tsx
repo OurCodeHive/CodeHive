@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StudyType } from '@/type/StudyType';
 import { CheckUserId } from '@/atom/UserAtom';
-import StudyViewStyle from '@/res/css/module/StudyView.module.css';
+import StudyViewStyle from '@/res/css/page/StudyView.module.css';
 import SettingIcon from '@/res/img/30x30_setting_icon.png';
 import StudyQuitIcon from '@/res/img/logout.png';
 import MyPageIcon from '@/res/img/30x30_mypage.png';

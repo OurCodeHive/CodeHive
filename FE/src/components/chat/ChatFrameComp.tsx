@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import chatStyle from "@/res/css/module/ChatPage.module.css";
+import chatStyle from "@/res/css/module/Chat.module.css";
 import * as StompJs from '@stomp/stompjs';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';

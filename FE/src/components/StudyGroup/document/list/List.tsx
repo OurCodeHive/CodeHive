@@ -6,7 +6,7 @@ import Pagination, { PaginationType } from '@/utils/Pagination/Pagination';
 import {ContentsPopup} from "@/utils/Popup";
 import DocumentView from '../view/View';
 import TableList from '@/utils/List/Table/List';
-import StudyStyle from '@/res/css/module/StudyView.module.css';
+import StudyStyle from '@/res/css/page/StudyView.module.css';
 import FileUpload from '../../FileUpload';
 import toast, { Toaster } from 'react-hot-toast';
 
