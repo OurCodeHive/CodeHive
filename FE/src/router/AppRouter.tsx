@@ -10,6 +10,7 @@ import FindPassword from "@/components/Login/FindPassword";
 import ChangePassword from "@/components/Login/ChangePassword";
 import AppHome from "@/pages/AppHome";
 import TimerApp from "@/components/home/Timer";
+import RedirectLogin from "@/components/Login/RedirectLogin";
 
 const AppRouter = () => {
   return (
@@ -18,6 +19,7 @@ const AppRouter = () => {
         <Routes>
           <Route path="/" element={<AppWelcome/>}></Route>
           <Route path="/login" element={<AppLogin/>}></Route>
+          <Route path="/login/redirect" element={<RedirectLogin/>}></Route>
           <Route path="/study" element={<AppStudy/>}></Route>
           <Route path="/invite" element={<AppInvite/>}></Route>
           <Route path="/ide/:id" element={ <AppIDE/> }></Route>
