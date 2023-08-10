@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class StudyFileUploadRequestDto {
+public class StudyFileUploadRequestDTO {
 
     private Long studyInfoId;
     private Long userId;

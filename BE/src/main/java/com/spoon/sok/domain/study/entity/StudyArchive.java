@@ -43,7 +43,7 @@ public class StudyArchive {
     private User users;
 
     //file 파일 테이블과 일대다 관계
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyArchive")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "studyArchive", cascade = CascadeType.REMOVE)
     private List<File> fileList;
 
     @Builder
@@ -53,5 +53,10 @@ public class StudyArchive {
         this.content = content;
         this.studyInfo = studyInfo;
         this.users = user;
+    }
+
+    public void updateStudyArchiveInfo(String title, String content){
+        this.title = title;
+        this.content = content;
     }
 }

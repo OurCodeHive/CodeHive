@@ -39,4 +39,8 @@ public class SocketController {
         simpMessagingTemplate.convertAndSend("/sub/run/" + runCodeRequestDto.getStudyRoomId(), response);
     }
 
+    @MessageMapping("/cursor")
+    public void cursor(CursorWebSocketDto cursorWebSocketDto, SimpMessageHeaderAccessor accessor) {
+        simpMessagingTemplate.convertAndSend("/sub/cursor/" + cursorWebSocketDto.getStudyRoomId(), cursorWebSocketDto);
+    }
 }
