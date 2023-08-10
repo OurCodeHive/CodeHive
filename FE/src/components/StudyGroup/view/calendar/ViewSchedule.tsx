@@ -29,12 +29,13 @@ function ViewSchedule() {
   const [showPopover, setShowPopover] = useState(false); // State to control popover visibility
   const [showAddPopover, setShowAddPopover] = useState(false);
   const [clickedDate, setClickedDate] = useState<string>("");
-  const parsedPk = JSON.parse(sessionStorage.getItem("sessionStorage") as string);
+
+  const parsedPk = JSON.parse(sessionStorage.getItem("sessionStorage") as string) as { useState: { userId: string } };
   const pk = parsedPk.useState.userId;
+
 
   useEffect(()=>{
     getCalendar();
-    console.log(data);
   },[])
 
   function getCalendar(){
@@ -42,12 +43,9 @@ function ViewSchedule() {
     async function requestCalendar(): Promise<void> {
         try {
             const response: AxiosResponse<Schedule[]> = await authHttp.get<Schedule[]>(`/study/meeting/${studyinfo_id}`);
-            console.log(response.data);
             const calendar = response.data;
             if(calendar){
-              console.log(calendar);
               setData(calendar);
-              console.log(data);
             }
         } catch (error) {
             const err = error as AxiosError
@@ -89,7 +87,6 @@ function ViewSchedule() {
         <li key={`curr-${i}`} 
         className={`${isToday ? style.active : ''} ${daySchedules.length > 0 ? style.hasSchedule : ''}`}
         onClick={() => handleDateClick(i, daySchedules)}
-        // data-schedule={scheduleTitle}
         >{i}
         {/* {scheduleElements} */}
         </li>);
@@ -107,18 +104,11 @@ function ViewSchedule() {
   const handleDateClick = (day:number, daySchedules:Schedule[]) => {
     const selectedDate = new Date(currYear, currMonth, day+1);
     const formattedDate = selectedDate.toISOString().split('T')[0];
-    console.log(`Schedules for ${formattedDate}:`);
-    console.log(daySchedules);
+    // console.log(`Schedules for ${formattedDate}:`);
+    // console.log(daySchedules);
     setClickedDate(formattedDate);
-    // if (selectedDateInfo.length === 0 || selectedDateInfo[0].meetingAt.slice(0,10) !== formattedDate) {
-      setSelectedDateInfo(daySchedules);
-      setShowPopover(true);
-    // } 
-    // else {
-    //   setSelectedDateInfo([]);
-    //   setShowPopover(false);
-    // }
-
+    setSelectedDateInfo(daySchedules);
+    setShowPopover(true);
   }
 
   const handleIconClick = (iconId:string) => {
@@ -198,7 +188,6 @@ function ViewSchedule() {
       startTime: studyStartTime,
       endTime: studyEndTime,
     };
-    console.log(newStudy);
     if(studyTitle === "" || studyStartTime === "" || studyEndTime === ""){
         alert("제목, 시작 시간 및 종료시간을 모두 입력해주세요")
         return;
@@ -220,7 +209,6 @@ function ViewSchedule() {
             startTime : `1970-01-01 ${studyStartTime}`,
             title : studyTitle,
         };
-        console.log(newSchedule);
     
       // Update the data state with the new schedule
       setData(prevData => [...prevData, newSchedule]);
