@@ -193,12 +193,15 @@
     font-size: 14px;
   }
   .add_popover {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     z-index: 999;
     position: absolute;
     bottom: 0; /* Adjust this value for the desired distance from the top */
     left: calc(100% + 205px); /* Adjust this value for the desired distance from the existing popover */
     width: 200px; /* Adjust the width as needed */
-    height: 150px;
+    height: 170px;
     background-color: #ffffff;
     border: 1px solid #cccccc;
     border-radius: 8px;
@@ -214,5 +217,62 @@
     left: -25px; /* Adjust for the desired triangle position */
     border-width: 13px;
     border-style: solid;
-    border-color: transparent #f2d980 transparent transparent; /* Triangle color */
+    border-color: transparent #f8d247 transparent transparent; /* Triangle color */
+  }
+  .add_popover_title {
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    border-bottom: 2px solid #FFDF2B;
+    margin-bottom: 10px;
+  }
+
+  .add_popover label {
+    margin-top: 5px;
+    margin-bottom: 2px;
+    width: 40px;
+  }
+  
+  .add_popover input {
+    font-size: 12px;
+    width: 100%;
+    height: 20px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 5px;
+  }
+
+  .input_wrapper {
+    display: flex;
+  }
+  .button_wrapper {
+    margin-top: 10px;
+    display: flex;
+    align-self: center;
+  }
+  .button_wrapper button {
+    width: 50px;
+    height: 25px;
+    margin-left: 7px;
+    cursor: pointer;
+  }
+  .button_wrapper button:nth-child(1){
+    color: #333;
+    background-color: transparent;
+    border: 0.5px solid #333;
+    border-radius: 5px;
+  }
+  .button_wrapper button:nth-child(1):hover {
+    background-color: #fff7db;
+  } 
+  .button_wrapper button:nth-child(2){
+    color: black;
+    background-color: #f2d980;
+    border: none;
+    border-radius: 5px;
+  }
+  .button_wrapper button:nth-child(2):hover{
+    background-color: #f8d247;
   }

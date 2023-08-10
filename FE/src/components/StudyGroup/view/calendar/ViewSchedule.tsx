@@ -4,7 +4,8 @@ import style from './ViewSchedule.module.css';
 // import Schedule from './Schedule';
 import { authHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
-const studyinfo_id = 3;
+import { render } from 'react-dom';
+const studyinfo_id = 4;
 
 interface Schedule {
     endTime: string;
@@ -26,6 +27,7 @@ function ViewSchedule() {
   const [selectedDateInfo, setSelectedDateInfo] = useState<Schedule[]>([]);
   const [showPopover, setShowPopover] = useState(false); // State to control popover visibility
   const [showAddPopover, setShowAddPopover] = useState(false);
+  const [clickedDate, setClickedDate] = useState<string>("");
   const parsedPk = JSON.parse(sessionStorage.getItem("sessionStorage") as string);
   const pk = parsedPk.useState.userId;
 
@@ -73,7 +75,7 @@ function ViewSchedule() {
       const isToday = i === currentDate.getDate() && currMonth === currentDate.getMonth() && currYear === currentDate.getFullYear();
     //   const scheduleTitle = data.find(schedule => schedule.date === `${currYear}-${(currMonth + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`)?.study_title || '';
       const daySchedules = data.filter(schedule => {
-        const scheduleDate = new Date(schedule.meetingAt);
+      const scheduleDate = new Date(schedule.meetingAt);
         return scheduleDate.getFullYear() === currYear && scheduleDate.getMonth() === currMonth && scheduleDate.getDate() === i;
       });
       const scheduleElements = daySchedules.map((schedule, index) => (
@@ -106,6 +108,7 @@ function ViewSchedule() {
     const formattedDate = selectedDate.toISOString().split('T')[0];
     console.log(`Schedules for ${formattedDate}:`);
     console.log(daySchedules);
+    setClickedDate(formattedDate);
     // if (selectedDateInfo.length === 0 || selectedDateInfo[0].meetingAt.slice(0,10) !== formattedDate) {
       setSelectedDateInfo(daySchedules);
       setShowPopover(true);
@@ -137,6 +140,10 @@ function ViewSchedule() {
           setSelectedDateInfo(prevSelectedDateInfo =>
             prevSelectedDateInfo.filter(schedule => schedule.id !== id)
           );
+          getCalendar();
+          renderCalendar();
+          renderPopover();
+
           resolve(); // Resolve the Promise if successful
         } catch (error) {
           console.error("Error deleting schedule:", error);
@@ -146,9 +153,16 @@ function ViewSchedule() {
         resolve(); // Resolve the Promise if user cancels deletion
       }
     });
+    
   };
   
-  
+  const handleShowAddPopover = () => {
+    setShowAddPopover((prevShowAddPopover) => !prevShowAddPopover); // Toggle the state
+  };
+
+  let [studyTitle, setStudyTitle] = useState<string>("");
+  let [studyStartTime, setStudyStartTime] = useState<string>("");
+  let [studyEndTime, setStudyEndTime] = useState<string>("");
   const renderPopover = () => (
     showPopover && (
       <div className={style.popover_right}>
@@ -177,11 +191,57 @@ function ViewSchedule() {
       </div>
     )
   );
-  
-  const handleShowAddPopover = () => {
-    setShowAddPopover(true);
-  };
 
+  const registerStudy = async () => {
+    const newStudy = {
+      title: studyTitle,
+      date: clickedDate,
+      startTime: studyStartTime,
+      endTime: studyEndTime,
+    };
+    console.log(newStudy);
+    if(studyTitle === "" || studyStartTime === "" || studyEndTime === ""){
+        alert("제목, 시작 시간 및 종료시간을 모두 입력해주세요")
+        return;
+    }
+    if (confirm("새로운 일정을 등록하시겠습니까? 생성된 일정은 스터디에 속한 팀원 모두에게 공유됩니다.")) {
+      try {
+        await authHttp.post(`/study/meeting/${studyinfo_id}`, newStudy);
+        console.log("Schedule registered successfully");
+
+        // Calculate the new ID based on the largest existing ID
+        const maxId = Math.max(...data.map(schedule => schedule.id));
+        const newId = maxId + 1;
+
+        // Create the new schedule with the calculated ID
+        const newSchedule = {
+            endTime : `YYYY-mm-dd ${studyEndTime}`,
+            id : newId,
+            meetingAt : clickedDate,
+            startTime : `YYYY-mm-dd ${studyStartTime}`,
+            title : studyTitle,
+        };
+        console.log(newSchedule);
+    
+      // Update the data state with the new schedule
+      setData(prevData => [...prevData, newSchedule]);
+
+      setSelectedDateInfo(prevSelectedDateInfo => [
+        ...prevSelectedDateInfo,
+        newSchedule,
+      ]);
+
+      setShowPopover(true); // Show the main popover with the updated schedule
+      handleShowAddPopover(); // Hide the add-popover
+
+      } catch (error) {
+        console.error("Error registering schedule:", error);
+        // Handle error here, e.g., show an error message to the user
+      }
+    }
+  };
+  
+  
   return (
     <div className={style.wrapper}>
       <header className={style.header}>
@@ -208,7 +268,23 @@ function ViewSchedule() {
       {showPopover && renderPopover()}
       {showAddPopover && (
         <div className={` ${style.add_popover}`}>
-          <div>add a schedule</div>
+          <div className={style.add_popover_title}>스터디 일정 추가</div>
+          <div className={style.input_wrapper}>
+            <label htmlFor="addStudyTitle">제목</label>
+            <input onChange={(e)=>{setStudyTitle(e.target.value)}} type="text" id='addStudyTitle'/>
+          </div>
+          <div className={style.input_wrapper}>
+            <label htmlFor="addStudyStart">시작</label>
+            <input onChange={(e)=>{setStudyStartTime(e.target.value)}} type="time" id='addStudyStart'/>
+          </div>
+          <div className={style.input_wrapper}>
+            <label htmlFor="addStudyEnd">종료</label>
+            <input onChange={(e)=>{setStudyEndTime(e.target.value)}} type="time" id='addStudyEnd'/>
+          </div>
+          <div className={`${style.input_wrapper} ${style.button_wrapper}`}>
+            <button onClick={handleShowAddPopover}>취소</button>
+            <button onClick={registerStudy} >등록</button>
+          </div>
         </div>
       )}
     </div>
