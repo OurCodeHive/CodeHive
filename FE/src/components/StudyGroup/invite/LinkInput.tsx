@@ -10,7 +10,7 @@ function LinkInputPopUp(){
         const userstudyId = params.get("userstudy_id");
 
         // 로그인 여부를 알아야함.
-        // const userInfo = useRecoilValue(userState);
+        const userInfo = useRecoilValue(userState);
 
         // GET 요청 보내기
         // 이메일함 초대링크의 URL에 userstudy_id=4를 가져와서 fetch 함수의 QueryString에 넣어주기
@@ -28,33 +28,33 @@ function LinkInputPopUp(){
             
             // 1. 비회원이면서, 로그인 안한 사람.
             // "isOurUser" : false,
-            if (!data.isOurUser && true){
+            if (!data.isOurUser && !userInfo){
                 // 올바르지 않은 접근
-                console.log("올바르지않은 접근");
+                console.log("비회원이면서, 로그인 안한 사람 : 올바르지않은 접근");
                 console.log("1번: ", data.isOurUser);
             }
 
             // 2. 비회원이면서, 로그인했음.
             // "isOurUser" : false,
-            if (!data.isOurUser && true){
+            if (!data.isOurUser && userInfo){
                 // 수락, 거절로 감.
-                console.log("수락, 거절로 가야함.");
+                console.log("비회원이면서, 로그인한 사람 : 수락, 거절로 가야함.");
                 console.log("2번: ", data.isOurUser);
             }
 
             // 3. 회원이면서, 로그인 안한 사람
             // "isOurUser" : true,
-            if (data.isOurUser && true){
+            if (data.isOurUser && !userInfo){
                 // 올바르지 않은 접근
-                console.log("올바르지않은 접근");
+                console.log("회원이면서 로그인 안한 사람 : 올바르지않은 접근");
                 console.log("3번: ", data.isOurUser);
             }
 
             // 4. 회원이면서, 로그인했음.
             // "isOurUser" : true,
-            if (data.isOurUser && true){
+            if (data.isOurUser && userInfo){
               // 수락, 거절로 감.  
-              console.log("수락, 거절로 가야함.");
+              console.log("회원이면서 로그인한 사람 : 수락, 거절로 가야함.");
               console.log("4번: ", data.isOurUser);
             }
           })
