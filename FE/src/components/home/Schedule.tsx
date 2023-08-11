@@ -3,6 +3,7 @@ import style from '@/res/css/module/Schedule.module.css';
 import arrow from '@/res/img/icon_arrow.png';
 import { authHttp } from '@/api/http';
 import moment from 'moment';
+
 interface ScheduleData {
     today : ISchedule[],
 }
@@ -45,7 +46,7 @@ const ScheduleListItem = ({data} : {data: ISchedule}) => {
             <img src={arrow} alt="" />
             <span>{data.endTime.slice(11, 16)}</span>
           </div>
-          <div className={`col-12 ${style.duration}`}>{"0hr 0min"}</div>
+          <div className={`col-12 ${style.duration}`}>{`${getDuration(data.startTime, data.endTime)[0]}hr ${getDuration(data.startTime, data.endTime)[1]}min`}</div>
         </div>
         <div className={`col-12 ${style.timer_text}`}>{getTimeLeft(data.startTime)}</div>
       </div>
@@ -57,17 +58,22 @@ const ScheduleListItem = ({data} : {data: ISchedule}) => {
     const seoul = new Date((new Date()).getTime() + offset)
     return seoul.toISOString();
   }
+  function getDuration(startTime:string, endTime:string):number[]{
+    const startAt = moment(startTime);
+    const endAt = moment(endTime);
+    const hrs = moment.duration(endAt.diff(startAt)).hours();
+    const mins = moment.duration(endAt.diff(startAt)).minutes();
+    return[hrs,mins];
+  }
   function getTimeLeft(startTime:string | undefined):string{
     let now = getUTCTime();
-    let startAt = moment(startTime);
-    console.log("now = "+now);
-    console.log("startAt = "+startAt.toISOString());
+    let startAt = moment(moment(startTime).valueOf() + 9 * 60 * 60 * 1000);
+    // console.log("now = "+now);
+    // console.log("startAt = "+startAt.toISOString());
     let hours = moment.duration(startAt.diff(moment(now))).hours();
     let mins = moment.duration(startAt.diff(moment(now))).minutes();
     let seconds = moment.duration(startAt.diff(moment(now))).seconds();
     // let duration = moment(moment.utc(moment(startAt)).diff(moment(now))).days();
-    console.log(`${hours} ${mins} ${seconds}`);
-
     if(hours<=0 && mins<=0 && seconds<=0){
         return "지난 스터디입니다";
     } else {
