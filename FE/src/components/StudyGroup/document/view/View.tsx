@@ -13,7 +13,7 @@ import { fileListState } from '@/atom/FileListAtom';
 
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
 
-const DocumentView = ({ studyDocumentId, closePopup }: { studyDocumentId: number, closePopup: (flag: boolean) => void }) => {
+const DocumentView = ({ studyDocumentId, closePopup, completePopup }: { studyDocumentId: number, closePopup: (flag: boolean) => void, completePopup : () => void }) => {
 
 	const [DocumentContents, setDocumentContents] = useRecoilState(studyFileState);
 	const [fileList, setFileList] = useRecoilState(fileListState);
@@ -28,6 +28,7 @@ const DocumentView = ({ studyDocumentId, closePopup }: { studyDocumentId: number
 			// info={DocumentContents}
 			closePopup={() => setUpdatePopupFlag(false)}
 			updateAlert={() => alert("수정완료")}
+			completePopup={completePopup}
 		/>
 	);
 
@@ -47,6 +48,7 @@ const DocumentView = ({ studyDocumentId, closePopup }: { studyDocumentId: number
 		PopupTitle: "자료 수정",
 		PopupContents: PopupContents,
 		ClosePopupProp: () => changePopupFlag(false),
+		completePopup: () => completePopup
 	}
 
 	const updateFile = (flag: boolean) => {
@@ -55,6 +57,7 @@ const DocumentView = ({ studyDocumentId, closePopup }: { studyDocumentId: number
 			<FileUpdate
 				closePopup={() => setUpdatePopupFlag(false)}
 				updateAlert={() => alert("수정완료")}
+				completePopup={completePopup}
 			/>
 		)
 		changeUpdatePopupFlag(true)
@@ -70,6 +73,7 @@ const DocumentView = ({ studyDocumentId, closePopup }: { studyDocumentId: number
 
 	const removeConfirm = (flag: boolean) => {
 		requestDeleteStudyFile(studyDocumentId);
+		completePopup();
 		setPopupFlag(() => flag);
 	};
 
