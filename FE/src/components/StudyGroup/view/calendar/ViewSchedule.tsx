@@ -214,19 +214,19 @@ function ViewSchedule() {
           <div className={style.add_popover_title}>일정 수정</div>
           <div className={style.input_wrapper}>
             <label htmlFor="addStudyTitle">제목</label>
-            <input value={editSchedule?.title} className={style.title_input} onChange={(e)=>{setStudyTitle(e.target.value)}} type="text" id='addStudyTitle'/>
+            <input onChange={(e)=>{setStudyTitle(e.target.value)}} value={editSchedule?.title} className={style.title_input} type="text" id='addStudyTitle'/>
           </div>
           <div className={style.input_wrapper}>
             <label htmlFor="addStudyStart">시작</label>
-            <input value={editSchedule?.startTime.slice(11,16)} onChange={(e)=>{setStudyStartTime(e.target.value)}} type="time" id='addStudyStart'/>
+            <input onChange={(e)=>{setStudyStartTime(e.target.value)}} value={editSchedule?.startTime.slice(11,16)} type="time" id='addStudyStart'/>
           </div>
           <div className={style.input_wrapper}>
             <label htmlFor="addStudyEnd">종료</label>
-            <input value={editSchedule?.endTime.slice(11,16)} onChange={(e)=>{setStudyEndTime(e.target.value)}} type="time" id='addStudyEnd'/>
+            <input onChange={(e)=>{setStudyEndTime(e.target.value)}} value={editSchedule?.endTime.slice(11,16)} type="time" id='addStudyEnd'/>
           </div>
           <div className={`${style.input_wrapper} ${style.button_wrapper}`}>
             <button onClick={()=>setShowEditPopover(false)}>취소</button>
-            <button onClick={registerStudy} >수정</button>
+            <button onClick={editStudy} >수정</button>
           </div>
     </div>
   )
@@ -277,6 +277,54 @@ function ViewSchedule() {
       }
     }
   };
+
+  const editStudy = async() => {
+    const newStudy = {
+      title: studyTitle,
+      date: clickedDate,
+      startTime: studyStartTime,
+      endTime: studyEndTime,
+    };
+    console.log(newStudy);
+    if(studyTitle === "" || studyStartTime === "" || studyEndTime === ""){
+        alert("제목, 시작 시간 및 종료시간을 모두 입력해주세요")
+        return;
+    }
+    // if (confirm("일정을 수정하시겠습니까?")) {
+    //   try {
+    //     await authHttp.post(`/study/meeting/${studyinfo_id}`, newStudy);
+    //     console.log("Schedule edited successfully");
+
+    //     // Calculate the new ID based on the largest existing ID
+    //     const maxId = Math.max(...data.map(schedule => schedule.id));
+    //     const newId = maxId + 1;
+
+    //     // Create the new schedule with the calculated ID
+    //     const newSchedule = {
+    //         endTime : `1970-01-01 ${studyEndTime}`,
+    //         id : 0,
+    //         meetingAt : clickedDate,
+    //         startTime : `1970-01-01 ${studyStartTime}`,
+    //         title : studyTitle,
+    //     };
+    
+    //   // Update the data state with the new schedule
+    //   setData(prevData => [...prevData, newSchedule]);
+
+    //   setSelectedDateInfo(prevSelectedDateInfo => [
+    //     ...prevSelectedDateInfo,
+    //     newSchedule,
+    //   ]);
+
+    //   setShowPopover(true); // Show the main popover with the updated schedule
+    //   handleShowAddPopover(); // Hide the add-popover
+
+    //   } catch (error) {
+    //     console.error("Error registering schedule:", error);
+    //     // Handle error here, e.g., show an error message to the user
+    //   }
+    // }
+  }
   
   
   return (
