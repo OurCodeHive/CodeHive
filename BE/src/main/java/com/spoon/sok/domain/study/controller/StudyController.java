@@ -1,6 +1,7 @@
 package com.spoon.sok.domain.study.controller;
 
 import com.spoon.sok.domain.study.dto.queryDTO.*;
+import com.spoon.sok.domain.study.dto.responseDTO.StudyAppointmentResponseDTO;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.service.StudyService;
 import com.spoon.sok.util.JwtTokenProvider;
@@ -177,13 +178,28 @@ public class StudyController {
 
     // 사용자의 모든 일정 조회
     // http://localhost:8080/api/calendar/study?user=<사용자ID>
+//    @GetMapping("/calendar/study")
+//    public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("user") String userId) {
+//        List<StudyAppointmentDTO> studyMeetingList = studyService.getStudyMeeting(userId);
+//        Map<String, Object> response = new HashMap<>();
+//
+//        if (studyMeetingList.size() != 0) {
+//            response.put("status", 200);
+//            response.put("calendar", studyMeetingList);
+//        } else {
+//            response.put("status", 200);
+//            response.put("calendar", studyMeetingList);
+//            response.put("message", "예정된 study가 없습니다.");
+//        }
+//        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+//    }
+
     @GetMapping("/calendar/study")
     public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("user") String userId) {
-        List<StudyAppointmentDTO> studyMeetingList = studyService.getStudyMeeting(userId);
-        log.info("유저유저 {}",userId);
+        List<StudyAppointmentResponseDTO> studyMeetingList = studyService.getFormattedStudyMeeting(userId);
         Map<String, Object> response = new HashMap<>();
 
-        if (studyMeetingList.size() != 0) {
+        if (!studyMeetingList.isEmpty()) {
             response.put("status", 200);
             response.put("calendar", studyMeetingList);
         } else {
@@ -195,11 +211,37 @@ public class StudyController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
+
     // 사용자의 모든 일정 중 특정 날짜로 조회
     // http://localhost:8080/api/today/study?today=yyyy-MM-dd
+//    @GetMapping("/today/study")
+//    public ResponseEntity<Map<String, Object>> getTodayStudyMeeting(@RequestParam("today") String today, HttpServletRequest request) {
+//        // Date 형식으로 파싱
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        Date todayDate;
+//        try {
+//            todayDate = dateFormat.parse(today);
+//        } catch (ParseException e) {
+//            todayDate = null;
+//        }
+//
+//        Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
+//        List<StudyAppointmentDTO> todayMeetingList = studyService.getTodayStudyMeeting(todayDate, (String) token.get("users_id"));
+//
+//        Map<String, Object> response = new HashMap<>();
+//
+//        if (todayMeetingList.size() != 0) {
+//            response.put("status", 200);
+//            response.put("today", todayMeetingList);
+//        } else {
+//            response.put("status", 200);
+//            response.put("today", todayMeetingList);
+//            response.put("message", "오늘 예정된 스터디가 없습니다.");
+//        }
+//        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+//    }
     @GetMapping("/today/study")
     public ResponseEntity<Map<String, Object>> getTodayStudyMeeting(@RequestParam("today") String today, HttpServletRequest request) {
-        // Date 형식으로 파싱
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date todayDate;
         try {
@@ -209,11 +251,11 @@ public class StudyController {
         }
 
         Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
-        List<StudyAppointmentDTO> todayMeetingList = studyService.getTodayStudyMeeting(todayDate, (String) token.get("users_id"));
+        List<StudyAppointmentResponseDTO> todayMeetingList = studyService.getFormattedTodayStudyMeeting(todayDate, (String) token.get("users_id"));
 
         Map<String, Object> response = new HashMap<>();
 
-        if (todayMeetingList.size() != 0) {
+        if (!todayMeetingList.isEmpty()) {
             response.put("status", 200);
             response.put("today", todayMeetingList);
         } else {
@@ -224,4 +266,5 @@ public class StudyController {
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
+
 }

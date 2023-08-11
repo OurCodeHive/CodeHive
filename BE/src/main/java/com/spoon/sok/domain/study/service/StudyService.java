@@ -3,7 +3,6 @@ package com.spoon.sok.domain.study.service;
 import com.spoon.sok.aws.S3Service;
 import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.dto.requestDTO.LeaveStudyRequestDTO;
-import com.spoon.sok.domain.study.dto.requestDTO.StudyMeetingRequestDTO;
 import com.spoon.sok.domain.study.dto.responseDTO.*;
 import com.spoon.sok.domain.study.entity.*;
 import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
@@ -44,12 +43,50 @@ public class StudyService {
     private final StudyArchiveRepository studyArchiveRepository;
     private final StudyAppointmentRepository studyAppointmentRepository;
 
-    public List<StudyAppointmentDTO> getStudyMeeting(String userId) {
-        return studyRepository.findByUserIdStudyMeetingsQuery(userId);
+//    public List<StudyAppointmentDTO> getStudyMeeting(String userId) {
+//        return studyRepository.findByUserIdStudyMeetingsQuery(userId);
+//    }
+
+    public List<StudyAppointmentResponseDTO> getFormattedStudyMeeting(String userId) {
+        List<StudyAppointmentDTO> studyMeetingList = studyRepository.findByUserIdStudyMeetingsQuery(userId);
+        List<StudyAppointmentResponseDTO> responseDTOList = new ArrayList<>();
+
+        for (StudyAppointmentDTO appointment : studyMeetingList) {
+            StudyAppointmentResponseDTO responseDTO = StudyAppointmentResponseDTO.builder()
+                    .id(appointment.getStudyinfoId())
+                    .title(appointment.getTitle())
+                    .meetingAt(appointment.getStartTime())
+                    .startTime(appointment.getStartTime())
+                    .endTime(appointment.getEndTime())
+                    .build();
+
+            responseDTOList.add(responseDTO);
+        }
+        return responseDTOList;
     }
 
-    public List<StudyAppointmentDTO> getTodayStudyMeeting(Date today, String userId) {
-        return studyRepository.findByTodayStudyMeetingsQuery(today, userId);
+
+//    public List<StudyAppointmentDTO> getTodayStudyMeeting(Date today, String userId) {
+//        return studyRepository.findByTodayStudyMeetingsQuery(today, userId);
+//    }
+
+    public List<StudyAppointmentResponseDTO> getFormattedTodayStudyMeeting(Date today, String userId) {
+        List<StudyAppointmentDTO> todayStudyMeetingList = studyRepository.findByTodayStudyMeetingsQuery(today, userId);
+        List<StudyAppointmentResponseDTO> responseDTOList = new ArrayList<>();
+
+        for (StudyAppointmentDTO appointment : todayStudyMeetingList) {
+            StudyAppointmentResponseDTO responseDTO = StudyAppointmentResponseDTO.builder()
+                    .id(appointment.getStudyinfoId())
+                    .title(appointment.getTitle())
+                    .meetingAt(appointment.getMeetingAt())
+                    .startTime(appointment.getStartTime())
+                    .endTime(appointment.getEndTime())
+                    .build();
+
+            responseDTOList.add(responseDTO);
+        }
+
+        return responseDTOList;
     }
 
 
