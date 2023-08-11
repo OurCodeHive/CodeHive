@@ -29,6 +29,8 @@ function ViewSchedule() {
   const [showPopover, setShowPopover] = useState(false); // State to control popover visibility
   const [showAddPopover, setShowAddPopover] = useState(false);
   const [clickedDate, setClickedDate] = useState<string>("");
+  const [showEditPopover, setShowEditPopover] = useState(false);
+  const [editSchedule, setEditSchedule] = useState<Schedule | null>(null);
 
   const parsedPk = JSON.parse(sessionStorage.getItem("sessionStorage") as string) as { useState: { userId: string } };
   const pk = parsedPk.useState.userId;
@@ -149,6 +151,11 @@ function ViewSchedule() {
     setShowAddPopover((prevShowAddPopover) => !prevShowAddPopover); // Toggle the state
   };
 
+  const handleShowEditPopover = (schedule: Schedule) => {
+    setEditSchedule(schedule);
+    setShowEditPopover((prevShowEditPopover) => !prevShowEditPopover);
+  };
+
   let [studyTitle, setStudyTitle] = useState<string>("");
   let [studyStartTime, setStudyStartTime] = useState<string>("");
   let [studyEndTime, setStudyEndTime] = useState<string>("");
@@ -166,7 +173,7 @@ function ViewSchedule() {
               <div className={style.study_title}>{schedule.title}</div>
               <div className={style.actions}>
                 <span onClick={() => handleDeleteSchedule(schedule.id)} className={style.action_icon}>&#128465;</span> {/* Trashcan icon */}
-                <span className={style.action_icon}>&#9998;</span> {/* Pencil icon */}
+                <span onClick={() => handleShowEditPopover(schedule)} className={style.action_icon}>&#9998;</span> {/* Pencil icon */}
               </div>
             </div>
             <div className={style.study_schedules}>
@@ -181,6 +188,48 @@ function ViewSchedule() {
       </div>
     )
   );
+  const renderAddPopover = () => (
+    <div className={` ${style.add_popover}`}>
+          <div className={style.add_popover_title}>일정 추가</div>
+          <div className={style.input_wrapper}>
+            <label htmlFor="addStudyTitle">제목</label>
+            <input className={style.title_input} onChange={(e)=>{setStudyTitle(e.target.value)}} type="text" id='addStudyTitle'/>
+          </div>
+          <div className={style.input_wrapper}>
+            <label htmlFor="addStudyStart">시작</label>
+            <input onChange={(e)=>{setStudyStartTime(e.target.value)}} type="time" id='addStudyStart'/>
+          </div>
+          <div className={style.input_wrapper}>
+            <label htmlFor="addStudyEnd">종료</label>
+            <input onChange={(e)=>{setStudyEndTime(e.target.value)}} type="time" id='addStudyEnd'/>
+          </div>
+          <div className={`${style.input_wrapper} ${style.button_wrapper}`}>
+            <button onClick={handleShowAddPopover}>취소</button>
+            <button onClick={registerStudy} >등록</button>
+          </div>
+        </div>
+  )
+  const renderEditPopover = () => (
+    <div className={` ${style.add_popover}`}>
+          <div className={style.add_popover_title}>일정 수정</div>
+          <div className={style.input_wrapper}>
+            <label htmlFor="addStudyTitle">제목</label>
+            <input value={editSchedule?.title} className={style.title_input} onChange={(e)=>{setStudyTitle(e.target.value)}} type="text" id='addStudyTitle'/>
+          </div>
+          <div className={style.input_wrapper}>
+            <label htmlFor="addStudyStart">시작</label>
+            <input value={editSchedule?.startTime.slice(11,16)} onChange={(e)=>{setStudyStartTime(e.target.value)}} type="time" id='addStudyStart'/>
+          </div>
+          <div className={style.input_wrapper}>
+            <label htmlFor="addStudyEnd">종료</label>
+            <input value={editSchedule?.endTime.slice(11,16)} onChange={(e)=>{setStudyEndTime(e.target.value)}} type="time" id='addStudyEnd'/>
+          </div>
+          <div className={`${style.input_wrapper} ${style.button_wrapper}`}>
+            <button onClick={()=>setShowEditPopover(false)}>취소</button>
+            <button onClick={registerStudy} >수정</button>
+          </div>
+    </div>
+  )
 
   const registerStudy = async () => {
     const newStudy = {
@@ -254,27 +303,8 @@ function ViewSchedule() {
         </ul>
       </div>
       {showPopover && renderPopover()}
-      {showAddPopover && (
-        <div className={` ${style.add_popover}`}>
-          <div className={style.add_popover_title}>스터디 일정 추가</div>
-          <div className={style.input_wrapper}>
-            <label htmlFor="addStudyTitle">제목</label>
-            <input className={style.title_input} onChange={(e)=>{setStudyTitle(e.target.value)}} type="text" id='addStudyTitle'/>
-          </div>
-          <div className={style.input_wrapper}>
-            <label htmlFor="addStudyStart">시작</label>
-            <input onChange={(e)=>{setStudyStartTime(e.target.value)}} type="time" id='addStudyStart'/>
-          </div>
-          <div className={style.input_wrapper}>
-            <label htmlFor="addStudyEnd">종료</label>
-            <input onChange={(e)=>{setStudyEndTime(e.target.value)}} type="time" id='addStudyEnd'/>
-          </div>
-          <div className={`${style.input_wrapper} ${style.button_wrapper}`}>
-            <button onClick={handleShowAddPopover}>취소</button>
-            <button onClick={registerStudy} >등록</button>
-          </div>
-        </div>
-      )}
+      {showAddPopover && renderAddPopover()}
+      {showEditPopover && renderEditPopover()}
     </div>
 
   );

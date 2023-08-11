@@ -1,10 +1,11 @@
 .box_schedule {padding: 10px 20px; border-radius: 15px; background-color: #ffffff6d;}
-.subtitle_schedule {font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 800; letter-spacing: -0.02em; color: #333;}
-.schedule_wrap {display: flex; justify-content: space-between; border: 2px solid #555; border-radius: 8px; margin-bottom: 3px;}
+.schedule_list_wrapper {height: 150px; overflow-y: auto;}
+.subtitle_schedule {font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2rem; font-weight: 800; letter-spacing: -0.02em; color: #333;}
+.schedule_wrap {display: flex; justify-content: space-between; border: 2px solid #555; border-radius: 8px; margin-bottom: 3px; align-items: center;}
 .schedule_wrap:last-child{margin-bottom: 0;}
-.time_info {display: flex; justify-content: space-between; align-items: stretch; padding: 5px 10px 5px 40px;}
-.from_to {display: inilne-flex; align-items: center; font-size: 15px; font-size: 1.5rem; line-height: 21px; line-height: 2.1rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d;}
+.time_info {display: flex; flex-direction: column; justify-content: space-between; align-items: stretch; padding: 5px 10px 5px 40px;}
+.from_to {display: inline-flex; align-items: center; font-size: 15px; font-size: 1.5rem; line-height: 21px; line-height: 2.1rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d;}
 .from_to img {width: 20px; margin-left: 3px; margin-right: 3px;}
 .duration {font-size: 12px; font-size: 1.2rem; line-height: 18px; line-height: 1.8rem;}
-.timer_text{display: inline-flex; justify-content: center; align-items: center; background-color: #FFDF2B; border-radius: 10px; font-size: 14px; font-size: 1.4rem; line-height: 20px; line-height: 2rem; font-weight: 700; letter-spacing: -0.02em; color: #17181d;}
+.timer_text{display: inline-flex; height: 40px; margin-right: 10px; justify-content: center; align-items: center; background-color: #FFDF2B; border-radius: 10px; font-size: 14px; font-size: 1.4rem; line-height: 20px; line-height: 2rem; font-weight: 700; letter-spacing: -0.02em; color: #17181d;}
 .no_data{font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 800; letter-spacing: -0.02em; color: #17181d;}
