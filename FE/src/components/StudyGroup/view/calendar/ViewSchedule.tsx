@@ -45,6 +45,7 @@ function ViewSchedule() {
             const response: AxiosResponse<Schedule[]> = await authHttp.get<Schedule[]>(`/study/meeting/${studyinfo_id}`);
             const calendar = response.data;
             if(calendar){
+                console.log(calendar);
               setData(calendar);
             }
         } catch (error) {
@@ -204,7 +205,7 @@ function ViewSchedule() {
         // Create the new schedule with the calculated ID
         const newSchedule = {
             endTime : `1970-01-01 ${studyEndTime}`,
-            id : newId,
+            id : 0,
             meetingAt : clickedDate,
             startTime : `1970-01-01 ${studyStartTime}`,
             title : studyTitle,

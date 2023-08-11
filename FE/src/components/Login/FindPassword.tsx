@@ -56,11 +56,13 @@ const FindPassword = () => {
                     alert(`${res.message}`)
                     console.log(res);
                     setStartTimer(true);
+                    setVerify(true);
                 }
             // startCodeTimer();
-            setVerify(true);
             })
-            .catch(console.log);
+            .catch((err)=>{
+                console.log(err);
+            });
         } else {
             alert("올바른 이메일을 입력해주세요")
         }
@@ -80,6 +82,7 @@ const FindPassword = () => {
                 setSending(false);
                 const err = error as AxiosError
                 console.log(err);
+                alert(err.response?.data.message);
             }
         }
     }
