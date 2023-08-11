@@ -1,12 +1,4 @@
-
-
-// 1. (수락버튼) handleAccept라는 요청함수 만들어 둠.
-//     1-1. http://localhost:8080/ 형태니까 꼭! 실서버로 변경
-// 2. (거절버튼) 요청함수 안만들었음.
-// 3.  async 필요.
-// 4. Message의 "닫기" 누르면 URL이 invite로 유지되어있음. 여기도 redirct?
-// 5. useState나 Recoil에 유저 정보를 넣어줘야하는데 이건 모르겠음.
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
@@ -17,48 +9,57 @@ import { AlertPopup } from '@/utils/Popup';
 const AppInvite = () => {
   const navigate = useNavigate();
 
-  function notUser(flag: boolean){
+  function notUser(flag: boolean): void {
     changeAlertPopupFlag(false);
     navigate("/login");
   }
+
+  function goHome(flag: boolean): void {
+    changeAlertPopupFlag(false);
+    navigate("/home");
+  }
+
+  const [PopupTitle, setPopupTitle] = useState("비회원입니다 로그인 후 다시 시도해주세요");
+  const [AlertPopupClose, setAlertPopupClose] = useState(() => notUser);
   const [ConfirmPopupFlag, setConfirmPopupFlag] = useState(true);
-  // const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
-  // 
-
-  // const AlertPopupInfo = {
-  //   PopupStatus : AlertPopupFlag,
-  //   zIndex : 10000,
-  //   maxWidth: 440,
-  //   ClosePopupProp : notUser(false),
-  //   PopupTitle : "비회원 접근입니다"
-  // }
-
-  // const userId = useRecoilValue(userState).userId;
-  // if(userId == -1){
-  //   setAlertPopupFlag(() => true);
-  //   setConfirmPopupFlag(() => false);
-  // }
+  const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
+  const AlertPopupInfo = {
+     PopupStatus : AlertPopupFlag,
+     zIndex : 10000,
+     maxWidth: 440,
+     ClosePopupProp : AlertPopupClose,
+     PopupTitle : PopupTitle
+  }
+  const userId = useRecoilValue(userState).userId;
+  const userStudyId = Number(new URLSearchParams(location.search).get("userstudy_id"));
+  useEffect(() => {
+    if(userId == -1){
+      changePopupFlag(false);
+      changeAlertPopupFlag(true);
+    }
+  }, []);
   
   function changeAlertPopupFlag(flag: boolean){
     setAlertPopupFlag(() => flag);
   }
 
-  
-  const userStudyId = Number(new URLSearchParams(location.search).get("userstudy_id"));
-
-  console.log(userStudyId);
-
   function changePopupFlag(flag: boolean) {
       setConfirmPopupFlag(() => false);
+      setAlertPopupClose(() => goHome);
+      if(flag) setPopupTitle("수락 완료하였습니다"); //수락을 눌렀을 때
+      else setPopupTitle("거절 완료하였습니다"); //거절을 눌렀을 때
+      
+      setAlertPopupFlag(() => true);
   }
 
   return (
     <div className="col-12 sub_wrap">
       <div className="col-12 sub_con" style={{backgroundImage: `url(${StudyViewBgImg})`, height: '100%'}}>
         <div className="col-12 sub_contents">
-          <InviteConfirm studyinfoId={userStudyId} PopupFlag={ConfirmPopupFlag} closePopup={changePopupFlag} confirmPopup={changePopupFlag} />
+          <InviteConfirm studyinfoId={userStudyId} PopupFlag={ConfirmPopupFlag} confirmPopup={changePopupFlag} />
         </div>
       </div>
+      <AlertPopup PopupInfo={AlertPopupInfo} />
     </div>
   )
 }
