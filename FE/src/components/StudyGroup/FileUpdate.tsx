@@ -12,6 +12,7 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { studyFileState } from '@/atom/DocumentContentsAtom';
 import { fileListState } from '@/atom/FileListAtom';
+import { updateStudyFile } from '@/api/study';
 
 
 interface FileUpdateProps {
@@ -86,24 +87,14 @@ const FileUpdate = (props: FileUpdateProps) => {
 			}
 		}
 
-		const url = import.meta.env.VITE_APP_SERVER + "study/file";
-		const config = {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			}
-		};
 		const temp = { ...DocumentContents }
 		temp.title = title;
 		temp.content = String(descInput.current?.value);
 		
-
-		axios.put(url, param, config)
-		.then((res) => {
-			const fileList = res.data;
-			setFileList(fileList)
+		await updateStudyFile(param, ({data}) => {
+			setFileList(data);
 			setDocumentContents(temp);
-		})
-		.catch((err) => {
+		}, (err) => {
 			console.log(err);
 		})
 		props.closePopup(false)

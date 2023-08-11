@@ -6,17 +6,22 @@ import { AlertPopup } from "@/utils/Popup";
 import CustomEditor from "@/utils/CustomEditor/CustomEditor";
 import CustomDatePicker from "@/utils/CustomDatePicker";
 import FileInput from "@/utils/FileInfo/Input";
+import { StudyUpdateType } from '@/type/StudyType';
 
 
-const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateIdx: (idx: number) => void}) => {
+
+const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, studyUpdate:StudyUpdateType}) => {
     const userId = useRecoilValue(userState).userId;
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
     const [AlertPopupTitle, setAlertPopupTitle] = useState("");
     const today = new Date();
+
     const titleInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
     const descInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+
+    const [title, setTitle] = useState(studyUpdate.title);
+    const [startDate, setStartDate] = useState(studyUpdate.startAt);
+    const [endDate, setEndDate] = useState(studyUpdate.endAt);
     const profileInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
 
     const AlertPopupInfo = {
@@ -30,6 +35,14 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
     const changePopupFlag = (flag: boolean) => {
         setAlertPopupFlag(() => flag);
     };
+
+    const handleTitle = (event: any) => {
+		setTitle(event.target.value);
+	}
+
+    const convertDateType = (stringDate: string) => {
+        return new Date(stringDate);
+    }
 
     //폼 submit 이벤트
     const formSubmit = async (e: React.FormEvent<HTMLFormElement>):Promise<void> => {
@@ -77,11 +90,15 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
                 param.append("profile", profileInput.current?.files[i]);
             }   
         }
-        await insertData(param, ({data}) => {
-            updateIdx(data.studyinfoId);
-        }, () => {
-            alert("생성에 실패했습니다.");
-        })
+        for (let pair of param.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+        // await insertData(param, ({data}) => {
+        //     // updateIdx(data.studyinfoId);
+        // }, () => {
+        //     alert("생성에 실패했습니다.");
+        // })
+
     }
 
     return (
@@ -92,7 +109,11 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
                         <label htmlFor="studyInsertTitle" className="essential">제목</label>
                     </div>
                     <div className="col-12 col-md-0 input_box">
-                        <input type="text" id="studyInsertTitle" className="input_style_0" placeholder="제목을 입력해주세요" ref={titleInput} />
+                        <input type="text" id="studyInsertTitle" className="input_style_0" placeholder="제목을 입력해주세요"
+                         ref={titleInput} 
+                         value={title}
+                         onChange={(event) => { handleTitle(event) }}
+                         />
                     </div>
                 </div>
                 <div className="col-12 form_style_0">
@@ -109,11 +130,11 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
                     </div>
                     <div className="col-12 col-md-0 input_box">
                         <div className="col-12 date_box">
-                            <CustomDatePicker setData={setStartDate} settingDate={today} minDate={today}/>
+                            <CustomDatePicker setData={setStartDate} settingDate={convertDateType(startDate)} minDate={today}/>
                         </div>
                         <span className="addr_text">-</span>
                         <div className="col-12 date_box">
-                            <CustomDatePicker setData={setEndDate} settingDate={today} minDate={today}/>
+                            <CustomDatePicker setData={setEndDate} settingDate={convertDateType(endDate)} minDate={today}/>
                         </div>
                     </div>
                 </div>
@@ -129,7 +150,8 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
                 </div>
             </div>
             <div className="col-12 tc btn_style_0_con">
-                <button type="button" className="btn_style_0 mr15 bg_a2a2a2" onClick={closePop}>취소</button>
+                <button type="button" className="btn_style_0 mr15 bg_a2a2a2"
+                onClick={closePopup}>취소</button>
                 <button type="submit" className="btn_style_0 bg_point0">만들기</button>
             </div>
             <AlertPopup PopupInfo={AlertPopupInfo} />
@@ -137,4 +159,4 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
     )
 };
 
-export default StudyInsert1Step;
+export default UpdateStudyInfo;

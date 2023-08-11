@@ -4,9 +4,9 @@
  * Contents : 스터디 관련 api 요청
 */
 import {authHttp, formHttp} from './http';
-import { StudyType, StudyListType } from '@/type/StudyType';
+import { StudyType, StudyListType, StudyUpdateType } from '@/type/StudyType';
 import { StudyNoticeType, StudyNoticeListType } from '@/type/StudyNoticeType';
-import { StudyDocumentType, StudyDocumentListType, StudyDocumentDetailType, StudyDocumentDetailItemType } from '@/type/StudyDocumentType';
+import { StudyDocumentType, StudyDocumentListType, StudyDocumentDetailType, StudyDocumentDetailItemType, file } from '@/type/StudyDocumentType';
 
 const api = authHttp;
 const formApi = formHttp;
@@ -81,4 +81,14 @@ const deleteStudyfile = async (studyDocumentId: number, success:() => void, fail
     await api.delete(`/study/file/${studyDocumentId}`).then(success).catch(fail); 
 }
 
-export {getList, insertData, inviteMember, getView, getNoticeList, getNoticeView, insertNoticeData, getDocumentList, getDocumentView, deleteStudyfile};
+const updateStudyFile = async (param: FormData, success:({data} : {data: file[]}) => void, fail:(err:unknown) => void) => {
+    await formApi.put("study/file", param).then(success).catch(fail);
+}
+
+const insertStudyFile = async (param: FormData, success:({data} : {data: any}) => void, fail:(err:unknown) => void) => {
+    await formApi.post("study/file", param).then(success).catch(fail);
+}
+
+
+
+export {getList, insertData, inviteMember, getView, getNoticeList, getNoticeView, insertNoticeData, getDocumentList, getDocumentView, deleteStudyfile, updateStudyFile, insertStudyFile};

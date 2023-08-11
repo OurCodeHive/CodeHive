@@ -86,7 +86,7 @@ function IDEHeader(props: IDEHeaderProps) {
       notifyMaxLengthAlert();
       return;
     }
-    const message = {
+    const message:any = {
       userId: loginUser.userId,
       studyRoomId: props.id,
       notice: value,
