@@ -11,7 +11,11 @@ import FindPassword from "@/components/Login/FindPassword";
 import ChangePassword from "@/components/Login/ChangePassword";
 import AppHome from "@/pages/AppHome";
 import TimerApp from "@/components/home/Timer";
+<<<<<<< HEAD
+import RedirectLogin from "@/components/Login/RedirectLogin";
+=======
 import ViewSchedule from "@/components/StudyGroup/view/calendar/ViewSchedule";
+>>>>>>> 9044c4d6a8159f0360639a7f970a32e3e7d075d2
 
 const AppRouter = () => {
   return (
@@ -20,6 +24,7 @@ const AppRouter = () => {
         <Routes>
           <Route path="/" element={<AppWelcome/>}></Route>
           <Route path="/login" element={<AppLogin/>}></Route>
+          <Route path="/login/redirect" element={<RedirectLogin/>}></Route>
           <Route path="/study" element={<AppStudy/>}></Route>
           <Route path="/invite" element={<AppInvite/>}></Route>
           <Route path="/quit" element={<AppQuit/>}></Route>
