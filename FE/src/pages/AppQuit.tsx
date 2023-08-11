@@ -3,10 +3,10 @@ import MessagePopUp from "@/components/StudyGroup/invite/Message";
 import QuitStudyGroupButton from "@/components/StudyGroup/quit/QuitStudyGroup";
 import { useState, useEffect } from "react";
 
-const AppQuit = (props:any) => {
+const AppQuit = ({studyinfoId} : {studyinfoId : number}) => {
   return (
     <div className="col-12 sub_wrap">
-      <QuitStudyGroupButton studyinfoId={props.studyinfoId}></QuitStudyGroupButton>
+      <QuitStudyGroupButton studyinfoId={studyinfoId}></QuitStudyGroupButton>
     </div>
   )
 }

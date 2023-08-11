@@ -13,8 +13,8 @@ function QuitStudyGroupButton(props:any){
               "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                "studyinfoId": props.studyinfoId,
-                "userId": userInfo.userId
+                "studyinfoId":2,
+                "userId": 2
             })
           })
             .then(response => response.json())
@@ -25,7 +25,7 @@ function QuitStudyGroupButton(props:any){
               }
 
               if (!data.isLeave){
-                console.log("현재 스터디 방장입니다. 다른 스터디원에게 방장을 위임하셔야 탈퇴할 수 있습니다."); 
+                console.log("다른 스터디원에게 방장을 위임하셔야 탈퇴할 수 있습니다."); 
               }
             })
             .catch(error => {
