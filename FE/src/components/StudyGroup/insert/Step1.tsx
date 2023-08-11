@@ -101,7 +101,7 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
                         <span>내용</span>
                     </div>
                     <div className="col-12 col-md-0 input_box">
-                        <CustomEditor editorRef={descInput} />
+                        <CustomEditor editorRef={descInput}/>
                     </div>
                 </div>
                 <div className="col-12 form_style_0 type_date_range">
