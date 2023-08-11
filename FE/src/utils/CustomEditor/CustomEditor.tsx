@@ -13,7 +13,6 @@ const CustomEditor = ({editorRef, content} : {editorRef : React.RefObject<HTMLIn
 
   useEffect(() => {
     const blocksFromHtml = convertFromHTML(content ? content : "");
-    console.dir(blocksFromHtml);
     if (blocksFromHtml && blocksFromHtml.contentBlocks.length > 0) {
         const contentState = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
         const editorState = EditorState.createWithContent(contentState);
