@@ -71,7 +71,7 @@ function IDETerminal(props: IDETerminalProps) {
 
   // 제출 했다고 알리기
   function submit() {
-    const message = {
+    const message:any = {
       userId: loginUser.userId,
       studyRoomId: props.id,
       language: props.language
@@ -92,7 +92,7 @@ function IDETerminal(props: IDETerminalProps) {
 
   // 코드실행
   function runCode() {
-    const codeAndInput = {
+    const codeAndInput:any = {
       language: props.language,
       userId: loginUser.userId,
       studyRoomId: props.id,

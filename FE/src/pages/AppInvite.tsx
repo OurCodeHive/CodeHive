@@ -48,7 +48,7 @@ function AppInvite() {
 
       {/* 1. 이메일에서 링크를 클릭하면, 여기 페이지에 도달합니다.
       2. input 창에서 사용자는 이메일 링크의 URL을 복붙해서 기입합니다. */}
-      <LinkInputPopUp></LinkInputPopUp>
+      {/* <LinkInputPopUp></LinkInputPopUp> */}
 
       {/* 3. 수락, 거절 버튼을 누릅니다.
       3-1. 수락은 POST 요청을 보냄.
