@@ -11,9 +11,9 @@ function JoinUserMouse({ userIdList, studyRoomId }:{ userIdList:number[], studyR
 
   const n = userIdList.length
   const client = useRef<any>({});
-  const initialCoordinateList = Array.from({ length: n }, () => [0, 0]);
+  const initialCoordinateList = Array.from({ length: 10 }, () => [0, 0]);
   const [coordinate, setCoordinate] = useState(initialCoordinateList);
-
+  console.log(coordinate)
   let [x, setX] = useState(0);
   let [y, setY] = useState(0);
 
