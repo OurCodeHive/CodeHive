@@ -1,13 +1,28 @@
-import React from 'react';
+import { useState } from 'react';
 import { StudyType } from '@/type/StudyType';
 import StudyViewStyle from '@/res/css/page/StudyView.module.css';
 import CustomEditorResult from '@/utils/CustomEditor/CustomEditorResult';
 import StudyViewEnterIcon from '@/res/img/study_view_enter_icon_img.png';
 import StudyViewMemberIcon from '@/res/img/study_view_member_icon_img.png';
 import StudyViewCalendarIcon from '@/res/img/study_view_calendar_icon_img.png';
+import MemberList from '../MemberList';
+import { ContentsPopup } from "@/utils/Popup";
 
 const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag: boolean}) => {
   const enterName = Contents.enterName ? Contents.enterName : "notFound";
+
+
+    // 멤버 보기
+    const [memberPopupFlag, setmemberPopupFlag] = useState(false);
+    const changememberPopupFlag = (flag: boolean) => { setmemberPopupFlag(() => flag) }
+    const memberPopUpInfo = {
+      PopupStatus : memberPopupFlag,
+      zIndex : 9999,
+      maxWidth: 800,
+      ClosePopupProp : () => changememberPopupFlag(false),
+      PopupTitle : "일정 보기",
+      PopupContents : <MemberList ClosePopupProp={() => changememberPopupFlag(false)}/>,
+    }
 
   return (
     <div className={`col-12 ${StudyViewStyle.study_view_top_content_con}`}>
@@ -22,7 +37,10 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
               </div>
               {LeaderFlag
                 ? 
-                <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}>
+                <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}
+                onClick={() => changememberPopupFlag(true)}
+                >
+                  <ContentsPopup PopupInfo={memberPopUpInfo}/>
                   <div className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
                     <img src={StudyViewMemberIcon} alt="멤버 아이콘" /><br/>
                     <span>멤버보기</span>
@@ -31,7 +49,7 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
                 : null
               }
               <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}>
-                    <div className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
+                    <div onClick={console.log} className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
                       <img src={StudyViewCalendarIcon} alt="시계 아이콘" /><br/>
                       <span>일정보기</span>
                     </div>

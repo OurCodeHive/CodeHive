@@ -11,7 +11,7 @@ const RedirectLogin = () => {
 
     const navigate = useNavigate();
 
-    function loginPromise(key : string, value : string) {
+    async function loginPromise(key : string, value : string) {
         return new Promise((res) => {
             setTimeout(res, 300);
         }).then(() => {
@@ -19,7 +19,7 @@ const RedirectLogin = () => {
         })
     }
 
-    function navigatePromise(location : string) {
+    async function navigatePromise(location : string) {
         return new Promise((res) => {
             setTimeout(res, 300);
         }).then(() => {
@@ -29,7 +29,7 @@ const RedirectLogin = () => {
 
     async function doLogin() {
         const email : string | null = searchParams.get("email");
-        const userId : number = searchParams.get("id") as unknown as number;
+        const userId : number | null = searchParams.get("userId") as unknown as number;
         const nickname : string | null = searchParams.get("nickname");
         const token = searchParams.get("token") as string;
 

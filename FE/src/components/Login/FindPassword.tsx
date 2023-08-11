@@ -56,11 +56,13 @@ const FindPassword = () => {
                     alert(`${res.message}`)
                     console.log(res);
                     setStartTimer(true);
+                    setVerify(true);
                 }
             // startCodeTimer();
-            setVerify(true);
             })
-            .catch(console.log);
+            .catch((err)=>{
+                console.log(err);
+            });
         } else {
             alert("올바른 이메일을 입력해주세요")
         }
@@ -70,6 +72,13 @@ const FindPassword = () => {
             authCode : string,
             message : string,
         }
+        interface ErrorResponse {
+            response?: {
+              data?: {
+                message?: string;
+              };
+            };
+          }
         // const url = import.meta.env.VITE_APP_SERVER + `email/auth?email=${email}`;
         async function sendVerificationCode(): Promise<userData | undefined> {
             try {
@@ -78,8 +87,9 @@ const FindPassword = () => {
                 return response.data;
             } catch (error) {
                 setSending(false);
-                const err = error as AxiosError
+                const err = error as ErrorResponse;
                 console.log(err);
+                alert(err.response?.data?.message);
             }
         }
     }

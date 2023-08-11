@@ -5,7 +5,6 @@ import style from "@/res/css/module/Home.module.css";
 import {Cookies} from 'react-cookie';
 import { authHttp, nonAuthHttp } from '@/api/http';
 import logout from "@/res/img/logout.png";
-import mypage from "@/res/img/30X30_mypage.png";
 import { useNavigate } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
 interface ICookies {
@@ -62,7 +61,7 @@ const Intro = () => {
         <div>
             <div className={style.header_bar}>
                 <div className={style.header_block}>
-                    <img src={mypage} alt="마이페이지" />
+                    <img src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/30X30_mypage.png" alt="마이페이지" />
                     <div>마이페이지</div>
                 </div>
                 <div onClick={doLogout} className={style.header_block}>

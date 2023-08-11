@@ -2,7 +2,7 @@ import { atom, useRecoilValue } from "recoil";
 import { recoilPersist } from 'recoil-persist';
 interface userType {
     email : string | null,
-    userId : number,
+    userId : number | null,
     nickname : string | null,
     accessToken : string | null,
 }
