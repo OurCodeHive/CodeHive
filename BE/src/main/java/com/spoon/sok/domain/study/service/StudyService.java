@@ -393,12 +393,14 @@ public class StudyService {
         return false;
     }
 
-    public List<StudyUserListDTO> getStudyUsers(Long studyInfoId) {
+    public Map<String, Object> getStudyUsers(Long studyInfoId, Pageable pageRequest) {
         // 중간테이블 가져오기
-        List<UserStudy> userStudyList = userStudyRepository.findBelongingUser(studyInfoId, CurrentStatus.ACCEPT);
-        List<StudyUserListDTO> result = new ArrayList<>();
+        Page<UserStudy> userStudyPage = userStudyRepository.findByStudyInfoId(studyInfoId, pageRequest);
 
-        for (UserStudy us : userStudyList) {
+        Map<String, Object> result = new HashMap<>();
+        List<StudyUserListDTO> list = new ArrayList<>();
+
+        for (UserStudy us : userStudyPage) {
             StudyUserListDTO data = new StudyUserListDTO();
 
             data.setUserId(us.getUsers().getId());
@@ -406,10 +408,13 @@ public class StudyService {
             data.setEmail(us.getUsers().getEmail());
             data.setStatus(us.getStatus());
 
-            result.add(data);
+            list.add(data);
         }
-        return result;
 
+        result.put("userList", list);
+        result.put("totalCnt", userStudyPage.getTotalElements());
+
+        return result;
     }
 
     @Transactional
