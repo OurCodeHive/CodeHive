@@ -125,4 +125,5 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
     Optional<StudyInfoDetailDto> findByStudyInfoIdQuery(String studyInfoId);
 
 
+
 }

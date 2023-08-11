@@ -238,6 +238,7 @@ public class StudyService {
         return studyAppointmentRepository.findByStudyInfoId(studyInfoId);
     }
 
+
     // 스터디 회의를 수정하는 메서드
     @Transactional
     public boolean updateStudyAppointment(Long studyInfoId, Long appointmentId, StudyAppointment studyAppointmentResponseDTO) {

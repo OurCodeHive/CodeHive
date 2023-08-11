@@ -104,6 +104,28 @@ public class StudyRoomController {
     }
 
     // 스터디 공지사항 상세조회
+//    @GetMapping("/study/{studyinfo_id}/board/{studyboard_id}")
+//    public ResponseEntity<?> getStudyNotice(
+//            @PathVariable("studyinfo_id") Long studyInfoId,
+//            @PathVariable("studyboard_id") Long studyboardId) {
+//
+//        // 스터디 공지사항 조회 서비스 호출
+//        Optional<StudyNotice> studyNotice = studyService.getStudyNoticeList(studyboardId);
+//
+//        // 응답 메시지 설정
+//        Map<String, Object> response = new HashMap<>();
+//        if (studyNotice != null) {
+//            response.put("status", 200);
+//            response.put("studyNotice", studyNotice);
+//            return new ResponseEntity<>(studyNotice.get(), HttpStatus.OK);
+//        } else {
+//            response.put("status", 400);
+//            response.put("message", "공지사항 조회에 실패하였습니다.");
+//        }
+//
+//        // HTTP 응답 반환
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
     @GetMapping("/study/{studyinfo_id}/board/{studyboard_id}")
     public ResponseEntity<?> getStudyNotice(
             @PathVariable("studyinfo_id") Long studyInfoId,
@@ -114,10 +136,17 @@ public class StudyRoomController {
 
         // 응답 메시지 설정
         Map<String, Object> response = new HashMap<>();
-        if (studyNotice != null) {
+        if (studyNotice.isPresent()) {
+            StudyNoticeDTO studyNoticeDTO = new StudyNoticeDTO(
+                    studyNotice.get().getId(), // id를 studyboardId로 설정
+                    studyNotice.get().getNoticeTitle(),
+                    studyNotice.get().getContent(),
+                    studyNotice.get().getUploadAt()
+            );
+
             response.put("status", 200);
-            response.put("studyNotice", studyNotice);
-            return new ResponseEntity<>(studyNotice.get(), HttpStatus.OK);
+            response.put("studyNotice", studyNoticeDTO);
+            return new ResponseEntity<>(studyNoticeDTO, HttpStatus.OK);
         } else {
             response.put("status", 400);
             response.put("message", "공지사항 조회에 실패하였습니다.");
@@ -126,6 +155,7 @@ public class StudyRoomController {
         // HTTP 응답 반환
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
 
     // 스터디 공지사항 수정
     @PutMapping("/study/{studyinfo_id}/board/{studyboard_id}")
@@ -374,6 +404,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 스터디에 소속된 유저 목록 조회
     @GetMapping("/study/user/list")
     public ResponseEntity<Map<String, Object>> getStudyUsers(@RequestParam("study") Long studyInfoId) {
         List<StudyUserListDTO> studyUserList = studyService.getStudyUsers(studyInfoId);
@@ -391,6 +422,7 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 스터디 위임 서비스 호출
     @PutMapping("/study/delegate")
     public ResponseEntity<Map<String, Object>> delegateStudyOwnership(@RequestBody DelegateRequestDTO requestDto) {
 
