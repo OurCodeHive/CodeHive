@@ -21,16 +21,12 @@ function QuitStudyGroupButton(props:any){
             .then(data => {
               
               if (data.isLeave){
-                // 스터디 탈퇴 시, 자료를 공유받을 수 없습니다. 그럼에도 탈퇴하시겠습니까? (예 / 아니오)
-                console.log("스터디 탈퇴 시, 자료를 공유받을 수 없습니다. 그럼에도 탈퇴하시겠습니까? (예 / 아니오)");
+                console.log("스터디를 성공적으로 탈퇴하였습니다.");
               }
 
               if (!data.isLeave){
-                console.log("스터디 ") 
+                console.log("현재 스터디 방장입니다. 다른 스터디원에게 방장을 위임하셔야 탈퇴할 수 있습니다."); 
               }
-
-
-
             })
             .catch(error => {
               console.error("Error:", error);
