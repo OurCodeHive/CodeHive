@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { insertData } from "@/api/study";
+import { insertData, insertStudyFile } from "@/api/study";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { AlertPopup } from "@/utils/Popup";
@@ -64,22 +64,12 @@ const FileUpload = (props:FileUploadProps) => {
             param.append("studyFile", profileInput.current?.files[i]);
         }   
         
-        const url = import.meta.env.VITE_APP_SERVER + "study/file";
+        await insertStudyFile(param, ({data}) => {
+            props.closePopup(false);
+		}, (err) => {
+			console.log(err);
+		})
 
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          }
-        };
-
-        axios.post(url, param, config)
-        .then((res) => {
-          console.log(res);
-          props.closePopup(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
         props.uploadAlert();
         props.closePopup(false);
     }

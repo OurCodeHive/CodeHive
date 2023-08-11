@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export type StudyType = {
     studyinfoId : number;
     title : string;
@@ -14,4 +16,13 @@ export type StudyType = {
 export type StudyListType = {
     studyList : StudyType[];
     status? : number;
+}
+
+export type StudyUpdateType = {
+    studyinfoId : number;
+    title : string;
+    profile : string;
+    startAt : string;
+    endAt : string;
+    description : string;
 }
