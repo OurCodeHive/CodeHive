@@ -23,16 +23,25 @@ public class EmailController {
     private final EmailService emailService;
     private final StudyService studyService;
 
+    //GET /api/email/auth?email=사용자이메일@example.com
     @GetMapping("/auth")
     public ResponseEntity<?> sendAuthEmail(@RequestParam("email") String email) throws MessagingException {
         return emailService.sendAuthEmail(email);
     }
 
+    //GET /api/email/find?email=사용자이메일@example.com
     @GetMapping("/find")
     public ResponseEntity<?> sendFindPassEmail(@RequestParam("email") String email) throws MessagingException {
         return emailService.sendFindPassEmail(email);
     }
 
+    /*
+    POST /api/email/auth
+    {
+        "email": "사용자이메일@example.com",
+        "authCode": "인증코드"
+    }
+     */
     @PostMapping("/auth")
     public ResponseEntity<?> verifyEmail(@RequestBody EmailAuthVerifyDto requestDto) {
         return emailService.verify(requestDto);

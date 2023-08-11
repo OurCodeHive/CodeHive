@@ -157,7 +157,6 @@ public class StudyController {
 
         Optional<StudyInfoDetailDto> studyInfo = studyService.getStudyInfoAll(studyinfo_id);
 
-
         if (studyInfo.isPresent()) {
             response.put("status", 200);
             response.put("startAt", studyInfo.get().getStartAt());
@@ -178,22 +177,6 @@ public class StudyController {
 
     // 사용자의 모든 일정 조회
     // http://localhost:8080/api/calendar/study?user=<사용자ID>
-//    @GetMapping("/calendar/study")
-//    public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("user") String userId) {
-//        List<StudyAppointmentDTO> studyMeetingList = studyService.getStudyMeeting(userId);
-//        Map<String, Object> response = new HashMap<>();
-//
-//        if (studyMeetingList.size() != 0) {
-//            response.put("status", 200);
-//            response.put("calendar", studyMeetingList);
-//        } else {
-//            response.put("status", 200);
-//            response.put("calendar", studyMeetingList);
-//            response.put("message", "예정된 study가 없습니다.");
-//        }
-//        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-//    }
-
     @GetMapping("/calendar/study")
     public ResponseEntity<?> getCalendarStudyMeeting(@RequestParam("user") String userId) {
         List<StudyAppointmentResponseDTO> studyMeetingList = studyService.getFormattedStudyMeeting(userId);
@@ -214,32 +197,6 @@ public class StudyController {
 
     // 사용자의 모든 일정 중 특정 날짜로 조회
     // http://localhost:8080/api/today/study?today=yyyy-MM-dd
-//    @GetMapping("/today/study")
-//    public ResponseEntity<Map<String, Object>> getTodayStudyMeeting(@RequestParam("today") String today, HttpServletRequest request) {
-//        // Date 형식으로 파싱
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        Date todayDate;
-//        try {
-//            todayDate = dateFormat.parse(today);
-//        } catch (ParseException e) {
-//            todayDate = null;
-//        }
-//
-//        Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
-//        List<StudyAppointmentDTO> todayMeetingList = studyService.getTodayStudyMeeting(todayDate, (String) token.get("users_id"));
-//
-//        Map<String, Object> response = new HashMap<>();
-//
-//        if (todayMeetingList.size() != 0) {
-//            response.put("status", 200);
-//            response.put("today", todayMeetingList);
-//        } else {
-//            response.put("status", 200);
-//            response.put("today", todayMeetingList);
-//            response.put("message", "오늘 예정된 스터디가 없습니다.");
-//        }
-//        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-//    }
     @GetMapping("/today/study")
     public ResponseEntity<Map<String, Object>> getTodayStudyMeeting(@RequestParam("today") String today, HttpServletRequest request) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
