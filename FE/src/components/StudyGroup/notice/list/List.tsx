@@ -1,5 +1,6 @@
 import {useEffect, useState, useRef} from 'react';
 import { getNoticeList } from '@/api/study';
+import { CheckUserId } from '@/atom/UserAtom';
 import NoticeFilter from './item/Filter';
 import NoticeListItem from './item/ListItem';
 import Pagination, { PaginationType } from '@/utils/Pagination/Pagination';
@@ -9,7 +10,9 @@ import TableList from '@/utils/List/Table/List';
 import StudyStyle from '@/res/css/page/StudyView.module.css';
 import NoticeInsert from '../insert/Insert';
 
-const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag: boolean}) => {
+const NoticeList = ({studyinfoId, studyLeaderId} : {studyinfoId:number, studyLeaderId: number}) => {
+    const LeaderFlag = useRef(CheckUserId(studyLeaderId));
+    const [StudyLeaderId, setStudyLeaderId] = useState(studyLeaderId);
     const param = {
         page : 0,
         size : 10
@@ -41,13 +44,22 @@ const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag:
         void getList();
     }, []);
 
+    useEffect(() => {
+        setStudyLeaderId(() => studyLeaderId);
+    }, [studyLeaderId]);
+
+    const changePopup = () => {
+        changePage(0);
+        changePopupFlag(false);
+    }
+
     const keywordInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
     const WidGroup = ["auto", "100px", "150px"];
     const ListTitle = ["제목", "작성자", "작성일"];
 
     const [popupFlag, setPopupFlag] = useState(false);
     const [ViewStudyBoardId, setViewStudyBoardId] = useState(-1);
-    const [PopupContents, setPopupContents] = useState(<NoticeView studyBoardId={ViewStudyBoardId} closePopup={() => changePopupFlag(false)}/>);
+    const [PopupContents, setPopupContents] = useState(<NoticeView studyBoardId={ViewStudyBoardId} changePopup={changePopup} closePopup={() => changePopupFlag(false)} studyLeaderId={studyLeaderId} />);
 
     const PopupInfo = {
         PopupStatus : popupFlag,
@@ -63,22 +75,17 @@ const NoticeList = ({studyinfoId, LeaderFlag} : {studyinfoId:number, LeaderFlag:
     };
 
     //상세 팝업 열기
-    const openViewPopup = (idx: number) => {
+    function openViewPopup(idx: number){
         setViewStudyBoardId(() => idx);
         PopupInfo.PopupTitle = "공지사항 상세";
-        setPopupContents(<NoticeView studyBoardId={idx} closePopup={() => changePopupFlag(false)}/>);
+        setPopupContents(<NoticeView studyBoardId={idx} closePopup={() => changePopupFlag(false)} changePopup={changePopup} studyLeaderId={StudyLeaderId} leaderFlag={LeaderFlag} />);
         changePopupFlag(true);
     }
 
     const openInsertPopup = () => {
         PopupInfo.PopupTitle = "공지사항 등록";
-        setPopupContents(<NoticeInsert studyinfoId={studyinfoId} closePop={() => changePopupFlag(false)} completePop={completeInsert} />);
+        setPopupContents(<NoticeInsert studyinfoId={studyinfoId} closePop={() => changePopupFlag(false)} completePop={changePopup} />);
         changePopupFlag(true);
-    }
-
-    const completeInsert = () => {
-        changePage(0);
-        changePopupFlag(false);
     }
 
     return (

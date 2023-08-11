@@ -34,6 +34,7 @@ const Lnb: React.FC = () => {
                 <a href="/" className={`col-12 tc ${LnbStyle.home_btn}`}><img src={HomeIcon} alt="홈 아이콘"/>Home</a>
                 <StudyList refreshFlag={RefreshFlag}/>
                 <button className={`col-12 mt50 ${LnbStyle.new_btn}`} onClick={() => changePopupFlag(true)}><img src={PlusIcon} alt="홈 아이콘"/>New</button>
+                <button className={`col-12 mt20 ${LnbStyle.new_btn}`} onClick={() => changePopupFlag(true)}>Join</button>
                 <ContentsPopup PopupInfo={PopupInfo} />
             </div>
         </div>

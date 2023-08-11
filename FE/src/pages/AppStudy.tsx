@@ -6,7 +6,7 @@ function AppStudy() {
   return (
     <div className="col-12 sub_wrap">
       <div className="col-12 sub_con" style={{backgroundImage: `url(${StudyViewBgImg})`}}>
-        <div className="col-12 sub_contents" style={{backgroundColor: '#E0E0E0'}}>
+        <div className="col-12 sub_contents">
           <Lnb/>
           <StudyView />
         </div>

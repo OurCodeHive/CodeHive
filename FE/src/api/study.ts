@@ -41,6 +41,10 @@ const inviteMember = async (param: object, success: () => void, fail: () => void
     await api.post(`/email/study/invite`, JSON.stringify(param)).then(success).catch(fail);
 }
 
+const inviteProcess = async (param: object, success: () => void, fail: (error: unknown) => void) => {
+    await api.post(`/study/invite`, JSON.stringify(param)).then(success).catch(fail);
+}
+
 /**
  * get study view
  * @param studyinfoId : number
@@ -65,8 +69,16 @@ const getNoticeView = async (studyinfoId: number, studyboardId: number, success:
  * @param success 
  * @param fail 
  */
-const insertNoticeData = async (studyinfoId: number, param: object, success: ({data} : {data: StudyType}) => void, fail: () => void) => {
+const insertNoticeData = async (studyinfoId: number, param: object, success: ({data} : {data: object}) => void, fail: () => void) => {
     await api.post(`/study/${studyinfoId}/board`, JSON.stringify(param)).then(success).catch(fail);
+}
+
+const updateNoticeData = async (studyinfoId: number, studyboardId: number, param: object, success: ({data} : {data: object}) => void, fail: () => void) => {
+    await api.put(`/study/${studyinfoId}/board/${studyboardId}`, JSON.stringify(param)).then(success).catch(fail);
+}
+
+const removeNoticeData = async (studyinfoId: number, studyboardId: number, success: ({data} : {data: object}) => void, fail: (error: unknown) => void) => {
+    await api.delete(`/study/${studyinfoId}/board/${studyboardId}`).then(success).catch(fail);
 }
 
 const getDocumentList = async (studyinfoId: number, param: object, success: ({data} : {data : StudyDocumentListType}) => void, fail: (error: unknown) => void) => {
@@ -91,4 +103,4 @@ const insertStudyFile = async (param: FormData, success:({data} : {data: any}) =
 
 
 
-export {getList, insertData, inviteMember, getView, getNoticeList, getNoticeView, insertNoticeData, getDocumentList, getDocumentView, deleteStudyfile, updateStudyFile, insertStudyFile};
+export {getList, insertData, inviteMember, inviteProcess, getView, getNoticeList, getNoticeView, insertNoticeData, updateNoticeData, removeNoticeData, getDocumentList, getDocumentView, deleteStudyfile, updateStudyFile, insertStudyFile};
