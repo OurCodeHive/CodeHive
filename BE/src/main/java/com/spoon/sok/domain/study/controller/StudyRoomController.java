@@ -406,14 +406,15 @@ public class StudyRoomController {
 
     // 스터디에 소속된 유저 목록 조회
     @GetMapping("/study/user/list")
-    public ResponseEntity<Map<String, Object>> getStudyUsers(@RequestParam("study") Long studyInfoId) {
-        List<StudyUserListDTO> studyUserList = studyService.getStudyUsers(studyInfoId);
+    public ResponseEntity<Map<String, Object>> getStudyUsers(@RequestParam("study") Long studyInfoId,
+                                                             @RequestParam("page") int page,
+                                                             @RequestParam("size") int size) {
 
-        Map<String, Object> response = new HashMap<>();
+        Pageable pageRequest = PageRequest.of(page, size);
+        Map<String, Object> response = studyService.getStudyUsers(studyInfoId, pageRequest);
 
-        if (!studyUserList.isEmpty()) {
+        if (!response.isEmpty()) {
             response.put("status", 200);
-            response.put("studyUserList", studyUserList);
         } else {
             response.put("status", 400);
             response.put("message", "스터디에 소속된 유저 목록 조회에 실패하였습니다.");

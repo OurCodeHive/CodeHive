@@ -1,8 +1,11 @@
 package com.spoon.sok.domain.user.repository;
 
+import com.spoon.sok.domain.study.entity.StudyArchive;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.user.entity.UserStudy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +28,6 @@ public interface UserStudyRepository  extends JpaRepository<UserStudy, Long> {
     Optional<UserStudy> findByStudyInfoIdAndUsersId(Long studyInfoId, Long usersId);
 
     int deleteByStudyInfoIdAndUsersId(Long studyInfoId, Long usersId);
+
+    Page<UserStudy> findByStudyInfoId(Long studyInfoId, Pageable pageable);
 }
