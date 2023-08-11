@@ -1,67 +1,65 @@
-import LinkInputPopUp from "@/components/StudyGroup/invite/LinkInput";
-import MessagePopUp from "@/components/StudyGroup/invite/Message";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/atom/UserAtom';
+import InviteConfirm from '@/components/StudyGroup/invite/Confirm';
+import StudyViewBgImg from '@/res/img/codehive_study_view_bg_img.png';
+import { AlertPopup } from '@/utils/Popup';
 
-// 1. (수락버튼) handleAccept라는 요청함수 만들어 둠.
-//     1-1. http://localhost:8080/ 형태니까 꼭! 실서버로 변경
-// 2. (거절버튼) 요청함수 안만들었음.
-// 3.  async 필요.
-// 4. Message의 "닫기" 누르면 URL이 invite로 유지되어있음. 여기도 redirct?
-// 5. useState나 Recoil에 유저 정보를 넣어줘야하는데 이건 모르겠음.
+const AppInvite = () => {
+  const navigate = useNavigate();
 
-function AppInvite() {
-
-  const message = {
-    accepted: "환영합니다.",
-    rejected: "거절하였습니다."
+  function notUser(flag: boolean): void {
+    changeAlertPopupFlag(false);
+    navigate("/login");
   }
 
-  const handleAccept = () => {
-    // POST 요청 보내기
-    fetch("http://localhost:8080/api/study/invite", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "usersId": 2,
-        "userstudyId": 12
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        // 성공적으로 수락했을 때 상태 업데이트
-        console.log(data); // response 확인용 log
-      })
-      .catch(error => {
-        console.error("Error:", error);
-      });
-  };
+  function goHome(flag: boolean): void {
+    changeAlertPopupFlag(false);
+    navigate("/home");
+  }
 
-  const handleReject = () => {
-    // status를 바꿔야 하지만, 따로 URL 없습니다.
-    // 바로 home과 같은 곳으로 페이지 이동으로 생각합니다.
-  };
+  const [PopupTitle, setPopupTitle] = useState("비회원입니다 로그인 후 다시 시도해주세요");
+  const [AlertPopupClose, setAlertPopupClose] = useState(() => notUser);
+  const [ConfirmPopupFlag, setConfirmPopupFlag] = useState(true);
+  const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
+  const AlertPopupInfo = {
+     PopupStatus : AlertPopupFlag,
+     zIndex : 10000,
+     maxWidth: 440,
+     ClosePopupProp : AlertPopupClose,
+     PopupTitle : PopupTitle
+  }
+  const userId = useRecoilValue(userState).userId;
+  const userStudyId = Number(new URLSearchParams(location.search).get("userstudy_id"));
+  useEffect(() => {
+    if(userId == -1){
+      changePopupFlag(false);
+      changeAlertPopupFlag(true);
+    }
+  }, []);
+  
+  function changeAlertPopupFlag(flag: boolean){
+    setAlertPopupFlag(() => flag);
+  }
+
+  function changePopupFlag(flag: boolean) {
+      setConfirmPopupFlag(() => false);
+      setAlertPopupClose(() => goHome);
+      if(flag) setPopupTitle("수락 완료하였습니다"); //수락을 눌렀을 때
+      else setPopupTitle("거절 완료하였습니다"); //거절을 눌렀을 때
+      
+      setAlertPopupFlag(() => true);
+  }
 
   return (
     <div className="col-12 sub_wrap">
-
-      {/* 1. 이메일에서 링크를 클릭하면, 여기 페이지에 도달합니다.
-      2. input 창에서 사용자는 이메일 링크의 URL을 복붙해서 기입합니다. */}
-      {/* <LinkInputPopUp></LinkInputPopUp> */}
-
-      {/* 3. 수락, 거절 버튼을 누릅니다.
-      3-1. 수락은 POST 요청을 보냄.
-      3-2. 거절은 다른 페이지로 이동 */}
-        <>
-          수락하시겠습니까?
-          <button type="button" onClick={handleAccept}>수락</button>
-          <button type="button" onClick={handleReject}>거절</button>
-        </>
-
-      {/* 4. 메세지를 alert에 넣어서 줍니다. */}
-      <MessagePopUp message={message.accepted}/>
-
+      <div className="col-12 sub_con" style={{backgroundImage: `url(${StudyViewBgImg})`, height: '100%'}}>
+        <div className="col-12 sub_contents">
+          <InviteConfirm studyinfoId={userStudyId} PopupFlag={ConfirmPopupFlag} confirmPopup={changePopupFlag} />
+        </div>
+      </div>
+      <AlertPopup PopupInfo={AlertPopupInfo} />
     </div>
   )
 }
