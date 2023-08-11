@@ -7,6 +7,7 @@ const AppQuit = ({studyinfoId} : {studyinfoId : number}) => {
   return (
     <div className="col-12 sub_wrap">
       <QuitStudyGroupButton studyinfoId={studyinfoId}></QuitStudyGroupButton>
+      <StudyGroupUserList></StudyGroupUserList>
     </div>
   )
 }
