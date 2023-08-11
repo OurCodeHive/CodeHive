@@ -8,8 +8,7 @@ import CustomEditor from "@/utils/CustomEditor/CustomEditor";
 
 
 const NoticeUpdate = ({studyinfoId, data, closePop, completePop} : { studyinfoId: number, data: StudyNoticeType, closePop: () => void, completePop: () => void }) => {
-    //const studyboardId = data.studyboardId as number;
-    const studyboardId = 3;
+    const studyboardId = data.studyboardId as number;
     const userId = useRecoilValue(userState).userId;
     const [titleContents, setTitleContents] = useState(data.noticeTitle);
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);

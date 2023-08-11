@@ -20,7 +20,7 @@ export const userState = atom<userType>({
   key: "useState", // 전역적으로 고유한 값
   default: {
     email : "",
-    userId : 15,
+    userId : -1,
     nickname : "USER " + getRandomNumber(),
     accessToken : "",
   }, // 초깃값

@@ -41,6 +41,10 @@ const inviteMember = async (param: object, success: () => void, fail: () => void
     await api.post(`/email/study/invite`, JSON.stringify(param)).then(success).catch(fail);
 }
 
+const inviteProcess = async (param: object, success: () => void, fail: (error: unknown) => void) => {
+    await api.post(`/study/invite`, JSON.stringify(param)).then(success).catch(fail);
+}
+
 /**
  * get study view
  * @param studyinfoId : number
@@ -85,4 +89,4 @@ const getDocumentView = async (studyinfoId: number, studyDocumentId: number, suc
     await api.get(`/study/${studyinfoId}/document/${studyDocumentId}`).then(success).catch(fail);
 }
 
-export {getList, insertData, inviteMember, getView, getNoticeList, getNoticeView, insertNoticeData, updateNoticeData, removeNoticeData, getDocumentList, getDocumentView};
+export {getList, insertData, inviteMember, inviteProcess, getView, getNoticeList, getNoticeView, insertNoticeData, updateNoticeData, removeNoticeData, getDocumentList, getDocumentView};
