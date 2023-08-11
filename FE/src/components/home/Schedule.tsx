@@ -29,8 +29,8 @@ const Schedule = () => {
 
     return (
       <div className={`col-12 ${style.box_schedule}`}>
-        <div className={`col-12 mb40 ${style.subtitle_schedule}`}>오늘 예정된 스터디</div>
-        <div className={`col-12`}>
+        <div className={`col-12 mb20 ${style.subtitle_schedule}`}>오늘 예정된 스터디</div>
+        <div className={`col-12 ${style.schedule_list_wrapper}`}>
           {data.length > 0 ? data.map((item, index) => <ScheduleListItem key={index} data={item} />) : <div className={`col-12 ${style.no_data}`}>예정된 스터디가 없습니다</div>}
         </div>
       </div>
@@ -45,7 +45,7 @@ const ScheduleListItem = ({data} : {data: ISchedule}) => {
             <img src={arrow} alt="" />
             <span>{data.endTime.slice(11, 16)}</span>
           </div>
-          <div className={`col-12 ${style.duration}`}>{}</div>
+          <div className={`col-12 ${style.duration}`}>{"0hr 0min"}</div>
         </div>
         <div className={`col-12 ${style.timer_text}`}>{getTimeLeft(data.startTime)}</div>
       </div>
