@@ -335,16 +335,16 @@ public class StudyRoomController {
             @RequestBody LeaveStudyRequestDTO leaveStudyRequestDTO) {
 
         // 스터디 나가기 서비스 호출
-        boolean isLeft = studyService.leaveStudy(leaveStudyRequestDTO);
+        boolean isLeave = studyService.leaveStudy(leaveStudyRequestDTO);
 
         // 응답 메시지 설정
         Map<String, Object> response = new HashMap<>();
-        if (isLeft) {
+        if (isLeave) {
             response.put("status", 200);
-            response.put("message", "스터디를 성공적으로 나갔습니다.");
+            response.put("isLeave", isLeave);
         } else {
             response.put("status", 400);
-            response.put("message", "스터디 나가기에 실패하였습니다.");
+            response.put("isLeave", isLeave);
         }
 
         // HTTP 응답 반환
