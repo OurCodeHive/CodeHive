@@ -19,6 +19,7 @@ interface FileUpdateProps {
 	// info: StudyDocumentDetailItemType;
 	closePopup: (flag: boolean) => void;
 	updateAlert: () => void;
+	completePopup: () => void;
 }
 
 
@@ -94,6 +95,7 @@ const FileUpdate = (props: FileUpdateProps) => {
 		await updateStudyFile(param, ({data}) => {
 			setFileList(data);
 			setDocumentContents(temp);
+			props.completePopup();
 		}, (err) => {
 			console.log(err);
 		})

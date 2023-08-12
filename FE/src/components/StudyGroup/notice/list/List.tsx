@@ -78,7 +78,9 @@ const NoticeList = ({studyinfoId, studyLeaderId} : {studyinfoId:number, studyLea
     function openViewPopup(idx: number){
         setViewStudyBoardId(() => idx);
         PopupInfo.PopupTitle = "공지사항 상세";
-        setPopupContents(<NoticeView studyBoardId={idx} closePopup={() => changePopupFlag(false)} changePopup={changePopup} studyLeaderId={StudyLeaderId} leaderFlag={LeaderFlag} />);
+        setPopupContents(<NoticeView studyBoardId={idx} closePopup={() => changePopupFlag(false)} changePopup={changePopup} studyLeaderId={StudyLeaderId}
+        //  leaderFlag={LeaderFlag} 
+         />);
         changePopupFlag(true);
     }
 
