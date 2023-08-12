@@ -177,7 +177,7 @@ function ViewSchedule() {
             <div className={style.study_info}>
               <div className={style.study_title}>{schedule.title}</div>
               <div className={style.actions}>
-                <span onClick={() => handleDeleteSchedule(schedule.id)} className={style.action_icon}>&#128465;</span> {/* Trashcan icon */}
+                <span onClick={() => handleDeleteSchedule(schedule.id as number)} className={style.action_icon}>&#128465;</span> {/* Trashcan icon */}
                 <span onClick={() => handleShowEditPopover(schedule)} className={style.action_icon}>&#9998;</span> {/* Pencil icon */}
               </div>
             </div>
@@ -239,6 +239,23 @@ function ViewSchedule() {
           </div>
     </div>
   )
+  const isScheduleOverlapping = (studyStartTime:string, studyEndTime:string):boolean => {
+    const newStartTime = new Date(`${clickedDate} ${studyStartTime}`); //시간만 있는 형태
+    const newEndTime = new Date(`${clickedDate} ${studyEndTime}`); // 날짜 + 시간형태로 변환
+
+    const overlappingSchedule = selectedDateInfo.find(schedule => {
+      const scheduleStartTime = new Date(schedule.startTime as string);
+      const scheduleEndTime = new Date(schedule.endTime as string);
+  
+      return ( //새로 등록하는 일정의 시작시간 OR 끝 시간이 기존 일정 사이에 있거나 / 기존일정 전/후에 있을 때
+        newStartTime >= scheduleStartTime && newStartTime < scheduleEndTime ||
+        newEndTime > scheduleStartTime && newEndTime <= scheduleEndTime ||
+        newStartTime <= scheduleStartTime && newEndTime >= scheduleEndTime
+      );
+    });
+
+    return overlappingSchedule? true : false;
+  }
 
   const handleAddSchedule = async () => {
     const newStudy = {
@@ -253,6 +270,14 @@ function ViewSchedule() {
     }
     if (new Date(`${clickedDate} ${studyEndTime}`) <= new Date(`${clickedDate} ${studyStartTime}`)) {
       alert("종료 시간은 시작 시간보다 늦어야 합니다.");
+      return;
+    }
+    if(studyTitle.split("").length > 20){
+      alert("제목은 20자 이하로 지정해주세요");
+      return;
+    }
+    if(isScheduleOverlapping(studyStartTime, studyEndTime)){
+      alert("일정이 해당 날짜의 다른 스케줄과 겹칩니다");
       return;
     }
     if (confirm("새로운 일정을 등록하시겠습니까? 생성된 일정은 스터디에 속한 팀원 모두에게 공유됩니다.")) {
@@ -305,6 +330,16 @@ function ViewSchedule() {
     if (new Date(`${clickedDate} ${editSchedule?.endTime as string}`) <= new Date(`${clickedDate} ${editSchedule?.startTime as string}`)) {
       alert("종료 시간은 시작 시간보다 늦어야 합니다.");
       return;
+    }
+    if(isScheduleOverlapping(editSchedule?.startTime as string, editSchedule?.endTime as string)){
+      alert("일정이 해당 날짜의 다른 스케줄과 겹칩니다");
+      return;
+    }
+    if(editSchedule?.title){
+      if(editSchedule.title.split("").length> 20){
+        alert("제목은 20자 이하로 지정해주세요");
+        return;
+      }
     }
     if (confirm("일정을 수정하시겠습니까?")) {
       try {
