@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import style from './ViewSchedule.module.css';
-// import data from '@/components/home/CalendarData';
-// import Schedule from './Schedule';
 import { authHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
-import { render } from 'react-dom';
 import Schedule from '@/components/home/Schedule';
-const studyinfo_id = 3;
+//임의의 studyinfo_id => 상세페이지 반영 시 query에서 가져오도록 수정 필요
+///////////////////////////
+const studyinfo_id = 3; ///
+///////////////////////////
 
 interface Schedule {
     endTime? : string;
@@ -14,10 +14,6 @@ interface Schedule {
     meetingAt?: string;
     startTime?: string;
     title? : string,
-}
-interface CalendarData {
-  calendar : Schedule[],
-  message : string,
 }
 interface editSchedule {
   title? : string,
@@ -37,18 +33,19 @@ function ViewSchedule() {
   const [showAddPopover, setShowAddPopover] = useState(false);
   const [clickedDate, setClickedDate] = useState<string>("");
   const [showEditPopover, setShowEditPopover] = useState(false);
+  let [studyTitle, setStudyTitle] = useState<string>("");
+  let [studyStartTime, setStudyStartTime] = useState<string>("");
+  let [studyEndTime, setStudyEndTime] = useState<string>("");
   const [editSchedule, setEditSchedule] = useState<editSchedule | null>(null);
 
   const parsedPk = JSON.parse(sessionStorage.getItem("sessionStorage") as string) as { useState: { userId: string } };
   const pk = parsedPk.useState.userId;
-
 
   useEffect(()=>{
     getCalendar();
   },[])
 
   function getCalendar(){
-   
     async function requestCalendar(): Promise<void> {
         try {
             const response: AxiosResponse<Schedule[]> = await authHttp.get<Schedule[]>(`/study/meeting/${studyinfo_id}`);
@@ -114,7 +111,6 @@ function ViewSchedule() {
     const selectedDate = new Date(currYear, currMonth, day+1);
     const formattedDate = selectedDate.toISOString().split('T')[0];
     // console.log(`Schedules for ${formattedDate}:`);
-    // console.log(daySchedules);
     setClickedDate(formattedDate);
     setSelectedDateInfo(daySchedules);
     setShowPopover(true);
@@ -141,7 +137,7 @@ function ViewSchedule() {
             prevSelectedDateInfo.filter(schedule => schedule.id !== id)
           );
           setData((prevData)=>{return prevData.filter(schedule => schedule.id !== id)})
-          resolve(); 
+          resolve();    
         } catch (error) {
           console.error("Error deleting schedule:", error);
           reject(error);
@@ -168,10 +164,6 @@ function ViewSchedule() {
     setEditSchedule(editData);
     setShowEditPopover((prevShowEditPopover) => !prevShowEditPopover);
   };
-
-  let [studyTitle, setStudyTitle] = useState<string>("");
-  let [studyStartTime, setStudyStartTime] = useState<string>("");
-  let [studyEndTime, setStudyEndTime] = useState<string>("");
   const renderPopover = () => (
     showPopover && (
       <div className={style.popover_right}>
@@ -259,6 +251,10 @@ function ViewSchedule() {
         alert("제목, 시작 시간 및 종료시간을 모두 입력해주세요")
         return;
     }
+    if (new Date(`${clickedDate} ${studyEndTime}`) <= new Date(`${clickedDate} ${studyStartTime}`)) {
+      alert("종료 시간은 시작 시간보다 늦어야 합니다.");
+      return;
+    }
     if (confirm("새로운 일정을 등록하시겠습니까? 생성된 일정은 스터디에 속한 팀원 모두에게 공유됩니다.")) {
       try {
         await authHttp.post(`/study/meeting/${studyinfo_id}`, newStudy);
@@ -269,7 +265,7 @@ function ViewSchedule() {
         // Create the new schedule with the calculated ID
         const newSchedule = {
             endTime : `1970-01-01 ${studyEndTime}`,
-            id : 0,
+            id : newId,
             meetingAt : clickedDate,
             startTime : `1970-01-01 ${studyStartTime}`,
             title : studyTitle,
@@ -305,6 +301,10 @@ function ViewSchedule() {
     if(editSchedule?.title === "" || editSchedule?.startTime === "" || editSchedule?.endTime === ""){
         alert("제목, 시작 시간 및 종료시간을 모두 입력해주세요")
         return;
+    }
+    if (new Date(`${clickedDate} ${editSchedule?.endTime as string}`) <= new Date(`${clickedDate} ${editSchedule?.startTime as string}`)) {
+      alert("종료 시간은 시작 시간보다 늦어야 합니다.");
+      return;
     }
     if (confirm("일정을 수정하시겠습니까?")) {
       try {
