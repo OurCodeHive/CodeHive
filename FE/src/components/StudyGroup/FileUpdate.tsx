@@ -95,7 +95,7 @@ const FileUpdate = (props: FileUpdateProps) => {
 		await updateStudyFile(param, ({data}) => {
 			setFileList(data);
 			setDocumentContents(temp);
-			props.completePopup;
+			props.completePopup();
 		}, (err) => {
 			console.log(err);
 		})

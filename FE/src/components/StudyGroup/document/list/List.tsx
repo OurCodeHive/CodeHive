@@ -33,11 +33,8 @@ const DocumentList = ({studyinfoId} : {studyinfoId: number}) => {
     const getList = async () => {
         await getDocumentList(studyinfoId, param, ({data}) => {
             setTotalCnt(data.totalCnt);
-            console.log(data)
             const tempList = data.studyArchives.map((item, index) => <DocumentListItem key={index} item={item} clickEvent={openViewPopup} />);
             setListContents(tempList);
-
-            console.log(tempList)
         }, (error) => {console.log(error)})
     }
 
@@ -53,6 +50,7 @@ const DocumentList = ({studyinfoId} : {studyinfoId: number}) => {
         changePage(0);
         changePopupFlag(false);
         console.log("call completeInsert")
+        console.log(ListContents)
     }
 
     const [popupFlag, setPopupFlag] = useState(false);

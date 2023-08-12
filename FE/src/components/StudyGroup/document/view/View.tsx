@@ -73,13 +73,13 @@ const DocumentView = ({ studyDocumentId, closePopup, completePopup }: { studyDoc
 
 	const removeConfirm = (flag: boolean) => {
 		requestDeleteStudyFile(studyDocumentId);
-		completePopup();
 		setPopupFlag(() => flag);
 	};
 
 	const requestDeleteStudyFile = async (studyDocumentId: number) => {
 		await deleteStudyfile(studyDocumentId, () => {
 			closePopup(false)
+			completePopup();
 		}, (err) => console.log(err));
 	};
 
