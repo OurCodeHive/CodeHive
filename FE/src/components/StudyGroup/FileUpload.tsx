@@ -11,6 +11,7 @@ import axios from 'axios';
 interface FileUploadProps {
     closePopup: (flag:boolean) => void;
     uploadAlert: () => void;
+    completePopup: () => void;
 }
 
 
@@ -22,7 +23,6 @@ const FileUpload = (props:FileUploadProps) => {
 
     const titleInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
     const descInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
-    
     const profileInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
 
     const AlertPopupInfo = {
@@ -65,7 +65,8 @@ const FileUpload = (props:FileUploadProps) => {
         }   
         
         await insertStudyFile(param, ({data}) => {
-            props.closePopup(false);
+            // props.closePopup(false);
+            props.completePopup();
 		}, (err) => {
 			console.log(err);
 		})

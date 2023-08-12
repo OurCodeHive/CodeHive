@@ -46,9 +46,22 @@ const DocumentList = ({studyinfoId} : {studyinfoId: number}) => {
     const WidGroup = ["auto", "100px", "150px"];
     const ListTitle = ["제목", "작성자", "작성일"];
 
+    const completeInsert = () => {
+        changePage(0);
+        changePopupFlag(false);
+        console.log("call completeInsert")
+        console.log(ListContents)
+    }
+
     const [popupFlag, setPopupFlag] = useState(false);
     const [ViewStudyDocumentId, setViewStudyDocumentId] = useState(-1);
-    const [PopupContents, setPopupContents] = useState(<DocumentView studyDocumentId={ViewStudyDocumentId} closePopup={() => changePopupFlag(false)}/>);
+    const [PopupContents, setPopupContents] = useState(
+    <DocumentView studyDocumentId={ViewStudyDocumentId} 
+    closePopup={() => changePopupFlag(false)}
+    completePopup={completeInsert}
+    
+    />
+    );
 
     const PopupInfo = {
         PopupStatus : popupFlag,
@@ -67,20 +80,17 @@ const DocumentList = ({studyinfoId} : {studyinfoId: number}) => {
     const openViewPopup = (idx: number) => {
         setViewStudyDocumentId(() => idx);
         PopupInfo.PopupTitle = "자료 상세";
-        setPopupContents(<DocumentView studyDocumentId={idx} closePopup={() => changePopupFlag(false)}/>);
+        setPopupContents(<DocumentView studyDocumentId={idx} closePopup={() => changePopupFlag(false)} completePopup={completeInsert}/>);
         changePopupFlag(true);
     }
 
     const openInsertPopup = () => {
         PopupInfo.PopupTitle = "자료 등록";
-        setPopupContents(<FileUpload closePopup={changePopupFlag} uploadAlert={notifyUploadFile}/>);
+        setPopupContents(<FileUpload closePopup={changePopupFlag} uploadAlert={notifyUploadFile} completePopup={completeInsert}/>);
         changePopupFlag(true);
     }
 
-    const completeInsert = () => {
-        changePage(0);
-        changePopupFlag(false);
-    }
+
 
 	return (
 		<div className="col-12 pt50 pr20 pb20 pl20">
