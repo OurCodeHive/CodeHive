@@ -9,15 +9,22 @@ import Schedule from '@/components/home/Schedule';
 const studyinfo_id = 3;
 
 interface Schedule {
-    endTime: string;
-    id: number;
-    meetingAt: string;
-    startTime: string;
-    title : string,
+    endTime? : string;
+    id?: number;
+    meetingAt?: string;
+    startTime?: string;
+    title? : string,
 }
 interface CalendarData {
   calendar : Schedule[],
   message : string,
+}
+interface editSchedule {
+  title? : string,
+  date? : string,
+  startTime? : string,
+  endTime? : string,
+  id? : number
 }
 
 function ViewSchedule() {
@@ -26,11 +33,11 @@ function ViewSchedule() {
   const [currYear, setCurrYear] = useState(currentDate.getFullYear());
   const [data, setData] = useState<Schedule[]>([]);
   const [selectedDateInfo, setSelectedDateInfo] = useState<Schedule[]>([]);
-  const [showPopover, setShowPopover] = useState(false); // State to control popover visibility
+  const [showPopover, setShowPopover] = useState(false); 
   const [showAddPopover, setShowAddPopover] = useState(false);
   const [clickedDate, setClickedDate] = useState<string>("");
   const [showEditPopover, setShowEditPopover] = useState(false);
-  const [editSchedule, setEditSchedule] = useState<Schedule | null>(null);
+  const [editSchedule, setEditSchedule] = useState<editSchedule | null>(null);
 
   const parsedPk = JSON.parse(sessionStorage.getItem("sessionStorage") as string) as { useState: { userId: string } };
   const pk = parsedPk.useState.userId;
@@ -47,7 +54,6 @@ function ViewSchedule() {
             const response: AxiosResponse<Schedule[]> = await authHttp.get<Schedule[]>(`/study/meeting/${studyinfo_id}`);
             const calendar = response.data;
             if(calendar){
-                console.log(calendar);
               setData(calendar);
             }
         } catch (error) {
@@ -77,7 +83,7 @@ function ViewSchedule() {
       const isToday = i === currentDate.getDate() && currMonth === currentDate.getMonth() && currYear === currentDate.getFullYear();
     //   const scheduleTitle = data.find(schedule => schedule.date === `${currYear}-${(currMonth + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`)?.study_title || '';
       const daySchedules = data.filter(schedule => {
-      const scheduleDate = new Date(schedule.meetingAt);
+      const scheduleDate = new Date(schedule.meetingAt as string);
         return scheduleDate.getFullYear() === currYear && scheduleDate.getMonth() === currMonth && scheduleDate.getDate() === i;
       });
       const scheduleElements = daySchedules.map((schedule, index) => (
@@ -135,24 +141,31 @@ function ViewSchedule() {
             prevSelectedDateInfo.filter(schedule => schedule.id !== id)
           );
           setData((prevData)=>{return prevData.filter(schedule => schedule.id !== id)})
-          resolve(); // Resolve the Promise if successful
+          resolve(); 
         } catch (error) {
           console.error("Error deleting schedule:", error);
-          reject(error); // Reject the Promise if an error occurs
+          reject(error);
         }
       } else {
-        resolve(); // Resolve the Promise if user cancels deletion
+        resolve();
       }
     });
     
   };
   
   const handleShowAddPopover = () => {
-    setShowAddPopover((prevShowAddPopover) => !prevShowAddPopover); // Toggle the state
+    setShowAddPopover((prevShowAddPopover) => !prevShowAddPopover); 
   };
 
   const handleShowEditPopover = (schedule: Schedule) => {
-    setEditSchedule(schedule);
+    let editData = {
+      title : schedule.title as string,
+      date : clickedDate,
+      startTime : schedule.startTime?.slice(11,16),
+      endTime : schedule.endTime?.slice(11,16),
+      id : schedule.id,
+    }
+    setEditSchedule(editData);
     setShowEditPopover((prevShowEditPopover) => !prevShowEditPopover);
   };
 
@@ -177,7 +190,7 @@ function ViewSchedule() {
               </div>
             </div>
             <div className={style.study_schedules}>
-              {schedule.startTime.slice(11,16)} - {schedule.endTime.slice(11,16)}
+              {schedule.startTime?.slice(11,16)} - {schedule.endTime?.slice(11,16)}
             </div>
           </div>
           <hr />
@@ -205,33 +218,37 @@ function ViewSchedule() {
           </div>
           <div className={`${style.input_wrapper} ${style.button_wrapper}`}>
             <button onClick={handleShowAddPopover}>취소</button>
-            <button onClick={registerStudy} >등록</button>
+            <button onClick={handleAddSchedule} >등록</button>
           </div>
         </div>
   )
   const renderEditPopover = () => (
-    <div className={` ${style.add_popover}`}>
+    <div className={`${style.add_popover} ${style.edit_popover}`}>
           <div className={style.add_popover_title}>일정 수정</div>
           <div className={style.input_wrapper}>
             <label htmlFor="addStudyTitle">제목</label>
-            <input onChange={(e)=>{setStudyTitle(e.target.value)}} value={editSchedule?.title} className={style.title_input} type="text" id='addStudyTitle'/>
+            <input  onChange={(e) =>
+          setEditSchedule({ ...editSchedule, title: e.target.value })
+        } value={editSchedule?.title || ''} className={style.title_input} type="text" id='addStudyTitle'/>
           </div>
           <div className={style.input_wrapper}>
             <label htmlFor="addStudyStart">시작</label>
-            <input onChange={(e)=>{setStudyStartTime(e.target.value)}} value={editSchedule?.startTime.slice(11,16)} type="time" id='addStudyStart'/>
+            <input onChange={(e) =>
+          setEditSchedule({ ...editSchedule, startTime:`${e.target.value}`})} value={editSchedule?.startTime} type="time" id='addStudyStart'/>
           </div>
           <div className={style.input_wrapper}>
             <label htmlFor="addStudyEnd">종료</label>
-            <input onChange={(e)=>{setStudyEndTime(e.target.value)}} value={editSchedule?.endTime.slice(11,16)} type="time" id='addStudyEnd'/>
+            <input onChange={(e) =>
+          setEditSchedule({ ...editSchedule, endTime:`${e.target.value}`})} value={editSchedule?.endTime} type="time" id='addStudyEnd'/>
           </div>
           <div className={`${style.input_wrapper} ${style.button_wrapper}`}>
             <button onClick={()=>setShowEditPopover(false)}>취소</button>
-            <button onClick={editStudy} >수정</button>
+            <button onClick={handleEditSchedule} >수정</button>
           </div>
     </div>
   )
 
-  const registerStudy = async () => {
+  const handleAddSchedule = async () => {
     const newStudy = {
       title: studyTitle,
       date: clickedDate,
@@ -245,10 +262,8 @@ function ViewSchedule() {
     if (confirm("새로운 일정을 등록하시겠습니까? 생성된 일정은 스터디에 속한 팀원 모두에게 공유됩니다.")) {
       try {
         await authHttp.post(`/study/meeting/${studyinfo_id}`, newStudy);
-        console.log("Schedule registered successfully");
-
         // Calculate the new ID based on the largest existing ID
-        const maxId = Math.max(...data.map(schedule => schedule.id));
+        const maxId = Math.max(...data.map(schedule => schedule.id as number));
         const newId = maxId + 1;
 
         // Create the new schedule with the calculated ID
@@ -259,71 +274,57 @@ function ViewSchedule() {
             startTime : `1970-01-01 ${studyStartTime}`,
             title : studyTitle,
         };
-    
-      // Update the data state with the new schedule
       setData(prevData => [...prevData, newSchedule]);
-
       setSelectedDateInfo(prevSelectedDateInfo => [
         ...prevSelectedDateInfo,
         newSchedule,
       ]);
-
-      setShowPopover(true); // Show the main popover with the updated schedule
-      handleShowAddPopover(); // Hide the add-popover
+      setShowPopover(true); 
+      handleShowAddPopover(); 
 
       } catch (error) {
         console.error("Error registering schedule:", error);
-        // Handle error here, e.g., show an error message to the user
       }
     }
   };
 
-  const editStudy = async() => {
-    const newStudy = {
-      title: studyTitle,
+  const handleEditSchedule = async() => {
+    const newStudy = { //(전송용 폼)
+      title: editSchedule?.title,
       date: clickedDate,
-      startTime: studyStartTime,
-      endTime: studyEndTime,
+      startTime: editSchedule?.startTime,
+      endTime: editSchedule?.endTime,
     };
-    console.log(newStudy);
-    if(studyTitle === "" || studyStartTime === "" || studyEndTime === ""){
+    const setDataForm:Schedule = { //(다시 setData => 상태 업데이트 하기 위한 폼)
+      endTime : `${clickedDate} ${editSchedule?.endTime as string}`,
+      id: editSchedule?.id,
+      meetingAt: `${clickedDate} ${editSchedule?.startTime as string}`,
+      startTime: `${clickedDate} ${editSchedule?.startTime as string}`,
+      title : editSchedule?.title
+    }
+    if(editSchedule?.title === "" || editSchedule?.startTime === "" || editSchedule?.endTime === ""){
         alert("제목, 시작 시간 및 종료시간을 모두 입력해주세요")
         return;
     }
-    // if (confirm("일정을 수정하시겠습니까?")) {
-    //   try {
-    //     await authHttp.post(`/study/meeting/${studyinfo_id}`, newStudy);
-    //     console.log("Schedule edited successfully");
-
-    //     // Calculate the new ID based on the largest existing ID
-    //     const maxId = Math.max(...data.map(schedule => schedule.id));
-    //     const newId = maxId + 1;
-
-    //     // Create the new schedule with the calculated ID
-    //     const newSchedule = {
-    //         endTime : `1970-01-01 ${studyEndTime}`,
-    //         id : 0,
-    //         meetingAt : clickedDate,
-    //         startTime : `1970-01-01 ${studyStartTime}`,
-    //         title : studyTitle,
-    //     };
+    if (confirm("일정을 수정하시겠습니까?")) {
+      try {
+        await authHttp.put(`/study/${studyinfo_id}/meeting/${editSchedule?.id as number}`, newStudy); ///study/{studyinfo_id}/meeting/{appointment_id}
     
-    //   // Update the data state with the new schedule
-    //   setData(prevData => [...prevData, newSchedule]);
+      // 캘린더 데이터 업데이트
+      setData((prevData)=> {
+        return prevData.map((schedule) => schedule.id === editSchedule?.id? setDataForm : schedule);
+      });
+      // 팝오버 데이터 업데이트
+      setSelectedDateInfo((prevSelectedDateInfo) => 
+        prevSelectedDateInfo.map((schedule) => schedule.id===editSchedule?.id? setDataForm : schedule)
+      )
+      setShowPopover(true); 
+      setShowEditPopover(false); 
 
-    //   setSelectedDateInfo(prevSelectedDateInfo => [
-    //     ...prevSelectedDateInfo,
-    //     newSchedule,
-    //   ]);
-
-    //   setShowPopover(true); // Show the main popover with the updated schedule
-    //   handleShowAddPopover(); // Hide the add-popover
-
-    //   } catch (error) {
-    //     console.error("Error registering schedule:", error);
-    //     // Handle error here, e.g., show an error message to the user
-    //   }
-    // }
+      } catch (error) {
+        console.error("Error registering schedule:", error);
+      }
+    }
   }
   
   
