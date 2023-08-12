@@ -29,5 +29,10 @@ public interface UserStudyRepository  extends JpaRepository<UserStudy, Long> {
 
     int deleteByStudyInfoIdAndUsersId(Long studyInfoId, Long usersId);
 
+    // 스터디 그룹의 멤버보기
     Page<UserStudy> findByStudyInfoId(Long studyInfoId, Pageable pageable);
+
+    // 채팅방에 유저목록
+    List<UserStudy> findByStudyInfoId(Long studyInfoId);
+
 }

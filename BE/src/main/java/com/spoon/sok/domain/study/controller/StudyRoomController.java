@@ -428,6 +428,21 @@ public class StudyRoomController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/study/user/chat/list")
+    public ResponseEntity<Map<String, Object>> getStudyUsers(@RequestParam("study") Long studyInfoId) {
+
+        Map<String, Object> response = studyService.getStudyUserForChat(studyInfoId);
+
+        if (!response.isEmpty()) {
+            response.put("status", 200);
+        } else {
+            response.put("status", 400);
+            response.put("message", "스터디에 소속된 유저 목록 조회에 실패하였습니다.");
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     // 스터디 위임 서비스 호출
     @PutMapping("/study/delegate")
     public ResponseEntity<Map<String, Object>> delegateStudyOwnership(@RequestBody DelegateRequestDTO requestDto) {

@@ -454,6 +454,26 @@ public class StudyService {
         return result;
     }
 
+    public Map<String, Object> getStudyUserForChat(Long studyInfoId) {
+        List<UserStudy> db = userStudyRepository.findByStudyInfoId(studyInfoId);
+
+        Map<String, Object> result = new HashMap<>();
+        List<StudyUserListDTO> list = new ArrayList<>();
+
+        for (UserStudy us : db) {
+            StudyUserListDTO data = new StudyUserListDTO();
+
+            data.setUserId(us.getUsers().getId());
+            data.setNickName(us.getUsers().getNickname());
+            data.setEmail(us.getUsers().getEmail());
+            data.setStatus(us.getStatus());
+
+            list.add(data);
+        }
+        result.put("userList", list);
+        return result;
+    }
+
     @Transactional
     public boolean delegateStudyOwnership(DelegateRequestDTO delegateRequestDTO) {
         Optional<StudyInfo> targetStudyInfo = studyRepository.findById(delegateRequestDTO.getStudyinfoId());
