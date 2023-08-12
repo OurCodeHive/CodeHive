@@ -322,10 +322,14 @@ public class StudyRoomController {
         // 스터디 회의 수정 서비스 호출
         boolean isUpdated = studyService.updateStudyAppointment(studyInfoId, appointmentId, studyAppointment);
 
-        // 수정 결과에 따라 응답 메시지 설정
         if (isUpdated) {
-            return new ResponseEntity<>("스터디 회의가 성공적으로 수정되었습니다.", HttpStatus.OK);
+            // 성공한 경우
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", HttpStatus.OK.value());
+            response.put("message", "스터디 회의가 수정되었습니다.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
+            // 실패한 경우
             StudyErrorResponseDTO studyErrorResponseDTO = new StudyErrorResponseDTO(
                     HttpStatus.NOT_FOUND.value(),
                     "해당 스터디 정보에 묶인 스터디 회의를 찾을 수 없거나 수정에 실패했습니다."
@@ -333,6 +337,7 @@ public class StudyRoomController {
             return new ResponseEntity<>(studyErrorResponseDTO, HttpStatus.NOT_FOUND);
         }
     }
+
 
     // [스터디룸] (스터디 장) 일정 보기를 누르면 활성화된 달력 창에서 스터디 회의 삭제
     // [DELETE] [api/study/{studyinfo_id}/meeting/{study_appointment_id}]
