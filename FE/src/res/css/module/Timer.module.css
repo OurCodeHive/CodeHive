@@ -18,6 +18,7 @@
   .timer_inputs {
 
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     margin-top: 10px;
     justify-content: left; /* Align inputs to the right */

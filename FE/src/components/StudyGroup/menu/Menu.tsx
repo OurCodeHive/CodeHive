@@ -6,10 +6,14 @@ import SettingIcon from '@/res/img/30x30_setting_icon.png';
 import StudyQuitIcon from '@/res/img/logout.png';
 import { ContentsPopup } from "@/utils/Popup";
 import UpdateStudyInfo from '../update/UpdateStudyInfo';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { authHttp } from '@/api/http';
 
-
-const StudyViewMenu = ({Contents} : {Contents: StudyType}) => {
+const StudyViewMenu = ({Contents} : {Contents?: StudyType}) => {
   const leaderFlag:boolean = CheckUserId(Contents?.users_id as number);
+  const location = useLocation();
+  const isHome = location.pathname === "/home";
+  const navigate = useNavigate();
   const [PopupFlag, setPopupFlag] = useState(false);
 
   const AlertPopupInfo = {
@@ -44,6 +48,26 @@ const StudyViewMenu = ({Contents} : {Contents: StudyType}) => {
     PopupContents : <UpdateStudyInfo studyUpdate={StudyUpdateType} closePopup={() => studyUpdateChangePopupFlag(false)}/>,
     // ConfirmPopupProp : () => setupdatePopupFlag(false),
   }
+  function doLogout(){
+    alert("로그아웃 하시겠습니까?");
+    const aT = localStorage.getItem("accessToken");
+    console.log(aT);
+    const data = {
+        accessToken : aT,
+    }
+    console.log(data);
+    authHttp.post('/logout',data).then(()=>{
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("expireAt");
+        localStorage.removeItem("timerState");
+        sessionStorage.removeItem("sessionStorage");
+        alert("로그아웃 되었습니다");
+        navigate("/login");
+    }).catch((err)=>{
+        console.log(err);
+        navigate("/login");
+    })
+}
 
   return (
     <ul className={`col-12 tr ${StudyViewStyle.study_view_menu_con}`}>
@@ -60,12 +84,22 @@ const StudyViewMenu = ({Contents} : {Contents: StudyType}) => {
         </li>
         : null
       }
-      <li>
-        <div>
-          <img src={StudyQuitIcon} alt="나가기 아이콘"/><br/>
-          나가기
-        </div>
-      </li>
+      {
+        isHome?
+        <li>
+          <div onClick={doLogout}>
+            <img src={StudyQuitIcon} alt="로그아웃 아이콘"/><br/>
+            로그아웃
+          </div>
+        </li>
+        :
+        <li>
+          <div>
+            <img src={StudyQuitIcon} alt="나가기 아이콘"/><br/>
+            나가기
+          </div>
+        </li>
+      }
       <li>
         <div>
           <img src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/30X30_mypage.png" alt="마이페이지 아이콘"/><br/>
