@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import style from "@/res/css/module/Home.module.css";
 import {Cookies} from 'react-cookie';
-import { authHttp, nonAuthHttp } from '@/api/http';
+import { authHttp } from '@/api/http';
 import logout from "@/res/img/logout.png";
 import { useNavigate } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
