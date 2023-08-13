@@ -16,11 +16,6 @@ interface IDETerminalProps {
 }
 
 function IDETerminal(props: IDETerminalProps) {
-  // 유저 정보 담는 임시 딕셔너리
-  const dic: { [key: number]: string } = {
-    1: "Hayoung",
-    2: "MinSung"
-  };
 
   // 로그인 유저 정보
   const loginUser = useRecoilValue(userState);
@@ -72,6 +67,7 @@ function IDETerminal(props: IDETerminalProps) {
   // 제출 했다고 알리기
   function submit() {
     const message:any = {
+      nickname: loginUser.nickname,
       userId: loginUser.userId,
       studyRoomId: props.id,
       language: props.language
@@ -93,13 +89,13 @@ function IDETerminal(props: IDETerminalProps) {
   // 코드실행
   function runCode() {
     const codeAndInput:any = {
+      nickname: loginUser.nickname,
       language: props.language,
       userId: loginUser.userId,
       studyRoomId: props.id,
       code: props.code,
       input: input,
     };
-    console.log(codeAndInput)
     runCodeAndInput(codeAndInput);
   }
 
@@ -118,14 +114,13 @@ function IDETerminal(props: IDETerminalProps) {
   function submitCodeAndInput() {
     client.current.subscribe('/sub/run/' + props.id, (body:StompJs.Message) => {
       const message = JSON.parse(body.body);
-      runNotice(dic[message.userId]);
+      runNotice(message.nickname);
       setIsConsole("20vh");
       setConsoleState("Result");
       setInputColor("gray");
       setResultColor("wheat");
       setInputColor("gray");
       setIsRunning(false);
-      console.log(message)
       props.up();
       if (message.output[0] === '') {
         setResultColor("red");
@@ -151,7 +146,7 @@ function IDETerminal(props: IDETerminalProps) {
   function noticeSubmit() {
     client.current.subscribe('/sub/submit/' + props.id, (body:StompJs.Message) => {
       const message = JSON.parse(body.body);
-      notify(dic[message.userId]);
+      notify(message.nickname);
       setIsRunning(true);
       props.setLanguage(message.language)
     });

@@ -30,7 +30,7 @@ const getStudyUserList = async (
   studyInfoId: string,
   success: ({data} : {data: studyUserList}) => void,
   fail: (err: unknown) => void) => {
-  await api.get(`/study/user/list?study=${studyInfoId}`).then(success).catch(fail);
+  await api.get(`/study/user/chat/list?study=${studyInfoId}`).then(success).catch(fail);
 }
 
 

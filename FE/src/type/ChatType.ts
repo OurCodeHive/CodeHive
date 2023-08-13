@@ -13,6 +13,6 @@ export type studyUser= {
 }
 
 export type studyUserList = {
-  studyUserList: studyUser[];
+  userList: studyUser[];
   status? : number;
 }
