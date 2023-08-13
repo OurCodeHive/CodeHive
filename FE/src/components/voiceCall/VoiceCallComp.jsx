@@ -235,6 +235,7 @@ class VoiceCallComp extends Component {
    
     const userNameList = [];
     const userIdList = [];
+    const userMouseList = {};
 
     const subscribers = this.state.subscribers;
     const pub = this.state.publisher;
@@ -242,12 +243,14 @@ class VoiceCallComp extends Component {
     } else {
       userNameList.push(JSON.parse(pub.stream.connection.data).clientData.name);
       userIdList.push(JSON.parse(pub.stream.connection.data).clientData.id);
+      userMouseList[JSON.parse(pub.stream.connection.data).clientData.id] = [0, 0];
     }
     if (subscribers === undefined) {
     } else {
       for (let sub of subscribers) {
         userNameList.push(JSON.parse(sub.stream.connection.data).clientData.name);
         userIdList.push(JSON.parse(sub.stream.connection.data).clientData.id);
+        userMouseList[JSON.parse(sub.stream.connection.data).clientData.id] = [0, 0];
       }
     }
     
@@ -259,7 +262,10 @@ class VoiceCallComp extends Component {
          : 
          <div>
            <JoinUser userNameList={userNameList}/>
-           <JoinUserMouse userIdList={userIdList} studyRoomId={this.state.mySessionId}/>
+           <JoinUserMouse 
+            userIdList={userIdList} 
+            studyRoomId={this.state.mySessionId}
+            userMouseList={userMouseList}/>
          </div>
         }
         <div style={{

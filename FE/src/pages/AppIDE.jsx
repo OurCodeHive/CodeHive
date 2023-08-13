@@ -34,8 +34,7 @@ let quillRef = null;
 Quill.register("modules/cursors", QuillCursors);
 function Code() {
 
-  let loginUser = useRecoilValue(userState);
-  
+  let loginUser = useRecoilValue(userState);  
   const editorRef = useRef();
   let { id } = useParams();
   const codeId = id + "code";
@@ -50,10 +49,9 @@ function Code() {
   let [language, setLanguage] = useState("Python");
   let [codeHeight, setCodeHeight] = useState("93.3vh");
   let [code, setCode] = useState("");
-  let [showChat, setShowChat] = useState("none");
+  let [showChat, setShowChat] = useState("hidden");
   let [chatRedPoint, setChatRedPoint] = useState(false);
   let [isShow, setIsShow] = useState(false);
-  
 
   useEffect(() => {
 
@@ -114,8 +112,8 @@ function Code() {
   };
 
   function toggleChat() {
-    if (showChat == "none") setShowChat("block");
-    else setShowChat("none");
+    if (showChat == "visible") setShowChat("hidden");
+    else setShowChat("visible");
     setChatRedPoint(false);
   }
 
@@ -138,7 +136,7 @@ function Code() {
   return(
     <div className={style.idePage}>
       <IDEHeader code={code} id={id} language={language}/>
-      <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown} setLanguage={setLanguage}/>
+      <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown} setLanguage={setLanguage} />
       <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} userId={loginUser.userId}/>
       <div className={style.ideContainer}>
         <QuillBox className={style.quillBox}>
@@ -171,7 +169,7 @@ function Code() {
           className={style.chatIcon}>
         </img>
       }
-        <div className={`col-12 ${style.chat_con}`} style={{ display:showChat }}>
+        <div className={`col-12 ${style.chat_con}`} style={{ visibility:showChat }}>
           <ChatComp id={id} chatRedPoint={chatRedPoint} setChatRedPoint={setChatRedPoint} setIsShow={setIsShow} chatMaxHeight='65vh'/>
         </div>
     </div>

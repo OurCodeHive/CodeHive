@@ -1,42 +1,59 @@
-import style from "@/res/css/module/UserVideo.module.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useLayoutEffect, useMemo } from "react";
 import * as StompJs from '@stomp/stompjs';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue} from 'recoil';
 import { userState } from '@/atom/UserAtom';
 
 
-function JoinUserMouse({ userIdList, studyRoomId }:{ userIdList:number[], studyRoomId:any }) {
 
-  const loginUser = useRecoilValue(userState);
+function JoinUserMouse({ userIdList, studyRoomId, userMouseList}:{ userIdList:number[], studyRoomId:any, userMouseList:any}) {
 
-  const n = userIdList.length
+  const loginUser = useRecoilValue(userState); 
   const client = useRef<any>({});
-  const initialCoordinateList = Array.from({ length: 10 }, () => [0, 0]);
-  const [coordinate, setCoordinate] = useState(initialCoordinateList);
-  console.log(coordinate)
-  let [x, setX] = useState(0);
-  let [y, setY] = useState(0);
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+  const [userMouseInfo, setUserMouseInfo] = useState<any>(userMouseList);
+  const [check, setCheck] = useState(true);
 
-  let [check, setCheck] = useState(true);
+  useEffect(() => {
+    const temp = [];
+    for (let userId of userIdList) {
+      if (userId !== loginUser.userId) {
+        temp.push(userId);
+      }
+    }
+  }, [])
+  
 
+  // 커서위치 
   const mouseFunc = (e:any) => {
-    let x = e.clientX;
-    let y = e.clientY;
-    setX(x);
-    setY(y);
-    const spot = {
-      userId: loginUser.userId,
-      studyRoomId: studyRoomId,
-      x: x,
-      y: y,
-    }
-    if (check) {
-      emitMoveCursor(spot)
-    }
+      const currentX = e.clientX;
+      const currentY = e.clientY;
+      if (currentX > 1500 || currentY > 695) {
+        return
+      }
+      setX(currentX);
+      setY(currentY);
   };
 
+  // 0.1초마다 커서 위치 전송
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCheck(prevCheck => !prevCheck);
+      const spot = {
+        userId: loginUser.userId,
+        studyRoomId: studyRoomId,
+        x: x,
+        y: y,
+      }
+      emitMoveCursor(spot)
+    }, 100);
+    return () => {
+      clearInterval(interval); // 컴포넌트가 언마운트될 때 타이머 해제
+    };
+  }, [check]);
+
   // websocket 연결
-  function connect() {
+  async function connect() {
     client.current = new StompJs.Client({
       brokerURL: import.meta.env.VITE_CHAT,
       onConnect: () => {
@@ -64,32 +81,34 @@ function JoinUserMouse({ userIdList, studyRoomId }:{ userIdList:number[], studyR
 
 
   // 상대위치 받기
-  function getCursorSpot() {
+  async function getCursorSpot() {
     client.current.subscribe('/sub/cursor/' + studyRoomId, (body:StompJs.Message) => {
       const message = JSON.parse(body.body);
-      console.log(message)
-      // if (message.userId !== props.userId) {
-      //   setYourX(message.x);
-      //   setYourY(message.y);
-      // } else {
-      //   setMyX(message.x);
-      //   setMyY(message.y);
-      // }
+      const temp = {...userMouseInfo}
+      temp[message.userId] = [message.x, message.y]
+      setUserMouseInfo(temp);
     });
   }
 
   useEffect(() => {
-    connect()
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@22")
-    console.log(studyRoomId)
-    setInterval(() => setCheck(!check), 1000);
+    // 소켓 연결
+    connect();
+    return () => {
+      disconnect();
+    }
+  }, [userMouseInfo])
+
+  useEffect(() => {
+    const temp = {...userMouseList};
+    setUserMouseInfo(temp);
+  }, [])
+
+  useEffect(() => {
     window.addEventListener("mousemove", mouseFunc);
     return () => {
       window.removeEventListener("mousemove", mouseFunc);
-      disconnect();
     }
   },[])
-
 
   return (
     <>
@@ -97,20 +116,30 @@ function JoinUserMouse({ userIdList, studyRoomId }:{ userIdList:number[], studyR
         {
           userIdList.map((item:number, index:number) => {
             return (
-              <div key={item}>
-                <img
-                  src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/cursor.png"
-                  id="cursor"
-                  style={{
-                    zIndex: "999",
-                    position: "absolute",
-                    backgroundColor: "white",
-                    borderRadius: "10px",
-                    pointerEvents: 'none',
-                    left: coordinate[index][0] + "px",
-                    top: coordinate[index][1] + "px"
-                  }}
-                ></img>
+              <div key={item + "12"}>
+                {
+                  item == loginUser.userId? 
+                  null
+                  :
+                  <>
+                  {
+                    userMouseInfo[item] == undefined?
+                    null
+                    :
+                    <div key={item + "123"}
+                      style={{
+                        zIndex: "999",
+                        position: "absolute",
+                        backgroundColor: "white",
+                        borderRadius: "10px",
+                        pointerEvents: 'none',
+                        left: userMouseInfo[item][0] + "px",
+                        top: userMouseInfo[item][1] + "px"
+                      }}
+                    >👈</div>
+                  }
+                  </>
+                }
               </div>
             )
           })
