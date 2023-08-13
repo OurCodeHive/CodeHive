@@ -7,15 +7,22 @@ import { userState } from '@/atom/UserAtom';
 import toast, { Toaster } from 'react-hot-toast';
 import style from '@/res/css/module/IDEHeader.module.css';
 import ConfirmPopup from "@/utils/Popup/Confirm";
+import { ContentsPopup } from "@/utils/Popup";
+import NoticeChangeModal from "./NoticeChangeModal";
+
 
 interface IDEHeaderProps {
   id: string;
   code: string;
   language: string;
+  dic: any
 }
 
 function IDEHeader(props: IDEHeaderProps) {
 
+  // 로그인유저 정보
+  const loginUser = useRecoilValue(userState);
+  
   const navigate = useNavigate();
 
   // 마운트시 연결 언마운트 연결해제
@@ -27,7 +34,7 @@ function IDEHeader(props: IDEHeaderProps) {
   }, []);
 
   const [popupStatus, setPopupStatus] = useState(false);
-  // const [popupStatusNotice, setPopupStatusNotice] = useState(false);
+  const [popupStatusNotice, setPopupStatusNotice] = useState(false);
 
   const popupInfoExit = {
     PopupStatus: popupStatus,
@@ -38,22 +45,18 @@ function IDEHeader(props: IDEHeaderProps) {
     ConfirmPopupProp : () => exit()
   }
 
-  // const popupInfoNotice = {
-  //   PopupStatus: popupStatusNotice,
-  //   zIndex: 999,
-  //   maxWidth: 600,
-  //   PopupTitle: "<div>공지사항을 입력해 주세요.<div>",
-  //   ClosePopupProp : () => setPopupStatusNotice(false),
-  //   ConfirmPopupProp : () => exit()
-  // }
+  const popupInfoNotice = {
+    PopupStatus : popupStatusNotice,
+    zIndex : 9999,
+    maxWidth: 800,
+    ClosePopupProp : () => changePopupFlagNotice(false),
+    PopupTitle : "스터디 수정",
+    PopupContents : <NoticeChangeModal notifyMaxLengthAlert={notifyMaxLengthAlert} studyRoomId={props.id} publish={publish} closePopup={() => changePopupFlagNotice(false)}/>,
+  }
 
-  // const changePopupFlagExit = (flag: boolean) => {
-  //   setPopupStatus(() => flag);
-  // };
-
-  // const changePopupFlagNotice = (flag: boolean) => {
-  //   setPopupStatusNotice(() => flag);
-  // };
+  const changePopupFlagNotice = (flag: boolean) => {
+    setPopupStatusNotice(() => flag);
+  };
 
   function exit() {
     navigate("/");
@@ -61,14 +64,6 @@ function IDEHeader(props: IDEHeaderProps) {
     location.reload();
   }
 
-  // 유저 정보 담는 임시 딕셔너리
-  const dic: { [key: number]: string } = {
-    1: "Hayoung",
-    2: "MinSung",
-  };
-
-  // 로그인유저 정보
-  const loginUser = useRecoilValue(userState);
 
   // 웹소켓
   const client = useRef<any>({});
@@ -87,6 +82,7 @@ function IDEHeader(props: IDEHeaderProps) {
       return;
     }
     const message:any = {
+      nickname: loginUser.nickname,
       userId: loginUser.userId,
       studyRoomId: props.id,
       notice: value,
@@ -130,7 +126,7 @@ function IDEHeader(props: IDEHeaderProps) {
     client.current.subscribe('/sub/notice/' + props.id, (body:StompJs.Message) => {
       const message = JSON.parse(body.body);
       setNotice(message.notice)
-      notify(dic[message.userId]);
+      notify(message.nickname);
     });
   }
 
@@ -172,7 +168,7 @@ function IDEHeader(props: IDEHeaderProps) {
   return (
     <div className={style.background}>
       <Toaster position="top-right" />
-      {/* <ConfirmPopup PopupInfo={popupInfoNotice}/> */}
+      <ContentsPopup PopupInfo={popupInfoNotice} />
       <ConfirmPopup PopupInfo={popupInfoExit}/>
       <div className={style.boxPadding}>
         <div className={style.boxSetting}>
@@ -184,7 +180,7 @@ function IDEHeader(props: IDEHeaderProps) {
         </div>
         <h2 className={style.notice}>{notice}</h2>
         <div className={style.leftBtnBox}>
-          <button onClick={() => { changeNotice(); }}
+          <button onClick={() => { setPopupStatusNotice(true) }}
             className={style.saveBtn}>공지변경</button>
             &nbsp;&nbsp;
           <button onClick={() => { setPopupStatus(true); }}

@@ -48,7 +48,7 @@ function ChatFrameComp(props: Props) {
   async function fetchStudyUserList() {
 
     await getStudyUserList(props.id, ({data}) => {
-      const userList = data.studyUserList;
+      const userList = data.userList;
       const temp: { [userId: number]: string } = {}
 
       for (const item of userList) {
