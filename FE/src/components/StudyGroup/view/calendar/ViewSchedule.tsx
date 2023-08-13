@@ -51,6 +51,7 @@ function ViewSchedule() {
             const response: AxiosResponse<Schedule[]> = await authHttp.get<Schedule[]>(`/study/meeting/${studyinfo_id}`);
             const calendar = response.data;
             if(calendar){
+              console.log(calendar);
               setData(calendar);
             }
         } catch (error) {
@@ -146,7 +147,6 @@ function ViewSchedule() {
         resolve();
       }
     });
-    
   };
   
   const handleShowAddPopover = () => {
@@ -295,6 +295,7 @@ function ViewSchedule() {
             startTime : `1970-01-01 ${studyStartTime}`,
             title : studyTitle,
         };
+        console.log(newId);
       setData(prevData => [...prevData, newSchedule]);
       setSelectedDateInfo(prevSelectedDateInfo => [
         ...prevSelectedDateInfo,
