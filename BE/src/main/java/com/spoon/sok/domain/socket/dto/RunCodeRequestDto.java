@@ -10,6 +10,7 @@ public class RunCodeRequestDto {
 
     private String language;
     private Long userId;
+    private String nickname;
     private Long studyRoomId;
     private String code;
     private String input;

@@ -8,6 +8,7 @@ import lombok.Setter;
 public class SubmitWebSocketDto {
 
     private Long userId;
+    private String nickname;
     private Long studyRoomId;
     private String language;
 
