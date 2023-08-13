@@ -1,12 +1,14 @@
 import LinkInputPopUp from "@/components/StudyGroup/invite/LinkInput";
 import MessagePopUp from "@/components/StudyGroup/invite/Message";
 import QuitStudyGroupButton from "@/components/StudyGroup/quit/QuitStudyGroup";
+import StudyGroupUserList from "@/components/StudyGroup/quit/StudyGroupUser";
 import { useState, useEffect } from "react";
 
 const AppQuit = ({studyinfoId} : {studyinfoId : number}) => {
   return (
     <div className="col-12 sub_wrap">
       <QuitStudyGroupButton studyinfoId={studyinfoId}></QuitStudyGroupButton>
+      <StudyGroupUserList studyinfoId={5} page={0} size={10}></StudyGroupUserList>
     </div>
   )
 }
