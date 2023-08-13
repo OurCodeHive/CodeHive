@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import style from './ViewSchedule.module.css';
+import style from '@/res/css/module/ViewSchedule.module.css';
 import { authHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
-import Calendar from './Calendar';
+import StudyCalendar from './StudyCalendar';
 import SchedulePopover from './SchedulePopover';
 import AddPopover from './AddPopover';
 import EditPopover from './EditPopover';
-import { getChatList } from '@/api/chat';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/atom/UserAtom';
 
 const studyinfo_id = 3;
 
@@ -40,10 +41,6 @@ function CalendarCRUD() {
     let [studyEndTime, setStudyEndTime] = useState<string>("");
     
     const [editSchedule, setEditSchedule] = useState<editSchedule | null>(null);
-  
-    const parsedPk = JSON.parse(sessionStorage.getItem("sessionStorage") as string) as { useState: { userId: string } };
-    const pk = parsedPk.useState.userId;
-    
 
     useEffect(()=>{
       getCalendar().then().catch(console.log);
@@ -235,7 +232,7 @@ function getCalendar():Promise<Schedule[]> {
 
   return (
     <div className={style.wrapper}>
-      <Calendar
+      <StudyCalendar
         currMonth={currMonth}
         currYear={currYear}
         currentDate={currentDate}

@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './ViewSchedule.module.css';
+import style from '@/res/css/module/ViewSchedule.module.css';
 
 interface editSchedule {
     title? : string,

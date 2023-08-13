@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import style from './ViewSchedule.module.css';
+import style from '@/res/css/module/ViewSchedule.module.css';
 
 interface Schedule {
     endTime? : string;
@@ -16,7 +16,7 @@ interface CalendarProps {
     handleDateClick: (day: number, daySchedules: Schedule[]) => void;
 }
 
-function Calendar({data, handleDateClick,}:CalendarProps){
+function StudyCalendar({data, handleDateClick,}:CalendarProps){
     const months = ["January", "February", "March", "April", "May", "June", "July",
                   "August", "September", "October", "November", "December"];
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -66,7 +66,7 @@ function Calendar({data, handleDateClick,}:CalendarProps){
 
       useEffect(()=>{
         renderCalendar();
-    },[data, currMonth, currYear, renderCalendar]);
+    },[data, renderCalendar]);
 
     const handleIconClick = (iconId:string) => {
         setCurrMonth(prevMonth => iconId === "prev" ? prevMonth - 1 : prevMonth + 1);
@@ -108,4 +108,4 @@ function Calendar({data, handleDateClick,}:CalendarProps){
 }
 
 
-export default Calendar;
+export default StudyCalendar;

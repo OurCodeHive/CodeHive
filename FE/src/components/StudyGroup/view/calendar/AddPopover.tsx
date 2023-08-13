@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import style from './ViewSchedule.module.css';
+import style from '@/res/css/module/ViewSchedule.module.css';
 
 interface AddPopoverProps {
   setStudyTitle : React.Dispatch<React.SetStateAction<string>>;
   setStudyStartTime : React.Dispatch<React.SetStateAction<string>>;
   setStudyEndTime: React.Dispatch<React.SetStateAction<string>>;
   setShowAddPopover: React.Dispatch<React.SetStateAction<boolean>>;
-  handleAddSchedule: () => void;
+  handleAddSchedule: () => Promise<void>;
 }
 
 function AddPopover({

@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './ViewSchedule.module.css';
+import style from '@/res/css/module/ViewSchedule.module.css';
 interface Schedule {
     endTime? : string;
     id?: number;
@@ -20,7 +20,6 @@ interface SchedulePopoverProps {
 function SchedulePopover({
   showPopover,
   selectedDateInfo,
-  setShowPopover,
   handleShowAddPopover,
   handleShowEditPopover,
   handleDeleteSchedule,
@@ -34,9 +33,9 @@ function SchedulePopover({
             {selectedDateInfo.length === 0 ? (
               <div className={style.no_study_text}>예정된 스터디가 없습니다</div>
             ) : (
-            selectedDateInfo.map((schedule, index) => (
+            selectedDateInfo.map((schedule) => (
             <>
-              <div key={`popover-schedule-${index}`} className={style.schedule_item}>
+              <div key={`${schedule.id as number}`} className={style.schedule_item}>
                 <div className={style.study_info}>
                   <div className={style.study_title}>{schedule.title}</div>
                   <div className={style.actions}>
