@@ -3,6 +3,8 @@ import style from '@/res/css/module/Calendar.module.css';
 import Schedule from './Schedule';
 import { authHttp } from '@/api/http';
 import { AxiosError, AxiosResponse } from 'axios';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/atom/UserAtom';
 
 interface Schedule {
   endTime: string;
@@ -27,8 +29,8 @@ function CalendarApp() {
   const [showPopover, setShowPopover] = useState(false); // State to control popover visibility
   const [clickedDate, setClickedDate] = useState<string>("");
 
-  const parsedPk = JSON.parse(sessionStorage.getItem("sessionStorage") as string) as { useState: { userId: string } };
-  const pk = parsedPk.useState.userId;
+  const loginUser = useRecoilValue(userState);
+  const pk = loginUser.userId;
 
   useEffect(()=>{
     getCalendar();

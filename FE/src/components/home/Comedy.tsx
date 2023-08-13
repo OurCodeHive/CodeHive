@@ -8,7 +8,6 @@ const Comedy = () => {
     let [writer, setWriter] = useState<string>();
     let [comedy, setComedy] = useState<string>("testtest");
     let random = Math.floor(Math.random() * 10);
-    let [idx, setIdx] = useState<number>(random);
     interface ComedyItem {
         content: string; 
         writer : string;
@@ -44,8 +43,8 @@ const Comedy = () => {
                 const {comedy} = response.data;
                 if(comedy){
                     setComedies(comedy); //전체 코미디 넣기
-                    setComedy(response.data.comedy[idx].content); //처음 로딩할 때 0번째 인덱스 코미디 등록하기
-                    setWriter(response.data.comedy[idx].writer);
+                    setComedy(response.data.comedy[random].content); //처음 로딩할 때 0번째 인덱스 코미디 등록하기
+                    setWriter(response.data.comedy[random].writer);
                 }
                 return response.data;
             } catch (error) {
@@ -55,28 +54,20 @@ const Comedy = () => {
         }
         requestComedy()
         .then((res)=>{
+            res;
         })
         .catch(console.log)
             
     }
     function refreshComedy(){
         resetIdx();
-        console.log(idx);
         if(comedies){
-            setComedy(comedies[idx]['content']);
-            setWriter(comedies[idx]['writer']);
+            setComedy(comedies[random]['content']);
+            setWriter(comedies[random]['writer']);
         }
     }
     function resetIdx(){
-        // random = Math.floor(Math.random() * 10)
-        console.log(comedy.length);
-        if(idx === 8){
-            console.log("zero!");
-            setIdx(0);
-        } else {
-            setIdx(++idx);
-        }
-        // setIdx(Math.floor(Math.random() * 10));
+        random = Math.floor(Math.random() * 9)
     }
 
     return (

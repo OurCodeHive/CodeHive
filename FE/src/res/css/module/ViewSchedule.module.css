@@ -127,7 +127,7 @@
     transform: translate(10px, 0); 
   }
   .popover_right::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
+    display: none;
 }
   .study_title {
     font-weight: bold;
@@ -197,15 +197,16 @@
     margin-top: 30px;
     text-align: center;
   }
+
   .add_popover {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     z-index: 999;
     position: absolute;
-    bottom: 0; /* Adjust this value for the desired distance from the top */
-    left: calc(100% + 205px); /* Adjust this value for the desired distance from the existing popover */
-    width: 200px; /* Adjust the width as needed */
+    bottom: 0; 
+    left: calc(100% + 205px); 
+    width: 200px;
     height: 170px;
     background-color: #ffffff;
     border: 1px solid #cccccc;
@@ -213,16 +214,22 @@
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     padding: 10px;
   }
-  
+  .edit_popover {
+    top: 0;
+  }
   .add_popover::before {
-    z-index: 10;
+    z-index: -1;
     content: "";
     position: absolute;
-    bottom: 15px; /* Adjust for the desired triangle position */
-    left: -25px; /* Adjust for the desired triangle position */
+    bottom: 15px; 
+    left: -26px; 
     border-width: 13px;
     border-style: solid;
-    border-color: transparent #f8d247 transparent transparent; /* Triangle color */
+    border-color: transparent #f8d247 transparent transparent; 
+  }
+  .edit_popover::before {
+    top: 10px;
+    bottom: 140px;
   }
   .add_popover_title {
     display: block;
