@@ -45,6 +45,10 @@ const inviteProcess = async (param: object, success: () => void, fail: (error: u
     await api.post(`/study/invite`, JSON.stringify(param)).then(success).catch(fail);
 }
 
+const studyQuit = async (param: object, success: ({data} : {data : any}) => void, fail: (error: unknown) => void) => {
+    await api.post(`/study/leave`, JSON.stringify(param)).then(success).catch(fail);
+}
+
 /**
  * get study view
  * @param studyinfoId : number
@@ -103,4 +107,4 @@ const insertStudyFile = async (param: FormData, success:({data} : {data: any}) =
 
 
 
-export {getList, insertData, inviteMember, inviteProcess, getView, getNoticeList, getNoticeView, insertNoticeData, updateNoticeData, removeNoticeData, getDocumentList, getDocumentView, deleteStudyfile, updateStudyFile, insertStudyFile};
+export {getList, insertData, inviteMember, inviteProcess, studyQuit, getView, getNoticeList, getNoticeView, insertNoticeData, updateNoticeData, removeNoticeData, getDocumentList, getDocumentView, deleteStudyfile, updateStudyFile, insertStudyFile};
