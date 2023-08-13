@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import InviteConfirm from '@/components/StudyGroup/invite/Confirm';
 import { AlertPopup } from '@/utils/Popup';
-import { Link } from 'react-router-dom';
 
 const InviteInput = ({refreshList, closePopup} : {refreshList: () => void, closePopup: (flag: boolean) => void}) => {
 

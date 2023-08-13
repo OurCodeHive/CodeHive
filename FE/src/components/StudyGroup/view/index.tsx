@@ -24,9 +24,6 @@ const StudyView = () => {
     async function fetchData() {
       await getView(studyinfoId, ({data}) => {
         setViewContents(data);
-        const copy = {...ViewContents}
-        copy.enterName = studyinfoId + "";
-        setViewContents(copy)
       }, (error) => {console.log(error)});
     }
     void fetchData();
