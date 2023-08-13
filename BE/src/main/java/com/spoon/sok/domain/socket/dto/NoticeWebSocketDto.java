@@ -6,6 +6,7 @@ import lombok.Getter;
 public class NoticeWebSocketDto {
 
     private Long userId;
+    private String nickname;
     private Long studyRoomId;
     private String notice;
 

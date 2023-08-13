@@ -6,7 +6,8 @@ import lombok.Getter;
 public class CursorWebSocketDto {
 
     private Long userId;
-    private Long studyRoomId;
+    private String nickname;
+    private String studyRoomId;
     private int x;
     private int y;
 
