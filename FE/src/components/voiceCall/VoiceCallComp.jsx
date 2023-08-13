@@ -262,10 +262,10 @@ class VoiceCallComp extends Component {
          : 
          <div>
            <JoinUser userNameList={userNameList}/>
-           <JoinUserMouse 
+           {/* <JoinUserMouse 
             userIdList={userIdList} 
             studyRoomId={this.state.mySessionId}
-            userMouseList={userMouseList}/>
+            userMouseList={userMouseList}/> */}
          </div>
         }
         <div style={{
