@@ -13,6 +13,7 @@ import lombok.ToString;
 public class CodeAPIRequestDto {
 
     private Long userId;
+    private String nickname;
     private String name;
     private String code;
     private String input;
