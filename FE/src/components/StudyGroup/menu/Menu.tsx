@@ -11,6 +11,8 @@ import UpdateStudyInfo from '../update/UpdateStudyInfo';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { authHttp } from '@/api/http';
 
+const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
+
 const StudyViewMenu = ({Contents} : {Contents?: StudyType}) => {
   const navigate = useNavigate();
   const userId = useRecoilValue(userState).userId;
@@ -36,7 +38,7 @@ const StudyViewMenu = ({Contents} : {Contents?: StudyType}) => {
   // 스터디 수정
   const [updatePopupFlag, setupdatePopupFlag] = useState(false);
   const StudyUpdateType = {
-    studyinfoId : 10,
+    studyinfoId : studyinfoId,
     title : "title",
     profile : "https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/basicImage.png",
     startAt : "startAt",
