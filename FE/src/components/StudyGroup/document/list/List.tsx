@@ -86,7 +86,7 @@ const DocumentList = ({studyinfoId} : {studyinfoId: number}) => {
 
     const openInsertPopup = () => {
         PopupInfo.PopupTitle = "자료 등록";
-        setPopupContents(<FileUpload closePopup={changePopupFlag} uploadAlert={notifyUploadFile} completePopup={completeInsert}/>);
+        setPopupContents(<FileUpload studyinfoId={studyinfoId} closePopup={changePopupFlag} uploadAlert={notifyUploadFile} completePopup={completeInsert}/>);
         changePopupFlag(true);
     }
 

@@ -19,6 +19,7 @@ interface Schedule {
     startTime?: string;
     title? : string,
 }
+
 interface editSchedule {
   title? : string,
   date? : string,
@@ -27,7 +28,13 @@ interface editSchedule {
   id? : number
 }
 
-function CalendarCRUD() {
+interface calendarInStudyMainProps {
+	ClosePopupProp?: (flag: boolean) => void;
+}
+
+
+
+function CalendarCRUD(props:calendarInStudyMainProps) {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [currMonth, setCurrMonth] = useState(currentDate.getMonth());
     const [currYear, setCurrYear] = useState(currentDate.getFullYear());
@@ -262,6 +269,8 @@ function getCalendar():Promise<Schedule[]> {
   }
 
   return (
+    <div>
+
     <div className={style.wrapper}>
       <AlertPopup PopupInfo={AlertPopupInfo} />
       <StudyCalendar
@@ -270,7 +279,7 @@ function getCalendar():Promise<Schedule[]> {
         currentDate={currentDate}
         data={data}
         handleDateClick={handleDateClick}
-      />
+        />
       <SchedulePopover
         showPopover={showPopover}
         selectedDateInfo={selectedDateInfo}
@@ -279,25 +288,32 @@ function getCalendar():Promise<Schedule[]> {
         handleShowEditPopover={handleShowEditPopover}
         handleDeleteSchedule={handleDeleteSchedule}
         clickedDate={clickedDate}
-      />
+        />
       {showAddPopover && 
       <AddPopover
-        setStudyStartTime={setStudyStartTime}
-        setStudyEndTime={setStudyEndTime}
-        setStudyTitle={setStudyTitle}
-        setShowAddPopover={setShowAddPopover}
-        handleAddSchedule={handleAddSchedule}
-      />
-    }
-    {showEditPopover &&
-      <EditPopover
-        setShowEditPopover={setShowEditPopover}
-        editSchedule={editSchedule}
-        setEditSchedule={setEditSchedule}
-        handleEditSchedule={handleEditSchedule}
-      />
-    }
-    </div>
+      setStudyStartTime={setStudyStartTime}
+      setStudyEndTime={setStudyEndTime}
+      setStudyTitle={setStudyTitle}
+      setShowAddPopover={setShowAddPopover}
+      handleAddSchedule={handleAddSchedule}
+      />}
+      {showEditPopover &&
+        <EditPopover
+          setShowEditPopover={setShowEditPopover}
+          editSchedule={editSchedule}
+          setEditSchedule={setEditSchedule}
+          handleEditSchedule={handleEditSchedule}
+          />
+        }
+      </div>
+      <div className={style.offBox}>
+        <button className={style.offPopup} onClick={() => {
+          if (props.ClosePopupProp) {
+            props.ClosePopupProp(false)
+          }
+        }}>취소</button>
+      </div>
+      </div>
   );
 }
 

@@ -40,7 +40,7 @@ function AddPopover({
               </div>
               <div className={`${style.input_wrapper} ${style.button_wrapper}`}>
                 <button onClick={handleShowAddPopover}>취소</button>
-                <button onClick={handleAddSchedule} >등록</button>
+                <button onClick={handleAddSchedule}>등록</button>
               </div>
             </div>
       )
