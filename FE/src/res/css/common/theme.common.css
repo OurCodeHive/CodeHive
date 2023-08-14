@@ -1,9 +1,9 @@
 .point0{color: #FFDF2B !important;}
 .bg_point0{background-color: #FFDF2B !important;}
 
-.sub_wrap{padding: 30px; height: 100vh; background-color: #4b6d756a;}
-.sub_wrap .sub_con{max-width: 1600px; max-height: 100%; overflow: hidden; overflow-y: auto; border-radius: 20px; border: 10px solid #4b6d75b0; background-repeat: no-repeat; background-size: cover; background-position: center center;}
-.sub_wrap .sub_contents{padding: 50px 40px; display: flex;}
+.sub_wrap{padding: 30px; height: 100vh; background-color: #d9e6c3;}
+.sub_wrap .sub_con{max-width: 1600px; max-height: 100%; overflow: hidden; overflow-y: auto; border-radius: 20px; border: 7px solid #749932; background-repeat: no-repeat; background-size: cover; background-position: center center;}
+.sub_wrap .sub_contents{padding: 30px 40px; display: flex;}
 
 .headline{font-size: 33px; font-size: 3.3rem; line-height: 39px; line-height: 3.9rem; font-weight: 700; letter-spacing: -0.02em; color: #17181d;}
 .title{font-size: 25px; font-size: 2.5rem; line-height: 31px; line-height: 3.1rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d;}

@@ -28,12 +28,14 @@ const Schedule = () => {
     },[])
 
     return (
+      <>
+      <div className={`col-12 mb5 ${style.subtitle_schedule}`}>오늘 예정된 스터디</div>
       <div className={`col-12 ${style.box_schedule}`}>
-        <div className={`col-12 mb20 ${style.subtitle_schedule}`}>오늘 예정된 스터디</div>
         <div className={`col-12 ${style.schedule_list_wrapper}`}>
-          {data.length > 0 ? data.map((item, index) => <ScheduleListItem key={index} data={item} />) : <div className={`col-12 ${style.no_data}`}>예정된 스터디가 없습니다</div>}
+          {data.length > 0 ? data.map((item, index) => <ScheduleListItem key={index} data={item} />) : <div className={`col-12 mt20 ${style.no_data}`}>예정된 스터디가 없습니다</div>}
         </div>
       </div>
+      </>
     );
 };
 const ScheduleListItem = ({data} : {data: ISchedule}) => {

@@ -5,7 +5,7 @@ import StudyViewBgImg from '@/res/img/codehive_study_view_bg_img.png';
 import { useEffect } from "react";
 
 function AppStudy() {
-  const { timer, setTimer, startTimer, stopTimer, resetTimer } = useTimerState();
+  const { timer, setTimer} = useTimerState();
     useEffect(() => {
         let interval: NodeJS.Timeout;
     
@@ -48,7 +48,7 @@ function AppStudy() {
   return (
     <div className="col-12 sub_wrap">
       <div className="col-12 sub_con" style={{backgroundImage: `url(${StudyViewBgImg})`}}>
-        <div className="col-12 sub_contents">
+        <div className="col-12 sub_contents" style={{backgroundColor: "#ffffffa0"}}>
           <Lnb/>
           <StudyView />
         </div>
