@@ -56,7 +56,7 @@ function Background(){
                 <div className={style.home_filter}>
 
                     <Lnb></Lnb>
-                    {/* <Intro></Intro> */}
+                    <Intro></Intro>
                     <div className={style.first_divisor}> 
                       <Comedy></Comedy>
                       <Timer></Timer>
