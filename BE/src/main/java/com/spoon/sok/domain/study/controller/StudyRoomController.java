@@ -399,9 +399,11 @@ public class StudyRoomController {
         Map<String, Object> response = new HashMap<>();
         if (isForcedLeave) {
             response.put("status", 200);
+            response.put("isForcedLeave", isForcedLeave);
             response.put("message", "스터디 그룹원을 성공적으로 강퇴하였습니다.");
         } else {
             response.put("status", 400);
+            response.put("isForcedLeave", isForcedLeave);
             response.put("message", "스터디 그룹원 강퇴에 실패하였습니다.");
         }
 
