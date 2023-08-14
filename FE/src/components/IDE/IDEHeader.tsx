@@ -9,6 +9,7 @@ import style from '@/res/css/module/IDEHeader.module.css';
 import ConfirmPopup from "@/utils/Popup/Confirm";
 import { ContentsPopup } from "@/utils/Popup";
 import NoticeChangeModal from "./NoticeChangeModal";
+import DocumentListBtn from "../StudyGroup/document/list/ListBtn";
 
 
 interface IDEHeaderProps {
@@ -22,7 +23,6 @@ function IDEHeader(props: IDEHeaderProps) {
 
   // 로그인유저 정보
   const loginUser = useRecoilValue(userState);
-  
   const navigate = useNavigate();
 
   // 마운트시 연결 언마운트 연결해제
@@ -32,10 +32,8 @@ function IDEHeader(props: IDEHeaderProps) {
       disconnect();
     }
   }, []);
-
+  
   const [popupStatus, setPopupStatus] = useState(false);
-  const [popupStatusNotice, setPopupStatusNotice] = useState(false);
-
   const popupInfoExit = {
     PopupStatus: popupStatus,
     zIndex: 999,
@@ -45,6 +43,7 @@ function IDEHeader(props: IDEHeaderProps) {
     ConfirmPopupProp : () => exit()
   }
 
+  const [popupStatusNotice, setPopupStatusNotice] = useState(false);
   const popupInfoNotice = {
     PopupStatus : popupStatusNotice,
     zIndex : 9999,
@@ -58,9 +57,22 @@ function IDEHeader(props: IDEHeaderProps) {
     setPopupStatusNotice(() => flag);
   };
 
+  const [popupStatusFile, setPopupStatusFile] = useState(false);
+  const popupInfoFile = {
+    PopupStatus : popupStatusFile,
+    zIndex : 9999,
+    maxWidth: 800,
+    ClosePopupProp : () => changePopupFlagFile(false),
+    PopupTitle : "자료보기 수정",
+    PopupContents : <DocumentListBtn studyinfoId={Number(props.id)} closePopup={() => setPopupStatusFile(false)} />,
+  }
+
+  const changePopupFlagFile = (flag: boolean) => {
+    setPopupStatusFile(() => flag);
+  };
+
   function exit() {
     navigate("/");
-    // RTC 연결을 끊기위해 새로고침
     location.reload();
   }
 
@@ -72,23 +84,23 @@ function IDEHeader(props: IDEHeaderProps) {
 
 
   // 공지변경 소켓 통신
-  function changeNotice() {
-    const value = window.prompt("공지사항을 입력해 주세요.");
-    if (value === "" || value === null) {
-      return;
-    }
-    if (value.length > 50) {
-      notifyMaxLengthAlert();
-      return;
-    }
-    const message:any = {
-      nickname: loginUser.nickname,
-      userId: loginUser.userId,
-      studyRoomId: props.id,
-      notice: value,
-    };
-    publish(message);
-  }
+  // function changeNotice() {
+  //   const value = window.prompt("공지사항을 입력해 주세요.");
+  //   if (value === "" || value === null) {
+  //     return;
+  //   }
+  //   if (value.length > 50) {
+  //     notifyMaxLengthAlert();
+  //     return;
+  //   }
+  //   const message:any = {
+  //     nickname: loginUser.nickname,
+  //     userId: loginUser.userId,
+  //     studyRoomId: props.id,
+  //     notice: value,
+  //   };
+  //   publish(message);
+  // }
 
   // 문서
   function saveDocx() {
@@ -169,6 +181,7 @@ function IDEHeader(props: IDEHeaderProps) {
     <div className={style.background}>
       <Toaster position="top-right" />
       <ContentsPopup PopupInfo={popupInfoNotice} />
+      <ContentsPopup PopupInfo={popupInfoFile} />
       <ConfirmPopup PopupInfo={popupInfoExit}/>
       <div className={style.boxPadding}>
         <div className={style.boxSetting}>
@@ -177,6 +190,9 @@ function IDEHeader(props: IDEHeaderProps) {
           &nbsp;&nbsp;
           <button onClick={() => { saveCode(); }}
             className={style.saveBtn}>코드저장</button>
+          &nbsp;&nbsp;
+          <button onClick={() => { setPopupStatusFile(true); }}
+            className={style.saveBtn}>자료보기</button>
         </div>
         <h2 className={style.notice}>{notice}</h2>
         <div className={style.leftBtnBox}>
