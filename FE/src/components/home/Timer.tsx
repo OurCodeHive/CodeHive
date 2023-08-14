@@ -5,6 +5,9 @@ import "react-circular-progressbar/dist/styles.css";
 import { useRecoilState } from "recoil";
 import {useTimerState} from "@/atom/TimerAtom";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
+
+
 const TimerApp: React.FC = () => {
   const { timer, setTimer, startTimer, stopTimer, resetTimer } = useTimerState();
   const [bar, setBar] = useState<number>(100);
@@ -55,7 +58,8 @@ const TimerApp: React.FC = () => {
               //   isRunning: false,
               // }));
               handleResetClick();
-              alert("Timer has ended!");
+              // alert("Timer has ended!");
+              timerFinish();
             }
           }
         }
@@ -89,6 +93,7 @@ const handleResetClick = () => {
     <div className={`col-12 ${style.timer_container}`}>
       <div className={`col-6 ${style.progress_bar_container}`}>
         <div className={`col-12 ${style.custom_progress_bar}`}>
+        <Toaster position="top-right" />
         <CircularProgressbar 
           value={bar}
           
@@ -165,5 +170,28 @@ const handleResetClick = () => {
     </>
   );
 };
+
+
+// 타이머
+function timerFinish() {
+
+  let sentence = "타이머가 종료되었습니다.";
+  toast(sentence, {
+    duration: 5000,
+    icon: '⏰',
+    style: {
+      fontSize: "15px",
+    },
+    iconTheme: {
+      primary: '#000',
+      secondary: '#fff',
+    },
+    ariaProps: {
+      role: 'status',
+      'aria-live': 'polite',
+    },
+  });
+}
+
 
 export default TimerApp;

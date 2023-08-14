@@ -25,6 +25,7 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { codeEditTheme, highlightStyle, QuillBox, modulesRef } from '../components/IDE/EditorStyle';
 import { useTimerState } from '@/atom/TimerAtom';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 function getRandomColor() {
@@ -66,7 +67,8 @@ function Code() {
                   ...prevTimer,
                   isRunning: false,
                 }));
-                alert("Timer has ended!");
+                // alert("Timer has ended!");
+                timerFinish();
               }
             }
           }
@@ -177,6 +179,7 @@ function Code() {
 
   return(
     <div className={style.idePage}>
+      <Toaster position="top-right" />
       <IDEHeader code={code} id={id} language={language}/>
       <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown} setLanguage={setLanguage} />
       <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} userId={loginUser.userId}/>
@@ -217,5 +220,28 @@ function Code() {
     </div>
   )
 }
+
+
+// 타이머
+function timerFinish() {
+
+  let sentence = "타이머가 종료되었습니다.";
+  toast(sentence, {
+    duration: 5000,
+    icon: '⏰',
+    style: {
+      fontSize: "15px",
+    },
+    iconTheme: {
+      primary: '#000',
+      secondary: '#fff',
+    },
+    ariaProps: {
+      role: 'status',
+      'aria-live': 'polite',
+    },
+  });
+}
+
 
 export default Code;
