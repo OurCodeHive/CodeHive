@@ -24,6 +24,8 @@ import style from "@/res/css/page/AppIDE.module.css";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { codeEditTheme, highlightStyle, QuillBox, modulesRef } from '../components/IDE/EditorStyle';
+import { useTimerState } from '@/atom/TimerAtom';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 function getRandomColor() {
@@ -33,6 +35,48 @@ function getRandomColor() {
 let quillRef = null;
 Quill.register("modules/cursors", QuillCursors);
 function Code() {
+  //타이머 동기화 설정
+  const { timer, setTimer} = useTimerState();
+  useEffect(() => {
+      let interval;
+  
+      if (timer.isRunning) {
+        interval = setInterval(() => {
+          if (timer.seconds > 0) {
+              setTimer((prevTimer) => ({
+              ...prevTimer,
+              seconds: prevTimer.seconds - 1,
+            }));
+          } else {
+            if (timer.minutes > 0) {
+              setTimer((prevTimer) => ({
+                ...prevTimer,
+                minutes: prevTimer.minutes - 1,
+                seconds: 59,
+              }));
+            } else {
+              if (timer.hours > 0) {
+                  setTimer((prevTimer) => ({
+                  ...prevTimer,
+                  hours: prevTimer.hours - 1,
+                  minutes: 59,
+                  seconds: 59,
+                }));
+              } else {
+                  setTimer((prevTimer) => ({
+                  ...prevTimer,
+                  isRunning: false,
+                }));
+                // alert("Timer has ended!");
+                timerFinish();
+              }
+            }
+          }
+        }, 1000);
+      }
+  
+      return () => clearInterval(interval);
+    }, [timer, setTimer]);
 
   let loginUser = useRecoilValue(userState);  
   const editorRef = useRef();
@@ -135,6 +179,7 @@ function Code() {
 
   return(
     <div className={style.idePage}>
+      <Toaster position="top-right" />
       <IDEHeader code={code} id={id} language={language}/>
       <IDETerminal code={code} id={id} language={language} up={consoleUp} down={consoleDown} setLanguage={setLanguage} />
       <VoiceComp mySessionId={codeId} myUserName={loginUser.nickname} userId={loginUser.userId}/>
@@ -175,5 +220,28 @@ function Code() {
     </div>
   )
 }
+
+
+// 타이머
+function timerFinish() {
+
+  let sentence = "타이머가 종료되었습니다.";
+  toast(sentence, {
+    duration: 5000,
+    icon: '⏰',
+    style: {
+      fontSize: "15px",
+    },
+    iconTheme: {
+      primary: '#000',
+      secondary: '#fff',
+    },
+    ariaProps: {
+      role: 'status',
+      'aria-live': 'polite',
+    },
+  });
+}
+
 
 export default Code;

@@ -8,6 +8,9 @@ import Lnb from '../inc/Lnb';
 import Timer from './Timer';
 import {useTimerState} from "@/atom/TimerAtom";
 import CalendarApp from './Calendar';
+import toast, { Toaster } from 'react-hot-toast';
+
+
 
 function Background(){
     const { timer, setTimer, startTimer, stopTimer, resetTimer } = useTimerState();
@@ -41,7 +44,8 @@ function Background(){
                     ...prevTimer,
                     isRunning: false,
                   }));
-                  alert("Timer has ended!");
+                  // alert("Timer has ended!");
+                  timerFinish()
                 }
               }
             }
@@ -54,7 +58,7 @@ function Background(){
         // <div className={style.dash_background}>
             <div className={style.home_background}>
                 <div className={style.home_filter}>
-
+                <Toaster position="top-right" />
                     <Lnb></Lnb>
                     <Intro></Intro>
                     <div className={style.first_divisor}> 
@@ -72,6 +76,28 @@ function Background(){
              </div>
         // </div>
     );
+}
+
+
+// 타이머
+function timerFinish() {
+
+  let sentence = "타이머가 종료되었습니다.";
+  toast(sentence, {
+    duration: 5000,
+    icon: '⏰',
+    style: {
+      fontSize: "15px",
+    },
+    iconTheme: {
+      primary: '#000',
+      secondary: '#fff',
+    },
+    ariaProps: {
+      role: 'status',
+      'aria-live': 'polite',
+    },
+  });
 }
 
 export default Background;

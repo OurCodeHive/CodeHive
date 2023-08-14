@@ -71,16 +71,18 @@ const Comedy = () => {
     }
 
     return (
+        <>
+        <div className={`col-12 mb5 ${ComedyStyle.comedy_title}`}>
+            <span>코딩문학제 오늘의 작품</span>
+            <img onClick={refreshComedy} src={refresh} alt="코딩문학제 새로고침" />
+        </div>
         <div className={`col-12 ${ComedyStyle.comedy_con}`}>
-            <div className={`col-12 mb10 ${ComedyStyle.comedy_title}`}>
-                <span>코딩문학제 오늘의 작품</span>
-                <img onClick={refreshComedy} src={refresh} alt="코딩문학제 새로고침" />
-            </div>
             <div className={`col-12 tc ${ComedyStyle.comedy_desc}`}>
                 <textarea className='col-12' name="" id="" readOnly={true} value={comedy}></textarea>
                 <div className={`col-12 ${ComedyStyle.writer_name}`}>{writer}</div>
             </div>
         </div>
+        </>
     );
 };
 

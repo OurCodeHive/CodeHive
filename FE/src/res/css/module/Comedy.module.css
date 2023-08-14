@@ -1,6 +1,6 @@
-.comedy_con {border-radius: 15px; overflow: hidden; background-color: #ffffff6d; padding: 20px 10px;}
-.comedy_title {display: flex; align-items: center; font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 800; letter-spacing: -0.02em; color: #333;}
+.comedy_con {border-radius: 10px; overflow: hidden; background-color: #ffffffa5; padding: 20px 10px; box-shadow: 0 15px 40px rgba(0,0,0,0.12);}
+.comedy_title {display: flex; align-items: center; font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: bold; letter-spacing: -0.02em; color: #4d6622;}
 .comedy_title img {width: 17px; margin-left: 10px; cursor: pointer;}
-.comedy_desc{border: 2px solid #367583c7; border-radius: 10px; overflow: hidden;}
-.comedy_desc > textarea{ padding: 10px 5px; border: none; resize: none; outline: none; font-size: 15px; font-weight: 700; color: #18434d; background-color: transparent; text-align: center; font-size: 1.3rem; min-height: 125px;}
-.comedy_desc > .writer_name{padding-bottom: 10px; font-size: 12px; font-size: 1.2rem; line-height: 18px; line-height: 1.8rem; font-weight: 700; letter-spacing: -0.02em; color: #444;}
+.comedy_desc{border: 2px solid #81aa38; border-radius: 10px; overflow: hidden;}
+.comedy_desc > textarea{ padding: 10px 5px; border: none; resize: none; outline: none; font-size: 15px; font-weight: 700; color: #4d6622; background-color: transparent; text-align: center; font-size: 1.3rem; min-height: 100px;}
+.comedy_desc > .writer_name{padding-bottom: 10px; font-size: 12px; font-size: 1.2rem; line-height: 18px; line-height: 1.8rem; font-weight: 700; letter-spacing: -0.02em; color: #4d6622;}

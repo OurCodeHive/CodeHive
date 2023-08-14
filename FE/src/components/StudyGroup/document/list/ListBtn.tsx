@@ -10,7 +10,7 @@ import StudyStyle from '@/res/css/page/StudyView.module.css';
 import FileUpload from '../../FileUpload';
 import toast, { Toaster } from 'react-hot-toast';
 
-const DocumentList = ({studyinfoId} : {studyinfoId: number}) => {
+const DocumentListBtn = ({studyinfoId, closePopup} : {studyinfoId: number, closePopup: () => void}) => {
 	const param = {
         page : 0,
         size : 10
@@ -100,9 +100,16 @@ const DocumentList = ({studyinfoId} : {studyinfoId: number}) => {
 			</div>
 			<div className="col-12">
 				<Pagination PaginationInfo={PaginationInfo} />
-				<button type="button" className={`${StudyStyle.study_plus_btn} bg_point0`} onClick={openInsertPopup}>+</button>
 			</div>
 			<ContentsPopup PopupInfo={PopupInfo}/>
+
+            <div className="col-12 tc btn_style_0_con">
+            <br></br>
+            <br></br>
+                <button className="btn_style_0 bg_a2a2a2"
+                    onClick={closePopup}
+                >취소</button>
+            </div>
 		</div>
 	)
 }
@@ -129,4 +136,4 @@ function notifyUploadFile() {
 	});
 }
 
-export default DocumentList;
+export default DocumentListBtn;

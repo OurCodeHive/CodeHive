@@ -12,6 +12,7 @@ interface FileUploadProps {
     closePopup: (flag:boolean) => void;
     uploadAlert: () => void;
     completePopup: () => void;
+    studyinfoId: number;
 }
 
 
@@ -56,7 +57,7 @@ const FileUpload = (props:FileUploadProps) => {
         let param = new FormData();
         param.append("userId", String(userId));
         param.append("title", titleInput.current.value);
-        param.append("studyInfoId", "10");
+        param.append("studyInfoId", props.studyinfoId + "");
         param.append("content", String(descInput.current?.value));
         
         // 파일 존재하는 경우만 업로드

@@ -8,6 +8,15 @@ import ManDateIcon from '@/res/img/mandate_icon.png';
 import DropIcon from '@/res/img/drop_icon.png';
 
 const ListItem = ({ item, studyinfoId, refreshList }: { item: UserType, studyinfoId: number, refreshList : () => void }) => {
+    let statusText = "대기";
+    switch(item.status){
+        case "ACCEPT" :
+            statusText = "수락";
+            break;
+        case "BAN" :
+            statusText = "강퇴";
+            break;
+    }
     const userId = useRecoilValue(userState).userId;
     const LeaderFlag = CheckUserId(item.userId);
     const notUserFlag = item.userId == -1;
@@ -34,7 +43,7 @@ const ListItem = ({ item, studyinfoId, refreshList }: { item: UserType, studyinf
 
     return (
         <li className={`${LeaderFlag ? Style.leader : ""}`}>
-            <div className={Style.list_title}>{LeaderFlag ? <img src={MedalIcon} alt="방장 아이콘"/> : null}<span>{item.nickName} ({item.email})</span></div>
+            <div className={Style.list_title}>{LeaderFlag ? <img src={MedalIcon} alt="방장 아이콘"/> : statusText}<span>{item.nickName} ({item.email})</span></div>
             {!LeaderFlag && !notUserFlag ?
                 <div className={Style.list_btn_con}>
                     <button type="button" onClick={() => void manDateRequest(item.userId)} className={Style.mandate_btn}><img src={ManDateIcon} alt="위임하기" /></button>

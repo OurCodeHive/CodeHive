@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import StudyList from "@/components/StudyGroup/list";
 import {ContentsPopup} from "@/utils/Popup";
-import StudyInsert from "@/components/StudyGroup/Insert";
+import StudyInsert from "@/components/StudyGroup/insert";
 import StudyJoin from "@/components/StudyGroup/invite/Input";
 import LnbStyle from "@/res/css/module/Lnb.module.css";
 import LnbLogo from "@/res/img/codehive_lnb_logo.png";
@@ -30,7 +30,7 @@ const Lnb: React.FC = () => {
     }
 
     function openInsert() {
-        PopupInfo.PopupContents = <StudyInsert refreshList={() => refreshList()} closePopup={() => changePopupFlag(false)} />;
+        setPopupContents(<StudyInsert refreshList={() => refreshList()} closePopup={() => changePopupFlag(false)} />);
         changePopupFlag(true);
     }
 

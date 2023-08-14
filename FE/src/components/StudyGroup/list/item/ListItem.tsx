@@ -7,24 +7,24 @@ interface Props {
     SelectedFlag : boolean
 }
 
-const ListItem = forwardRef({ item, SelectedFlag, ref }: { item: StudyType, SelectedFlag : boolean, ref : React.RefObject<HTMLLIElement>}) => {
-    if(SelectedFlag){
+const ListItem = forwardRef((props : Props, ref) => {
+    if(props.SelectedFlag){
         return (
-            <li className={`col-12 ${item.end === 1 ? LnbStyle.end : ""} ${LnbStyle.selected}`} ref={ref}>
-                <a href={`/study?studyinfoId=` + String(item.studyinfoId)}>
-                    {item.title}
+            <li className={`col-12 ${props.item.end === 1 ? LnbStyle.end : ""} ${LnbStyle.selected}`} ref={ref as React.RefObject<HTMLLIElement>}>
+                <a href={`/study?studyinfoId=` + String(props.item.studyinfoId)}>
+                    {props.item.title}
                 </a>
             </li>
         )
     } else {
         return (
-            <li className={`col-12 ${item.end === 1 ? LnbStyle.end : ""}`}>
-                    <a href={`/study?studyinfoId=` + String(item.studyinfoId)}>
-                        {item.title}
+            <li className={`col-12 ${props.item.end === 1 ? LnbStyle.end : ""}`}>
+                    <a href={`/study?studyinfoId=` + String(props.item.studyinfoId)}>
+                        {props.item.title}
                     </a>
                 </li>
         )
     }
-};
+});
 
 export default ListItem;

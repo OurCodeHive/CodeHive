@@ -27,9 +27,12 @@ const List = ({refreshFlag} : {refreshFlag : boolean}) => {
 
     useEffect(() => {
         void fetchData();
-        //셀렉트로 스크롤
-        scrollRef.current?.scrollIntoView({ behavior: 'smooth', block : 'end'});
     }, [RefreshFlag]);
+
+    useEffect(() => {
+        //셀렉트로 스크롤
+        scrollRef.current?.scrollIntoView({behavior: "smooth", block: "end"});
+    }, [studyList]);
 
     const searchKeyWord = (data: string) => {setStudyList(originStudyList.filter((item) => {if(item.title.indexOf(data) > -1) return item;}));}
 

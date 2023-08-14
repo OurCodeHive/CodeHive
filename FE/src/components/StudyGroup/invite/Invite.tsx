@@ -14,7 +14,7 @@ const StudyInvite = ({refreshList, closePop, studyInfoId} : {refreshList: () => 
         zIndex : 10000,
         maxWidth: 440,
         PopupTitle : AlertPopupTitle,
-        ClosePopupProp : () => changePopupFlag(false),
+        ClosePopupProp : () => setAlertPopupFlag(() => false),
     }
 
     const changePopupFlag = ( flag:boolean ) => {
@@ -51,20 +51,25 @@ const StudyInvite = ({refreshList, closePop, studyInfoId} : {refreshList: () => 
         const curEmail = [] as string[];
         let flag = true;
         EmailList.forEach((item) => {
-            if(!EmailCheck(item)) return flag = false; //유효성 실패시 종료
-            else if(!curEmail.includes(item) && item != "") curEmail.push(item); //중복확인 후 추가
+            if(item != ""){
+                if(!EmailCheck(item)) { //유효성 실패시 종료
+                    flag = false;
+                    return true;
+                } 
+                else if(!curEmail.includes(item) && item != "") curEmail.push(item); //중복확인 후 추가
+            }
         });
         //유효성 실패
         if(!flag){
             setAlertPopupTitle("올바르지 않은 이메일이 있습니다.");
-            changePopupFlag(true);
+            setAlertPopupFlag(() => true);
             return;
         }
 
         //보낼 이메일이 없을 때
         if(curEmail.length == 0){
             setAlertPopupTitle("보낼 이메일이 없습니다.");
-            changePopupFlag(true);
+            setAlertPopupFlag(() => true);
             return;
         }
 
@@ -74,11 +79,11 @@ const StudyInvite = ({refreshList, closePop, studyInfoId} : {refreshList: () => 
         }
         await inviteMember(param, () => {
             setAlertPopupTitle("초대 이메일이 전송되었습니다");
-            changePopupFlag(true);
+            setAlertPopupFlag(() => true);
             //window.location.reload();
         }, () => {
             setAlertPopupTitle("에러가 발생했습니다<br/>관리자에 문의해주세요");
-            changePopupFlag(true);
+            setAlertPopupFlag(() => true);
         })
     }
 
