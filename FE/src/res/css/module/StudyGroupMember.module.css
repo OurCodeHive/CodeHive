@@ -1,0 +1,8 @@
+.member_list_con{font-size: 0; line-height: 0; border: 2px solid #17181d; border-radius: 8px; overflow: hidden;}
+.member_list_con > li{padding: 12px 15px; border-bottom: 1px solid #17181d; overflow: hidden; display: flex; justify-content: space-between; align-items: center;}
+.member_list_con > li:last-child{border-bottom: 0px none;}
+.member_list_con .list_title{flex: 1;}
+.member_list_con .list_title > span{max-width: 100%; font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 400; letter-spacing: -0.02em; color: #17181d;}
+.member_list_con .list_btn_con > button{border-color: #FF0000; margin-right: 5px; width: 30px; height: 30px; border-radius: 50%; background-color: transparent; display: inline-flex; justify-content: center; align-items: center;}
+.member_list_con .list_btn_con > button:last-child{margin-right: 0;}
+.member_list_con .list_btn_con > .mandate_btn{border-color: #495ED4;}

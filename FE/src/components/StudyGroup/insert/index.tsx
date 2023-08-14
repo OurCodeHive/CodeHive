@@ -1,6 +1,6 @@
 import {useState} from "react";
 import Step1Contents from "./Step1";
-import Step2Contents from "./Step2";
+import StudyInvite from "@/components/StudyGroup/invite/Invite";
 
 const StudyInsert = ({refreshList, closePopup} : {refreshList: () => void, closePopup: (flag: boolean) => void}) => {
     const [StudyInfoId, setStudyInfoId] = useState(-1);
@@ -19,7 +19,7 @@ const StudyInsert = ({refreshList, closePopup} : {refreshList: () => void, close
          {StepIdx === 1 ? (
             <Step1Contents closePop={closePop} updateIdx={updateIdx} />
          ) : (
-            <Step2Contents refreshList={refreshList} closePop={closePop} studyInfoId={StudyInfoId} />
+            <StudyInvite refreshList={refreshList} closePop={closePop} studyInfoId={StudyInfoId} />
          )}
         </>
     )

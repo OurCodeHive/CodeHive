@@ -4,8 +4,7 @@ import { AlertPopup } from "@/utils/Popup";
 import { EmailCheck } from "@/utils/valid/Valid";
 import InviteEmailStyle from '@/res/css/module/InviteEmail.module.css';
 
-const StudyInsert2Step = ({refreshList, closePop, studyInfoId} : {refreshList: () => void, closePop: () => void, studyInfoId: number}) => {
-    const [CompleteStatus, setCompleteStatus] = useState(false);
+const StudyInvite = ({refreshList, closePop, studyInfoId} : {refreshList: () => void, closePop: () => void, studyInfoId: number}) => {
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
     const [AlertPopupTitle, setAlertPopupTitle] = useState("");
     const [EmailList, setEmailList] = useState(["",""]);
@@ -75,9 +74,8 @@ const StudyInsert2Step = ({refreshList, closePop, studyInfoId} : {refreshList: (
         }
         await inviteMember(param, () => {
             setAlertPopupTitle("초대 이메일이 전송되었습니다");
-            setCompleteStatus(() => true);
             changePopupFlag(true);
-            window.location.reload();
+            //window.location.reload();
         }, () => {
             setAlertPopupTitle("에러가 발생했습니다<br/>관리자에 문의해주세요");
             changePopupFlag(true);
@@ -86,7 +84,6 @@ const StudyInsert2Step = ({refreshList, closePop, studyInfoId} : {refreshList: (
 
     return (
         <div className="col-12">
-            <div className="col-12 mb24 tc headline">그룹이 만들어졌습니다!</div>
             <div className="col-12 mb34 tc sub_title">E-mail 전송으로<br/>스터디원들을 초대해보세요</div>
             <div className={`col-12 mb20 col-center mw-400 ${InviteEmailStyle.email_link_con}`}>
                 <div className={`col-12 mb7 ${InviteEmailStyle.email_link_title}`}>E-mail</div>
@@ -106,4 +103,4 @@ const StudyInsert2Step = ({refreshList, closePop, studyInfoId} : {refreshList: (
     )
 };
 
-export default StudyInsert2Step;
+export default StudyInvite;

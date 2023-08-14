@@ -7,6 +7,7 @@ import {authHttp, formHttp} from './http';
 import { StudyType, StudyListType, StudyUpdateType } from '@/type/StudyType';
 import { StudyNoticeType, StudyNoticeListType } from '@/type/StudyNoticeType';
 import { StudyDocumentType, StudyDocumentListType, StudyDocumentDetailType, StudyDocumentDetailItemType, file } from '@/type/StudyDocumentType';
+import { UserListType } from '@/type/UserType';
 
 const api = authHttp;
 const formApi = formHttp;
@@ -105,6 +106,16 @@ const insertStudyFile = async (param: FormData, success:({data} : {data: any}) =
     await formApi.post("study/file", param).then(success).catch(fail);
 }
 
+const getMemberList = async (param: object, success:({data} : {data : UserListType}) => void, fail:(error:unknown) => void) => {
+    await api.get("study/user/list", { params: param }).then(success).catch(fail);
+}
 
+const updateMemberMandate = async (param: object, success:({data} : {data: object}) => void, fail:(error:unknown) => void) => {
+    await api.put(`/study/delegate`, JSON.stringify(param)).then(success).catch(fail);
+}
 
-export {getList, insertData, inviteMember, inviteProcess, studyQuit, getView, getNoticeList, getNoticeView, insertNoticeData, updateNoticeData, removeNoticeData, getDocumentList, getDocumentView, deleteStudyfile, updateStudyFile, insertStudyFile};
+const updateMemberDrop = async (param: object, success:({data} : {data: object}) => void, fail:(error:unknown) => void) => {
+    await api.post(`/study/force/leave`, JSON.stringify(param)).then(success).catch(fail);
+}
+
+export {getList, insertData, inviteMember, inviteProcess, studyQuit, getView, getNoticeList, getNoticeView, insertNoticeData, updateNoticeData, removeNoticeData, getDocumentList, getDocumentView, deleteStudyfile, updateStudyFile, insertStudyFile, getMemberList, updateMemberMandate, updateMemberDrop };
