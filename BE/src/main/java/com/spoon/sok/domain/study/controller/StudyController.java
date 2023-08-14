@@ -163,7 +163,7 @@ public class StudyController {
             response.put("endAt", studyInfo.get().getEndAt());
             response.put("studyinfoId", studyInfo.get().getStudyinfoId());
             response.put("users_id", studyInfo.get().getUsersId());
-            response.put("enterName", studyInfo.get().getEnterName());
+            response.put("enterName", studyInfo.get().getStudyinfoId());
             response.put("profileImage", studyInfo.get().getProfileImage());
             response.put("title", studyInfo.get().getTitle());
             response.put("description", studyInfo.get().getDescription());
