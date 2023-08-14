@@ -1,4 +1,4 @@
-import LinkInputPopUp from "@/components/StudyGroup/invite/LinkInput";
+// import LinkInputPopUp from "@/components/StudyGroup/invite/LinkInput";
 import MessagePopUp from "@/components/StudyGroup/invite/Message";
 import QuitStudyGroupButton from "@/components/StudyGroup/quit/QuitStudyGroup";
 import { useState, useEffect } from "react";
