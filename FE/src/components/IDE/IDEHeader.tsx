@@ -50,7 +50,7 @@ function IDEHeader(props: IDEHeaderProps) {
     zIndex : 9999,
     maxWidth: 800,
     ClosePopupProp : () => changePopupFlagNotice(false),
-    PopupTitle : "스터디 수정",
+    PopupTitle : "공지사항 수정",
     PopupContents : <NoticeChangeModal notifyMaxLengthAlert={notifyMaxLengthAlert} studyRoomId={props.id} publish={publish} closePopup={() => changePopupFlagNotice(false)}/>,
   }
 
