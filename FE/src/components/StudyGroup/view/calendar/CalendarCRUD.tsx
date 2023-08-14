@@ -8,6 +8,7 @@ import AddPopover from './AddPopover';
 import EditPopover from './EditPopover';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
+import { AlertPopup } from "@/utils/Popup";
 
 const studyinfo_id = 3;
 
@@ -41,6 +42,20 @@ function CalendarCRUD() {
     let [studyEndTime, setStudyEndTime] = useState<string>("");
     
     const [editSchedule, setEditSchedule] = useState<editSchedule | null>(null);
+
+    // alert title
+    const [AlertPopupTitle, setAlertPopupTitle] = useState<string>("");
+    const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
+    const AlertPopupInfo = {
+        PopupStatus : AlertPopupFlag,
+        zIndex : 10000,
+        maxWidth: 600,
+        PopupTitle : AlertPopupTitle,
+        ClosePopupProp : () => changePopupFlag(false),
+    }
+    const changePopupFlag = (flag: boolean) => {
+        setAlertPopupFlag(() => flag);
+    };
 
     useEffect(()=>{
       getCalendar().then().catch(console.log);
@@ -132,19 +147,27 @@ function getCalendar():Promise<Schedule[]> {
       endTime: studyEndTime,
     };
     if(studyTitle === "" || studyStartTime === "" || studyEndTime === ""){
-        alert("제목, 시작 시간 및 종료시간을 모두 입력해주세요")
+        // alert("제목, 시작 시간 및 종료시간을 모두 입력해주세요")
+        setAlertPopupTitle("제목, 시작 시간 및 종료시간을 모두 입력해주세요");
+        changePopupFlag(true);
         return;
     }
     if (new Date(`${clickedDate} ${studyEndTime}`) <= new Date(`${clickedDate} ${studyStartTime}`)) {
-      alert("종료 시간은 시작 시간보다 늦어야 합니다.");
+      // alert("종료 시간은 시작 시간보다 늦어야 합니다.");
+      setAlertPopupTitle("종료 시간은 시작 시간보다 늦어야 합니다.");
+      changePopupFlag(true);
       return;
     }
     if(studyTitle.split("").length > 20){
-      alert("제목은 20자 이하로 지정해주세요");
+      // alert("제목은 20자 이하로 지정해주세요");
+      setAlertPopupTitle("제목은 20자 이하로 지정해주세요");
+      changePopupFlag(true);
       return;
     }
     if(isScheduleOverlapping(studyStartTime, studyEndTime)){
-      alert("일정이 해당 날짜의 다른 스케줄과 겹칩니다");
+      // alert("일정이 해당 날짜의 다른 스케줄과 겹칩니다");
+      setAlertPopupTitle("일정이 해당 날짜의 다른 스케줄과 겹칩니다");
+      changePopupFlag(true);
       return;
     }
     if (confirm("새로운 일정을 등록하시겠습니까? 생성된 일정은 스터디에 속한 팀원 모두에게 공유됩니다.")) {
@@ -192,20 +215,28 @@ function getCalendar():Promise<Schedule[]> {
       title : editSchedule?.title
     }
     if(editSchedule?.title === "" || editSchedule?.startTime === "" || editSchedule?.endTime === ""){
-        alert("제목, 시작 시간 및 종료시간을 모두 입력해주세요")
+        // alert("제목, 시작 시간 및 종료시간을 모두 입력해주세요")
+        setAlertPopupTitle("제목, 시작 시간 및 종료시간을 모두 입력해주세요");
+        changePopupFlag(true);
         return;
     }
     if (new Date(`${clickedDate} ${editSchedule?.endTime as string}`) <= new Date(`${clickedDate} ${editSchedule?.startTime as string}`)) {
-      alert("종료 시간은 시작 시간보다 늦어야 합니다.");
+      // alert("종료 시간은 시작 시간보다 늦어야 합니다.");
+      setAlertPopupTitle("종료 시간은 시작 시간보다 늦어야 합니다.");
+      changePopupFlag(true);
       return;
     }
     if(isScheduleOverlapping(editSchedule?.startTime as string, editSchedule?.endTime as string, editSchedule?.id)){
-      alert("일정이 해당 날짜의 다른 스케줄과 겹칩니다");
+      // alert("일정이 해당 날짜의 다른 스케줄과 겹칩니다");
+      setAlertPopupTitle("일정이 해당 날짜의 다른 스케줄과 겹칩니다");
+      changePopupFlag(true);
       return;
     }
     if(editSchedule?.title){
       if(editSchedule.title.split("").length> 20){
-        alert("제목은 20자 이하로 지정해주세요");
+        // alert("제목은 20자 이하로 지정해주세요");
+        setAlertPopupTitle("제목은 20자 이하로 지정해주세요");
+        changePopupFlag(true);
         return;
       }
     }
@@ -232,6 +263,7 @@ function getCalendar():Promise<Schedule[]> {
 
   return (
     <div className={style.wrapper}>
+      <AlertPopup PopupInfo={AlertPopupInfo} />
       <StudyCalendar
         currMonth={currMonth}
         currYear={currYear}

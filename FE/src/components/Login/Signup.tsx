@@ -5,7 +5,10 @@ import style from "@/res/css/page/Signin.module.css"
 import logo from "@/res/img/codehive_logo.png"
 import {nonAuthHttp} from '../../api/http';
 import { useNavigate } from 'react-router-dom';
+import { AlertPopup } from "@/utils/Popup";
 // import {verifyEmail} from '@/api/onboard';
+
+
 const api = nonAuthHttp;
 const Signup = () => {
     //조건 확인 변수
@@ -34,6 +37,21 @@ const Signup = () => {
 
     //sending
     let [sending, setSending] = useState<boolean>(false);
+
+    // alert title
+    const [AlertPopupTitle, setAlertPopupTitle] = useState<string>("");
+    const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
+    const AlertPopupInfo = {
+        PopupStatus : AlertPopupFlag,
+        zIndex : 10000,
+        maxWidth: 500,
+        PopupTitle : AlertPopupTitle,
+        ClosePopupProp : () => changePopupFlag(false),
+    }
+    const changePopupFlag = (flag: boolean) => {
+        setAlertPopupFlag(() => flag);
+    };
+
 
     //timer
     const getSeconds = (time:number) =>{
@@ -77,7 +95,9 @@ const Signup = () => {
         //유효 이메일 형식 인증 로직
         const regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
         if(email === "") {
-            alert("이메일을 입력해주세요")
+            // alert("이메일을 입력해주세요")
+            setAlertPopupTitle("이메일을 입력해주세요");
+            changePopupFlag(true);
         } else  if (regex.test(email)) {
             
             sendVerificationCode()
@@ -91,7 +111,9 @@ const Signup = () => {
             })
             .catch(console.log);
         } else {
-            alert("올바른 이메일을 입력해주세요")
+            // alert("올바른 이메일을 입력해주세요")
+            setAlertPopupTitle("올바른 이메일을 입력해주세요");
+            changePopupFlag(true);
         }
     
         interface userData {
@@ -116,14 +138,22 @@ const Signup = () => {
             try {
                 setSending(true);
                 const response: AxiosResponse<userData> = await api.get(`/email/auth?email=${email}`);
-                alert(response.data.message);
-                console.log(response);
+                // alert(response.data.message);
+                setAlertPopupTitle(response.data.message);
+                changePopupFlag(true)
+                // console.log(response);
                 return response.data;
             } catch (error:unknown) {
                 setSending(false);
                 const err = error as CustomError
-                console.log(err);
+                // console.log(err);
+                if (err.response?.data?.message) {
+                    setAlertPopupTitle(err.response?.data?.message);
+                    changePopupFlag(true)
+                    return
+                }
                 alert(err.response?.data?.message); //이미 가입한 이메일입니다.
+                
             }
         }
     }
@@ -238,23 +268,33 @@ const Signup = () => {
     ////////////////////
     function SignUp(){
         if(email === "" || password === "" || checkPw === "" || nickname === ""){
-            alert("모든 필드를 입력해주세요");
+            // alert("모든 필드를 입력해주세요");
+            setAlertPopupTitle("모든 필드를 입력해주세요");
+            changePopupFlag(true);
             return;
         }
         if(verifiedCode === "0"){
-            alert("이메일 인증을 완료해주세요")
+            // alert("이메일 인증을 완료해주세요")
+            setAlertPopupTitle("이메일 인증을 완료해주세요");
+            changePopupFlag(true);
             return;
         }
         if(!passwordOK){
-            alert("8-12자리의 영문자, 숫자, 특수문자를 입력해주세요")
+            // alert("8-12자리의 영문자, 숫자, 특수문자를 입력해주세요")
+            setAlertPopupTitle("8-12자리의 영문자, 숫자, 특수문자를 입력해주세요");
+            changePopupFlag(true);
             return;
         }
         if(!verify){
-            alert("비밀번호 일치 여부를 확인해주세요")
+            // alert("비밀번호 일치 여부를 확인해주세요")
+            setAlertPopupTitle("비밀번호 일치 여부를 확인해주세요");
+            changePopupFlag(true);
             return;
         }
         if(!nicknameOk){
-            alert("닉네임 중복체크를 해주세요")
+            // alert("닉네임 중복체크를 해주세요")
+            setAlertPopupTitle("닉네임 중복체크를 해주세요");
+            changePopupFlag(true);
             return;
         }
         interface returnData {
@@ -275,7 +315,9 @@ const Signup = () => {
                 const response: AxiosResponse<returnData> = await api.post(`/signup`, signUpUser);
                 const data = response.data
                 console.log(data);
-                alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.")
+                // alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.")
+                setAlertPopupTitle("회원가입이 완료되었습니다. <br/>로그인 페이지로 이동합니다.");
+                changePopupFlag(true);
                 navigate('/login')
                 return data;
             } catch (error) {
@@ -413,7 +455,7 @@ const Signup = () => {
         <div className={style.btn_area}>
             <button onClick={()=>{SignUp()}} style={{fontWeight:"bold"}} type="submit">회원가입</button>
         </div>
-
+        <AlertPopup PopupInfo={AlertPopupInfo} />
     </section>
     </div>
     );
