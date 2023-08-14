@@ -439,13 +439,21 @@ public class StudyService {
 
         for (UserStudy us : userStudyPage) {
             StudyUserListDTO data = new StudyUserListDTO();
+            if (us.getUsers() != null) {
+                data.setUserId(us.getUsers().getId());
+                data.setNickName(us.getUsers().getNickname());
+                data.setEmail(us.getUsers().getEmail());
+                data.setStatus(us.getStatus());
 
-            data.setUserId(us.getUsers().getId());
-            data.setNickName(us.getUsers().getNickname());
-            data.setEmail(us.getUsers().getEmail());
-            data.setStatus(us.getStatus());
+                list.add(data);
+            } else {
+                data.setUserId(-1L);
+                data.setNickName("비회원");
+                data.setEmail(us.getInviteEmail());
+                data.setStatus(us.getStatus());
 
-            list.add(data);
+                list.add(data);
+            }
         }
 
         result.put("userList", list);
@@ -462,13 +470,21 @@ public class StudyService {
 
         for (UserStudy us : db) {
             StudyUserListDTO data = new StudyUserListDTO();
+            if (us.getUsers() != null) {
+                data.setUserId(us.getUsers().getId());
+                data.setNickName(us.getUsers().getNickname());
+                data.setEmail(us.getUsers().getEmail());
+                data.setStatus(us.getStatus());
 
-            data.setUserId(us.getUsers().getId());
-            data.setNickName(us.getUsers().getNickname());
-            data.setEmail(us.getUsers().getEmail());
-            data.setStatus(us.getStatus());
+                list.add(data);
+            } else {
+                data.setUserId(-1L);
+                data.setNickName("비회원");
+                data.setEmail(us.getInviteEmail());
+                data.setStatus(us.getStatus());
 
-            list.add(data);
+                list.add(data);
+            }
         }
         result.put("userList", list);
         return result;
