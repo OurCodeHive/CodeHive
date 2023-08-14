@@ -27,7 +27,7 @@
 }
 .saveBtn:hover{
   background-color: rebeccapurple;
-  transition: 1s;
+  transition: 0.5s;
 }
 
 .notice {
