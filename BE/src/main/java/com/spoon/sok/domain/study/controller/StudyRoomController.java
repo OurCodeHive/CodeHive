@@ -454,9 +454,11 @@ public class StudyRoomController {
         Map<String, Object> response = new HashMap<>();
         if (isDelegated) {
             response.put("status", 200);
+            response.put("isDelegated", isDelegated);
             response.put("message", "스터디장 권한이 성공적으로 위임되었습니다.");
         } else {
             response.put("status", 400);
+            response.put("isDelegated", isDelegated);
             response.put("message", "스터디장 권한 위임에 실패하였습니다.");
         }
 
