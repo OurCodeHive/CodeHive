@@ -29,19 +29,19 @@ const AppHome = () => {
     },[])
     return (
         <div className="col-12 sub_wrap">
-            <div className="col-12 sub_con" style={{backgroundImage: `url(${homeBgImg})`}}>
+            <div className="col-12 sub_con" >
                 <div className="col-12 sub_contents" style={{backgroundColor: "#ffffffa0"}}>    
                     <Lnb/>
                     <div className="col-12">
-                        <div className="col-12">
+                        <div className="col-12 mb20">
                             <StudyViewMenu/>
                         </div>
-                        <div className={`col-12 mb30 ml50 ${HomeStyle.greeting}`}>
+                        <div className="col-12 col-md-6 pl-md-15 pr-md-15">
+                        <div className={`col-12 mb30 ml25 ${HomeStyle.greeting}`}>
                             좋은 {day}, {loginUser.nickname}님
                         </div>
-                        <div className="col-12 col-md-6 pl-md-15 pr-md-15">
-                            <div className="col-12 mb50 ml30"><Comedy></Comedy></div>
-                            <div className="col-12 ml30"><Timer></Timer></div>
+                            <div className="col-12 mb20 ml30"><Comedy></Comedy></div>
+                            <Timer></Timer>
                         </div>
                         <div className="col-12 col-md-6 pl-md-15 pr-md-15">
                             <div className="col-12 mb20 ml30"><CalendarApp></CalendarApp></div>

@@ -84,6 +84,8 @@ const handleResetClick = () => {
 
   return (
     <>
+    <div className={`col-12 mb5 ml30 ${style.subtitle_timer}`} >타이머로 공부 시간을 관리해보세요</div>
+    <div className={`col-12 ml30 ${style.box_timer}`}>
     <div className={`col-12 ${style.timer_container}`}>
       <div className={`col-6 ${style.progress_bar_container}`}>
         <div className={`col-12 ${style.custom_progress_bar}`}>
@@ -94,7 +96,7 @@ const handleResetClick = () => {
           styles={buildStyles({
             textSize : "1.4rem",
             textColor: "#fff",
-            pathColor: "#1f95afaf",
+            pathColor: "#81aa38",
             trailColor: "#9999995a",
             
           })}
@@ -102,8 +104,9 @@ const handleResetClick = () => {
         />
         </div>
       </div>
+  
       <div className={`col-6 ${style.controller}`}>
-        <div className={style.subtitle_timer} >타이머로 공부 시간을 관리해보세요</div>
+        
         <div className={style.timer_inputs}>
           <input
             type="number"
@@ -157,6 +160,7 @@ const handleResetClick = () => {
           </button>
         </div>
       </div>
+    </div>
     </div>
     </>
   );

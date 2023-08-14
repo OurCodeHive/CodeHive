@@ -24,6 +24,7 @@ import style from "@/res/css/page/AppIDE.module.css";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { codeEditTheme, highlightStyle, QuillBox, modulesRef } from '../components/IDE/EditorStyle';
+import { useTimerState } from '@/atom/TimerAtom';
 
 
 function getRandomColor() {
@@ -33,6 +34,47 @@ function getRandomColor() {
 let quillRef = null;
 Quill.register("modules/cursors", QuillCursors);
 function Code() {
+  //타이머 동기화 설정
+  const { timer, setTimer} = useTimerState();
+  useEffect(() => {
+      let interval;
+  
+      if (timer.isRunning) {
+        interval = setInterval(() => {
+          if (timer.seconds > 0) {
+              setTimer((prevTimer) => ({
+              ...prevTimer,
+              seconds: prevTimer.seconds - 1,
+            }));
+          } else {
+            if (timer.minutes > 0) {
+              setTimer((prevTimer) => ({
+                ...prevTimer,
+                minutes: prevTimer.minutes - 1,
+                seconds: 59,
+              }));
+            } else {
+              if (timer.hours > 0) {
+                  setTimer((prevTimer) => ({
+                  ...prevTimer,
+                  hours: prevTimer.hours - 1,
+                  minutes: 59,
+                  seconds: 59,
+                }));
+              } else {
+                  setTimer((prevTimer) => ({
+                  ...prevTimer,
+                  isRunning: false,
+                }));
+                alert("Timer has ended!");
+              }
+            }
+          }
+        }, 1000);
+      }
+  
+      return () => clearInterval(interval);
+    }, [timer, setTimer]);
 
   let loginUser = useRecoilValue(userState);  
   const editorRef = useRef();
