@@ -53,7 +53,7 @@
   width: 170px;
   height: 365px;
   transform: translate(-10px, 0); /* Adjust the translation as needed */
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .popover::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
