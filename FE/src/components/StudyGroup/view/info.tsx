@@ -5,7 +5,7 @@ import CustomEditorResult from '@/utils/CustomEditor/CustomEditorResult';
 import StudyViewEnterIcon from '@/res/img/study_view_enter_icon_img.png';
 import StudyViewMemberIcon from '@/res/img/study_view_member_icon_img.png';
 import StudyViewCalendarIcon from '@/res/img/study_view_calendar_icon_img.png';
-import MemberList from '../MemberList';
+import StudyUserList from '../member/list/List';
 import { ContentsPopup } from "@/utils/Popup";
 import CalendarCRUD from './calendar/CalendarCRUD';
 
@@ -20,10 +20,10 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
     const memberPopUpInfo = {
       PopupStatus : memberPopupFlag,
       zIndex : 9999,
-      maxWidth: 800,
+      maxWidth: 600,
       ClosePopupProp : () => changeMemberPopupFlag(false),
       PopupTitle : "멤버 보기",
-      PopupContents : <MemberList ClosePopupProp={() => changeMemberPopupFlag(false)}/>,
+      PopupContents : <StudyUserList studyinfoId={Contents.studyinfoId} closePop={() => changeMemberPopupFlag(false)} />,
     }
 
     // 일정 보기(닫는 함수 프롭스로 넘기기)
@@ -39,8 +39,10 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
     }
 
   return (
-    <div className={`col-12 ${StudyViewStyle.study_view_top_content_con}`}>
-          <div className={`col-12 ${StudyViewStyle.study_view_top_profile_img}`}></div>
+    <div className={`col-12 mb30 ${StudyViewStyle.study_view_top_content_con}`}>
+          <div className="col-12">
+            <div className={`col-12 ${StudyViewStyle.study_view_top_profile_img}`}><img src={Contents.profileImage} alt="프로필 이미지"/></div>
+          </div>
           <div className={`col-12 ${StudyViewStyle.study_view_top_btn_wrap}`}>
             <div className={`col-12 ${StudyViewStyle.study_view_top_btn_con}`}>
               <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}>

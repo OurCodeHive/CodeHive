@@ -30,7 +30,7 @@ const Lnb: React.FC = () => {
     }
 
     function openInsert() {
-        PopupInfo.PopupContents = <StudyInsert refreshList={() => refreshList()} closePopup={() => changePopupFlag(false)} />;
+        setPopupContents(<StudyInsert refreshList={() => refreshList()} closePopup={() => changePopupFlag(false)} />);
         changePopupFlag(true);
     }
 

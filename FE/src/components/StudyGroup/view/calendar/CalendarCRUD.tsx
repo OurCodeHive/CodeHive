@@ -8,7 +8,7 @@ import AddPopover from './AddPopover';
 import EditPopover from './EditPopover';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
-import { AlertPopup } from "@/utils/Popup";
+import { AlertPopup, ConfirmPopup } from "@/utils/Popup";
 
 const studyinfo_id = 3;
 
@@ -44,9 +44,9 @@ function CalendarCRUD(props:calendarInStudyMainProps) {
     const [showAddPopover, setShowAddPopover] = useState(false);
     const [clickedDate, setClickedDate] = useState<string>("");
     const [showEditPopover, setShowEditPopover] = useState(false);
-    let [studyTitle, setStudyTitle] = useState<string>("");
-    let [studyStartTime, setStudyStartTime] = useState<string>("");
-    let [studyEndTime, setStudyEndTime] = useState<string>("");
+    const [studyTitle, setStudyTitle] = useState<string>("");
+    const [studyStartTime, setStudyStartTime] = useState<string>("");
+    const [studyEndTime, setStudyEndTime] = useState<string>("");
     
     const [editSchedule, setEditSchedule] = useState<editSchedule | null>(null);
 
@@ -60,6 +60,20 @@ function CalendarCRUD(props:calendarInStudyMainProps) {
         PopupTitle : AlertPopupTitle,
         ClosePopupProp : () => changePopupFlag(false),
     }
+    const [CurIdx, setCurIdx] = useState(-1);
+    const [ConfirmDeletePopupFlag, setConfirmDeletePopupFlag] = useState(false);
+    const changeConfirmDeletePopupFlag = (flag: boolean) => {
+        setConfirmDeletePopupFlag(() => flag);
+    };
+    const ConfirmDeletePopupInfo = {
+      PopupStatus : ConfirmDeletePopupFlag,
+      zIndex : 10000,
+      maxWidth: 440,
+      PopupTitle : "삭제하시겠습니까?",
+      ClosePopupProp : () => changeConfirmDeletePopupFlag(false),
+      ConfirmPopupProp : () => void deleteSchedule()
+    }
+
     const changePopupFlag = (flag: boolean) => {
         setAlertPopupFlag(() => flag);
     };
@@ -92,25 +106,26 @@ function getCalendar():Promise<Schedule[]> {
     setSelectedDateInfo(daySchedules);
     setShowPopover(true);
   }
+  const deleteSchedule = async () => {
+    await new Promise<void>( (resolve, reject) => {
+      try {
+        void authHttp.delete(`/study/${studyinfo_id}/meeting/${CurIdx}`);
+        setSelectedDateInfo(prevSelectedDateInfo =>
+          prevSelectedDateInfo.filter(schedule => schedule.id !== CurIdx)
+        );
+        setData((prevData)=>{return prevData.filter(schedule => schedule.id !== CurIdx)})
+        changeConfirmDeletePopupFlag(false);
+        resolve();    
+      } catch (error) {
+        console.error("스케줄 삭제 에러 :", error);
+        reject(error);
+      }
+  });
+}
 
   const handleDeleteSchedule = (id: number) => {
-      return new Promise<void>( (resolve, reject) => {
-          if (confirm("스터디 일정을 삭제하시겠습니까?")) {
-        try {
-          void authHttp.delete(`/study/${studyinfo_id}/meeting/${id}`);
-          setSelectedDateInfo(prevSelectedDateInfo =>
-            prevSelectedDateInfo.filter(schedule => schedule.id !== id)
-          );
-          setData((prevData)=>{return prevData.filter(schedule => schedule.id !== id)})
-          resolve();    
-        } catch (error) {
-          console.error("스케줄 삭제 에러 :", error);
-          reject(error);
-        }
-      } else {
-        resolve();
-      }
-    });
+    setCurIdx(() => id);
+    changeConfirmDeletePopupFlag(true);
   };
 
   const handleShowAddPopover = () => {
@@ -146,13 +161,56 @@ function getCalendar():Promise<Schedule[]> {
     return overlappingSchedule? true : false;
   }
 
-  const handleAddSchedule = async ():Promise<void> => {
+  const [ConfirmAddPopupFlag, setConfirmAddPopupFlag] = useState(false);
+    const changeConfirmAddPopupFlag = (flag: boolean) => {
+        setConfirmAddPopupFlag(() => flag);
+    };
+    const ConfirmAddPopupInfo = {
+      PopupStatus : ConfirmAddPopupFlag,
+      zIndex : 10000,
+      maxWidth: 440,
+      PopupTitle : "새로운 일정을 등록하시겠습니까?<br/>생성된 일정은 스터디에 속한 팀원 모두에게 공유됩니다.",
+      ClosePopupProp : () => changeConfirmAddPopupFlag(false),
+      ConfirmPopupProp : () => void addSchedule()
+    }
+
+  const addSchedule = async () => {
     const newStudy = {
       title: studyTitle,
       date: clickedDate,
       startTime: studyStartTime,
       endTime: studyEndTime,
     };
+
+    try {
+      await authHttp.post(`/study/meeting/${studyinfo_id}`, newStudy);
+      const newData = await getCalendar();
+ 
+      const maxId = Math.max(...newData.map(schedule => schedule.id as number));
+      const newId = maxId;
+
+      const newSchedule = {
+          endTime : `1970-01-01 ${studyEndTime}`,
+          id : newId,
+          meetingAt : clickedDate,
+          startTime : `1970-01-01 ${studyStartTime}`,
+          title : studyTitle,
+      };
+
+      setData(newData);
+      setSelectedDateInfo(prevSelectedDateInfo => [
+          ...prevSelectedDateInfo,
+          newSchedule,
+      ]);
+      setShowPopover(true); 
+      handleShowAddPopover();
+      changeConfirmAddPopupFlag(false);
+    } catch (error) {
+      console.error("Error registering schedule:", error);
+    }
+  }
+
+  const handleAddSchedule = () => {
     if(studyTitle === "" || studyStartTime === "" || studyEndTime === ""){
         // alert("제목, 시작 시간 및 종료시간을 모두 입력해주세요")
         setAlertPopupTitle("제목, 시작 시간 및 종료시간을 모두 입력해주세요");
@@ -177,43 +235,30 @@ function getCalendar():Promise<Schedule[]> {
       changePopupFlag(true);
       return;
     }
-    if (confirm("새로운 일정을 등록하시겠습니까? 생성된 일정은 스터디에 속한 팀원 모두에게 공유됩니다.")) {
-      try {
-        await authHttp.post(`/study/meeting/${studyinfo_id}`, newStudy);
-        const newData = await getCalendar();
-   
-        const maxId = Math.max(...newData.map(schedule => schedule.id as number));
-        const newId = maxId;
-
-        const newSchedule = {
-            endTime : `1970-01-01 ${studyEndTime}`,
-            id : newId,
-            meetingAt : clickedDate,
-            startTime : `1970-01-01 ${studyStartTime}`,
-            title : studyTitle,
-        };
-
-        setData(newData);
-        setSelectedDateInfo(prevSelectedDateInfo => [
-            ...prevSelectedDateInfo,
-            newSchedule,
-        ]);
-        setShowPopover(true); 
-        handleShowAddPopover(); 
-
-      } catch (error) {
-        console.error("Error registering schedule:", error);
-      }
-    }
+    changeConfirmAddPopupFlag(true);
   };
 
-  const handleEditSchedule = async() => {
+  const [ConfirmEditPopupFlag, setConfirmEditPopupFlag] = useState(false);
+    const changeConfirmEditPopupFlag = (flag: boolean) => {
+        setConfirmEditPopupFlag(() => flag);
+    };
+    const ConfirmEditPopupInfo = {
+      PopupStatus : ConfirmEditPopupFlag,
+      zIndex : 10000,
+      maxWidth: 440,
+      PopupTitle : "일정을 수정하시겠습니까?",
+      ClosePopupProp : () => changeConfirmEditPopupFlag(false),
+      ConfirmPopupProp : () => void updateSchedule()
+    }
+
+  const updateSchedule = async () => {
     const newStudy = { //(전송용 폼)
       title: editSchedule?.title,
       date: clickedDate,
       startTime: editSchedule?.startTime,
       endTime: editSchedule?.endTime,
     };
+
     const setDataForm:Schedule = { //(다시 setData => 상태 업데이트 하기 위한 폼)
       endTime : `${clickedDate} ${editSchedule?.endTime as string}`,
       id: editSchedule?.id,
@@ -221,6 +266,28 @@ function getCalendar():Promise<Schedule[]> {
       startTime: `${clickedDate} ${editSchedule?.startTime as string}`,
       title : editSchedule?.title
     }
+
+    try {
+      await authHttp.put(`/study/${studyinfo_id}/meeting/${editSchedule?.id as number}`, newStudy); ///study/{studyinfo_id}/meeting/{appointment_id}
+  
+    // 캘린더 데이터 업데이트
+    setData((prevData)=> {
+      return prevData.map((schedule) => schedule.id === editSchedule?.id? setDataForm : schedule);
+    });
+    // 팝오버 데이터 업데이트
+    setSelectedDateInfo((prevSelectedDateInfo) => 
+      prevSelectedDateInfo.map((schedule) => schedule.id===editSchedule?.id? setDataForm : schedule)
+    )
+    setShowPopover(true); 
+    setShowEditPopover(false);
+    changeConfirmEditPopupFlag(false);
+
+    } catch (error) {
+      console.error("Error registering schedule:", error);
+    }
+  }
+
+  const handleEditSchedule = () => {
     if(editSchedule?.title === "" || editSchedule?.startTime === "" || editSchedule?.endTime === ""){
         // alert("제목, 시작 시간 및 종료시간을 모두 입력해주세요")
         setAlertPopupTitle("제목, 시작 시간 및 종료시간을 모두 입력해주세요");
@@ -247,25 +314,7 @@ function getCalendar():Promise<Schedule[]> {
         return;
       }
     }
-    if (confirm("일정을 수정하시겠습니까?")) {
-      try {
-        await authHttp.put(`/study/${studyinfo_id}/meeting/${editSchedule?.id as number}`, newStudy); ///study/{studyinfo_id}/meeting/{appointment_id}
-    
-      // 캘린더 데이터 업데이트
-      setData((prevData)=> {
-        return prevData.map((schedule) => schedule.id === editSchedule?.id? setDataForm : schedule);
-      });
-      // 팝오버 데이터 업데이트
-      setSelectedDateInfo((prevSelectedDateInfo) => 
-        prevSelectedDateInfo.map((schedule) => schedule.id===editSchedule?.id? setDataForm : schedule)
-      )
-      setShowPopover(true); 
-      setShowEditPopover(false); 
-
-      } catch (error) {
-        console.error("Error registering schedule:", error);
-      }
-    }
+    changeConfirmEditPopupFlag(true);
   }
 
   return (
@@ -273,6 +322,9 @@ function getCalendar():Promise<Schedule[]> {
 
     <div className={style.wrapper}>
       <AlertPopup PopupInfo={AlertPopupInfo} />
+      <ConfirmPopup PopupInfo={ConfirmDeletePopupInfo} />
+      <ConfirmPopup PopupInfo={ConfirmAddPopupInfo} />
+      <ConfirmPopup PopupInfo={ConfirmEditPopupInfo} />
       <StudyCalendar
         currMonth={currMonth}
         currYear={currYear}

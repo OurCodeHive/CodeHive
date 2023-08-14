@@ -35,6 +35,7 @@ const StudyGroupUserList = ({ studyinfoId, page, size }: { studyinfoId: number, 
 
     const getList = () => {
         fetch(`http://localhost:8080/api/study/user/list?study=${studyinfoId}&page=${page}&size=${size}`, {
+
             method: "GET",
             headers: {
               "Content-Type": "application/json"
