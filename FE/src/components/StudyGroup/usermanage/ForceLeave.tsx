@@ -3,7 +3,7 @@ import {useState, useEffect} from "react";
 const ForceLeaveUser = () => {
 
     // 강제퇴장
-    const requestForceLeave = () => {
+    const sendForceLeave = () => {
         fetch("http://localhost:8080/api/study/force/leave", {
             method: "POST",
             headers: {
@@ -17,6 +17,11 @@ const ForceLeaveUser = () => {
           })
             .then(response => response.json())
             .then(data => {
+                if (data.isForcedLeave){
+                    console.log(data.message);
+                } else {
+                    console.log(data.message);
+                }
                 
             })
             .catch(error => {
@@ -27,7 +32,7 @@ const ForceLeaveUser = () => {
     return(
         <>
         해당 스터디원을 추방하시겠습니까?
-        <button type="button" onClick={requestForceLeave}>예</button>
+        <button type="button" onClick={sendForceLeave}>예</button>
         <button type="button" >아니오</button>
       </>
     );
