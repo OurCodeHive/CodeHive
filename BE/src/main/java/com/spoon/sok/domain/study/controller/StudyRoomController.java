@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -89,7 +90,7 @@ public class StudyRoomController {
             @RequestParam("page") int page,
             @RequestParam("size") int size) {
 
-        Pageable pageRequest = PageRequest.of(page, size);
+        Pageable pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "uploadAt"));
         Map<String, Object> response = studyService.getStudyNoticeBoard(studyInfoId, pageRequest);
 
         if (response != null) {
@@ -212,7 +213,7 @@ public class StudyRoomController {
             @RequestParam("page") int page,
             @RequestParam("size") int size) {
 
-        Pageable pageRequest = PageRequest.of(page, size);
+        Pageable pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "uploadAt"));
         Map<String, Object> response = studyService.getStudyDocuments(studyInfoId, pageRequest);
 
         // 응답 메세지 설정
