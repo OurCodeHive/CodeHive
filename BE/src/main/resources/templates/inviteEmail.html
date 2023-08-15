@@ -15,7 +15,10 @@
   <span>아래의 접속 링크로 접속해주세요.</span>
   <br><br>
   <div style="margin-top: 20px; margin-bottom: 20px;">
-    <a th:href="@{|${code}|}">초대 링크</a>
+    <a th:href="@{|${code}|}">
+      <span th:text="${code}">
+      </span>
+    </a>
   </div>
 
   <div style="font-size: 18px; color: darkgray">
