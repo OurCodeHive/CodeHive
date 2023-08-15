@@ -6,7 +6,7 @@ import { AlertPopup } from "@/utils/Popup";
 import CustomEditor from "@/utils/CustomEditor/CustomEditor";
 import CustomDatePicker from "@/utils/CustomDatePicker";
 import FileInput from "@/utils/FileInfo/Input";
-import { StudyUpdateType } from '@/type/StudyType';
+import { StudyUpdateType, StudyType } from '@/type/StudyType';
 
 
 
@@ -152,7 +152,7 @@ const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, stud
             <div className="col-12 tc btn_style_0_con">
                 <button type="button" className="btn_style_0 mr15 bg_a2a2a2"
                 onClick={closePopup}>취소</button>
-                <button type="submit" className="btn_style_0 bg_point0">만들기</button>
+                <button type="submit" className="btn_style_0 bg_point0">수정완료</button>
             </div>
             <AlertPopup PopupInfo={AlertPopupInfo} />
         </form>

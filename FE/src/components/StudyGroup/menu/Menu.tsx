@@ -37,13 +37,13 @@ const StudyViewMenu = ({Contents} : {Contents?: StudyType}) => {
 
   // 스터디 수정
   const [updatePopupFlag, setupdatePopupFlag] = useState(false);
-  const StudyUpdateType = {
+  const StudyUpdate = {
     studyinfoId : studyinfoId,
-    title : "title",
-    profile : "https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/basicImage.png",
-    startAt : "2023-08-16",
-    endAt : "2023-08-17",
-    description : "description",
+    title : Contents?.title + "",
+    profile : Contents?.profileImage + "",
+    startAt : Contents?.startAt + "",
+    endAt : Contents?.endAt + "",
+    description : Contents?.description + "",
   }
   const studyUpdateChangePopupFlag = (flag: boolean) => { setupdatePopupFlag(() => flag) }
   const updatePopUpInfo = {
@@ -52,7 +52,7 @@ const StudyViewMenu = ({Contents} : {Contents?: StudyType}) => {
     maxWidth: 800,
     ClosePopupProp : () => studyUpdateChangePopupFlag(false),
     PopupTitle : "스터디 수정",
-    PopupContents : <UpdateStudyInfo studyUpdate={StudyUpdateType} closePopup={() => studyUpdateChangePopupFlag(false)}/>,
+    PopupContents : <UpdateStudyInfo studyUpdate={StudyUpdate} closePopup={() => studyUpdateChangePopupFlag(false)}/>,
     // ConfirmPopupProp : () => setupdatePopupFlag(false),
   }
   function doLogout(){
@@ -62,7 +62,7 @@ const StudyViewMenu = ({Contents} : {Contents?: StudyType}) => {
     const data = {
         accessToken : aT,
     }
-    console.log(data);
+    // console.log(data);
     authHttp.post('/logout',data).then(()=>{
         localStorage.removeItem("accessToken");
         localStorage.removeItem("expireAt");

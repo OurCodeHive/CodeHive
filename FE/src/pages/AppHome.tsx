@@ -44,7 +44,7 @@ const AppHome = () => {
                             <Timer></Timer>
                         </div>
                         <div className="col-12 col-md-6 pl-md-15 pr-md-15">
-                            <div className="col-12 mb20 ml30"><CalendarApp></CalendarApp></div>
+                            <div className="col-12 mb20 ml30" style={{zIndex:"1"}}><CalendarApp></CalendarApp></div>
                             <div className="col-12 ml30"><Schedule></Schedule></div>
                         </div>
                     </div>
