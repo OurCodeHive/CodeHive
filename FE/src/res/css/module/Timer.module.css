@@ -1,14 +1,14 @@
 /* timer.css */
-.box_timer {box-shadow: 0 15px 40px rgba(0,0,0,0.12); padding: 10px 20px; border-radius: 10px; background-color: #ffffffa5;}
+.box_timer {box-shadow: 0 15px 40px rgba(0,0,0,0.12); padding: 10px 20px; border-radius: 10px; background-color: #00000040;}
 .timer_container {display: flex; align-items: center;}
 .subtitle_timer {
     display: inline-block;
     font-size: 1.7rem;
     font-weight: bold;
-    color: #4d6622;
+    color: #fff;
   }
   .custom_progress_bar {
-    text-shadow: 0 0 20px #749932, 0 0 30px #749932, 0 0 30px #749932;
+    text-shadow: 0 0 20px #b9ea16, 0 0 30px #b9ea16, 0 0 30px #b9ea16;
   }
 .progress_bar_container {flex: 1;}
   .controller {
@@ -36,6 +36,7 @@
   }
   
   .timer_inputs span {
+    color: #fff;
     font-size: 1.3rem;
     margin-left: 5px; /* Adjust margin to create space between inputs and labels */
   }
@@ -54,8 +55,8 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #81aa38;
-    color: #fff;
+    background-color: #b9ea16;
+    color: #000;
   }
   
   .timer_buttons button:disabled {
@@ -64,6 +65,6 @@
   }
   
   .timer_buttons button:hover {
-    background-color: #749932;
+    background-color: #9ec718;
   }
   

@@ -1,19 +1,20 @@
 .lnb_wrap{max-width: 300px; z-index: 2;}
-.lnb_con{background-color: rgba(0,0,0,0.08); margin-top: 30px; padding: 40px 10px; border-radius: 50px; overflow: visible;}
+.lnb_con{background-color:#00000040; padding: 20px 10px; border-radius: 30px; overflow: visible;}
 .lnb_con .home_btn{padding: 17px 10px; border-radius: 20px; overflow: hidden; background-color: #fff; font-size: 30px; font-size: 3.0rem; line-height: 36px; line-height: 3.6rem; font-weight: 700; letter-spacing: -0.02em; color: #17181d;}
 .lnb_con .home_btn img{width: 30px; margin-right: 10px; vertical-align: middle; margin-bottom: 3px;}
 .lnb_con > div{margin-top: 30px; font-size: 0; line-height: 0;}
-.lnb_con .filter_con{border-bottom: 2px solid #17181d; padding-bottom: 17px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; font-size: 23px; font-size: 2.3rem; line-height: 29px; line-height: 2.9rem; font-weight: 700; letter-spacing: -0.02em;}
+.lnb_con .filter_con{color:#fff; border-bottom: 1px solid #fff; padding-bottom: 5px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; font-size: 23px; font-size: 2rem; line-height: 29px; line-height: 2rem; font-weight: 700; letter-spacing: -0.02em;}
 .lnb_con .filter_con > .filter_btn{overflow: visible; position: relative; display: inline-block; cursor: pointer; border: 0px none; background-color: transparent; font-size: 0; line-height: 0; width: 25px; height: 25px; background-image: url('../../img/19x19_ffffff_search_icon.png'); background-size: 19px 19px; background-position: center center; background-repeat: no-repeat;}
 .lnb_con .filter_con .search_input_box{padding-bottom: 10px; font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d; display: none; position: relative; width: 200px; position: absolute; top: 0px; right: 30px; transform: translate(100%, -100%);}
 .lnb_con .filter_con .search_input_box > div{overflow: hidden; border-radius: 5px; background-color: rgba(255,223,43,1); padding: 17px 10px 10px;}
 .lnb_con .filter_con .search_input_box::before{content: ""; position: absolute; left: 5px; bottom: 10px; transform: translateY(100%); width: 0; height: 0; border-bottom: 10px solid transparent; border-top: 10px solid rgba(255,223,43,1); border-left: 10px solid transparent; border-right: 10px solid transparent;}
 .lnb_con .filter_con > .filter_btn.active + .search_input_box{display: block;}
-.lnb_con > div > ul{overflow-y: auto; max-height: 100px;}
-.lnb_con > div > ul > li{padding-left: 15px; display: block; margin-bottom: 14px; font-size: 19px; font-size: 1.9rem; line-height: 25px; line-height: 2.5rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d;}
+.lnb_con > div > ul{overflow-y: auto; max-height: 300px; min-height: 300px; }
+.lnb_con > div > ul > li{display: block; margin-bottom: 30px; font-size: 19px; font-size: 1.7rem; line-height: 25px; line-height: 2.5rem; font-weight: 400; letter-spacing: -0.02em; color: #fff; text-align: center;}
+.lnb_con > div > ul > li:hover{color: #FFDF2B; font-size: larger;}
 .lnb_con > div > ul > li.end{color: #d8d8d8;}
 .lnb_con > div > ul > li.selected{color: #FFDF2B; font-weight: 600;}
 .lnb_con > div > ul > li:last-child{margin-bottom: 0;}
-.lnb_con > div > ul > .no_data{font-size: 19px; font-size: 1.9rem; line-height: 25px; line-height: 2.5rem; font-weight: 400; letter-spacing: -0.02em; color: #17181d;}
-.lnb_con .new_btn{cursor: pointer; border-radius: 20px; border: 0px none; background-color: #FFDF2B; padding: 17px 10px; font-size: 30px; font-size: 3.0rem; line-height: 36px; line-height: 3.6rem; font-weight: 700; letter-spacing: -0.02em; color: #17181d;}
+.lnb_con > div > ul > .no_data{font-size: 19px; font-size: 1.5rem; line-height: 25px; line-height: 2.5rem; font-weight: 400; letter-spacing: -0.02em; color: #fff;}
+.lnb_con .new_btn{background:transparent; cursor: pointer; border-radius: 10px; border: 0px none; border:1px solid #FFDF2B; padding: 5px 5px; font-size: 30px; font-size: 2.4rem; line-height: 36px; line-height: 3.6rem; font-weight: 400; letter-spacing: -0.02em; color: #FFDF2B;}
 .lnb_con .new_btn img{width: 20px; margin-right: 10px; vertical-align: middle; margin-bottom: 3px;}

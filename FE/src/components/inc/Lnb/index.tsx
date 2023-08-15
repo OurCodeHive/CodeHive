@@ -41,12 +41,12 @@ const Lnb: React.FC = () => {
 
     return (
         <div className={`col-12 ${LnbStyle.lnb_wrap}`}>
-            <img src={LnbLogo} alt="사이드바 로고" />
             <div className={`col-12 ${LnbStyle.lnb_con}`}>
-                <a href="/home" className={`col-12 tc ${LnbStyle.home_btn}`}><img src={HomeIcon} alt="홈 아이콘"/>Home</a>
+            <div className="col-12"><img src={LnbLogo} alt="사이드바 로고" /></div>
+                {/* <a href="/home" className={`col-12 tc ${LnbStyle.home_btn}`}><img src={HomeIcon} alt="홈 아이콘"/>Home</a> */}
                 <StudyList refreshFlag={RefreshFlag}/>
-                <button className={`col-12 mt50 ${LnbStyle.new_btn}`} onClick={() => openInsert()}><img src={PlusIcon} alt="플러스 아이콘"/>New</button>
-                <button className={`col-12 mt20 ${LnbStyle.new_btn}`} onClick={() => openJoin()}>Join</button>
+                <button className={`col-12 mt50 ${LnbStyle.new_btn}`} onClick={() => openInsert()}>New</button>
+                <button className={`col-12 mt10 ${LnbStyle.new_btn}`} onClick={() => openJoin()}>Join</button>
                 <ContentsPopup PopupInfo={PopupInfo} />
             </div>
         </div>

@@ -1,8 +1,15 @@
 .point0{color: #FFDF2B !important;}
 .bg_point0{background-color: #FFDF2B !important;}
 
-.sub_wrap{padding: 30px; height: 100vh; background-color: #d9e6c3;}
-.sub_wrap .sub_con{max-width: 1600px; max-height: 100%; overflow: hidden; overflow-y: auto; border-radius: 20px; border: 7px solid #749932; background-repeat: no-repeat; background-size: cover; background-position: center center;}
+.sub_wrap{padding: 30px; height: 100vh; background-color: #fafad8;}
+.sub_wrap .sub_con{
+    box-shadow: 0 20px 20px rgba(0,0,0,0.4);
+    max-width: 1600px; max-height: 100%; overflow: hidden; overflow-y: auto; border-radius: 20px; background-repeat: no-repeat; background-size: cover; background-position: center center;
+    /* background-image: radial-gradient(circle, #c4ff00, #a3d210, #82a815, #637f15, #465813, #40420e, #352f0b, #261d06, #231607, #1d0f09, #120807, #000000); */
+    /* background-image: radial-gradient(circle, #c4ff00, #9cd013, #77a217, #567615, #374d11, #32380b, #282506, #1b1400, #1a0f02, #150904, #0d0404, #000000); */
+    background-image: radial-gradient(circle, #77a217, #628617, #4e6b15, #3b5212, #29390e, #282c08, #231f04, #1b1400, #1a0f02, #150904, #0d0404, #000000);
+    /* background-image: radial-gradient(circle, #77a217, #8eb11c, #a7c022, #c0ce28, #dadd2f, #ecda51, #f9d76f, #ffd78b, #ffd5b9, #ffdfe7, #fff0ff, #ffffff); */
+}
 .sub_wrap .sub_contents{padding: 30px 40px; display: flex;}
 
 .headline{font-size: 33px; font-size: 3.3rem; line-height: 39px; line-height: 3.9rem; font-weight: 700; letter-spacing: -0.02em; color: #17181d;}
