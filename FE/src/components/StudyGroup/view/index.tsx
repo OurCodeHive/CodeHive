@@ -31,14 +31,15 @@ const StudyView = () => {
 
   return (
     <div className="col-12">
-      <div className="col-12 mb30">
-        <StudyViewMenu Contents={ViewContents} />
-      </div>
+
       <div className="col-12 col-md-8 pl30 pr15">
           <StudyViewInfo Contents={ViewContents} LeaderFlag={LeaderFlag} />
           <Tab initIdx={initIdx} TabList={TabContents} />
       </div>
       <div className="col-12 col-md-4 pl15">
+        <div className="col-12 mb30">
+          <StudyViewMenu Contents={ViewContents} />
+        </div>
         <ChatFrameComp id={String(studyinfoId)} chatMaxHeight='300px' />
       </div>
     </div>

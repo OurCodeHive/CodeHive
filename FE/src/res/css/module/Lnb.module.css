@@ -14,7 +14,7 @@
 .lnb_con .filter_con .search_input_box input {height: 30px; font-size: 1.3rem; border-radius: 5px;}
 .lnb_con .filter_con .search_input_box button:hover {background-color: #ffed85db;}
 .lnb_con .filter_con > .filter_btn.active + .search_input_box{display: block;}
-.lnb_con > div > ul{overflow-y: auto; max-height: 265px; min-height: 230px; }
+.lnb_con > div > ul{overflow-y: auto; height: 265px; }
 .lnb_con > div > ul > li{display: block; margin-bottom: 30px; font-size: 19px; font-size: 1.7rem; line-height: 25px; line-height: 2.5rem; font-weight: 400; letter-spacing: -0.02em; color: #fff; text-align: center;}
 .lnb_con > div > ul > li:hover{color: #FFDF2B; font-size: larger;}
 .lnb_con > div > ul > li.end{color: #d8d8d8;}
