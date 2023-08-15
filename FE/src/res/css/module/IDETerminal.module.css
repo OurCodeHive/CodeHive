@@ -1,0 +1,112 @@
+.consoleBox {
+  position: absolute;
+  background-color: #262626;
+  border-radius: 10px 10px 0px 0px;
+  width: 60%;
+  left: 25%;
+  bottom: 0;
+  color: wheat;
+  display: flex;
+}
+
+.consoleBtn {
+  position: absolute;
+  left: 1vh;
+  bottom: 1vh;
+  background-color: #423423;
+  border-radius: 4px;
+  border: 0px solid #423423;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 4px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
+}
+
+.consoleBtn:hover{
+  background-color: rebeccapurple;
+  transition: 0.5s;
+}
+
+
+.inputText {
+  cursor: pointer;
+  padding: 10px;
+  padding-left: 18px;
+  font-size: 16px;
+}
+
+.inputText:hover{
+  color: #A18DC6 !important;
+  transition: 0.5s;
+}
+
+
+.resultText {
+  cursor: pointer;
+  padding: 10px;
+  padding-left: 15px;
+  font-size: 16px;  
+}
+
+.resultText:hover{
+  color: #A18DC6 !important;
+  transition: 0.5s;
+}
+
+
+.inputTextArea {
+  width: 85.5%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  margin-left: 1vh;
+  background-color: #222326;
+  border: 2px solid #6272A4;
+  border-radius: 5px;
+  color: wheat;
+  padding: 10px;
+  outline: none;
+  resize: none;
+}
+
+.runBtn {
+  margin-top: 1%;
+  margin-left: 1%;
+  margin-right: 1%;
+  width: 40px;
+  height: fit-content;
+  background-color: #225904;
+  border-radius: 4px;
+  border: 0px solid #225904;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 15px;
+  padding: 3px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
+}
+
+.runBtn:hover{
+  background-color: rebeccapurple;
+  transition: 0.5s;
+}
+
+
+.inputTextArea::-webkit-scrollbar {
+  width: 10px;
+}
+
+.inputTextArea::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+.inputTextArea::-webkit-scrollbar-track {
+  background-color: grey;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+}
