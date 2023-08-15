@@ -10,7 +10,7 @@ import StudyStyle from '@/res/css/page/StudyView.module.css';
 import FileUpload from '../../FileUpload';
 import toast, { Toaster } from 'react-hot-toast';
 
-const DocumentListBtn = ({studyinfoId, closePopup} : {studyinfoId: number, closePopup: () => void}) => {
+const DocumentListIDE = ({studyinfoId, closePopup} : {studyinfoId: number, closePopup: () => void}) => {
 	const param = {
         page : 0,
         size : 10
@@ -56,11 +56,12 @@ const DocumentListBtn = ({studyinfoId, closePopup} : {studyinfoId: number, close
     const [popupFlag, setPopupFlag] = useState(false);
     const [ViewStudyDocumentId, setViewStudyDocumentId] = useState(-1);
     const [PopupContents, setPopupContents] = useState(
-    <DocumentView studyDocumentId={ViewStudyDocumentId} 
-    closePopup={() => changePopupFlag(false)}
-    completePopup={completeInsert}
-    
-    />
+        <DocumentView
+            studyDocumentId={ViewStudyDocumentId} 
+            closePopup={() => changePopupFlag(false)}
+            completePopup={completeInsert}
+            ide={true}
+        />
     );
 
     const PopupInfo = {
@@ -80,7 +81,7 @@ const DocumentListBtn = ({studyinfoId, closePopup} : {studyinfoId: number, close
     const openViewPopup = (idx: number) => {
         setViewStudyDocumentId(() => idx);
         PopupInfo.PopupTitle = "자료 상세";
-        setPopupContents(<DocumentView studyDocumentId={idx} closePopup={() => changePopupFlag(false)} completePopup={completeInsert}/>);
+        setPopupContents(<DocumentView ide={true} studyDocumentId={idx} closePopup={() => changePopupFlag(false)} completePopup={completeInsert}/>);
         changePopupFlag(true);
     }
 
@@ -108,7 +109,7 @@ const DocumentListBtn = ({studyinfoId, closePopup} : {studyinfoId: number, close
             <br></br>
                 <button className="btn_style_0 bg_a2a2a2"
                     onClick={closePopup}
-                >취소</button>
+                >닫기</button>
             </div>
 		</div>
 	)
@@ -136,4 +137,4 @@ function notifyUploadFile() {
 	});
 }
 
-export default DocumentListBtn;
+export default DocumentListIDE;

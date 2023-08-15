@@ -44,7 +44,7 @@ function NoticeChangeModal({closePopup, publish, studyRoomId, notifyMaxLengthAle
       <br></br>
       <input
         type="text" id="studyInsertTitle" className="input_style_0"
-        placeholder="제목을 입력해주세요"
+        placeholder="공지사항을 입력해주세요"
         value={notice} onChange={handleNotice}/>
       <br></br>
       <br></br>
