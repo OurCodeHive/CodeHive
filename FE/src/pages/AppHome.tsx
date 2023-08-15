@@ -30,7 +30,7 @@ const AppHome = () => {
     return (
         <div className="col-12 sub_wrap">
             <div className="col-12 sub_con" >
-                <div className="col-12 sub_contents" style={{backgroundColor: "#ffffffa0"}}>    
+                <div className="col-12 sub_contents" style={{backgroundColor: "#ffffff20"}}>    
                     <Lnb/>
                     <div className="col-12">
                         <div className="col-12 mb20">
