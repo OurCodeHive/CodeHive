@@ -49,7 +49,8 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "0 as isEnd " +
             "FROM user_study us " +
             "JOIN study_info si ON us.studyinfo_id = si.studyinfo_id " +
-            "WHERE us.users_id = :userId AND si.end_at >= CURRENT_DATE()", nativeQuery = true)
+            "WHERE us.users_id = :userId AND si.end_at >= CURRENT_DATE() " +
+            "ORDER BY si.start_at ASC ", nativeQuery = true)
     List<StudyInfoDto> findByUserIdStudyInfoProceedingQuery(String userId);
 
     @Query(value = "SELECT si.studyinfo_id as studyinfoId, " +
@@ -57,7 +58,8 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "1 as isEnd " +
             "FROM user_study us " +
             "JOIN study_info si ON us.studyinfo_id = si.studyinfo_id " +
-            "WHERE us.users_id = :userId AND si.end_at < CURRENT_DATE()", nativeQuery = true)
+            "WHERE us.users_id = :userId AND si.end_at < CURRENT_DATE() " +
+            "ORDER BY si.start_at ASC ", nativeQuery = true)
     List<StudyInfoDto> findByUserIdStudyInfoCloseQuery(String userId);
 
     @Query(value = "SELECT si.studyinfo_id as studyinfoId, " +
