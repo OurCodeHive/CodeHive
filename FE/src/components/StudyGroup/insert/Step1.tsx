@@ -109,11 +109,11 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
                     </div>
                     <div className="col-12 col-md-0 input_box">
                         <div className="col-12 date_box">
-                            <CustomDatePicker setData={setStartDate} settingDate={today} minDate={today}/>
+                            <CustomDatePicker setData={setStartDate} minDate={today}/>
                         </div>
                         <span className="addr_text">-</span>
                         <div className="col-12 date_box">
-                            <CustomDatePicker setData={setEndDate} settingDate={today} minDate={today}/>
+                            <CustomDatePicker setData={setEndDate} minDate={today}/>
                         </div>
                     </div>
                 </div>

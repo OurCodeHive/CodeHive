@@ -11,10 +11,10 @@ import { StudyUpdateType } from '@/type/StudyType';
 
 
 const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, studyUpdate:StudyUpdateType}) => {
+    const today = new Date();
     const userId = useRecoilValue(userState).userId;
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
     const [AlertPopupTitle, setAlertPopupTitle] = useState("");
-    const today = new Date();
 
     const titleInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
     const descInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
@@ -121,7 +121,7 @@ const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, stud
                         <span>내용</span>
                     </div>
                     <div className="col-12 col-md-0 input_box">
-                        <CustomEditor editorRef={descInput}/>
+                        <CustomEditor editorRef={descInput} content={studyUpdate.description} />
                     </div>
                 </div>
                 <div className="col-12 form_style_0 type_date_range">

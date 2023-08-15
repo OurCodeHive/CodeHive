@@ -8,7 +8,7 @@ import { ko } from 'date-fns/esm/locale';
 
 interface DatePickerProps {
   setData : (value: string) => void;
-  settingDate : Date;
+  settingDate? : Date;
   minDate? : Date;
   maxDate? : Date;
 }
@@ -19,7 +19,7 @@ interface CustomInputProps {
 }
 
 const CustomDatePicker = (Props : DatePickerProps) => {
-  const [selectDate, setSelectDate] = useState<Date>();
+  const [selectDate, setSelectDate] = useState<Date>(Props.settingDate as Date);
 
   const changeDate = (date : Date) => {
     Props.setData(toStringByFormatting(date));

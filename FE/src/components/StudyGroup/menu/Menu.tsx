@@ -41,8 +41,8 @@ const StudyViewMenu = ({Contents} : {Contents?: StudyType}) => {
     studyinfoId : studyinfoId,
     title : "title",
     profile : "https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/basicImage.png",
-    startAt : "startAt",
-    endAt : "endAt",
+    startAt : "2023-08-16",
+    endAt : "2023-08-17",
     description : "description",
   }
   const studyUpdateChangePopupFlag = (flag: boolean) => { setupdatePopupFlag(() => flag) }
