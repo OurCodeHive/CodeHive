@@ -3,7 +3,7 @@ import AppWelcome from "@/pages/AppWelcome";
 import AppIDE from "@/pages/AppIDE";
 import AppStudy from "@/pages/AppStudy";
 import AppInvite from "@/pages/AppInvite";
-import AppQuit from "@/pages/AppQuit";
+// import AppQuit from "@/pages/AppQuit";
 import AppNotFound from "@/error/AppNotFound";
 import Signup from "@/components/Login/Signup";
 import AppLogin from "@/pages/AppLogin";

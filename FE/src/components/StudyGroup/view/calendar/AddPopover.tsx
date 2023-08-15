@@ -6,7 +6,8 @@ interface AddPopoverProps {
   setStudyStartTime : React.Dispatch<React.SetStateAction<string>>;
   setStudyEndTime: React.Dispatch<React.SetStateAction<string>>;
   setShowAddPopover: React.Dispatch<React.SetStateAction<boolean>>;
-  handleAddSchedule: () => Promise<void>;
+  // handleAddSchedule: () => Promise<void>;
+  handleAddSchedule: () => void;
 }
 
 function AddPopover({

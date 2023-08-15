@@ -9,7 +9,7 @@ import style from '@/res/css/module/IDEHeader.module.css';
 import ConfirmPopup from "@/utils/Popup/Confirm";
 import { ContentsPopup } from "@/utils/Popup";
 import NoticeChangeModal from "./NoticeChangeModal";
-import DocumentListBtn from "../StudyGroup/document/list/ListBtn";
+import DocumentListBtn from "../StudyGroup/document/list/ListIDE";
 
 
 interface IDEHeaderProps {
