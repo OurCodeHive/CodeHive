@@ -1,16 +1,16 @@
 .wrapper{background: #00000040; border-radius: 10px; box-shadow: 0 15px 40px rgba(0,0,0,0.12);}
-.header {display: flex; align-items: center; padding: 25px 30px 10px; justify-content: space-between; color: #b9ea16; font-size: 1.7rem; font-weight: bold;}
+.header {display: flex; align-items: center; padding: 25px 20px 10px; justify-content: space-between; color: #b9ea16; font-size: 1.7rem; font-weight: bold;}
 .header .icons{display: flex;}
 .header .icons span{height: 38px; width: 38px; margin: 0 1px; cursor: pointer; color: #b9ea16; text-align: center; line-height: 38px; font-size: 1.9rem; user-select: none; border-radius: 50%;}
 .header .icons span:last-child{margin-right: -10px;}
 .header .icons span:hover{background: #f2f2f2;}
 .header .current-date{font-size: 1.45rem; font-weight: 500;}
-.calendar{padding: 15px;}
+.calendar{padding: 2px 15px;}
 .calendar ul{display: flex; flex-wrap: wrap; list-style: none; text-align: center;}
 .calendar .days{margin-bottom: 20px;}
 .calendar li{color: #fff; width: calc(100% / 7); font-size: 1.1rem;}
 .calendar .weeks li{font-weight: 500; cursor: default;}
-.calendar .days li{z-index: 1; cursor: pointer; position: relative; height: 45px; padding: 10px; padding-bottom: 5px;}
+.calendar .days li{z-index: 1; cursor: pointer; position: relative; height: 42px; padding: 10px; padding-bottom: 5px;}
 .calendar .days li div {line-height: 12px; font-size: 10px;}
 .days li.inactive{
   color: #919191;

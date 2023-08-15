@@ -1,7 +1,7 @@
 .point0{color: #FFDF2B !important;}
 .bg_point0{background-color: #FFDF2B !important;}
 
-.sub_wrap{padding: 30px; height: 100vh; background-color: #fafad8;}
+.sub_wrap{padding: 30px; height: 100vh; background-color: #4e4e4e;}
 .sub_wrap .sub_con{
     box-shadow: 0 20px 20px rgba(0,0,0,0.4);
     max-width: 1600px; max-height: 100%; overflow: hidden; overflow-y: auto; border-radius: 20px; background-repeat: no-repeat; background-size: cover; background-position: center center;
