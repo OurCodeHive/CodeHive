@@ -160,7 +160,7 @@ public class StudyService {
 
     @Transactional
     public void updateStudyGroupStatus(ChangeUserStudyDto changeUserStudyDto) {
-        studyRepository.saveUserStudyStatusQuery(changeUserStudyDto.getUsersId(),
+        userStudyRepository.saveUserStudyStatusQuery(changeUserStudyDto.getUsersId(),
                                                  changeUserStudyDto.getUserstudyId(),
                                                  changeUserStudyDto.convertCurrentStatus());
     }

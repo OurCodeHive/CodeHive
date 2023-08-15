@@ -105,15 +105,6 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "WHERE userstudy_id = :userstudy_id", nativeQuery = true)
     Optional<PreCheckUserStudyDto> findByUserStudyIdQuery(Long userstudy_id);
 
-
-    @Modifying
-    @Query(value = "UPDATE user_study " +
-            "SET user_study.status = :status, user_study.users_id = :users_id " +
-            "WHERE user_study.userstudy_id = :userstudy_id", nativeQuery = true)
-    void saveUserStudyStatusQuery(@Param("users_id") Long usersId,
-                                  @Param("userstudy_id") Long userstudyId,
-                                  @Param("status") String status);
-
     @Query(value = "SELECT DATE_FORMAT(si.start_at, '%Y-%m-%d') as startAt, " +
             "DATE_FORMAT(si.end_at, '%Y-%m-%d') as endAt, " +
             "si.studyinfo_id as studyinfoId, " +
