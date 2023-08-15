@@ -39,7 +39,8 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "FROM users u " +
             "JOIN study_info si ON u.users_id = :userId " +
             "JOIN study_appointment sa ON si.studyinfo_id = sa.studyinfo_id " +
-            "WHERE u.users_id = :userId AND DATE(sa.meeting_at) = DATE(:today)", nativeQuery = true)
+            "WHERE u.users_id = :userId AND DATE(sa.meeting_at) = DATE(:today) " +
+            "ORDER BY sa.start_time ASC", nativeQuery = true)
     List<StudyAppointmentDTO> findByTodayStudyMeetingsQuery(@Param("today") Date today, @Param("userId") String userId);
 
 
