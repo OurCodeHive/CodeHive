@@ -129,10 +129,12 @@ public class StudyService {
 
         // 최조 스터디 그룹을 만드는 사람은 바로 중간테이블에 저장(스터디 장)
         Long newStudy = studyRepository.findByEnterNameQuery(studyCreationDto.getEnterName());
-        studyRepository.saveUserStudyQuery(newStudy,
+        userStudyRepository.saveUserStudyQuery(
+                newStudy,
                 studyCreationDto.getUsersId(),
                 CurrentStatus.ACCEPT.toString(),
-                studyCreationDto.getEmail());
+                studyCreationDto.getEmail()
+        );
 
         return newStudy; // studyinfo_id(PK)를 반환
     }
@@ -141,17 +143,21 @@ public class StudyService {
     public Long setUserStudyForEmail(Long studyinfo_id, String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if (!user.isPresent()) {
-            studyRepository.saveUserStudyQuery(
+            userStudyRepository.saveUserStudyQuery(
                     studyinfo_id, null, CurrentStatus.WAIT.toString(), email);
             // 여기서 바로 PK 알아내야함
-            return studyRepository.findByStudyInfoAndStatusAndEmailQuery(studyinfo_id, CurrentStatus.WAIT.toString(), email);
+            return userStudyRepository.findByStudyInfoAndStatusAndEmailQuery(studyinfo_id, CurrentStatus.WAIT.toString(), email);
 
         } else {
-            studyRepository.saveUserStudyQuery(
+            userStudyRepository.saveUserStudyQuery(
                     studyinfo_id, String.valueOf(user.get().getId()), CurrentStatus.WAIT.toString(), email);
             // 여기서 바로 PK 알아내야함
-            return studyRepository.findByStudyInfoAndStatusAndEmailQuery(studyinfo_id, CurrentStatus.WAIT.toString(), email);
+            return userStudyRepository.findByStudyInfoAndStatusAndEmailQuery(studyinfo_id, CurrentStatus.WAIT.toString(), email);
         }
+    }
+
+    public Long getUserStudyId(Long studyinfoId, String status, String email) {
+        return userStudyRepository.findByStudyInfoAndStatusAndEmailQuery(studyinfoId, CurrentStatus.WAIT.toString(), email);
     }
 
     public Optional<PreCheckUserStudyDto> CheckEnterStudyGroupCondition(Long userstudy_id) {

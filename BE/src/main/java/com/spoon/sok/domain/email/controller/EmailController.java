@@ -3,8 +3,10 @@ package com.spoon.sok.domain.email.controller;
 import com.spoon.sok.domain.email.dto.EmailAuthVerifyDto;
 import com.spoon.sok.domain.email.service.EmailService;
 import com.spoon.sok.domain.email.dto.InviteEmailDto;
+import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.service.StudyService;
 import jakarta.mail.MessagingException;
+import jakarta.persistence.NonUniqueResultException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -56,22 +58,30 @@ public class EmailController {
 
         Map<String, Object> response = new HashMap<>();
 
-        try {
+        try{
             for (String email : inviteList) {
-                // 1. 중간테이블에 저장
-                Long userstudy_id = studyService.setUserStudyForEmail(inviteEmailDto.getStudyinfoId(), email);
+                // 1. 중간 테이블 PK 검색
+                Long userstudy_id = studyService.getUserStudyId(
+                        inviteEmailDto.getStudyinfoId(), CurrentStatus.WAIT.toString(), email
+                );
 
-                // 2. 이메일 발송
-                emailService.sendInviteLinkEmail(inviteEmailDto.getStudyinfoId(), email, userstudy_id);
+                if (userstudy_id != null) { // 이미 보낸적이 있다.
+                    // 2. 이메일 전송
+                    emailService.sendInviteLinkEmail(inviteEmailDto.getStudyinfoId(), email, userstudy_id);
+                } else { // 처음 보낸다.
+                    // 1. 중간테이블에 저장
+                    userstudy_id = studyService.setUserStudyForEmail(inviteEmailDto.getStudyinfoId(), email);
+
+                    // 2. 이메일 발송
+                    emailService.sendInviteLinkEmail(inviteEmailDto.getStudyinfoId(), email, userstudy_id);
+                }
             }
         } catch (MessagingException e) {
-            log.info("이메일 전송에 실패하였습니다.");
+                response.put("status", 400);
+                response.put("message", "이메일 전송에 실패하였습니다.");
 
-            response.put("status", 400);
-            response.put("message", "이메일 전송에 실패하였습니다.");
-
-            e.printStackTrace();
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+                e.printStackTrace();
+                return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
         }
 
         response.put("status", 200);

@@ -44,4 +44,18 @@ public interface UserStudyRepository  extends JpaRepository<UserStudy, Long> {
                                   @Param("userstudy_id") Long userstudyId,
                                   @Param("status") String status);
 
+    @Modifying
+    @Query(value = "INSERT INTO user_study (studyinfo_id, users_id, status, invite_email) " +
+            "VALUES (:studyinfo_id, :userId, :status, :email)", nativeQuery = true)
+    void saveUserStudyQuery(@Param("studyinfo_id") Long newStudy,
+                            @Param("userId") String userid,
+                            @Param("status") String status,
+                            @Param("email") String email);
+
+    @Query(value = "SELECT userstudy_id " +
+            "FROM user_study " +
+            "WHERE studyinfo_id = :studyinfo_id AND status = :status AND invite_email = :email", nativeQuery = true)
+    Long findByStudyInfoAndStatusAndEmailQuery(@Param("studyinfo_id") Long newStudy,
+                                               @Param("status") String status,
+                                               @Param("email") String email);
 }
