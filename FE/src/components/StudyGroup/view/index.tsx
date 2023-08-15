@@ -40,7 +40,9 @@ const StudyView = () => {
         <div className="col-12 mb30">
           <StudyViewMenu Contents={ViewContents} />
         </div>
-        <ChatFrameComp id={String(studyinfoId)} chatMaxHeight='300px' />
+        <div className='col-12 mt30'>
+        <ChatFrameComp id={String(studyinfoId)} chatMaxHeight='420px' />
+        </div>
       </div>
     </div>
   )

@@ -40,7 +40,7 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
 
   return (
     <div className={`col-12 mb30 mt50 ${StudyViewStyle.study_view_top_content_con}`}>
-          <div className="col-12" style={{flex:"1.3"}}>
+          <div className="col-12" style={{flex:"1.2"}}>
             <div className={`col-12 ${StudyViewStyle.study_view_top_profile_img}`}><img src={Contents.profileImage} alt="프로필 이미지"/></div>
           </div>
           <div className={`col-12 ${StudyViewStyle.study_view_top_btn_wrap}`}>
