@@ -1,26 +1,31 @@
 import { OpenVidu } from 'openvidu-browser';
-
 import axios from 'axios';
-import React, { Component } from 'react';
+import { Component } from 'react';
 import UserVideoComponent from './UserVideoComponent';
-import JoinUser from './JoinUserListComp';
+import JoinUser from '../IDE/JoinUserListComp';
+import JoinUserMouse from '../IDE/JoinUserMouse';
 
+
+// APPLICATION_SERVER_URL을 상수로 정의하고 타입을 명시합니다.
 const APPLICATION_SERVER_URL = import.meta.env.VITE_RTC;
+const accessToken = localStorage.getItem("accessToken");
 
 class VoiceCallComp extends Component {
   constructor(props) {
     super(props);
 
-    // These properties are in the state's component in order to re-render the HTML whenever their values change
+    // state를 초기화합니다.
     this.state = {
       mySessionId: this.props.mySessionId,
       myUserName: this.props.myUserName,
+      userId:this.props.userId,
       session: undefined,
       mainStreamManager: undefined,  // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
       publisher: undefined,
       subscribers: [],
     };
 
+    // 이후 메서드에서 this 바인딩이 필요한 경우 바인딩을 해줍니다.
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.switchCamera = this.switchCamera.bind(this);
@@ -73,14 +78,6 @@ class VoiceCallComp extends Component {
         subscribers: subscribers,
       });
     }
-    let pub = this.state.publisher;
-    // console.log("현재 남아 있는 유저");
-    // console.log("------------------------------------------------------------------");
-    // console.log(pub.stream.connection.data);
-    // for (let sub of subscribers) {
-    //   console.log(sub.stream.connection.data);
-    // }
-    // console.log("------------------------------------------------------------------");
   }
 
   joinSession() {
@@ -99,67 +96,70 @@ class VoiceCallComp extends Component {
 
         // --- 3) Specify the actions when events take place in the session ---
 
-        // On every new Stream received...
+        // 새로운 스트림을 받을 때...
         mySession.on('streamCreated', (event) => {
-          // Subscribe to the Stream to receive it. Second parameter is undefined
-          // so OpenVidu doesn't create an HTML video by its own
+          // 스트림을 구독합니다. 두 번째 매개변수는 스트림에 대한 HTML 비디오를 생성하지 않도록 undefined로 설정합니다.
           var subscriber = mySession.subscribe(event.stream, undefined);
           var subscribers = this.state.subscribers;
           subscribers.push(subscriber);
 
-          // Update the state with the new subscribers
+          // 새로운 구독자(subscriber) 목록을 state에 업데이트합니다.
           this.setState({
             subscribers: subscribers,
           });
         });
 
-        // On every Stream destroyed...
+        // 스트림이 종료될 때...
         mySession.on('streamDestroyed', (event) => {
 
-          // Remove the stream from 'subscribers' array
+          // 스트림을 구독자(subscriber) 목록에서 삭제합니다.
           this.deleteSubscriber(event.stream.streamManager);
         });
 
-        // On every asynchronous exception...
+        // 비동기 예외가 발생할 때...
         mySession.on('exception', (exception) => {
           console.warn(exception);
         });
 
-        // --- 4) Connect to the session with a valid user token ---
+        // --- 4) 유효한 사용자 토큰을 이용해 세션에 연결합니다. ---
 
-        // Get a token from the OpenVidu deployment
+        // OpenVidu 배포로부터 토큰을 얻어옵니다.
         this.getToken().then((token) => {
-          // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
-          // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
-          mySession.connect(token, { clientData: this.state.myUserName })
+          // 첫 번째 매개변수는 OpenVidu 배포로부터 얻은 토큰이며, 두 번째 매개변수는 'streamCreated' 이벤트에서
+          // 각 사용자의 클라이언트 데이터로 사용됩니다. DOM에 사용자의 닉네임으로 추가됩니다.
+          mySession.connect(token, { clientData: 
+            {
+             name: this.state.myUserName,
+             id: this.state.userId
+            }
+          
+          })
           .then(async () => {
 
-            // --- 5) Get your own camera stream ---
-
-            // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
-            // element: we will manage it on our own) and with the desired properties
+            // --- 5) 자신의 카메라 스트림을 얻습니다. ---
+            // targetElement를 undefined로 설정하여 OpenVidu가 비디오 엘리먼트를 생성하지 않도록 합니다.
+            // 대신 사용자가 직접 관리합니다.
             let publisher = await this.OV.initPublisherAsync(undefined, {
-              audioSource: undefined, // The source of audio. If undefined default microphone
-              videoSource: undefined, // The source of video. If undefined default webcam
-              publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-              publishVideo: false, // Whether you want to start publishing with your video enabled or not
-              resolution: '640x480', // The resolution of your video
-              frameRate: 30, // The frame rate of your video
-              insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
-              mirror: false, // Whether to mirror your local video or not
+              audioSource: undefined, // 오디오의 소스. undefined인 경우 기본 마이크를 사용합니다.
+              videoSource: undefined, // 비디오의 소스. undefined인 경우 기본 웹캠을 사용합니다.
+              publishAudio: true, // 오디오를 켜거나 끌 수 있습니다.
+              publishVideo: false, // 비디오를 켜거나 끌 수 있습니다.
+              resolution: '640x480', // 비디오의 해상도
+              frameRate: 30, // 비디오의 프레임 레이트
+              insertMode: 'APPEND', // 비디오를 'video-container' 내부에 추가하는 방법을 설정합니다.
+              mirror: false, // 로컬 비디오를 거울 모드로 설정합니다.
             });
 
-            // --- 6) Publish your stream ---
-
+            // --- 6) 자신의 스트림을 발행합니다. ---
             mySession.publish(publisher);
 
-            // Obtain the current video device in use
+            // 현재 사용 중인 비디오 디바이스를 얻어옵니다.
             var devices = await this.OV.getDevices();
             var videoDevices = devices.filter(device => device.kind === 'videoinput');
             var currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
             var currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
 
-            // Set the main video in the page to display our webcam and store our Publisher
+            // 메인 비디오를 웹캠으로 설정하고 Publisher를 state에 저장합니다.
             this.setState({
               currentVideoDevice: currentVideoDevice,
               mainStreamManager: publisher,
@@ -167,7 +167,7 @@ class VoiceCallComp extends Component {
             });
           })
           .catch((error) => {
-            console.log('There was an error connecting to the session:', error.code, error.message);
+            console.log('세션에 연결하는 중 오류가 발생했습니다:', error.code, error.message);
           });
         });
       },
@@ -191,6 +191,7 @@ class VoiceCallComp extends Component {
       subscribers: [],
       mySessionId: this.props.mySessionId,
       myUserName: this.props.myUserName,
+      userId: this.props.userId,
       mainStreamManager: undefined,
       publisher: undefined
     });
@@ -232,23 +233,41 @@ class VoiceCallComp extends Component {
 
   render() {
    
-    let list = [];
+    const userNameList = [];
+    const userIdList = [];
+    const userMouseList = {};
 
     const subscribers = this.state.subscribers;
     const pub = this.state.publisher;
     if (pub === undefined) {
     } else {
-      list.push(JSON.parse(pub.stream.connection.data).clientData);
+      userNameList.push(JSON.parse(pub.stream.connection.data).clientData.name);
+      userIdList.push(JSON.parse(pub.stream.connection.data).clientData.id);
+      userMouseList[JSON.parse(pub.stream.connection.data).clientData.id] = [0, 0];
     }
     if (subscribers === undefined) {
     } else {
       for (let sub of subscribers) {
-        list.push(JSON.parse(sub.stream.connection.data).clientData);
+        userNameList.push(JSON.parse(sub.stream.connection.data).clientData.name);
+        userIdList.push(JSON.parse(sub.stream.connection.data).clientData.id);
+        userMouseList[JSON.parse(sub.stream.connection.data).clientData.id] = [0, 0];
       }
     }
+    
     return (
       <>
-        <JoinUser user={list}/> 
+        {
+         userNameList.length === 0?
+         null
+         : 
+         <div>
+           <JoinUser userNameList={userNameList}/>
+           {/* <JoinUserMouse 
+            userIdList={userIdList} 
+            studyRoomId={this.state.mySessionId}
+            userMouseList={userMouseList}/> */}
+         </div>
+        }
         <div style={{
           display:"none"
         }}>
@@ -280,37 +299,30 @@ class VoiceCallComp extends Component {
     );
   }
 
-
-  /**
-   * --------------------------------------------
-   * GETTING A TOKEN FROM YOUR APPLICATION SERVER
-   * --------------------------------------------
-   * The methods below request the creation of a Session and a Token to
-   * your application server. This keeps your OpenVidu deployment secure.
-   *
-   * In this sample code, there is no user control at all. Anybody could
-   * access your application server endpoints! In a real production
-   * environment, your application server must identify the user to allow
-   * access to the endpoints.
-   *
-   * Visit https://docs.openvidu.io/en/stable/application-server to learn
-   * more about the integration of OpenVidu in your application server.
-   */
   async getToken() {
     const sessionId = await this.createSession(this.state.mySessionId);
     return await this.createToken(sessionId);
   }
 
   async createSession(sessionId) {
-    const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions', { customSessionId: sessionId }, {
-      headers: { 'Content-Type': 'application/json', },
+    const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions',
+      { customSessionId: sessionId },{
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${accessToken}`
+      },
     });
     return response.data; // The sessionId
   }
 
   async createToken(sessionId) {
-    const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections', {}, {
-      headers: { 'Content-Type': 'application/json', },
+    const response = await axios.post
+    (APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections',
+    {}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
     });
     return response.data; // The token
   }

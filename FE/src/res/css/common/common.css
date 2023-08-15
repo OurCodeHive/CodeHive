@@ -3,9 +3,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 /*Noto Sans KR*/
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+/*Nanum Gothic*/
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400');
 
-html, body{font-size: 10px; color: #000; font-family: 'Poppins', 'Noto Sans KR', sans-serif; letter-spacing: -0.0025em;}
+html, body{font-size: 10px; color: #000; font-family: 'Poppins', 'Nanum Gothic', sans-serif; letter-spacing: -0.0025em;}
 * { margin: 0; padding: 0; box-sizing: border-box; list-style: none;}
 a { text-decoration: none; color: inherit;}
 input{-webkit-appearance: none; outline: none;}
-button, select{font-family: 'Poppins', 'Noto Sans KR', sans-serif;}
+button, select{font-family: 'Poppins', 'Nanum Gothic', sans-serif;}
