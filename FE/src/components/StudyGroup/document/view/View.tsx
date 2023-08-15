@@ -13,7 +13,7 @@ import { fileListState } from '@/atom/FileListAtom';
 
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
 
-const DocumentView = ({ studyDocumentId, closePopup, completePopup }: { studyDocumentId: number, closePopup: (flag: boolean) => void, completePopup : () => void }) => {
+const DocumentView = ({ studyDocumentId, closePopup, completePopup, ide }: { studyDocumentId: number, closePopup: (flag: boolean) => void, completePopup : () => void, ide:boolean }) => {
 
 	const [DocumentContents, setDocumentContents] = useRecoilState(studyFileState);
 	const [fileList, setFileList] = useRecoilState(fileListState);
@@ -175,15 +175,22 @@ const DocumentView = ({ studyDocumentId, closePopup, completePopup }: { studyDoc
 			</div>
 			<div className="col-12 tc btn_style_0_con">
 				<button type="button" className="btn_style_0 bg_a2a2a2" onClick={() => closePopup(false)}>닫기</button>
-				{AuthorFlag
-					?
-					<div className='ml15 show'>
-						<button type="button" className="btn_style_0 bg_point0" onClick={
-							() => updateFile(false)
-						}>변경</button>
-						<button type="button" className="btn_style_0 ml15" onClick={() => removeNotice()}>삭제</button>
-					</div>
-					: null
+				{AuthorFlag?
+					<>
+						{
+							ide?
+							null
+							:
+							<div className='ml15 show'>
+								<button type="button" className="btn_style_0 bg_point0" onClick={
+									() => updateFile(false)
+								}>변경</button>
+								<button type="button" className="btn_style_0 ml15" onClick={() => removeNotice()}>삭제</button>
+							</div>
+						}
+					</>
+					: 
+					null
 				}
 			</div>
 			<ContentsPopup PopupInfo={FileUpdatePopUpProps} />
