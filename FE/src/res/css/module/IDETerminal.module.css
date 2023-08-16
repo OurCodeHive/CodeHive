@@ -13,12 +13,12 @@
   position: absolute;
   left: 1vh;
   bottom: 1vh;
-  background-color: #423423;
+  background-color: transparent;
   border-radius: 4px;
-  border: 0px solid #423423;
+  border: 1px solid #ccaf08;
   display: inline-block;
   cursor: pointer;
-  color: #ffffff;
+  color: #ccaf08;
   font-size: 14px;
   padding: 4px;
   text-decoration: none;
@@ -26,8 +26,8 @@
 }
 
 .consoleBtn:hover{
-  background-color: rebeccapurple;
-  transition: 0.5s;
+  color: black;
+  background-color: #ccaf08;
 }
 
 
@@ -39,7 +39,7 @@
 }
 
 .inputText:hover{
-  color: #A18DC6 !important;
+  color: #b9ea169d !important;
   transition: 0.5s;
 }
 
@@ -52,7 +52,7 @@
 }
 
 .resultText:hover{
-  color: #A18DC6 !important;
+  color: #b9ea169d !important;
   transition: 0.5s;
 }
 
@@ -77,11 +77,11 @@
   margin-right: 1%;
   width: 40px;
   height: fit-content;
-  background-color: #225904;
+  color: #b9ea169d;
+  border: 1px solid #b9ea1685;
+  background-color: transparent;
   border-radius: 4px;
-  border: 0px solid #225904;
   cursor: pointer;
-  color: #ffffff;
   font-size: 15px;
   padding: 3px;
   text-decoration: none;
@@ -89,8 +89,8 @@
 }
 
 .runBtn:hover{
-  background-color: rebeccapurple;
-  transition: 0.5s;
+  background-color: #b9ea1685;
+  color: white;
 }
 
 

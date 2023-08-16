@@ -118,7 +118,7 @@ export const highlightStyle = HighlightStyle.define([
 export const QuillBox = styled.div`
 
 .ql-picker-label {
-  color:#A18DC6;
+  color:#ccaf08;
 }
 
 .ql-editor::-webkit-scrollbar {
@@ -143,11 +143,11 @@ export const QuillBox = styled.div`
 .ql-container.ql-snow {
   border-radius: 0 0 5px 5px;
   border: 0px;
-  color:#A18DC6;
+  color:rgb(202, 200, 200);
 }
 .ql-editor strong {
   font-weight: bold;
-  color:#A18DC6;
+  color:rgb(202, 200, 200);
 }
 .q1-cursor {
   opacity: 1 !important;
@@ -162,10 +162,10 @@ export const QuillBox = styled.div`
 .ql-editor {
   height: 95vh;
   font-size:15px;
-  color:#A18DC6;
+  color:rgb(202, 200, 200);
 }
 h1{
-  color:#A18DC6;
+  color:rgb(202, 200, 200);
 }
 `;
 
