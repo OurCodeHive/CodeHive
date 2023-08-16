@@ -125,7 +125,9 @@ const UpdateStudyInfo = ({closePopup, studyUpdate, fetchData}:{closePopup: () =>
 
     return (
         <form className="col-12" encType="multipart/form-data" onSubmit={(e) => void formSubmit(e)}>
-            <div className="col-12 mb37 form_style_0_con">
+            <div style={{
+                textAlign:"left",
+                }} className="col-12 mb37 form_style_0_con">
                 <div className="col-12 form_style_0">
                     <div className="col-12 col-md-0 label_box">
                         <label htmlFor="studyInsertTitle" className="essential">제목</label>
