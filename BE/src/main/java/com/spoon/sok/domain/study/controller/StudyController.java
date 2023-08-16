@@ -1,6 +1,7 @@
 package com.spoon.sok.domain.study.controller;
 
 import com.spoon.sok.domain.study.dto.queryDTO.*;
+import com.spoon.sok.domain.study.dto.requestDTO.UpdateStudyInfoRequestDto;
 import com.spoon.sok.domain.study.dto.responseDTO.StudyAppointmentResponseDTO;
 import com.spoon.sok.domain.study.enums.CurrentStatus;
 import com.spoon.sok.domain.study.service.StudyService;
@@ -18,8 +19,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -222,6 +221,38 @@ public class StudyController {
         }
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    // 스터디 수정
+    @PutMapping("/study")
+    public ResponseEntity<?> updateStudyGroup(
+            @RequestParam(value = "profile", required = false) List<MultipartFile> multipartFile,
+//            @RequestParam(value = "userId") String usersId,
+            @RequestParam(value = "studyInfoId") Long studyInfoId,
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "startAt") String startAt,
+            @RequestParam(value = "endAt") String endAt,
+            @RequestParam(value = "description") String description
+    ) throws ParseException, IOException {
+
+        // 문자열 -> Date
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date formatStartAt = format.parse(startAt);
+        Date formatEndAt = format.parse(endAt);
+
+        UpdateStudyInfoRequestDto updateStudyInfoDto = new UpdateStudyInfoRequestDto();
+        updateStudyInfoDto.setStudyInfoId(studyInfoId);
+        updateStudyInfoDto.setTitle(title);
+        updateStudyInfoDto.setDescription(description);
+
+        updateStudyInfoDto.setStartAt(formatStartAt);
+        updateStudyInfoDto.setEndAt(formatEndAt);
+
+        studyService.updateStudyInfo(updateStudyInfoDto, multipartFile);
+
+
+
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
 }
