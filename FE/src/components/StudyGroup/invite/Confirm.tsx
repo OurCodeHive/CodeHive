@@ -5,7 +5,7 @@ import { inviteProcess } from "@/api/study";
 
 interface params {
     usersId : number,
-    usersstudyId : number,
+    userstudyId : number,
     status: number
 }
 
@@ -20,12 +20,12 @@ const InviteConfirm = ({studyinfoId, PopupFlag, confirmPopup} : {studyinfoId: nu
     }
 
     function reject() {
-        const param = {usersId : userId, usersstudyId : studyinfoId, status: 5};
+        const param = {usersId : userId, userstudyId : studyinfoId, status: 5};
         void postData(param);
     }
 
     function confirm() {
-        const param = {usersId : userId, usersstudyId : studyinfoId, status: 1};
+        const param = {usersId : userId, userstudyId : studyinfoId, status: 1};
         void postData(param);
     }
 
