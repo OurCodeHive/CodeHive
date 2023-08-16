@@ -42,8 +42,9 @@
 
 .popover {
   position: absolute;
-  background-color: #b3cc88c0;
-  border: 1px solid #ccc;
+  /* background-color: #b9ea1631; */
+  background-color: #ffffff50;
+  /* border: 1px solid #ccc; */
   border-radius: 10px;
   padding: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -51,7 +52,7 @@
   top: 0;
   right: 100%; /* Adjust the positioning to the left side */
   width: 170px;
-  height: 365px;
+  height: 343px;
   transform: translate(-10px, 0); /* Adjust the translation as needed */
   overflow-y: auto;
 }
@@ -59,8 +60,8 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 .popover_title {
-  background-color: #81aa38 ;
-  color: white;
+  background-color: #00000020 ;
+  color: #b9ea16;
   font-size: 14px;
   text-align: center;
   padding: 3px 3px;
@@ -74,6 +75,12 @@
   margin-bottom: 5px;
   text-align: center;
   font-size: 13px;
+  /* color: #fff; */
+}
+.study_item {
+  border: 1px solid #00000040;
+  border-radius: 6px;
+  color: #111;
 }
 .hasSchedule::after {
   content: '';
