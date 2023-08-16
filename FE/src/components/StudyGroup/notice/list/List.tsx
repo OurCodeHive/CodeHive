@@ -3,7 +3,7 @@ import { getNoticeList } from '@/api/study';
 import { CheckUserId } from '@/atom/UserAtom';
 import NoticeFilter from './item/Filter';
 import NoticeListItem from './item/ListItem';
-import Pagination, { PaginationType } from '@/utils/Pagination/Pagination';
+import Pagination, { PaginationType } from '@/utils/Pagination/PaginationGreen';
 import {ContentsPopup} from "@/utils/Popup";
 import NoticeView from '../view/View';
 import TableList from '@/utils/List/Table/List';
@@ -98,7 +98,9 @@ const NoticeList = ({studyinfoId, studyLeaderId} : {studyinfoId:number, studyLea
             </div>
             <div className="col-12">
                 <Pagination PaginationInfo={PaginationInfo} />
-                {LeaderFlag ? <button type="button" className={`${StudyStyle.study_plus_btn} bg_point0`} onClick={openInsertPopup}>+</button> : null}
+                {LeaderFlag ? 
+                <button type="button" style={{backgroundColor : "transparent"}} className={StudyStyle.study_plus_btn} onClick={openInsertPopup}>+</button>
+                : null}
             </div>
             <ContentsPopup PopupInfo={PopupInfo}/>
         </div>

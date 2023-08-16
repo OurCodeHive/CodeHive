@@ -47,7 +47,7 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
           <div className={`col-12 ${StudyViewStyle.study_view_top_btn_wrap}`}>
             <div className={`col-12 ${StudyViewStyle.study_view_top_btn_con}`}>
               <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}>
-                <a href={`/ide/${enterName}`} className={`col-12 ${StudyViewStyle.study_view_top_btn_inner} ${StudyViewStyle.study_view_top_btn_inner_enter}`}>
+                <a href={`/websutdyidepegas/${enterName}`} className={`col-12 ${StudyViewStyle.study_view_top_btn_inner} ${StudyViewStyle.study_view_top_btn_inner_enter}`}>
                   <img src={StudyViewEnterIcon} alt="화살표 아이콘" /><br/>
                   <span>입장</span>
                 </a>
