@@ -21,6 +21,7 @@ public class Email {
     private String authCode;
 
     @Column(name = "limit_time")
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime limitTime;
 
     private int isauth;

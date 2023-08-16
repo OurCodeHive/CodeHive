@@ -11,23 +11,31 @@ public class UserResponseDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    @RequiredArgsConstructor
     public static class TokenInfo {
         private String grantType;
         private String accessToken;
         private String refreshToken;
         private Long refreshTokenExpirationTime;
+
+        public TokenInfo(String accessToken) {
+            this.accessToken = accessToken;
+        }
     }
 
     private TokenInfo tokenInfo;
 
     private Long userId;
 
+    private String nickname;
+
     private int responseCode;
 
     @Builder
-    public UserResponseDto(TokenInfo tokenInfo, Long userId, int responseCode) {
+    public UserResponseDto(TokenInfo tokenInfo, Long userId, String nickname, int responseCode) {
         this.tokenInfo = tokenInfo;
         this.userId = userId;
+        this.nickname = nickname;
         this.responseCode = responseCode;
     }
 

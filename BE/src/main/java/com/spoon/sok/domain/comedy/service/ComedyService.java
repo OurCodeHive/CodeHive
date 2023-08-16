@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -17,7 +17,7 @@ public class ComedyService {
 
     private final ComedyRepository comedyRepository;
 
-    public Optional<CodingLiterature> getComedy(String comedyId) {
-        return comedyRepository.findById(Long.parseLong(comedyId));
+    public List<CodingLiterature> getComedy() {
+        return comedyRepository.findAll();
     }
 }
