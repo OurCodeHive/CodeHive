@@ -59,7 +59,7 @@ const DocumentList = ({studyinfoId} : {studyinfoId: number}) => {
     <DocumentView studyDocumentId={ViewStudyDocumentId} 
     closePopup={() => changePopupFlag(false)}
     completePopup={completeInsert}
-    
+    ide={false}
     />
     );
 
@@ -80,7 +80,7 @@ const DocumentList = ({studyinfoId} : {studyinfoId: number}) => {
     const openViewPopup = (idx: number) => {
         setViewStudyDocumentId(() => idx);
         PopupInfo.PopupTitle = "자료 상세";
-        setPopupContents(<DocumentView studyDocumentId={idx} closePopup={() => changePopupFlag(false)} completePopup={completeInsert}/>);
+        setPopupContents(<DocumentView ide={false} studyDocumentId={idx} closePopup={() => changePopupFlag(false)} completePopup={completeInsert}/>);
         changePopupFlag(true);
     }
 

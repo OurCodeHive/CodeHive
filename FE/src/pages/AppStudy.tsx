@@ -51,8 +51,8 @@ function AppStudy() {
   return (
     <div className="col-12 sub_wrap">
       <Toaster position="top-right" />
-      <div className="col-12 sub_con" style={{backgroundImage: `url(${StudyViewBgImg})`}}>
-        <div className="col-12 sub_contents" style={{backgroundColor: "#ffffffa0"}}>
+      <div className="col-12 sub_con">
+        <div className="col-12 sub_contents" style={{backgroundColor: "#ffffff20"}}>
           <Lnb/>
           <StudyView />
         </div>

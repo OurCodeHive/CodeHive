@@ -6,6 +6,7 @@ import { userState, CheckUserId } from '@/atom/UserAtom';
 import StudyViewStyle from '@/res/css/page/StudyView.module.css';
 import SettingIcon from '@/res/img/30x30_setting_icon.png';
 import StudyQuitIcon from '@/res/img/logout.png';
+import myPageIcon from '@/res/img/30X30_mypage.png';
 import { AlertPopup, ConfirmPopup, ContentsPopup } from "@/utils/Popup";
 import UpdateStudyInfo from '../update/UpdateStudyInfo';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -145,7 +146,7 @@ const leavePopupInfo = {
       }
       <li>
         <div>
-          <img src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/30X30_mypage.png" alt="마이페이지 아이콘"/><br/>
+          <img src={myPageIcon} alt="마이페이지 아이콘"/><br/>
           마이페이지
         </div>
       </li>

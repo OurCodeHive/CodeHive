@@ -101,11 +101,11 @@ const handleResetClick = () => {
           styles={buildStyles({
             textSize : "1.4rem",
             textColor: "#fff",
-            pathColor: "#81aa38",
+            pathColor: "#b9ea16",
             trailColor: "#9999995a",
             
           })}
-          strokeWidth={5}
+          strokeWidth={3}
         />
         </div>
       </div>

@@ -39,14 +39,14 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
     }
 
   return (
-    <div className={`col-12 mb30 ${StudyViewStyle.study_view_top_content_con}`}>
-          <div className="col-12">
+    <div className={`col-12 mb30 mt50 ${StudyViewStyle.study_view_top_content_con}`}>
+          <div className="col-12" style={{flex:"1.2"}}>
             <div className={`col-12 ${StudyViewStyle.study_view_top_profile_img}`}><img src={Contents.profileImage} alt="프로필 이미지"/></div>
           </div>
           <div className={`col-12 ${StudyViewStyle.study_view_top_btn_wrap}`}>
             <div className={`col-12 ${StudyViewStyle.study_view_top_btn_con}`}>
               <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}>
-                <a href={`/ide/${enterName}`} className={`col-12 ${StudyViewStyle.study_view_top_btn_inner} bg_point0`}>
+                <a href={`/ide/${enterName}`} className={`col-12 ${StudyViewStyle.study_view_top_btn_inner} ${StudyViewStyle.study_view_top_btn_inner_enter}`}>
                   <img src={StudyViewEnterIcon} alt="화살표 아이콘" /><br/>
                   <span>입장하기</span>
                 </a>
