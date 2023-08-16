@@ -11,6 +11,7 @@ import { AlertPopup } from "@/utils/Popup";
 
 const api = nonAuthHttp;
 const Signup = () => {
+    const navigate = useNavigate();
     //조건 확인 변수
     let [isCodeValid, setIsCodeValid] = useState(false); //이메일 인증여부 확인
     let[passwordOK, setPasswordOk] = useState(false); //비밀번호 8-12자리 조건 확인
@@ -52,6 +53,19 @@ const Signup = () => {
         setAlertPopupFlag(() => flag);
     };
 
+    const [CompletePopupFlag, setCompletePopupFlag] = useState(false);
+    const CompletePopupInfo = {
+        PopupStatus : CompletePopupFlag,
+        zIndex : 10000,
+        maxWidth: 600,
+        PopupTitle : "회원가입이 완료되었습니다. <br/>로그인 페이지로 이동합니다.",
+        ClosePopupProp : () => changeCompletePopupFlag(false),
+    }
+    const changeCompletePopupFlag = (flag: boolean) => {
+        setCompletePopupFlag(() => flag);
+        navigate("/login");
+    };
+
 
     //timer
     const getSeconds = (time:number) =>{
@@ -77,7 +91,6 @@ const Signup = () => {
         return()=>clearInterval(timer);
     },[startTimer, time])
 
-    let navigate = useNavigate();
     const pwConfirm = useCallback((e : React.ChangeEvent<HTMLInputElement>)=>{
         const curr = e.target.value;
         console.log(password);
@@ -314,11 +327,7 @@ const Signup = () => {
             try {
                 const response: AxiosResponse<returnData> = await api.post(`/signup`, signUpUser);
                 const data = response.data
-                console.log(data);
-                // alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.")
-                setAlertPopupTitle("회원가입이 완료되었습니다. <br/>로그인 페이지로 이동합니다.");
-                changePopupFlag(true);
-                navigate('/login')
+                setCompletePopupFlag(() => true);
                 return data;
             } catch (error) {
                 console.log(error);
@@ -456,6 +465,7 @@ const Signup = () => {
             <button onClick={()=>{SignUp()}} style={{fontWeight:"bold"}} type="submit">회원가입</button>
         </div>
         <AlertPopup PopupInfo={AlertPopupInfo} />
+        <AlertPopup PopupInfo={CompletePopupInfo} />
     </section>
     </div>
     );
