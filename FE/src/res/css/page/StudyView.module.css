@@ -1,10 +1,12 @@
 .study_view_top_content_con{display: flex; flex-wrap: wrap;}
-.study_view_top_content_con .study_view_top_profile_img{border: 2px solid #555555; border-radius: 50px; overflow: hidden; display: flex; align-items: stretch; justify-content: center;}
-.study_view_top_content_con .study_view_top_btn_con{width: calc(100% + 20px); margin-left: -20px;}
-.study_view_top_content_con .study_view_top_btn{padding-left: 20px;}
-.study_view_top_content_con .study_view_top_btn_inner{cursor: pointer; border-radius: 15px; padding: 20px 0 17px; box-shadow: 5px 5px 5px #D4D4D4; background-color: #8BBFC9; text-align: center; font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 500; letter-spacing: -0.02em; color: #17181d;}
+.study_view_top_content_con .study_view_top_profile_img{border: 1px solid #fff; border-radius: 20px; overflow: hidden; display: flex; align-items: stretch; justify-content: center;}
+.study_view_top_content_con .study_view_top_btn_con{width: calc(100% + 20px);}
+.study_view_top_content_con .study_view_top_btn{margin-left: 0px;}
+.study_view_top_content_con .study_view_top_btn_inner{max-width: 70px; min-width:50px; cursor: pointer; border-radius: 10px; padding: 10px 5px; border: 2px solid #FFDF2B; background-color: transparent; text-align: center; font-size: 17px; font-size: 1.5rem; line-height: 23px; line-height: 1.7rem; font-weight: 500; letter-spacing: -0.02em; color: #FFDF2B}
+.study_view_top_content_con .study_view_top_btn_inner_enter {font-weight: 700; color: #ff2bf4; border: 2px solid #ff2bf4;}
 .study_view_top_content_con .study_view_top_btn_inner > span{margin-top: 5px; display: inline-block;}
-
+.study_view_top_content_con .study_view_top_info_con {flex:5;} 
+.study_view_top_content_con .study_view_top_btn_wrap {flex:2.5;}
 .study_view_menu_con{font-size: 0; line-height: 0; text-align: right;}
 .study_view_menu_con > li{display: inline-block; margin-right: 15px;}
 .study_view_menu_con > li > div{cursor: pointer; text-align: center; font-size: 15px; font-size: 1.4rem; line-height: 21px; line-height: 2.1rem; font-weight: 400; letter-spacing: -0.02em; color: #fff;}

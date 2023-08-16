@@ -1,5 +1,5 @@
 .box_schedule {box-shadow: 0 15px 40px rgba(0,0,0,0.12); padding: 10px 20px; border-radius: 10px; background-color: #00000040;}
-.schedule_list_wrapper {height: 100px; overflow-y: auto;}
+.schedule_list_wrapper {height: 110px; overflow-y: auto;}
 .subtitle_schedule {font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2rem; font-weight: 800; letter-spacing: -0.02em; color: #fff;}
 .schedule_wrap {display: flex; justify-content: space-between; border: 2px solid #b9ea16; border-radius: 8px; margin-bottom: 3px; align-items: center;}
 .schedule_wrap:last-child{margin-bottom: 0;}
