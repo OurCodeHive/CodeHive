@@ -27,13 +27,13 @@ const ListFilter = ( {searchKeyWord} : {searchKeyWord : (data: string) => void} 
 
     return (
         <div className={`col-12 ${LnbStyle.filter_con}`}>
-            나의 스터디 목록
+            STUDYROOM
             <div className={`${LnbStyle.filter_btn}`} ref={searchInputBox} onClick={toggleSearchBox}>필터 버튼</div>
             <div className={`col-12 ${LnbStyle.search_input_box}`}>
                 <div className="col-12">
-                    <div className="col-12 mb7">스터디 제목</div>
+                    <div className="col-12 mb7">스터디 검색</div>
                     <input type="text" onKeyUp={changeKeyWord} className="input_style_0 mb7" />
-                    <button className="fr btn_style_0 white_search_icon" onClick={goKeyWord}>검색</button>
+                    <button className="fr white_search_icon" onClick={goKeyWord}>검색</button>
                 </div>
             </div>
         </div>

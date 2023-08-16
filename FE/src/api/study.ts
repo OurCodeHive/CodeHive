@@ -32,6 +32,10 @@ const insertData = async (param: FormData, success: ({data} : {data: StudyType})
     await formApi.post(`/study`, param).then(success).catch(fail);
 }
 
+const updateStudyInfoData = async (param:FormData, success:({data}: {data:StudyUpdateType}) => void, fail:() => void) => {
+    await formApi.put(`/study`, param).then(success).catch(fail);
+}
+
 /**
  * invite member
  * @param param { param : object }
@@ -118,4 +122,4 @@ const updateMemberDrop = async (param: object, success:({data} : {data: object})
     await api.post(`/study/force/leave`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-export {getList, insertData, inviteMember, inviteProcess, studyQuit, getView, getNoticeList, getNoticeView, insertNoticeData, updateNoticeData, removeNoticeData, getDocumentList, getDocumentView, deleteStudyfile, updateStudyFile, insertStudyFile, getMemberList, updateMemberMandate, updateMemberDrop };
+export {getList, insertData, inviteMember, inviteProcess, studyQuit, getView, getNoticeList, getNoticeView, insertNoticeData, updateNoticeData, removeNoticeData, getDocumentList, getDocumentView, deleteStudyfile, updateStudyFile, insertStudyFile, getMemberList, updateMemberMandate, updateMemberDrop, updateStudyInfoData };

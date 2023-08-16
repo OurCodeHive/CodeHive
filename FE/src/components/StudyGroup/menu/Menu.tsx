@@ -6,10 +6,13 @@ import { userState, CheckUserId } from '@/atom/UserAtom';
 import StudyViewStyle from '@/res/css/page/StudyView.module.css';
 import SettingIcon from '@/res/img/30x30_setting_icon.png';
 import StudyQuitIcon from '@/res/img/logout.png';
+import myPageIcon from '@/res/img/30X30_mypage.png';
 import { AlertPopup, ConfirmPopup, ContentsPopup } from "@/utils/Popup";
 import UpdateStudyInfo from '../update/UpdateStudyInfo';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { authHttp } from '@/api/http';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
 
@@ -35,6 +38,16 @@ const StudyViewMenu = ({Contents} : {Contents?: StudyType}) => {
     ClosePopupProp : AlertPopupClose,
   }
 
+  const [popupStatus, setPopupStatus] = useState(false);
+  const popupInfoLogout = {
+    PopupStatus: popupStatus,
+    zIndex: 999,
+    maxWidth: 400,
+    PopupTitle: "<br>로그아웃 하시겠습니까?",
+    ClosePopupProp : () => setPopupStatus(false),
+    ConfirmPopupProp : () => doLogout()
+  }
+
   // 스터디 수정
   const [updatePopupFlag, setupdatePopupFlag] = useState(false);
   const StudyUpdate = {
@@ -55,20 +68,18 @@ const StudyViewMenu = ({Contents} : {Contents?: StudyType}) => {
     PopupContents : <UpdateStudyInfo studyUpdate={StudyUpdate} closePopup={() => studyUpdateChangePopupFlag(false)}/>,
     // ConfirmPopupProp : () => setupdatePopupFlag(false),
   }
-  function doLogout(){
-    alert("로그아웃 하시겠습니까?");
+  function doLogout() {
     const aT = localStorage.getItem("accessToken");
     console.log(aT);
     const data = {
         accessToken : aT,
     }
-    // console.log(data);
     authHttp.post('/logout',data).then(()=>{
-        localStorage.removeItem("accessToken");
+      notifyLogout()  
+      localStorage.removeItem("accessToken");
         localStorage.removeItem("expireAt");
         localStorage.removeItem("timerState");
         sessionStorage.removeItem("sessionStorage");
-        alert("로그아웃 되었습니다");
         navigate("/login");
     }).catch((err)=>{
         console.log(err);
@@ -128,10 +139,12 @@ const leavePopupInfo = {
       {
         isHome?
         <li>
-          <div onClick={doLogout}>
+          <div onClick={() => { setPopupStatus(true) }}>
             <img src={StudyQuitIcon} alt="로그아웃 아이콘"/><br/>
             로그아웃
           </div>
+          <Toaster position="top-right" />
+          <ConfirmPopup PopupInfo={popupInfoLogout}/>
         </li>
         :
         <li>
@@ -143,14 +156,34 @@ const leavePopupInfo = {
           <AlertPopup PopupInfo={AlertPopupInfo}/>
         </li>
       }
-      <li>
+      {/* <li>
         <div>
-          <img src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/30X30_mypage.png" alt="마이페이지 아이콘"/><br/>
+          <img src={myPageIcon} alt="마이페이지 아이콘"/><br/>
           마이페이지
         </div>
-      </li>
+      </li> */}
     </ul>
   )
+}
+
+function notifyLogout() {
+
+  let sentence = "로그아웃 되었습니다.";
+  toast(sentence, {
+    duration: 2000,
+    icon: '🙋‍♂️',
+    style: {
+      fontSize: "15px",
+    },
+    iconTheme: {
+      primary: '#000',
+      secondary: '#fff',
+    },
+    ariaProps: {
+      role: 'status',
+      'aria-live': 'polite',
+    },
+  });
 }
 
 export default StudyViewMenu;

@@ -7,8 +7,10 @@ import LnbStyle from "@/res/css/module/Lnb.module.css";
 import LnbLogo from "@/res/img/codehive_lnb_logo.png";
 import HomeIcon from "@/res/img/30x30_00000_home_icon.png";
 import PlusIcon from "@/res/img/new_btn_plus_icon.png";
+import { useNavigate } from "react-router-dom";
 
 const Lnb: React.FC = () => {
+    const navigate = useNavigate();
     const [popupFlag, setPopupFlag] = useState(false);
     const [PopupContents, setPopupContents] = useState(<StudyInsert refreshList={() => refreshList()} closePopup={() => changePopupFlag(false)} />);
     const PopupInfo = {
@@ -42,7 +44,7 @@ const Lnb: React.FC = () => {
     return (
         <div className={`col-12 ${LnbStyle.lnb_wrap}`}>
             <div className={`col-12 ${LnbStyle.lnb_con}`}>
-            <div className="col-12"><img src={LnbLogo} alt="사이드바 로고" /></div>
+            <div className="col-12 ml7"><img onClick={()=>{navigate("/home")}} src={LnbLogo} alt="사이드바 로고" /></div>
                 {/* <a href="/home" className={`col-12 tc ${LnbStyle.home_btn}`}><img src={HomeIcon} alt="홈 아이콘"/>Home</a> */}
                 <StudyList refreshFlag={RefreshFlag}/>
                 <button className={`col-12 mt50 ${LnbStyle.new_btn}`} onClick={() => openInsert()}>New</button>

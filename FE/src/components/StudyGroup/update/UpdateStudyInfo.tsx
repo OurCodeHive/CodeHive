@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { insertData } from "@/api/study";
+import { updateStudyInfoData } from "@/api/study";
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { AlertPopup } from "@/utils/Popup";
@@ -79,6 +79,7 @@ const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, stud
 
         let param = new FormData();
         param.append("userId", String(userId));
+        param.append("studyInfoId", studyUpdate.studyinfoId + "")
         param.append("title", titleInput.current.value);
         param.append("startAt", startDate);
         param.append("endAt", endDate);
@@ -90,14 +91,16 @@ const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, stud
                 param.append("profile", profileInput.current?.files[i]);
             }   
         }
+        console.log("------------------------------")
         for (let pair of param.entries()) {
             console.log(pair[0] + ': ' + pair[1]);
         }
-        // await insertData(param, ({data}) => {
-        //     // updateIdx(data.studyinfoId);
-        // }, () => {
-        //     alert("생성에 실패했습니다.");
-        // })
+        console.log("------------------------------")
+        await updateStudyInfoData(param, ({data}) => {
+            // updateIdx(data.studyinfoId);
+        }, () => {
+            alert("생성에 실패했습니다.");
+        })
 
     }
 

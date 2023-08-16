@@ -34,7 +34,7 @@ const CustomEditor = ({editorRef, content} : {editorRef : React.RefObject<HTMLIn
           toolbarClassName={`${EditorStyle.editor_toolbar_con}`}
           editorClassName={`${EditorStyle.editor_con}`}
           onEditorStateChange={onEditorStateChange}
-          placeholder="글을 쓰시오."
+          placeholder="스터디 설명을 작성해주세요"
           toolbar={{
             list: { inDropdown: true },
             textAlign: { inDropdown: true },
