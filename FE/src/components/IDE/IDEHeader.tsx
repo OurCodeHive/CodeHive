@@ -72,7 +72,7 @@ function IDEHeader(props: IDEHeaderProps) {
   };
 
   function exit() {
-    navigate("/");
+    navigate(`/study?studyinfoId=${props.id}`);
     location.reload();
   }
 
