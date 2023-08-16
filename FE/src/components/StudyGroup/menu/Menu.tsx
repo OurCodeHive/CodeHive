@@ -75,7 +75,7 @@ const StudyViewMenu = ({Contents, fetchData} : {Contents?: StudyType, fetchData?
         accessToken : aT,
     }
     authHttp.post('/logout',data).then(()=>{
-      notifyLogout()  
+      // notifyLogout()  
       localStorage.removeItem("accessToken");
         localStorage.removeItem("expireAt");
         localStorage.removeItem("timerState");

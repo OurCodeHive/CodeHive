@@ -8,6 +8,7 @@ interface Schedule {
     title? : string,
 }
 interface SchedulePopoverProps {
+    LeaderFlag: boolean;
     showPopover: boolean;
     selectedDateInfo: Schedule[];
     setShowPopover: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,7 +24,8 @@ function SchedulePopover({
   handleShowAddPopover,
   handleShowEditPopover,
   handleDeleteSchedule,
-  clickedDate
+  clickedDate,
+  LeaderFlag
 }:SchedulePopoverProps) {
 
     const renderPopover = () => (
@@ -38,10 +40,15 @@ function SchedulePopover({
               <div key={`${schedule.id as number}`} className={style.schedule_item}>
                 <div className={style.study_info}>
                   <div className={style.study_title}>{schedule.title}</div>
-                  <div className={style.actions}>
-                    <span onClick={() => handleDeleteSchedule(schedule.id as number)} className={style.action_icon}>&#128465;</span> {/* Trashcan icon */}
-                    <span onClick={() => handleShowEditPopover(schedule)} className={style.action_icon}>&#9998;</span> {/* Pencil icon */}
-                  </div>
+                  {
+                    LeaderFlag?
+                    <div className={style.actions}>
+                      <span onClick={() => handleDeleteSchedule(schedule.id as number)} className={style.action_icon}>&#128465;</span> {/* Trashcan icon */}
+                      <span onClick={() => handleShowEditPopover(schedule)} className={style.action_icon}>&#9998;</span> {/* Pencil icon */}
+                    </div>
+                    :
+                    null
+                  }
                 </div>
                 <div className={style.study_schedules}>
                   {schedule.startTime?.slice(11,16)} - {schedule.endTime?.slice(11,16)}
@@ -51,7 +58,12 @@ function SchedulePopover({
               </>
             ))
           )}
-            <div onClick={handleShowAddPopover} className={style.add_icon}>&#43;</div> {/* Add icon */}
+            {
+              LeaderFlag?
+              <div onClick={handleShowAddPopover} className={style.add_icon}>&#43;</div>
+              :
+              null
+            }
           </div>
         )
     );

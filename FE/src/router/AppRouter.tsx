@@ -25,14 +25,14 @@ const AppRouter = () => {
           <Route path="/login/redirect" element={<RedirectLogin/>}></Route>
           <Route path="/study" element={<AppStudy/>}></Route>
           <Route path="/invite" element={<AppInvite/>}></Route>
-          <Route path="/ide/:id" element={ <AppIDE/> }></Route>
+          <Route path="/websutdyidepegas/:id" element={ <AppIDE/> }></Route>
           <Route path="/*" element={<AppNotFound/>}/>
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/findpassword" element={<FindPassword/>}/>
           <Route path="/changepassword" element={<ChangePassword/>}/>
           <Route path="/home" element={<AppHome/>}/>
           <Route path="/timer" element={<TimerApp/>}/>
-          <Route path="/calendarcrud" element={<CalendarCRUD/>}/>
+          {/* <Route path="/calendarcrud" element={<CalendarCRUD/>}/> */}
         </Routes>
       </BrowserRouter>
     </>

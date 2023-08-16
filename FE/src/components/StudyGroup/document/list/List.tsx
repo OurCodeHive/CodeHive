@@ -3,6 +3,7 @@ import { getDocumentList } from '@/api/study';
 import DocumentFilter from './item/Filter';
 import DocumentListItem from './item/ListItem';
 import Pagination, { PaginationType } from '@/utils/Pagination/Pagination';
+import PaginationG from '@/utils/Pagination/PaginationGreen';
 import {ContentsPopup} from "@/utils/Popup";
 import DocumentView from '../view/View';
 import TableList from '@/utils/List/Table/List';
@@ -99,7 +100,7 @@ const DocumentList = ({studyinfoId} : {studyinfoId: number}) => {
 				<TableList WidGroup={WidGroup} ListTitle={ListTitle} ListContents={ListContents} NoDataText="자료가 없습니다."/>
 			</div>
 			<div className="col-12">
-				<Pagination PaginationInfo={PaginationInfo} />
+				<PaginationG PaginationInfo={PaginationInfo} />
 				<button type="button" style={{backgroundColor : "transparent"}} className={StudyStyle.study_plus_btn} onClick={openInsertPopup}>+</button>
 			</div>
 			<ContentsPopup PopupInfo={PopupInfo}/>

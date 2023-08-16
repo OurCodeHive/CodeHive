@@ -30,6 +30,7 @@ interface editSchedule {
 
 interface calendarInStudyMainProps {
 	ClosePopupProp?: (flag: boolean) => void;
+  LeaderFlag: boolean;
 }
 
 
@@ -333,6 +334,7 @@ function getCalendar():Promise<Schedule[]> {
         handleDateClick={handleDateClick}
         />
       <SchedulePopover
+        LeaderFlag={props.LeaderFlag}
         showPopover={showPopover}
         selectedDateInfo={selectedDateInfo}
         setShowPopover={setShowPopover}

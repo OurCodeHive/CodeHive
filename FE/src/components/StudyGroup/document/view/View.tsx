@@ -113,7 +113,94 @@ const DocumentView = ({ studyDocumentId, closePopup, completePopup, ide }: { stu
 	}, []);
 
 	return (
-		<div className="col-12 pt50 pr20 pb20 pl20">
+		<>
+			{
+				ide?
+				<div className="col-12 pt50 pr20 pb20 pl20">
+				<div className="col-12 mb50 form_style_0_con type_view">
+					<div className="col-12 form_style_0">
+						<div className="col-12 col-md-0 label_box"><span><strong>제목</strong></span></div>
+						<div className="col-12 col-md-0 input_box">{DocumentContents.title}</div>
+					</div>
+					<div className="col-12 form_style_0">
+						<div className="col-12 col-md-0 label_box"><span><strong>내용</strong></span></div>
+						<div className="col-12 col-md-0 input_box"><CustomEditorResult param={DocumentContents?.content as string} /></div>
+					</div>
+					<div className="col-12 form_style_0">
+	
+						<div className="col-12 col-md-0 label_box">
+							<div style={{
+								display: "flex",
+								cursor: "pointer",
+							}} onClick={() => {
+								downloadFile();
+							}}>
+								<span><strong>학습 자료</strong></span>
+								<div>
+									<img style={{
+										width: "20px",
+										paddingTop: "2px",
+										paddingLeft: "3px"
+									}}
+										src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/download_icon.png">
+									</img>
+								</div>
+							</div>
+						</div>
+	
+						<div className="col-12 col-md-0 input_box">
+							{
+								fileList.map((file: file, index: number) => {
+									return (
+										<a
+											href={file.path}
+											style={{
+												marginBottom: "5px",
+												display: "flex",
+												cursor: "pointer"
+											}} key={index}>
+											{file.originName}.{file.etc}
+											<div>
+												<img style={{
+													width: "20px",
+													paddingTop: "3px",
+													paddingLeft: "3px"
+												}} src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/download_icon.png">
+												</img>
+											</div>
+											&nbsp;&nbsp;&nbsp;{fnGetFileSize(file.fileSize)}
+										</a>
+									)
+								})
+							}
+						</div>
+					</div>
+				</div>
+				<div className="col-12 tc btn_style_0_con">
+					<button type="button" className="btn_style_0 bg_a2a2a2" onClick={() => closePopup(false)}>닫기</button>
+					{AuthorFlag?
+						<>
+							{
+								ide?
+								null
+								:
+								<div className='ml15 show'>
+									<button type="button" className="btn_style_0 bg_point0" onClick={
+										() => updateFile(false)
+									}>변경</button>
+									<button type="button" className="btn_style_0 ml15" onClick={() => removeNotice()}>삭제</button>
+								</div>
+							}
+						</>
+						: 
+						null
+					}
+				</div>
+				<ContentsPopup PopupInfo={FileUpdatePopUpProps} />
+				<ConfirmPopup PopupInfo={PopupInfo} />
+			</div>
+				:
+						<div className="col-12 pt50 pr20 pb20 pl20">
 			<div className="col-12 mb50 form_style_0_con type_view">
 				<div className="col-12 form_style_0">
 					<div className="col-12 col-md-0 label_box"><span><strong>제목</strong></span></div>
@@ -196,6 +283,10 @@ const DocumentView = ({ studyDocumentId, closePopup, completePopup, ide }: { stu
 			<ContentsPopup PopupInfo={FileUpdatePopUpProps} />
 			<ConfirmPopup PopupInfo={PopupInfo} />
 		</div>
+
+			}
+		</>
+
 	)
 }
 
