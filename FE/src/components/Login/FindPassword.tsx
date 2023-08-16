@@ -1,5 +1,6 @@
 import React from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { AlertPopup } from '@/utils/Popup';
 import { useEffect, useState } from 'react';
 import style from "@/res/css/page/FindPassword.module.css"
 import logo from "@/res/img/codehive_logo.png"
@@ -7,54 +8,65 @@ import {nonAuthHttp} from '../../api/http';
 import { useNavigate } from 'react-router-dom';
 import { changePasswordUserState } from '@/atom/UserAtom';
 import { useRecoilState } from 'recoil';
+import { EmailCheck } from '@/utils/valid/Valid';
 
 const api = nonAuthHttp;
 const FindPassword = () => {
+    const navigate = useNavigate();
+    const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
+    const [AlertPopupTitle, setAlertPopupTitle] = useState<string>("");
+    const AlertPopupInfo = {
+        PopupStatus : AlertPopupFlag,
+        zIndex : 10000,
+        maxWidth: 500,
+        PopupTitle : AlertPopupTitle,
+        ClosePopupProp : () => setAlertPopupFlag(() => false),
+    }
+    const [CompletePopupFlag, setCompletePopupFlag] = useState(false);
+    const CompletePopupInfo = {
+        PopupStatus : CompletePopupFlag,
+        zIndex : 10000,
+        maxWidth: 500,
+        PopupTitle : "인증을 완료했습니다.",
+        ClosePopupProp : () => CompletePopup(false),
+    }
+    function CompletePopup(flag: boolean){
+        setCompletePopupFlag(() => flag);
+        navigate("/changepassword");
+    }
+
     let [verifiedEmail, setverifiedEmail] = useRecoilState(changePasswordUserState);
     //pw 입력시 뜨게 하기.
-    let[verify, setVerify] = useState(false); 
-    let[emailOk, setEmailOk] = useState(false); 
+    let[verify, setVerify] = useState(false);
     let [email, setEmail] = useState("");
     let [time, setTime] = useState("180");
     let[startTimer, setStartTimer] = useState(false);
     let [code, setCode] = useState<string>("");
-    let [verifiedCode, setVerifiedCode] = useState<string>("0");
     let [isCodeValid, setIsCodeValid] = useState(false);
     let [showCodeMsg, setShowCodeMsg] = useState(false);
     let [codeMsg, setCodeMsg] = useState("");
     let [sending, setSending] = useState<boolean>(false);
 
-    let navigate = useNavigate();
-
-    function sendVerification(email : string){
-        setVerify(true);
-        console.log(email);
-        setStartTimer(true);
-    }
     function turnToSetPwPage(){
-
         if(isCodeValid==false || email === ""){
-            alert("이메일 인증을 완료해주세요")
+            setAlertPopupTitle(() => "이메일 인증을 완료해주세요");
+            setAlertPopupFlag(() => true);
             return;
         }
-        navigate("/changepassword");
+        setCompletePopupFlag(() => true);
 
     }
     ///////////////////////
     //이메일 인증코드 보내기
     ///////////////////////
     function verifyEmail(email:string){
-        //유효 이메일 형식 인증 로직
-        const regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-        if(email === "") {
-            alert("이메일을 입력해주세요")
-        } else if (regex.test(email)) {
+        if(EmailCheck(email)){
             sendVerificationCode()
                 .then((res)=> {
                     setSending(false);
                 if(res){
-                    alert(`${res.message}`)
-                    console.log(res);
+                    setAlertPopupTitle(() => "성공적으로 비밀번호 찾기<br/>인증메일을 전송하였습니다.");
+                    setAlertPopupFlag(() => true);
                     setStartTimer(true);
                     setVerify(true);
                 }
@@ -64,7 +76,8 @@ const FindPassword = () => {
                 console.log(err);
             });
         } else {
-            alert("올바른 이메일을 입력해주세요")
+            setAlertPopupTitle(() => "올바른 이메일을 입력해주세요");
+            setAlertPopupFlag(() => true);
         }
     
         interface userData {
@@ -129,27 +142,18 @@ const FindPassword = () => {
             try {
                 const response: AxiosResponse<customI> = await api.post(`/email/auth?email=${email}`, data);
                 setIsCodeValid(true); //코드가 유효한지 확인
-                setVerifiedCode(code);
                 setverifiedEmail(email);
-                setCodeMsg(response.data.message)
-                console.log(response.data.message);
+                setCodeMsg(response.data.message);
                 return response.data
             } catch (error) {
                 const err = error as CustomError;
                 const msg = err?.response?.data?.message;
                 setIsCodeValid(false); //코드가 유효한지 확인
                 setCodeMsg(msg as string);
-                console.log(codeMsg);
-                // return err;
             }
         }
         checkVerificationCode().then((res)=>{
             res
-            // if(res){
-            //     setIsCodeValid(true); //코드가 유효한지 확인
-            //     setCodeMsg(res.message)
-            //     console.log(res);
-            // }
         })
         .catch((err) => {
             console.log(err);
@@ -233,13 +237,11 @@ const FindPassword = () => {
         <div className={style.btn_area}>
             <button onClick={()=>{turnToSetPwPage()}} style={{fontWeight:"bold"}} type="submit">새 비밀번호 등록</button>
         </div>
-
+        <AlertPopup PopupInfo={AlertPopupInfo} />
+        <AlertPopup PopupInfo={CompletePopupInfo} />
     </section>
     </div>
     );
-    //인증버튼 누르면 
-    //인증코드 전송 
-   
 
 };
 
