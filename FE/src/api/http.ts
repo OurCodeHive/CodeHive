@@ -75,32 +75,6 @@ authHttp.interceptors.request.use(
     }
 )
 
-// authHttp.interceptors.response.use(
-//     async (response : IResponse): Promise<any> => {
-//       const { config, status } = response; //response의 config 파일
-//       const originalRequest = config;
-
-//       if (response.data.accessToken && response.data.grantType === "Bearer") {
-//         const accessToken = response.data.accessToken;
-//         localStorage.setItem("accessToken", accessToken);
-//         originalRequest.headers.Authorization = `Bearer ${accessToken}`
-//         console.log("access renewed!");
-//         return await axios(originalRequest).then((res)=>{
-//             console.log(res);
-//         }).catch((err) => {
-//             console.log("errr");
-//             console.log(err);
-//         })
-//       }
-//       return response;
-//     },
-//     // 에러
-//     (error) => {
-//       console.log(error, '^^***')
-//       throw error
-//     }
-//   )
-
 const formHttp : AxiosInstance = axios.create({
     baseURL : import.meta.env.VITE_APP_SERVER as string,
     timeout: 10000,
@@ -128,17 +102,3 @@ formHttp.interceptors.request.use(
 )
 
 export {authHttp, nonAuthHttp, formHttp};
-
-////////////////
-//previous code 
-////////////////
-
-// export default axios.create({
-//     // baseURL : 'http://localhost:8080/api',
-//     baseURL : 'https://hiveapi.minsungblog.com/api',
-//     timeout: 100000,
-//     headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization' : 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJma2F1czc1OUBuYXZlci5jb20iLCJ1c2Vyc19pZCI6IjEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjkwNDM3MTA1fQ.5Ev0wh7vc4tslcaB2hiIiwed4zQSi9ABdkw8MXUDvtY'
-//     },
-// });
