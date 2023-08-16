@@ -16,7 +16,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
 
-const StudyViewMenu = ({Contents} : {Contents?: StudyType}) => {
+const StudyViewMenu = ({Contents, fetchData} : {Contents?: StudyType, fetchData:() => void}) => {
   const navigate = useNavigate();
   const userId = useRecoilValue(userState).userId;
   const leaderFlag:boolean = CheckUserId(Contents?.users_id as number);
@@ -65,8 +65,8 @@ const StudyViewMenu = ({Contents} : {Contents?: StudyType}) => {
     maxWidth: 800,
     ClosePopupProp : () => studyUpdateChangePopupFlag(false),
     PopupTitle : "스터디 수정",
-    PopupContents : <UpdateStudyInfo studyUpdate={StudyUpdate} closePopup={() => studyUpdateChangePopupFlag(false)}/>,
-    // ConfirmPopupProp : () => setupdatePopupFlag(false),
+    PopupContents : <UpdateStudyInfo fetchData={fetchData} studyUpdate={StudyUpdate} closePopup={() => studyUpdateChangePopupFlag(false)}/>,
+    ConfirmPopupProp : () => studyUpdateChangePopupFlag(false),
   }
   function doLogout() {
     const aT = localStorage.getItem("accessToken");

@@ -23,18 +23,11 @@ const ConfirmPopup: React.FC<PopupType> = ({PopupInfo}) => {
               <div className={`col-12 ${PopupStyle.popup_inner}`}>
                 <div className={`col-12 ${PopupStyle.popup_contents_con}`}>
                   <div className={`col-12 ${PopupStyle.popup_contents}`}>
-                    <div style={{
-                      fontWeight:"bold",
-                      fontSize:"23px",
-                      color:"#333"
-                      }} className={`col-12 tc mb21 ${PopupStyle.headline}`} dangerouslySetInnerHTML={{__html : PopupInfo.PopupTitle}}></div>
+                    <div className={`col-12 tc mb21 ${PopupStyle.headline}`} dangerouslySetInnerHTML={{__html : PopupInfo.PopupTitle}}></div>
                   </div>
                   <div className={`col-12 tc ${PopupStyle.confirm_btn_style_0_con}`}>
                     <button type="button"
-                    style={{
-                      backgroundColor:"yellowgreen"
-                    }}
-                    className={`col-6 btn_style_0 bg_point ${PopupStyle.confirm_btn_style_0}`} onClick={confirmPopup}>확인</button>
+                    className={`col-6 btn_style_0 bg_point1 ${PopupStyle.confirm_btn_style_0}`} onClick={confirmPopup}>확인</button>
                     <button type="button" className={`col-6 btn_style_0 bg_a2a2a2 ${PopupStyle.confirm_btn_style_0}`} onClick={cancelPopup}>취소</button>
                   </div>
                 </div>

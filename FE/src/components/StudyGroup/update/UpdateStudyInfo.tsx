@@ -10,7 +10,7 @@ import { StudyUpdateType, StudyType } from '@/type/StudyType';
 
 
 
-const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, studyUpdate:StudyUpdateType}) => {
+const UpdateStudyInfo = ({closePopup, studyUpdate, fetchData}:{closePopup: () => void, studyUpdate:StudyUpdateType, fetchData:() => void}) => {
     const today = new Date();
     const userId = useRecoilValue(userState).userId;
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
@@ -91,13 +91,15 @@ const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, stud
                 param.append("profile", profileInput.current?.files[i]);
             }   
         }
-        console.log("------------------------------")
-        for (let pair of param.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
-        console.log("------------------------------")
+        // console.log("------------------------------")
+        // for (let pair of param.entries()) {
+        //     console.log(pair[0] + ': ' + pair[1]);
+        // }
+        // console.log("------------------------------")
         await updateStudyInfoData(param, ({data}) => {
             // updateIdx(data.studyinfoId);
+            fetchData();
+            closePopup();
         }, () => {
             alert("생성에 실패했습니다.");
         })
