@@ -44,14 +44,21 @@ const List = ({refreshFlag} : {refreshFlag : boolean}) => {
     return (
         <div className="col-12">
             <ListFilter searchKeyWord={searchKeyWord}/>
-            <ul className="col-12">
-            {
-                studyList.length > 0
-                ? studyList.map((item, index) =><LnbListItem key={index} item={item} SelectedFlag={studyinfoId == item.studyinfoId} ref={scrollRef} />)
-                : <div className={`col-12 ${LnbStyle.no_data}`}>해당하는 스터디가 없습니다.</div>
-            }
-            </ul>
-        </div>
+                <ul style={{
+                    paddingTop:"20px"
+                }} className="col-12">
+                {
+                    studyList.length > 0
+                    ? 
+                    studyList.map((item, index) =>
+
+                    <LnbListItem key={index} item={item} SelectedFlag={studyinfoId == item.studyinfoId} ref={scrollRef} />)
+                    : 
+                    
+                    <div className={`col-12 ${LnbStyle.no_data}`}>해당하는 스터디가 없습니다.</div>
+                }
+                </ul>
+         </div>
     )
 };
 

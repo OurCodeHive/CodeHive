@@ -9,7 +9,7 @@ import MedalIcon from '@/res/img/medal_icon.png';
 import ManDateIcon from '@/res/img/mandate_icon.png';
 import DropIcon from '@/res/img/drop_icon.png';
 
-const ListItem = ({ item, studyinfoId, refreshList }: { item: UserType, studyinfoId: number, refreshList : () => void }) => {
+const ListItem = ({ item, studyinfoId, refreshList, LeaderFlag, LeaderId }: { item: UserType, studyinfoId: number, refreshList : () => void, LeaderFlag:boolean, LeaderId:number|undefined }) => {
     let statusText = "대기";
     switch(item.status){
         case "ACCEPT" :
@@ -20,7 +20,7 @@ const ListItem = ({ item, studyinfoId, refreshList }: { item: UserType, studyinf
             break;
     }
     const userId = useRecoilValue(userState).userId;
-    const LeaderFlag = CheckUserId(item.userId);
+    const LeaderFlagOrigin = CheckUserId(item.userId);
     const notUserFlag = item.userId == -1;
     const param = {
         studyinfoId : studyinfoId,
@@ -76,16 +76,26 @@ const ListItem = ({ item, studyinfoId, refreshList }: { item: UserType, studyinf
             if(data.isForcedLeave) setDropPopupFlag(() => true);
         }, (error) => console.log(error));
     }
-
+    console.log(LeaderId)
     return (
-        <li className={`${LeaderFlag ? Style.leader : ""}`}>
-            <div className={Style.list_title}>{LeaderFlag ? <img src={MedalIcon} alt="방장 아이콘"/> : statusText}<span>{item.nickName} ({item.email})</span></div>
-            {!LeaderFlag && !notUserFlag && item.status != "BAN" ?
-                <div className={Style.list_btn_con}>
-                    <button type="button" onClick={() => void MandateRequest(item.userId)} className={Style.mandate_btn}><img src={ManDateIcon} alt="위임하기" /></button>
-                    <AlertPopup PopupInfo={MandatePopupInfo}/>
-                    <button type="button" onClick={() => void DropRequest(item.userId)}><img src={DropIcon} alt="강퇴하기" /></button>
-                    <AlertPopup PopupInfo={DropPopupInfo}/>
+        <li className={`${LeaderFlagOrigin ? Style.leader : ""}`}>
+            <div className={Style.list_title}>
+                { item.userId == LeaderId? 
+                <img src={MedalIcon} alt="방장 아이콘"/> : statusText}<span>{item.nickName} ({item.email})</span></div>
+            {!LeaderFlagOrigin && !notUserFlag && item.status != "BAN" ?
+                <div>
+                    {
+                        LeaderFlag?
+                        <div className={Style.list_btn_con}>
+                            <button type="button" onClick={() => void MandateRequest(item.userId)} className={Style.mandate_btn}><img src={ManDateIcon} alt="위임하기" /></button>
+                            <AlertPopup PopupInfo={MandatePopupInfo}/>
+                            <button type="button" onClick={() => void DropRequest(item.userId)}><img src={DropIcon} alt="강퇴하기" /></button>
+                            <AlertPopup PopupInfo={DropPopupInfo}/>
+                        </div>
+                        :
+                        null
+                    }
+
                 </div>
                 
                 : null
