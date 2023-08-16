@@ -74,7 +74,7 @@ const Comedy = () => {
         <>
         <div className={`col-12 mb5 ${ComedyStyle.comedy_title}`}>
             <span>코딩문학제 오늘의 작품</span>
-            <img onClick={refreshComedy} src={refresh} alt="코딩문학제 새로고침" />
+            <img onClick={refreshComedy} src={"https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/Refresh.png"} alt="코딩문학제 새로고침" />
         </div>
         <div className={`col-12 ${ComedyStyle.comedy_con}`}>
             <div className={`col-12 tc ${ComedyStyle.comedy_desc}`}>

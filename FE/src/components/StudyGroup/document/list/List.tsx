@@ -100,7 +100,7 @@ const DocumentList = ({studyinfoId} : {studyinfoId: number}) => {
 			</div>
 			<div className="col-12">
 				<Pagination PaginationInfo={PaginationInfo} />
-				<button type="button" className={`${StudyStyle.study_plus_btn} bg_point0`} onClick={openInsertPopup}>+</button>
+				<button type="button" style={{backgroundColor : "transparent"}} className={StudyStyle.study_plus_btn} onClick={openInsertPopup}>+</button>
 			</div>
 			<ContentsPopup PopupInfo={PopupInfo}/>
 		</div>
