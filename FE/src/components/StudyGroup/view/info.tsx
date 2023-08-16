@@ -13,6 +13,7 @@ import CalendarCRUD from './calendar/CalendarCRUD';
 const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag: boolean}) => {
   const enterName = Contents.enterName ? Contents.enterName : "notFound";
 
+    console.log(Contents)
 
     // 멤버 보기
     const [memberPopupFlag, setmemberPopupFlag] = useState(false);
@@ -23,7 +24,7 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
       maxWidth: 600,
       ClosePopupProp : () => changeMemberPopupFlag(false),
       PopupTitle : "멤버 보기",
-      PopupContents : <StudyUserList studyinfoId={Contents.studyinfoId} closePop={() => changeMemberPopupFlag(false)} />,
+      PopupContents : <StudyUserList LeaderId={Contents.users_id} LeaderFlag={LeaderFlag} studyinfoId={Contents.studyinfoId} closePop={() => changeMemberPopupFlag(false)} />,
     }
 
     // 일정 보기(닫는 함수 프롭스로 넘기기)
@@ -35,7 +36,7 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
       maxWidth: 800,
       ClosePopupProp : () => changeCalderPopupFlag(false),
       PopupTitle : "일정 보기",
-      PopupContents : <CalendarCRUD ClosePopupProp={() => setCalendarPopupFlag(false)}/>,
+      PopupContents : <CalendarCRUD LeaderFlag={LeaderFlag} ClosePopupProp={() => setCalendarPopupFlag(false)}/>,
     }
 
   return (
@@ -51,19 +52,14 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
                   <span>입장</span>
                 </a>
               </div>
-              {LeaderFlag
-                ? 
-                <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}
-                onClick={() => changeMemberPopupFlag(true)}
-                >
-                  <ContentsPopup PopupInfo={memberPopUpInfo}/>
-                  <div className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
-                    <img src={StudyViewMemberIcon} alt="멤버 아이콘" /><br/>
-                    <span>멤버</span>
-                  </div>
+              <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}
+              onClick={() => changeMemberPopupFlag(true)}>
+                <ContentsPopup PopupInfo={memberPopUpInfo}/>
+                <div className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
+                  <img src={StudyViewMemberIcon} alt="멤버 아이콘" /><br/>
+                  <span>멤버</span>
                 </div>
-                : null
-              }
+                </div>
               <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}
                 onClick={() => {
                   setCalendarPopupFlag(true)

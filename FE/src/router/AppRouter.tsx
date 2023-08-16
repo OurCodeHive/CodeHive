@@ -32,7 +32,7 @@ const AppRouter = () => {
           <Route path="/changepassword" element={<ChangePassword/>}/>
           <Route path="/home" element={<AppHome/>}/>
           <Route path="/timer" element={<TimerApp/>}/>
-          <Route path="/calendarcrud" element={<CalendarCRUD/>}/>
+          {/* <Route path="/calendarcrud" element={<CalendarCRUD/>}/> */}
         </Routes>
       </BrowserRouter>
     </>

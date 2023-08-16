@@ -3,6 +3,7 @@ import PopupStyle from "./css/Popup.module.css";
 
 const ContentsPopup: React.FC<PopupType> = ({PopupInfo}) => {
     let isOpen = PopupInfo.PopupStatus;
+    
     const closePopup = () => {
       isOpen = false;
       PopupInfo.ClosePopupProp(false);

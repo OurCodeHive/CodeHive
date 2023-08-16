@@ -151,9 +151,13 @@ function ChatFrameComp(props: Props) {
   return (
     <>
       <div className={`col-12 ${chatStyle.chat_con}`}>
-        <div className={`col-12 ${chatStyle.chat_box}`}>
+        <div  className={`col-12 ${chatStyle.chat_box}`}>
           <div className={`col-12 ${chatStyle.chat_list_con}`} style={{maxHeight : props.chatMaxHeight}}>
-            <ul className={`col-12 ${chatStyle.chat_list}`}>
+            <ul style={{
+              backgroundColor : "#00000060",
+              backdropFilter: "blur(10px)",
+              // borderRadius:"10px"
+              }} className={`col-12 ${chatStyle.chat_list}`}>
               {
                 chatList.map((value, index) => {
                   return (

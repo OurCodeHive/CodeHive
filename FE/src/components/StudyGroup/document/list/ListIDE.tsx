@@ -49,8 +49,8 @@ const DocumentListIDE = ({studyinfoId, closePopup} : {studyinfoId: number, close
     const completeInsert = () => {
         changePage(0);
         changePopupFlag(false);
-        console.log("call completeInsert")
-        console.log(ListContents)
+        // console.log("call completeInsert")
+        // console.log(ListContents)
     }
 
     const [popupFlag, setPopupFlag] = useState(false);
