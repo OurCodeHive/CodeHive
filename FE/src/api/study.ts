@@ -110,11 +110,11 @@ const getMemberList = async (param: object, success:({data} : {data : UserListTy
     await api.get("study/user/list", { params: param }).then(success).catch(fail);
 }
 
-const updateMemberMandate = async (param: object, success:({data} : {data: object}) => void, fail:(error:unknown) => void) => {
+const updateMemberMandate = async (param: object, success:({data} : {data: any}) => void, fail:(error:unknown) => void) => {
     await api.put(`/study/delegate`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-const updateMemberDrop = async (param: object, success:({data} : {data: object}) => void, fail:(error:unknown) => void) => {
+const updateMemberDrop = async (param: object, success:({data} : {data: any}) => void, fail:(error:unknown) => void) => {
     await api.post(`/study/force/leave`, JSON.stringify(param)).then(success).catch(fail);
 }
 
