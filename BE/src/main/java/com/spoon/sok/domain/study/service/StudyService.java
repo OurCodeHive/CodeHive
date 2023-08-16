@@ -3,6 +3,7 @@ package com.spoon.sok.domain.study.service;
 import com.spoon.sok.aws.S3Service;
 import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.dto.requestDTO.LeaveStudyRequestDTO;
+import com.spoon.sok.domain.study.dto.requestDTO.UpdateStudyInfoRequestDto;
 import com.spoon.sok.domain.study.dto.responseDTO.*;
 import com.spoon.sok.domain.study.entity.*;
 import com.spoon.sok.domain.study.dto.requestDTO.DelegateRequestDTO;
@@ -525,5 +526,21 @@ public class StudyService {
         }
 
         return data;
+    }
+
+    @Transactional
+    public void updateStudyInfo(UpdateStudyInfoRequestDto requestDto, List<MultipartFile> fileList) throws IOException {
+
+        Long studyInfoId = requestDto.getStudyInfoId();
+
+        StudyInfo studyInfo = studyRepository.findById(studyInfoId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id = " + studyInfoId));
+        requestDto.setProfile(studyInfo.getProfileImage());
+        // S3로 파일 업로드하고 문자열 받아오기
+        if (fileList != null) {
+            requestDto.setProfile(s3Service.upload(fileList.get(0)));
+        }
+        studyInfo.updateStudyInfo(requestDto);
+
     }
 }

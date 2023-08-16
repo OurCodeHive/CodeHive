@@ -1,5 +1,6 @@
 package com.spoon.sok.domain.study.entity;
 
+import com.spoon.sok.domain.study.dto.requestDTO.UpdateStudyInfoRequestDto;
 import com.spoon.sok.domain.user.entity.User;
 import com.spoon.sok.domain.user.entity.UserStudy;
 import jakarta.persistence.*;
@@ -92,5 +93,14 @@ public class StudyInfo {
     // 스터디 그룹의 방장 변경
     public void updateUsers(User user) {
         this.users = user;
+    }
+
+    // 스터디 정보 수정
+    public void updateStudyInfo(UpdateStudyInfoRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.description = requestDto.getDescription();
+        this.startAt = requestDto.getStartAt();
+        this.endAt = requestDto.getEndAt();
+        this.profileImage = requestDto.getProfile();
     }
 }
