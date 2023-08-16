@@ -48,7 +48,7 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
               <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}>
                 <a href={`/ide/${enterName}`} className={`col-12 ${StudyViewStyle.study_view_top_btn_inner} ${StudyViewStyle.study_view_top_btn_inner_enter}`}>
                   <img src={StudyViewEnterIcon} alt="화살표 아이콘" /><br/>
-                  <span>입장하기</span>
+                  <span>입장</span>
                 </a>
               </div>
               {LeaderFlag
@@ -59,7 +59,7 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
                   <ContentsPopup PopupInfo={memberPopUpInfo}/>
                   <div className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
                     <img src={StudyViewMemberIcon} alt="멤버 아이콘" /><br/>
-                    <span>멤버보기</span>
+                    <span>멤버</span>
                   </div>
                 </div>
                 : null
@@ -71,7 +71,7 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
                   <ContentsPopup PopupInfo={calendarPopUpInfo}/>
                 <div onClick={console.log} className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
                   <img src={StudyViewCalendarIcon} alt="시계 아이콘" /><br/>
-                  <span>일정보기</span>
+                  <span>일정</span>
                 </div>
               </div>
             </div>

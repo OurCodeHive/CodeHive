@@ -460,7 +460,7 @@ const Signup = () => {
     </div>
     );
     function checkPassword(input : string){
-        const regex = /^.*(?=^.{8,12}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+        const regex = /^.*(?=^.{8,12}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=*]).*$/;
           if (regex.test(input)) {
         //사용가능
             setPasswordOk(true);

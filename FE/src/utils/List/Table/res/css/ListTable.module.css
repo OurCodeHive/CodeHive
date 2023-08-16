@@ -1,6 +1,6 @@
-.table_style_0_con{overflow-x: auto;}
-.table_style_0_con .table_style_0{min-width: 500px; border: 2px solid #17181d; table-layout: fixed; border-collapse: collapse;}
-.table_style_0_con .table_style_0 thead tr{border-bottom: 3px solid #17181d;}
+.table_style_0_con{overflow-x: auto; border-radius: 5px;}
+.table_style_0_con .table_style_0{min-width: 500px; border: 1px solid #17181d; table-layout: fixed; border-collapse: collapse;}
+.table_style_0_con .table_style_0 thead tr{}
 .table_style_0_con .table_style_0 tbody tr{border-bottom: 1px solid #dadee8; background-color: #fff; transition: background 0.15s;}
 .table_style_0_con .table_style_0 tbody tr:hover{background-color: #faf9fc;}
 .table_style_0_con .table_style_0 tbody tr:last-child{border-bottom: 0px none;}

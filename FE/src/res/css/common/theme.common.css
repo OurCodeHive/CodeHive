@@ -13,8 +13,8 @@
 .sub_wrap .sub_contents{padding: 30px 40px; display: flex;}
 
 .headline{font-size: 33px; font-size: 3.3rem; line-height: 39px; line-height: 3.9rem; font-weight: 700; letter-spacing: -0.02em; color: #17181d;}
-.title{font-size: 25px; font-size: 2.5rem; line-height: 31px; line-height: 3.1rem; font-weight: 500; letter-spacing: -0.02em; color: #fff; }
-.sub_title{margin-top: 3px; font-size: 21px; font-size: 1.6rem; line-height: 27px; line-height: 2.7rem; font-weight: 500; letter-spacing: -0.02em; color: #ddd;}
+.title{font-size: 25px; font-size: 2.3rem; line-height: 31px; line-height: 3.1rem; font-weight: 600; letter-spacing: -0.02em; color: #fff; }
+.sub_title{margin-top: 3px; font-size: 21px; font-size: 1.5rem; line-height: 27px; line-height: 2.7rem; font-weight: 500; letter-spacing: -0.02em; color: #ddd;}
 .desc{font-size: 17px; font-size: 1.5rem; line-height: 23px; line-height: 2.3rem; font-weight: 400; letter-spacing: -0.02em; color: #b9ea16; margin-top: 3px; border-bottom: 1px solid #fff; padding-bottom: 3px;}
 
 /*필수 표시*/
