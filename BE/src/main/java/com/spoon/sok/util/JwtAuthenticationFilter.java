@@ -1,5 +1,7 @@
 package com.spoon.sok.util;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,12 +29,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = resolveToken((HttpServletRequest) request);
 
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            String isLogout = (String) redisTemplate.opsForValue().get(token);
+        if (token != null) {
+            if (jwtTokenProvider.validateToken(token)) {
+                String isLogout = (String) redisTemplate.opsForValue().get(token);
 
-            if (ObjectUtils.isEmpty(isLogout)) {
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (ObjectUtils.isEmpty(isLogout)) {
+                    Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
         }
 

@@ -1,6 +1,8 @@
 package com.spoon.sok.domain.user.entity;
 
 import com.spoon.sok.domain.study.entity.StudyInfo;
+import com.spoon.sok.domain.user.auth.OAuth2UserInfo;
+import com.spoon.sok.domain.user.auth.AuthProvider;
 import com.spoon.sok.domain.user.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,8 +37,10 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String nickname;
 
-    @Column(name = "social_login")
-    private int socialLogin;
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider;
+
+    private String oauth2Id;
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
@@ -62,17 +66,27 @@ public class User implements UserDetails {
     private List<String> roles = new ArrayList<>();
 
     @Builder
-    public User (String email, String password, String nickname, int socialLogin, UserStatus status, LocalDateTime createdAt) {
+    public User (String email, String password, String nickname, AuthProvider authProvider, UserStatus status, LocalDateTime createdAt) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.socialLogin = socialLogin;
+        this.authProvider = authProvider;
         this.status = status;
         this.createdAt = createdAt;
     }
 
     public void updatePassword(String password) {
         this.password = password;
+    }
+
+    public void updateUserInfo(String email, String password, String nickname) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+    }
+
+    public void updateUserStatus(UserStatus status) {
+        this.status = status;
     }
 
     @Override
@@ -105,5 +119,12 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User update(OAuth2UserInfo oAuth2UserInfo) {
+        this.email = oAuth2UserInfo.getEmail();
+        this.oauth2Id = oAuth2UserInfo.getOAuth2Id();
+
+        return this;
     }
 }

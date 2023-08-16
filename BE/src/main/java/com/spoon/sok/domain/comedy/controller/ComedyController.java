@@ -8,12 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -23,14 +22,15 @@ public class ComedyController {
 
     private final ComedyService comedyService;
 
+    // 코딩문학제 조회해서 가지고오기
     @GetMapping("comedy")
-    public ResponseEntity<?> comedy(@RequestParam("random") String comedyId) {
-        Optional<CodingLiterature> comedy = comedyService.getComedy(comedyId);
+    public ResponseEntity<?> comedy() {
+        List<CodingLiterature> comedyList = comedyService.getComedy();
 
         Map<String, Object> response = new HashMap<>();
 
         response.put("status", 200);
-        response.put("comedy", comedy);
+        response.put("comedy", comedyList);
         response.put("message", "코딩문학제 로딩 완료");
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
