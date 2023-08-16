@@ -16,7 +16,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
 
-const StudyViewMenu = ({Contents, fetchData} : {Contents?: StudyType, fetchData:() => void}) => {
+const StudyViewMenu = ({Contents, fetchData} : {Contents?: StudyType, fetchData?:any}) => {
   const navigate = useNavigate();
   const userId = useRecoilValue(userState).userId;
   const leaderFlag:boolean = CheckUserId(Contents?.users_id as number);

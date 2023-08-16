@@ -1,12 +1,13 @@
 import { useState, useRef } from 'react';
-import { updateStudyInfoData } from "@/api/study";
-import { useRecoilValue } from 'recoil';
+import { updateStudyInfoData, getList } from "@/api/study";
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { AlertPopup } from "@/utils/Popup";
 import CustomEditor from "@/utils/CustomEditor/CustomEditor";
 import CustomDatePicker from "@/utils/CustomDatePicker";
 import FileInput from "@/utils/FileInfo/Input";
 import { StudyUpdateType, StudyType } from '@/type/StudyType';
+import { SidebarContentAtom } from "@/atom/SidebarContentAtom";
 
 
 
@@ -23,6 +24,9 @@ const UpdateStudyInfo = ({closePopup, studyUpdate, fetchData}:{closePopup: () =>
     const [startDate, setStartDate] = useState(studyUpdate.startAt);
     const [endDate, setEndDate] = useState(studyUpdate.endAt);
     const profileInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+
+    const [studyList, setStudyList] = useRecoilState(SidebarContentAtom);
+
 
     const AlertPopupInfo = {
         PopupStatus : AlertPopupFlag,
@@ -42,6 +46,18 @@ const UpdateStudyInfo = ({closePopup, studyUpdate, fetchData}:{closePopup: () =>
 
     const convertDateType = (stringDate: string) => {
         return new Date(stringDate);
+    }
+
+
+
+    async function fetchData2(){
+        let originStudyList = [] as Array<StudyType>;
+        const param2 = {user : userId};
+        await getList(param2, ({data}) => {
+            originStudyList = data.studyList;
+            setStudyList(originStudyList);
+        },
+        (error) => {console.log(error);});
     }
 
     //폼 submit 이벤트
@@ -97,8 +113,9 @@ const UpdateStudyInfo = ({closePopup, studyUpdate, fetchData}:{closePopup: () =>
         // }
         // console.log("------------------------------")
         await updateStudyInfoData(param, ({data}) => {
-            // updateIdx(data.studyinfoId);
+
             fetchData();
+            fetchData2();
             closePopup();
         }, () => {
             alert("생성에 실패했습니다.");
