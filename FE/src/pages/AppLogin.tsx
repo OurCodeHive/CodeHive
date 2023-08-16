@@ -93,10 +93,9 @@ const Login = () => {
       
         async function doLogin(): Promise<userData | undefined> {
             try {
-                loginNotify()
               ///
               const response: AxiosResponse<userData> = await nonAuthHttp.post("login/user", user);
-              console.log(response.data);
+            //   console.log(response.data);
 
               let len = response.data.accessToken.length;
               let accessToken = response.data.accessToken.slice(1,len-1);
@@ -108,12 +107,12 @@ const Login = () => {
                 userId : response.data.userId,
                 nickname : response.data.nickname,
                 accessToken : accessToken});
-
+                loginNotify()
                 // const aT = await loginPromise('accessToken', JSON.stringify(response.data.accessToken));
                 await loginPromise('expireAt', moment().add(3, "minute").format("yyyy-MM-DD HH:mm:ss"));
                 await loginPromise('accessToken', response.data.accessToken);
 
-
+                // loginNotify()
                 // aT.then(()=>{navigate("/home")}).catch(console.log)
                 // let setLocalStorage = new Promise((res, rej) =>{
                 navigate("/home");
@@ -138,7 +137,8 @@ const Login = () => {
 
           doLogin()
           .then((res)=>{
-            console.log(res);
+            // console.log(res);
+
             // navigate("/home")
             // alert("로그인 되었습니다");
           })
