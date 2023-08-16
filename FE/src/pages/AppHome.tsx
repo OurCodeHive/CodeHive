@@ -35,7 +35,7 @@ const AppHome = () => {
                     <div className="col-12">
                         
                         <div className="col-12 col-md-6 pl-md-15 pr-md-15">
-                        <div className={`col-12 mb30 ml25 mt40 ${HomeStyle.greeting}`}>
+                        <div className={`col-12 mb52 ml25 mt40 ${HomeStyle.greeting}`}>
                             좋은 {day}, {loginUser.nickname}님
                         </div>
                             <div className="col-12 mb20 ml30"><Comedy></Comedy></div>

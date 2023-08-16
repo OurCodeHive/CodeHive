@@ -18,7 +18,9 @@ const Schedule = () => {
     let [data, setData] = useState<ISchedule[]>([] as ISchedule[]);
 
     useEffect(()=>{
-        const today = new Date().toISOString().slice(0,10)
+        const offset = 1000 * 60 * 60 * 9
+        const koreaNow = new Date((new Date()).getTime() + offset)
+        const today = koreaNow.toISOString().replace("T", " ").split('.')[0].slice(0,10)
         authHttp.get<ScheduleData>(`/today/study?today=${today}`).then((res)=>{
             const {today} = res.data;
             if(today){
