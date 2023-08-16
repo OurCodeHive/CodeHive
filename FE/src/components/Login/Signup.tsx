@@ -44,7 +44,7 @@ const Signup = () => {
     const AlertPopupInfo = {
         PopupStatus : AlertPopupFlag,
         zIndex : 10000,
-        maxWidth: 500,
+        maxWidth: 600,
         PopupTitle : AlertPopupTitle,
         ClosePopupProp : () => changePopupFlag(false),
     }

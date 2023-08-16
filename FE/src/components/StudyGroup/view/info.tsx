@@ -78,7 +78,7 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
           </div>
           <div className={`col-12 ${StudyViewStyle.study_view_top_info_con}`}>
             <div className="col-12 title">{Contents?.title}</div>
-            <div className="col-12 desc">{Contents?.endAt} ~ {Contents?.endAt}</div>
+            <div className="col-12 desc">{Contents?.startAt} ~ {Contents?.endAt}</div>
             <div className="col-12 sub_title"><CustomEditorResult param={Contents?.description as string}/></div>
           </div>
         </div>
