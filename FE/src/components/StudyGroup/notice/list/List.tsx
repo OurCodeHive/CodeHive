@@ -98,7 +98,7 @@ const NoticeList = ({studyinfoId, studyLeaderId} : {studyinfoId:number, studyLea
             </div>
             <div className="col-12">
                 <Pagination PaginationInfo={PaginationInfo} />
-                {LeaderFlag ? 
+                {LeaderFlag.current ? 
                 <button type="button" style={{backgroundColor : "transparent"}} className={StudyStyle.study_plus_btn} onClick={openInsertPopup}>+</button>
                 : null}
             </div>
