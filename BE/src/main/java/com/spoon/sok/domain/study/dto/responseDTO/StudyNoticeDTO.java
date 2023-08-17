@@ -30,12 +30,12 @@ public class StudyNoticeDTO {
     }
 
     // 추가 생성자: studyboardId를 제외한 필드들을 인자로 받는 생성자
-    public StudyNoticeDTO(Long authorId, String noticeTitle, String content, Date uploadAt) {
-        this.authorId = authorId;
-        this.noticeTitle = noticeTitle;
-        this.content = content;
-        this.uploadAt = uploadAt;
-    }
+//    public StudyNoticeDTO(Long authorId, String noticeTitle, String content, Date uploadAt) {
+//        this.authorId = authorId;
+//        this.noticeTitle = noticeTitle;
+//        this.content = content;
+//        this.uploadAt = uploadAt;
+//    }
 
     public StudyNotice toEntity(User author, StudyInfo studyinfo) {
         return StudyNotice.builder()
