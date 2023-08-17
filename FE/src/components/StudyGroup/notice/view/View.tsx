@@ -89,7 +89,7 @@ const NoticeView = ({studyBoardId, changePopup, closePopup, studyLeaderId} : {st
             </div>
             <div className="col-12 tc btn_style_0_con">
                 <button type="button" className="btn_style_0 bg_a2a2a2" onClick={() => closePopup(false)}>닫기</button>
-                {LeaderFlag
+                {LeaderFlag.current
                     ?
                     <div className='ml15 show'>
                         <button type="button" className="btn_style_0 bg_point0" onClick={() => updateNotice()}>변경</button>

@@ -89,15 +89,15 @@ const StudyInsert1Step = ({closePop, updateIdx} : {closePop: () => void, updateI
             <div className="col-12 mb37 form_style_0_con">
                 <div className="col-12 form_style_0">
                     <div className="col-12 col-md-0 label_box">
-                        <label htmlFor="studyInsertTitle" className="essential">제목</label>
+                        <label htmlFor="studyInsertTitle" className="essential">스터디 이름</label>
                     </div>
                     <div className="col-12 col-md-0 input_box">
-                        <input type="text" id="studyInsertTitle" className="input_style_0" placeholder="제목을 입력해주세요" ref={titleInput} />
+                        <input type="text" id="studyInsertTitle" className="input_style_0" placeholder="스터디 이름을 입력해주세요" ref={titleInput} />
                     </div>
                 </div>
                 <div className="col-12 form_style_0">
                     <div className="col-12 col-md-0 label_box">
-                        <span>내용</span>
+                        <span>설명</span>
                     </div>
                     <div className="col-12 col-md-0 input_box">
                         <CustomEditor editorRef={descInput}/>
