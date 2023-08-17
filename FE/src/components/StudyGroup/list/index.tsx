@@ -55,7 +55,7 @@ const List = ({refreshFlag} : {refreshFlag : boolean}) => {
                     <LnbListItem key={index} item={item} SelectedFlag={studyinfoId == item.studyinfoId} ref={scrollRef} />)
                     : 
                     
-                    <div className={`col-12 ${LnbStyle.no_data}`}>해당하는 스터디가 없습니다.</div>
+                    <div className={`col-12 ${LnbStyle.no_data}`}>가입된 스터디가 없습니다.</div>
                 }
                 </ul>
          </div>

@@ -129,12 +129,11 @@ function CalendarApp() {
     <div className={style.popover}>
       <div className={style.popover_title}>{clickedDate}</div>
       {selectedDateInfo.map((schedule, index) => (
-        <div key={`popover-schedule-${index}`}>
+        <div className={style.study_item} key={`popover-schedule-${index}`}>
         <div className={style.study_title} key={`popover-schedule-${index}`}>
           {schedule.title} 
         </div>
         <div>{schedule.startTime.slice(11,16)} - {schedule.endTime.slice(11,16)}</div>
-        <hr />
         </div>
       ))}
     </div>
