@@ -71,13 +71,14 @@ public class StudyService {
 //        return studyRepository.findByTodayStudyMeetingsQuery(today, userId);
 //    }
 
-    public List<StudyAppointmentResponseDTO> getFormattedTodayStudyMeeting(Date today, String userId) {
-        List<StudyAppointmentDTO> todayStudyMeetingList = studyRepository.findByTodayStudyMeetingsQuery(today, userId);
-        List<StudyAppointmentResponseDTO> responseDTOList = new ArrayList<>();
+    public List<FixResponseStudyAppointmentDTO> getFormattedTodayStudyMeeting(Date today, String userId) {
+        List<FixStudyAppointmentDto> todayStudyMeetingList = studyRepository.findByTodayStudyMeetingsQuery(today, userId);
+        List<FixResponseStudyAppointmentDTO> responseDTOList = new ArrayList<>();
 
-        for (StudyAppointmentDTO appointment : todayStudyMeetingList) {
-            StudyAppointmentResponseDTO responseDTO = StudyAppointmentResponseDTO.builder()
-                    .id(appointment.getStudyinfoId())
+        for (FixStudyAppointmentDto appointment : todayStudyMeetingList) {
+            FixResponseStudyAppointmentDTO responseDTO = FixResponseStudyAppointmentDTO.builder()
+                    .studyappointmentId(appointment.getStudyappointmentId())
+                    .studyinfoId(appointment.getStudyinfoId())
                     .title(appointment.getTitle())
                     .meetingAt(appointment.getMeetingAt())
                     .startTime(appointment.getStartTime())
