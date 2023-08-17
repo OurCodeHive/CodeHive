@@ -170,7 +170,7 @@ function getCalendar():Promise<Schedule[]> {
       PopupStatus : ConfirmAddPopupFlag,
       zIndex : 10000,
       maxWidth: 440,
-      PopupTitle : "새로운 일정을 등록하시겠습니까?<br/>생성된 일정은 스터디에 속한 팀원 모두에게 공유됩니다.",
+      PopupTitle : "새로운 일정을 등록하시겠습니까?<br/>생성된 일정은 팀원 모두에게 공유됩니다.",
       ClosePopupProp : () => changeConfirmAddPopupFlag(false),
       ConfirmPopupProp : () => void addSchedule()
     }
