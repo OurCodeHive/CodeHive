@@ -32,6 +32,10 @@ const insertData = async (param: FormData, success: ({data} : {data: StudyType})
     await formApi.post(`/study`, param).then(success).catch(fail);
 }
 
+const updateStudyInfoData = async (param:FormData, success:({data}: {data:StudyUpdateType}) => void, fail:() => void) => {
+    await formApi.put(`/study`, param).then(success).catch(fail);
+}
+
 /**
  * invite member
  * @param param { param : object }
@@ -110,12 +114,12 @@ const getMemberList = async (param: object, success:({data} : {data : UserListTy
     await api.get("study/user/list", { params: param }).then(success).catch(fail);
 }
 
-const updateMemberMandate = async (param: object, success:({data} : {data: object}) => void, fail:(error:unknown) => void) => {
+const updateMemberMandate = async (param: object, success:({data} : {data: any}) => void, fail:(error:unknown) => void) => {
     await api.put(`/study/delegate`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-const updateMemberDrop = async (param: object, success:({data} : {data: object}) => void, fail:(error:unknown) => void) => {
+const updateMemberDrop = async (param: object, success:({data} : {data: any}) => void, fail:(error:unknown) => void) => {
     await api.post(`/study/force/leave`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-export {getList, insertData, inviteMember, inviteProcess, studyQuit, getView, getNoticeList, getNoticeView, insertNoticeData, updateNoticeData, removeNoticeData, getDocumentList, getDocumentView, deleteStudyfile, updateStudyFile, insertStudyFile, getMemberList, updateMemberMandate, updateMemberDrop };
+export {getList, insertData, inviteMember, inviteProcess, studyQuit, getView, getNoticeList, getNoticeView, insertNoticeData, updateNoticeData, removeNoticeData, getDocumentList, getDocumentView, deleteStudyfile, updateStudyFile, insertStudyFile, getMemberList, updateMemberMandate, updateMemberDrop, updateStudyInfoData };

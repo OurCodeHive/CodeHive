@@ -6,7 +6,7 @@
     /* margin-top: 50px;
     margin-left: 50px; */
     width: 400px;
-    background: #ffffffa5;
+    background: #000000cc;
     border-radius: 10px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.12);
   }
@@ -17,7 +17,7 @@
     justify-content: space-between;
   }
   .header {
-      color: #45A4B8;
+      color: #b9ea16;
       font-size: 16px;
       font-weight: bold;
   }
@@ -29,7 +29,7 @@
     width: 38px;
     margin: 0 1px;
     cursor: pointer;
-    color: #45A4B8;
+    color: #b9ea16;
     text-align: center;
     line-height: 38px;
     font-size: 1.9rem;
@@ -40,7 +40,7 @@
     margin-right: -10px;
   }
   header .icons span:hover{
-    background: #f2f2f2;
+    background: #b9ea1662;
   }
   header .current-date{
     font-size: 1.45rem;
@@ -59,7 +59,7 @@
     margin-bottom: 20px;
   }
   .calendar li{
-    color: #333;
+    color: #fff;
     width: calc(100% / 7);
     font-size: 1.07rem;
   }
@@ -105,17 +105,16 @@
     transform: translate(-50%, -50%);
   }
   .days li.active::before{
-    background: #45a5b8bf;
+    background: #b9ea1679;
   }
   .days li:not(.active):hover::before{
-    background: #45a5b875;
+    background: #b9ea1631;
   }
   
   .popover_right {
     overflow-y: scroll;
     position: absolute;
-    background-color: #6aa3ae4f;
-    border: 1px solid #ccc;
+    background-color: #80a20fc6;
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -144,7 +143,7 @@
     display: block;
     width: 6px;
     height: 6px;
-    background-color: red;
+    background-color: #b9ea16;
     border-radius: 50%;
     position: absolute;
     top: 30px;
@@ -209,8 +208,7 @@
     left: calc(57% + 205px); 
     width: 200px;
     height: 170px;
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
+    background-color: #000000c8;
     border-radius: 8px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     padding: 10px;
@@ -226,35 +224,39 @@
     left: -26px; 
     border-width: 13px;
     border-style: solid;
-    border-color: transparent #f8d247 transparent transparent; 
+    border-color: transparent #000000c8 transparent transparent; 
   }
   .edit_popover::before {
     top: 10px;
     bottom: 140px;
   }
   .add_popover_title {
+    color: #fff;
     display: block;
     text-align: center;
     font-size: 13px;
     font-weight: bold;
-    border-bottom: 2px solid #FFDF2B;
+    border-bottom: 2px solid #b9ea16;
     margin-bottom: 10px;
   }
 
   .add_popover label {
+    color: #fff;
     margin-top: 5px;
     margin-bottom: 2px;
     width: 40px;
   }
   .popover_title {
-    background-color: #33758279 ;
-    color: white;
+    background-color: #00000070 ;
+    color: #fff;
     font-size: 14px;
     text-align: center;
     padding: 3px 3px;
     border-radius: 6px;
   }
   .add_popover input {
+    background-color: transparent;
+    color: #fff;
     font-size: 12px;
     width: 100%;
     height: 20px;
@@ -263,6 +265,9 @@
     border-radius: 4px;
     margin-bottom: 5px;
   }
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.9) sepia(0) saturate(10) hue-rotate(175deg);
+ }
   .title_input {
     margin-left: -3px;
   }
@@ -292,12 +297,12 @@
   } 
   .button_wrapper button:nth-child(2){
     color: black;
-    background-color: #f2d980;
+    background-color: #b9ea16;
     border: none;
     border-radius: 5px;
   }
   .button_wrapper button:nth-child(2):hover{
-    background-color: #f8d247;
+    background-color: #9ec61b;
   }
 
   .offBox{
@@ -309,14 +314,14 @@
     color: black;
     margin-top: 2%;
     margin-left: 45%;
-    background-color: #f2d980;
+    background-color: yellowgreen;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 60px;
-    height: 30px;
+    width: 80px;
+    height: 35px;
 
   }
   .offPopup:hover{
-    background-color: #f8d247;
+    background-color: yellowgreen;
   }

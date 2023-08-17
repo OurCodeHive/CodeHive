@@ -23,7 +23,9 @@ const AlertPopup: React.FC<PopupType> = ({PopupInfo}) => {
                     <div className={`col-12 tc mb21 ${PopupStyle.headline}`} dangerouslySetInnerHTML={{__html : PopupInfo.PopupTitle}}>
                     </div>
                     <div className="col-12 tc btn_style_0_con">
-                      <button className="btn_style_0 bg_black" onClick={closePopup}>확인</button>
+                      <button 
+                      style={{}}
+                      className="btn_style_0 bg_black" onClick={closePopup}>확인</button>
                     </div>
                   </div>
                 </div>

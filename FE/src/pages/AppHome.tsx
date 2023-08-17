@@ -33,18 +33,19 @@ const AppHome = () => {
                 <div className="col-12 sub_contents" style={{backgroundColor: "#ffffff20"}}>    
                     <Lnb/>
                     <div className="col-12">
-                        <div className="col-12 mb20">
-                            <StudyViewMenu/>
-                        </div>
+                        
                         <div className="col-12 col-md-6 pl-md-15 pr-md-15">
-                        <div className={`col-12 mb30 ml25 ${HomeStyle.greeting}`}>
+                        <div className={`col-12 mb40 ml25 mt40 ${HomeStyle.greeting}`}>
                             좋은 {day}, {loginUser.nickname}님
                         </div>
                             <div className="col-12 mb20 ml30"><Comedy></Comedy></div>
                             <Timer></Timer>
                         </div>
                         <div className="col-12 col-md-6 pl-md-15 pr-md-15">
-                            <div className="col-12 mb20 ml30"><CalendarApp></CalendarApp></div>
+                            <div className={`col-12 mb20`}>
+                                <StudyViewMenu/>
+                            </div>
+                            <div className="col-12 mb20 ml30" style={{zIndex:"1"}} ><CalendarApp></CalendarApp></div>
                             <div className="col-12 ml30"><Schedule></Schedule></div>
                         </div>
                     </div>

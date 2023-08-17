@@ -14,32 +14,41 @@ const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId
 
 const StudyView = () => {
   const [ViewContents, setViewContents] = useState<StudyType>({} as StudyType);
+  const [studyLeaderId, setStudyLeaderId] = useState(0);
+
   const LeaderFlag: boolean = CheckUserId(ViewContents?.users_id as number);
   const initIdx = 0;
   const TabContents = [] as TabType[];
-  TabContents.push({title : "공지사항", contents : <NoticeList studyinfoId={studyinfoId} studyLeaderId={ViewContents.users_id!} />});
+  if (studyLeaderId != 0) {
+    TabContents.push({title : "공지", contents : <NoticeList studyinfoId={studyinfoId} studyLeaderId={studyLeaderId} />});
+  }
   TabContents.push({title : "자료", contents : <DocumentList studyinfoId={studyinfoId} />});
+  
+  async function fetchData() {
+    await getView(studyinfoId, ({data}) => {
+      setViewContents(data);
+      setStudyLeaderId(data.users_id!);
+    }, (error) => {console.log(error)});
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      await getView(studyinfoId, ({data}) => {
-        setViewContents(data);
-      }, (error) => {console.log(error)});
-    }
     void fetchData();
   }, []);
 
   return (
     <div className="col-12">
-      <div className="col-12 mb30">
-        <StudyViewMenu Contents={ViewContents} />
-      </div>
+
       <div className="col-12 col-md-8 pl30 pr15">
           <StudyViewInfo Contents={ViewContents} LeaderFlag={LeaderFlag} />
           <Tab initIdx={initIdx} TabList={TabContents} />
       </div>
       <div className="col-12 col-md-4 pl15">
-        <ChatFrameComp id={String(studyinfoId)} chatMaxHeight='300px' />
+        <div className="col-12 mb30">
+          <StudyViewMenu Contents={ViewContents} fetchData={fetchData}/>
+        </div>
+        <div className='col-12 mt30'>
+        <ChatFrameComp id={String(studyinfoId)} chatMaxHeight='420px' />
+        </div>
       </div>
     </div>
   )

@@ -1,5 +1,6 @@
 import React from 'react';
 import axios, { AxiosResponse } from 'axios';
+import { AlertPopup } from '@/utils/Popup';
 import { useEffect, useState, useCallback } from 'react';
 import style from "@/res/css/page/FindPassword.module.css"
 import logo from "@/res/img/codehive_logo.png"
@@ -11,6 +12,29 @@ const api = nonAuthHttp;
 
 
 const ChangePassword = () => {
+    const navigate = useNavigate();
+    const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
+    const [AlertPopupTitle, setAlertPopupTitle] = useState<string>("");
+    const AlertPopupInfo = {
+        PopupStatus : AlertPopupFlag,
+        zIndex : 10000,
+        maxWidth: 500,
+        PopupTitle : AlertPopupTitle,
+        ClosePopupProp : () => setAlertPopupFlag(() => false),
+    }
+    const [CompletePopupFlag, setCompletePopupFlag] = useState(false);
+    const CompletePopupInfo = {
+        PopupStatus : CompletePopupFlag,
+        zIndex : 10000,
+        maxWidth: 500,
+        PopupTitle : "비밀번호 변경이 완료되었습니다.<br/>로그인 화면으로 이동합니다.",
+        ClosePopupProp : () => CompletePopup(false),
+    }
+    function CompletePopup(flag: boolean){
+        setCompletePopupFlag(() => flag);
+        navigate("/login")        
+    }
+
     const email = useRecoilValue(changePasswordUserState);
     let [newPw, setNewPw] = useState<string>("");
     let [newPwCheck, setNewPwCheck] = useState<string>("");
@@ -18,43 +42,32 @@ const ChangePassword = () => {
     let [verify, setVerify] = useState<boolean>(false); //비밀번호 일치 여부 
     let[inputPW, setInputPW] = useState(false); 
     let[passwordOK, setPasswordOk] = useState(false);  //8-12자 조건 맞췄는지 여부 
-    let navigate = useNavigate();
 
     const pwConfirm = useCallback((e : React.ChangeEvent<HTMLInputElement>)=>{
         const curr = e.target.value;
-        console.log(newPw);
-        if(newPw === curr){
-            setVerify(true);
-        } else {
-            setVerify(false);
-        }
-    }, [newPw, newPwCheck])
+        if(newPw === curr) setVerify(true);
+        else setVerify(false);
+    }, [newPw, newPwCheck]);
 
     function changePassword(){
         if(!passwordOK){
-            alert("8-12자리의 영문자, 숫자, 특수문자를 입력해주세요");
+            setAlertPopupTitle(() => "8-12자리의 영문자, 숫자, 특수문자를 입력해주세요");
+            setAlertPopupFlag(() => true);
             return;
         }
         if(!verify){
-            alert("비밀번호 일치 여부를 확인해주세요");
+            setAlertPopupTitle(() => "비밀번호 일치 여부를 확인해주세요");
+            setAlertPopupFlag(() => true);
             return;
         }
         interface customI {
             status : number,
             message : string,
         }
-        // type IError = {
-        //     response : {
-        //         data : {
-        //             message : string
-        //         }
-        //     }
-        // }
         const data = {
             email : email,
             newPassword : newPw,
         }
-        console.log(data);
   
         interface CustomError extends Error {
             // name: string; 
@@ -73,8 +86,7 @@ const ChangePassword = () => {
             try {
                 const response: AxiosResponse<customI> = await api.post(`/find/password`, data);
                 //유효하다면
-                alert(response.data.message + " 로그인 화면으로 이동합니다.");
-                navigate("/login")
+                setCompletePopupFlag(() => true);
                 return response.data
             } catch (error) {
                 const err = error as CustomError;
@@ -83,17 +95,8 @@ const ChangePassword = () => {
                 alert(err);
             }
         }
-        getData().then((res)=>{
-            res
-            // if(res){
-            //     setIsCodeValid(true); //코드가 유효한지 확인
-            //     setCodeMsg(res.message)
-            //     console.log(res);
-            // }
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+        getData().then((res)=>{res})
+        .catch((err) => {console.log(err);})
     }
     function checkPassword(input : string){
         const regex = /^.*(?=^.{8,12}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
@@ -155,7 +158,8 @@ const ChangePassword = () => {
         <div className={style.btn_area}>
             <button onClick={changePassword} style={{fontWeight:"bold"}} type="submit">비밀번호 변경</button>
         </div>
-
+        <AlertPopup PopupInfo={AlertPopupInfo} />
+        <AlertPopup PopupInfo={CompletePopupInfo} />
     </section>
     </div>
     );

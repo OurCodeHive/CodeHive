@@ -1,16 +1,17 @@
 import { useState, useRef } from 'react';
-import { insertData } from "@/api/study";
-import { useRecoilValue } from 'recoil';
+import { updateStudyInfoData, getList } from "@/api/study";
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { AlertPopup } from "@/utils/Popup";
 import CustomEditor from "@/utils/CustomEditor/CustomEditor";
 import CustomDatePicker from "@/utils/CustomDatePicker";
 import FileInput from "@/utils/FileInfo/Input";
-import { StudyUpdateType } from '@/type/StudyType';
+import { StudyUpdateType, StudyType } from '@/type/StudyType';
+import { SidebarContentAtom } from "@/atom/SidebarContentAtom";
 
 
 
-const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, studyUpdate:StudyUpdateType}) => {
+const UpdateStudyInfo = ({closePopup, studyUpdate, fetchData}:{closePopup: () => void, studyUpdate:StudyUpdateType, fetchData:() => void}) => {
     const today = new Date();
     const userId = useRecoilValue(userState).userId;
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
@@ -23,6 +24,9 @@ const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, stud
     const [startDate, setStartDate] = useState(studyUpdate.startAt);
     const [endDate, setEndDate] = useState(studyUpdate.endAt);
     const profileInput:React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+
+    const [studyList, setStudyList] = useRecoilState(SidebarContentAtom);
+
 
     const AlertPopupInfo = {
         PopupStatus : AlertPopupFlag,
@@ -42,6 +46,18 @@ const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, stud
 
     const convertDateType = (stringDate: string) => {
         return new Date(stringDate);
+    }
+
+
+
+    async function fetchData2(){
+        let originStudyList = [] as Array<StudyType>;
+        const param2 = {user : userId};
+        await getList(param2, ({data}) => {
+            originStudyList = data.studyList;
+            setStudyList(originStudyList);
+        },
+        (error) => {console.log(error);});
     }
 
     //폼 submit 이벤트
@@ -79,6 +95,7 @@ const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, stud
 
         let param = new FormData();
         param.append("userId", String(userId));
+        param.append("studyInfoId", studyUpdate.studyinfoId + "")
         param.append("title", titleInput.current.value);
         param.append("startAt", startDate);
         param.append("endAt", endDate);
@@ -90,23 +107,32 @@ const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, stud
                 param.append("profile", profileInput.current?.files[i]);
             }   
         }
-        for (let pair of param.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
-        // await insertData(param, ({data}) => {
-        //     // updateIdx(data.studyinfoId);
-        // }, () => {
-        //     alert("생성에 실패했습니다.");
-        // })
+        // console.log("------------------------------")
+        // for (let pair of param.entries()) {
+        //     console.log(pair[0] + ': ' + pair[1]);
+        // }
+        // console.log("------------------------------")
+        await updateStudyInfoData(param, ({data}) => {
+
+            fetchData();
+            fetchData2();
+            closePopup();
+        }, () => {
+            alert("생성에 실패했습니다.");
+        })
 
     }
 
     return (
         <form className="col-12" encType="multipart/form-data" onSubmit={(e) => void formSubmit(e)}>
-            <div className="col-12 mb37 form_style_0_con">
+            <div style={{
+                textAlign:"left",
+                color:"black",
+                cursor:"auto"
+                }} className="col-12 mb37 form_style_0_con">
                 <div className="col-12 form_style_0">
                     <div className="col-12 col-md-0 label_box">
-                        <label htmlFor="studyInsertTitle" className="essential">제목</label>
+                        <label htmlFor="studyInsertTitle" className="essential">스터디 이름</label>
                     </div>
                     <div className="col-12 col-md-0 input_box">
                         <input type="text" id="studyInsertTitle" className="input_style_0" placeholder="제목을 입력해주세요"
@@ -118,7 +144,7 @@ const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, stud
                 </div>
                 <div className="col-12 form_style_0">
                     <div className="col-12 col-md-0 label_box">
-                        <span>내용</span>
+                        <span>설명</span>
                     </div>
                     <div className="col-12 col-md-0 input_box">
                         <CustomEditor editorRef={descInput} content={studyUpdate.description} />
@@ -152,7 +178,7 @@ const UpdateStudyInfo = ({closePopup, studyUpdate}:{closePopup: () => void, stud
             <div className="col-12 tc btn_style_0_con">
                 <button type="button" className="btn_style_0 mr15 bg_a2a2a2"
                 onClick={closePopup}>취소</button>
-                <button type="submit" className="btn_style_0 bg_point0">만들기</button>
+                <button type="submit" className="btn_style_0 bg_point0">수정완료</button>
             </div>
             <AlertPopup PopupInfo={AlertPopupInfo} />
         </form>

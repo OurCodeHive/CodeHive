@@ -8,9 +8,10 @@ interface Props {
 }
 
 const ListItem = forwardRef((props : Props, ref) => {
+    console.log(props)
     if(props.SelectedFlag){
         return (
-            <li className={`col-12 ${props.item.end === 1 ? LnbStyle.end : ""} ${LnbStyle.selected}`} ref={ref as React.RefObject<HTMLLIElement>}>
+            <li className={`col-12 ${props.item.end === 1 ? LnbStyle.end : ""} ${LnbStyle.selected}`}>
                 <a href={`/study?studyinfoId=` + String(props.item.studyinfoId)}>
                     {props.item.title}
                 </a>
@@ -19,10 +20,10 @@ const ListItem = forwardRef((props : Props, ref) => {
     } else {
         return (
             <li className={`col-12 ${props.item.end === 1 ? LnbStyle.end : ""}`}>
-                    <a href={`/study?studyinfoId=` + String(props.item.studyinfoId)}>
-                        {props.item.title}
-                    </a>
-                </li>
+                <a href={`/study?studyinfoId=` + String(props.item.studyinfoId)}>
+                    {props.item.title}
+                </a>
+            </li>
         )
     }
 });
