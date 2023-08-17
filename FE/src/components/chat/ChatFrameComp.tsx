@@ -150,9 +150,17 @@ function ChatFrameComp(props: Props) {
 
   return (
     <>
-      <div className={`col-12 ${chatStyle.chat_con}`}>
-        <div className={`col-12 ${chatStyle.chat_box}`}>
-          <div className={`col-12 ${chatStyle.chat_list_con}`} style={{maxHeight : props.chatMaxHeight}}>
+      <div style={{
+          // backgroundColor : "#00000060",
+          // backdropFilter: "blur(10px)",
+          }} 
+          className={`col-12 ${chatStyle.chat_con}`}>
+        <div style={{
+          height:"440px",
+          backgroundColor : "#00000060",
+          backdropFilter: "blur(10px)",
+          }} className={`col-12 ${chatStyle.chat_box}`}>
+          <div className={`col-12 ${chatStyle.chat_list_con}`} style={{maxHeight : "440px"}}>
             <ul className={`col-12 ${chatStyle.chat_list}`}>
               {
                 chatList.map((value, index) => {
@@ -172,7 +180,7 @@ function ChatFrameComp(props: Props) {
         </div>
         <form className={`col-12 ${chatStyle.input_box}`} onSubmit={(event) => handleSubmit(event)}>
             <input placeholder="메시지를 입력하세요" type={'text'} onChange={handleChange} value={chat} />
-            <button type="submit"><img src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/secondlife/send.png"/></button>
+            <button type="submit"><img src="https://fitsta-bucket.s3.ap-northeast-2.amazonaws.com/sendyellow.png"/></button>
           </form>
       </div>
     </>

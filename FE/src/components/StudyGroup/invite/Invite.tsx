@@ -8,6 +8,7 @@ const StudyInvite = ({refreshList, closePop, studyInfoId} : {refreshList: () => 
     const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
     const [AlertPopupTitle, setAlertPopupTitle] = useState("");
     const [EmailList, setEmailList] = useState(["",""]);
+    const [sending, setSending] = useState<boolean>(false);
 
     const AlertPopupInfo = {
         PopupStatus : AlertPopupFlag,
@@ -73,12 +74,14 @@ const StudyInvite = ({refreshList, closePop, studyInfoId} : {refreshList: () => 
             return;
         }
 
+        setSending(() => true);
         const param = {
             studyinfoId : studyInfoId,
             email : curEmail
         }
         await inviteMember(param, () => {
             setAlertPopupTitle("초대 이메일이 전송되었습니다");
+            setSending(() => false);
             setAlertPopupFlag(() => true);
             //window.location.reload();
         }, () => {
@@ -98,7 +101,7 @@ const StudyInvite = ({refreshList, closePop, studyInfoId} : {refreshList: () => 
                 <button type="button" className={`col-12 tc ${InviteEmailStyle.email_add_btn_con}`} onClick={(e) => emailAdd(e)}>Add+</button>
             </div>
             <div className="col-12 mb50 tc btn_style_0_con">
-            <button type="button" className="btn_style_0 bg_point0" onClick={(e) => void inviteEmail(e)}>초대링크 전송</button>
+            <button type="button" className="btn_style_0 bg_point0" onClick={(e) => void inviteEmail(e)}>{!sending ? "초대링크 전송" : "전송중"}</button>
             </div>
             <div className="col-12 tc btn_style_0_con">
                 <button type="button" className="btn_style_0 bg_black" onClick={() => changePopupFlag(true)}>닫기</button>

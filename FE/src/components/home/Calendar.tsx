@@ -37,7 +37,6 @@ function CalendarApp() {
   },[])
 
   function getCalendar(){
-   
     async function requestCalendar(): Promise<void> {
         try {
             const response: AxiosResponse<CalendarData> = await authHttp.get<CalendarData>(`/calendar/study?user=${pk}`);
@@ -57,7 +56,6 @@ function CalendarApp() {
                   "August", "September", "October", "November", "December"];
 
   const renderCalendar = () => {
-    const date = new Date();
     const firstDayOfMonth = new Date(currYear, currMonth, 1).getDay();
     const lastDateOfMonth = new Date(currYear, currMonth + 1, 0).getDate();
     const lastDayOfMonth = new Date(currYear, currMonth, lastDateOfMonth).getDay();
@@ -75,7 +73,8 @@ function CalendarApp() {
         const scheduleDate = new Date(schedule.startTime);
         return scheduleDate.getFullYear() === currYear && scheduleDate.getMonth() === currMonth && scheduleDate.getDate() === i;
       });
-    
+
+     //만약 캘린더 자체에 일정 표시할거면 쓰였을 코드 (liTags 에 {scheduleElements} 추가)
       const scheduleElements = daySchedules.map((schedule, index) => (
         <div key={`schedule-${i}-${index}`}>
           {schedule.title}
@@ -86,27 +85,24 @@ function CalendarApp() {
         <li key={`curr-${i}`} 
         className={`${isToday ? style.active : ''} ${daySchedules.length > 0 ? style.hasSchedule : ''}`}
         onClick={() => handleDateClick(i, daySchedules)}
-        // data-schedule={scheduleTitle}
         >{i}
-        {/* {scheduleElements} */}
-        </li>);
+        </li>
+      );
     }
-    
 
     for (let i = lastDayOfMonth; i < 6; i++) {
       liTags.push(<li key={`next-${i}`} className={style.inactive}>{i - lastDayOfMonth + 1}</li>);
     }
 
     return liTags;
-
-    
   };
+
   const handleDateClick = (day:number, daySchedules:Schedule[]) => {
     const selectedDate = new Date(currYear, currMonth, day+1);
     const formattedDate = selectedDate.toISOString().split('T')[0];
     setClickedDate(formattedDate);
-    console.log(`Schedules for ${formattedDate}:`);
-    console.log(daySchedules);
+    // console.log(`Schedules for ${formattedDate}:`);
+    // console.log(daySchedules);
     if (selectedDateInfo.length === 0) {
       setSelectedDateInfo(daySchedules);
       setShowPopover(true);
@@ -114,7 +110,6 @@ function CalendarApp() {
       setSelectedDateInfo([]);
       setShowPopover(false);
     }
-
   }
 
   const handleIconClick = (iconId:string) => {
@@ -127,18 +122,18 @@ function CalendarApp() {
     } else {
       setCurrentDate(new Date());
     }
-  };//
+  };
+
   const renderPopover = () => (
     showPopover && (
     <div className={style.popover}>
       <div className={style.popover_title}>{clickedDate}</div>
       {selectedDateInfo.map((schedule, index) => (
-        <div key={`popover-schedule-${index}`}>
+        <div className={style.study_item} key={`popover-schedule-${index}`}>
         <div className={style.study_title} key={`popover-schedule-${index}`}>
           {schedule.title} 
         </div>
         <div>{schedule.startTime.slice(11,16)} - {schedule.endTime.slice(11,16)}</div>
-        <hr />
         </div>
       ))}
     </div>
@@ -170,7 +165,6 @@ function CalendarApp() {
       </div>
       {selectedDateInfo.length > 0 && renderPopover()}
     </div>
-
   );
 }
 

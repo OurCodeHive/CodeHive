@@ -1,13 +1,15 @@
+import { useState } from "react";
 import { UserType } from "@/type/UserType";
 import { useRecoilValue } from 'recoil';
 import { userState, CheckUserId } from "@/atom/UserAtom";
 import { updateMemberDrop, updateMemberMandate } from "@/api/study";
+import { AlertPopup } from "@/utils/Popup";
 import Style from '@/res/css/module/StudyGroupMember.module.css';
 import MedalIcon from '@/res/img/medal_icon.png';
 import ManDateIcon from '@/res/img/mandate_icon.png';
 import DropIcon from '@/res/img/drop_icon.png';
 
-const ListItem = ({ item, studyinfoId, refreshList }: { item: UserType, studyinfoId: number, refreshList : () => void }) => {
+const ListItem = ({ item, studyinfoId, refreshList, LeaderFlag, LeaderId }: { item: UserType, studyinfoId: number, refreshList : () => void, LeaderFlag:boolean, LeaderId:number|undefined }) => {
     let statusText = "대기";
     switch(item.status){
         case "ACCEPT" :
@@ -18,7 +20,7 @@ const ListItem = ({ item, studyinfoId, refreshList }: { item: UserType, studyinf
             break;
     }
     const userId = useRecoilValue(userState).userId;
-    const LeaderFlag = CheckUserId(item.userId);
+    const LeaderFlagOrigin = CheckUserId(item.userId);
     const notUserFlag = item.userId == -1;
     const param = {
         studyinfoId : studyinfoId,
@@ -26,29 +28,76 @@ const ListItem = ({ item, studyinfoId, refreshList }: { item: UserType, studyinf
         to : -1,
         target : -1
     }
+    const [MandatePopupFlag, setMandatePopupFlag] = useState(false);
+    const MandatePopupInfo = {
+        PopupStatus : MandatePopupFlag,
+        zIndex: 10000,
+        maxWidth: 440,
+        PopupTitle : "위임되었습니다",
+        ClosePopupProp : () => MandatePopupClose()
+    }
 
-    async function manDateRequest(idx: number) {
+    function MandatePopupClose() {
+        setMandatePopupFlag(() => false);
+        window.location.reload();
+    }
+
+    type MandateResultProps = {
+        isDelegated : boolean
+    }
+
+    async function MandateRequest(idx: number) {
         param.to = idx;
-        await updateMemberMandate(param, ({data}) => {
-            console.dir(data);
+        await updateMemberMandate(param, ({data} : {data: MandateResultProps}) => {
+            if(data.isDelegated) setMandatePopupFlag(() => true);
         }, (error) => console.log(error));
     }
+    const [DropPopupFlag, setDropPopupFlag] = useState(false);
+    const DropPopupInfo = {
+        PopupStatus : DropPopupFlag,
+        zIndex: 10000,
+        maxWidth: 440,
+        PopupTitle : "강퇴했습니다",
+        ClosePopupProp : () => DropPopupClose()
+    }
 
-    async function dropRequest(idx: number) {
+    function DropPopupClose() {
+        setDropPopupFlag(() => false);
+        refreshList();
+    }
+
+    type DropResultProps = {
+        isForcedLeave : boolean
+    }
+
+    async function DropRequest(idx: number) {
         param.target = idx;
-        await updateMemberDrop(param, ({data}) => {
-            console.dir(data);
+        await updateMemberDrop(param, ({data} : {data : DropResultProps}) => {
+            if(data.isForcedLeave) setDropPopupFlag(() => true);
         }, (error) => console.log(error));
     }
-
+    console.log(LeaderId)
     return (
-        <li className={`${LeaderFlag ? Style.leader : ""}`}>
-            <div className={Style.list_title}>{LeaderFlag ? <img src={MedalIcon} alt="방장 아이콘"/> : statusText}<span>{item.nickName} ({item.email})</span></div>
-            {!LeaderFlag && !notUserFlag ?
-                <div className={Style.list_btn_con}>
-                    <button type="button" onClick={() => void manDateRequest(item.userId)} className={Style.mandate_btn}><img src={ManDateIcon} alt="위임하기" /></button>
-                    <button type="button" onClick={() => void dropRequest(item.userId)}><img src={DropIcon} alt="강퇴하기" /></button>
+        <li className={`${LeaderFlagOrigin ? Style.leader : ""}`}>
+            <div className={Style.list_title}>
+                { item.userId == LeaderId? 
+                <img src={MedalIcon} alt="방장 아이콘"/> : statusText}<span>{item.nickName} ({item.email})</span></div>
+            {!LeaderFlagOrigin && !notUserFlag && item.status == "ACCEPT" ?
+                <div>
+                    {
+                        LeaderFlag?
+                        <div className={Style.list_btn_con}>
+                            <button type="button" onClick={() => void MandateRequest(item.userId)} className={Style.mandate_btn}><img src={ManDateIcon} alt="위임하기" /></button>
+                            <AlertPopup PopupInfo={MandatePopupInfo}/>
+                            <button type="button" onClick={() => void DropRequest(item.userId)}><img src={DropIcon} alt="강퇴하기" /></button>
+                            <AlertPopup PopupInfo={DropPopupInfo}/>
+                        </div>
+                        :
+                        null
+                    }
+
                 </div>
+                
                 : null
             }
         </li>

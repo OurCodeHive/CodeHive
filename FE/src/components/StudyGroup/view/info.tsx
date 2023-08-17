@@ -13,6 +13,7 @@ import CalendarCRUD from './calendar/CalendarCRUD';
 const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag: boolean}) => {
   const enterName = Contents.enterName ? Contents.enterName : "notFound";
 
+    console.log(Contents)
 
     // 멤버 보기
     const [memberPopupFlag, setmemberPopupFlag] = useState(false);
@@ -23,7 +24,7 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
       maxWidth: 600,
       ClosePopupProp : () => changeMemberPopupFlag(false),
       PopupTitle : "멤버 보기",
-      PopupContents : <StudyUserList studyinfoId={Contents.studyinfoId} closePop={() => changeMemberPopupFlag(false)} />,
+      PopupContents : <StudyUserList LeaderId={Contents.users_id} LeaderFlag={LeaderFlag} studyinfoId={Contents.studyinfoId} closePop={() => changeMemberPopupFlag(false)} />,
     }
 
     // 일정 보기(닫는 함수 프롭스로 넘기기)
@@ -35,35 +36,30 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
       maxWidth: 800,
       ClosePopupProp : () => changeCalderPopupFlag(false),
       PopupTitle : "일정 보기",
-      PopupContents : <CalendarCRUD ClosePopupProp={() => setCalendarPopupFlag(false)}/>,
+      PopupContents : <CalendarCRUD LeaderFlag={LeaderFlag} ClosePopupProp={() => setCalendarPopupFlag(false)}/>,
     }
 
   return (
-    <div className={`col-12 mb30 ${StudyViewStyle.study_view_top_content_con}`}>
-          <div className="col-12">
+    <div className={`col-12 mb30 mt50 ${StudyViewStyle.study_view_top_content_con}`}>
+          <div className="col-12" style={{flex:"1.2"}}>
             <div className={`col-12 ${StudyViewStyle.study_view_top_profile_img}`}><img src={Contents.profileImage} alt="프로필 이미지"/></div>
           </div>
           <div className={`col-12 ${StudyViewStyle.study_view_top_btn_wrap}`}>
             <div className={`col-12 ${StudyViewStyle.study_view_top_btn_con}`}>
               <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}>
-                <a href={`/ide/${enterName}`} className={`col-12 ${StudyViewStyle.study_view_top_btn_inner} bg_point0`}>
+                <a href={`/websutdyidepegas/${enterName}`} className={`col-12 ${StudyViewStyle.study_view_top_btn_inner} ${StudyViewStyle.study_view_top_btn_inner_enter}`}>
                   <img src={StudyViewEnterIcon} alt="화살표 아이콘" /><br/>
-                  <span>입장하기</span>
+                  <span>입장</span>
                 </a>
               </div>
-              {LeaderFlag
-                ? 
-                <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}
-                onClick={() => changeMemberPopupFlag(true)}
-                >
-                  <ContentsPopup PopupInfo={memberPopUpInfo}/>
-                  <div className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
-                    <img src={StudyViewMemberIcon} alt="멤버 아이콘" /><br/>
-                    <span>멤버보기</span>
-                  </div>
+              <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}
+              onClick={() => changeMemberPopupFlag(true)}>
+                <ContentsPopup PopupInfo={memberPopUpInfo}/>
+                <div className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
+                  <img src={StudyViewMemberIcon} alt="멤버 아이콘" /><br/>
+                  <span>멤버</span>
                 </div>
-                : null
-              }
+                </div>
               <div className={`col-4 ${StudyViewStyle.study_view_top_btn}`}
                 onClick={() => {
                   setCalendarPopupFlag(true)
@@ -71,14 +67,14 @@ const StudyViewInfo = ({Contents, LeaderFlag} : {Contents: StudyType, LeaderFlag
                   <ContentsPopup PopupInfo={calendarPopUpInfo}/>
                 <div onClick={console.log} className={`col-12 ${StudyViewStyle.study_view_top_btn_inner}`}>
                   <img src={StudyViewCalendarIcon} alt="시계 아이콘" /><br/>
-                  <span>일정보기</span>
+                  <span>일정</span>
                 </div>
               </div>
             </div>
           </div>
           <div className={`col-12 ${StudyViewStyle.study_view_top_info_con}`}>
             <div className="col-12 title">{Contents?.title}</div>
-            <div className="col-12 desc">{Contents?.endAt} ~ {Contents?.endAt}</div>
+            <div className="col-12 desc">{Contents?.startAt} ~ {Contents?.endAt}</div>
             <div className="col-12 sub_title"><CustomEditorResult param={Contents?.description as string}/></div>
           </div>
         </div>

@@ -39,11 +39,11 @@ const Intro = () => {
     function doLogout(){
         alert("로그아웃 하시겠습니까?");
         const aT = localStorage.getItem("accessToken");
-        console.log(aT);
+        // console.log(aT);
         const data = {
             accessToken : aT,
         }
-        console.log(data);
+        // console.log(data);
         authHttp.post('/logout',data).then(()=>{
             localStorage.removeItem("accessToken");
             localStorage.removeItem("expireAt");

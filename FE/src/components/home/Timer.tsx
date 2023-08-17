@@ -105,7 +105,7 @@ const handleResetClick = () => {
             trailColor: "#9999995a",
             
           })}
-          strokeWidth={5}
+          strokeWidth={3}
         />
         </div>
       </div>
