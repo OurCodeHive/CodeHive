@@ -9,8 +9,10 @@ import EditPopover from './EditPopover';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/atom/UserAtom';
 import { AlertPopup, ConfirmPopup } from "@/utils/Popup";
+import { useParams } from 'react-router-dom';
 
-const studyinfo_id = 3;
+const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId"));
+console.log(studyinfoId);
 
 interface Schedule {
     endTime? : string;
