@@ -82,7 +82,7 @@ const ListItem = ({ item, studyinfoId, refreshList, LeaderFlag, LeaderId }: { it
             <div className={Style.list_title}>
                 { item.userId == LeaderId? 
                 <img src={MedalIcon} alt="방장 아이콘"/> : statusText}<span>{item.nickName} ({item.email})</span></div>
-            {!LeaderFlagOrigin && !notUserFlag && item.status != "BAN" ?
+            {!LeaderFlagOrigin && !notUserFlag && item.status == "ACCEPT" ?
                 <div>
                     {
                         LeaderFlag?
