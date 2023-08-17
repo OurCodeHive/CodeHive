@@ -365,7 +365,7 @@ function getCalendar():Promise<Schedule[]> {
           if (props.ClosePopupProp) {
             props.ClosePopupProp(false)
           }
-        }}>취소</button>
+        }}>닫기</button>
       </div>
       </div>
   );
