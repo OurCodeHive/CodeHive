@@ -139,7 +139,8 @@ public class StudyRoomController {
         Map<String, Object> response = new HashMap<>();
         if (studyNotice.isPresent()) {
             StudyNoticeDTO studyNoticeDTO = new StudyNoticeDTO(
-                    studyNotice.get().getId(), // id를 studyboardId로 설정
+                    studyNotice.get().getId(),
+                    studyNotice.get().getUser().getId(), // id를 studyboardId로 설정
                     studyNotice.get().getNoticeTitle(),
                     studyNotice.get().getContent(),
                     studyNotice.get().getUploadAt()
