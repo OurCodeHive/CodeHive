@@ -151,8 +151,8 @@ function ChatFrameComp(props: Props) {
   return (
     <>
       <div style={{
-          backgroundColor : "#00000060",
-          backdropFilter: "blur(10px)",
+          // backgroundColor : "#00000060",
+          // backdropFilter: "blur(10px)",
           }} 
           className={`col-12 ${chatStyle.chat_con}`}>
         <div style={{
