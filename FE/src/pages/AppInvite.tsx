@@ -19,7 +19,7 @@ const AppInvite = () => {
     navigate("/home");
   }
 
-  const [PopupTitle, setPopupTitle] = useState("비회원입니다<br/>로그인 후 다시 시도해주세요");
+  const [PopupTitle, setPopupTitle] = useState("로그인 후<br/>Join버튼을 통해 링크를 입력해주세요");
   const [AlertPopupClose, setAlertPopupClose] = useState(() => notUser);
   const [ConfirmPopupFlag, setConfirmPopupFlag] = useState(true);
   const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
