@@ -19,7 +19,7 @@ const AppInvite = () => {
     navigate("/home");
   }
 
-  const [PopupTitle, setPopupTitle] = useState("비회원입니다 로그인 후 다시 시도해주세요");
+  const [PopupTitle, setPopupTitle] = useState("비회원입니다<br/>로그인 후 다시 시도해주세요");
   const [AlertPopupClose, setAlertPopupClose] = useState(() => notUser);
   const [ConfirmPopupFlag, setConfirmPopupFlag] = useState(true);
   const [AlertPopupFlag, setAlertPopupFlag] = useState(false);
@@ -34,7 +34,7 @@ const AppInvite = () => {
   const userStudyId = Number(new URLSearchParams(location.search).get("userstudy_id"));
   useEffect(() => {
     if(userId == -1){
-      changePopupFlag(false);
+      setConfirmPopupFlag(() => false);
       changeAlertPopupFlag(true);
     }
   }, []);
