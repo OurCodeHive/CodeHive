@@ -7,7 +7,6 @@
     margin-left: 50px; */
     width: 400px;
     background: #000000cc;
-    border: 2px solid #b9ea16;
     border-radius: 10px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.12);
   }
@@ -144,7 +143,7 @@
     display: block;
     width: 6px;
     height: 6px;
-    background-color: #ff2baa;
+    background-color: #b9ea16;
     border-radius: 50%;
     position: absolute;
     top: 30px;
@@ -249,7 +248,7 @@
   }
   .popover_title {
     background-color: #00000070 ;
-    color: #b9ea16;
+    color: #fff;
     font-size: 14px;
     text-align: center;
     padding: 3px 3px;
@@ -303,7 +302,7 @@
     border-radius: 5px;
   }
   .button_wrapper button:nth-child(2):hover{
-    background-color: #f8d247;
+    background-color: #9ec61b;
   }
 
   .offBox{
@@ -315,14 +314,14 @@
     color: black;
     margin-top: 2%;
     margin-left: 45%;
-    background-color: #f2d980;
+    background-color: yellowgreen;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 60px;
-    height: 30px;
+    width: 80px;
+    height: 35px;
 
   }
   .offPopup:hover{
-    background-color: #f8d247;
+    background-color: yellowgreen;
   }

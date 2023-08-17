@@ -1,6 +1,7 @@
 .popup_wrap{display: block; position: fixed; top: 0; left: 0; overflow: hidden; height: 100vh; overflow-y: auto; top: 0 !important; left: 0 !important; margin-left: 0 !important; margin-top: 0 !important; background-color: rgba(0,0,0,0.6);}
 .popup_wrap .popup_con{display: flex; height: auto; float: none; margin: 0 auto; align-items: center; min-height: 100%;}
-.popup_wrap .popup_inner{background-color: transparent;}
+.popup_wrap .popup_inner{background-color: transparent;} 
+
 /*
 .popup_wrap .popup_header_con{border-radius: 8px 8px 0 0; background-color: #f0d43b;}
 .popup_wrap .popup_header_top_con{padding: 17px 30px; display: flex; align-items: flex-end; justify-content: space-between;}
@@ -8,7 +9,7 @@
 */
 .popup_wrap .popup_contents_con{background-color: rgba(255,255,255,0.8); border-radius: 20px;}
 .popup_wrap .popup_contents{padding: 27px 30px;}
-.popup_wrap .popup_contents .headline{font-size: 23px; font-size: 2.3rem; line-height: 29px; line-height: 2.9rem; font-weight: 700; letter-spacing: -0.02em; color: #333;}
+.popup_wrap .popup_contents .headline{font-size: 23px; font-size: 1.7rem; line-height: 29px; line-height: 2.9rem; font-weight: 700; letter-spacing: -0.02em; color: #333;}
 .popup_close_btn{display: inline-block; border: 0px none; background-color: transparent; font-size: 0; line-height: 0; width: 30px; height: 30px; background-size: 26px; background-position: center center; background-repeat: no-repeat; background-image: url('../../img/18x18_ffffff_x_icon.png');}
 .popup_close_btn:hover{background-image: url('../../img/18x18_x_icon_white.png');}
 .confirm_btn_style_0_con{font-size: 0; line-height: 0; display: flex; align-items: stretch;}
