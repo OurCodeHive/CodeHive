@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import style from '@/res/css/module/Schedule.module.css';
 import arrow from '@/res/img/icon_arrow.png';
 import { authHttp } from '@/api/http';
@@ -42,7 +42,7 @@ const Schedule = () => {
 };
 const ScheduleListItem = ({data} : {data: ISchedule}) => {
     return (
-      <div className={`col-12 ${style.schedule_wrap}`}>
+      <a href={`/websutdyidepegas/${data.studyinfoId}`} className={`col-12 ${style.schedule_wrap}`}>
         <div className={`col-12 ${style.time_info}`}>
           <div className={`col-12 ${style.from_to}`}>
             <span>{data.startTime.slice(11, 16)}</span>
@@ -52,7 +52,7 @@ const ScheduleListItem = ({data} : {data: ISchedule}) => {
           <div className={`col-12 ${style.duration}`}>{`${getDuration(data.startTime, data.endTime)[0]}hr ${getDuration(data.startTime, data.endTime)[1]}min`}</div>
         </div>
         <div className={`col-12 ${style.timer_text}`}>{getTimeLeft(data.startTime, data.endTime)}</div>
-      </div>
+      </a>
     );
   };
 
