@@ -207,7 +207,7 @@ public class StudyController {
         }
 
         Claims token = jwtTokenProvider.parseClaims(request.getHeader("Authorization").substring(7));
-        List<StudyAppointmentResponseDTO> todayMeetingList = studyService.getFormattedTodayStudyMeeting(todayDate, (String) token.get("users_id"));
+        List<FixResponseStudyAppointmentDTO> todayMeetingList = studyService.getFormattedTodayStudyMeeting(todayDate, (String) token.get("users_id"));
 
         Map<String, Object> response = new HashMap<>();
 
