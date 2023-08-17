@@ -14,15 +14,20 @@ const studyinfoId = Number(new URLSearchParams(location.search).get("studyinfoId
 
 const StudyView = () => {
   const [ViewContents, setViewContents] = useState<StudyType>({} as StudyType);
+  const [studyLeaderId, setStudyLeaderId] = useState(0);
+
   const LeaderFlag: boolean = CheckUserId(ViewContents?.users_id as number);
   const initIdx = 0;
   const TabContents = [] as TabType[];
-  TabContents.push({title : "공지", contents : <NoticeList studyinfoId={studyinfoId} studyLeaderId={ViewContents.users_id!} />});
+  if (studyLeaderId != 0) {
+    TabContents.push({title : "공지", contents : <NoticeList studyinfoId={studyinfoId} studyLeaderId={studyLeaderId} />});
+  }
   TabContents.push({title : "자료", contents : <DocumentList studyinfoId={studyinfoId} />});
   
   async function fetchData() {
     await getView(studyinfoId, ({data}) => {
       setViewContents(data);
+      setStudyLeaderId(data.users_id!);
     }, (error) => {console.log(error)});
   }
 
