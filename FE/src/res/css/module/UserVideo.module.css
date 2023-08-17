@@ -1,0 +1,8 @@
+.joinUserName {
+	position: absolute;
+	color: rgb(202, 200, 200);
+	font-size: 16px;
+	top: 8vh;
+	left: 86%;
+	z-index: 1;
+}

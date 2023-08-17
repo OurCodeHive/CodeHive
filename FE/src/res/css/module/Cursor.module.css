@@ -1,0 +1,48 @@
+.toggleInner {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+}
+
+.toggleInner:before,
+.toggleInner:after {
+  float: left;
+  width: 50%;
+  height: 36px;
+  padding: 0;
+  box-sizing: border-box;
+  content: "";
+}
+
+.toggleInner:before {
+  background-color: pink;
+}
+
+.toggleInner:after {
+  background-color: #bbb;
+}
+
+.switch {
+  display: block;
+  width: 24px;
+  margin: 5px;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 40px;
+  border: 0 solid #bbb;
+  border-radius: 50%;
+ }
+
+ .checkbox:checked + .label .toggleInner {
+  margin-left: 0;
+}
+
+.checkbox:checked + .label .switch {
+  right: 0px;
+}
+
+/* toggleinner와 switch에 적용 */
+/* switch의 transition property는 all을 적용한다 */
+/* transition: margin-left 0.3s ease-in; */

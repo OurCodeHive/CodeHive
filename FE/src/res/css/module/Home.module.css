@@ -1,0 +1,218 @@
+
+.dash_background {
+    position: fixed;
+    z-index: -10;
+    top: 0;
+    left: 0;
+    /* display: block; */
+    width: 100%;
+    height: 100%;
+    background-color: #E0E0D0;
+}
+.home_background {
+    box-sizing: border-box;
+    height: 1080px;
+    /* width: 1920px; */
+    /* height: 100vh; */
+    /* after보다 커야함 */
+    z-index: -7; 
+    background-image: url("../../img/home_background.jpg");
+    background-size:cover;
+    /* opacity: 0.5; */
+    border: 10px solid rgb(207, 217, 187);
+    border-radius: 20px;
+    /* display: block; */
+    /* margin: auto; */
+    /* margin-top: 40px; */
+}
+.first_divisor {
+    display: flex;
+    flex-direction: column;
+    /* align-content: space-between; */
+}
+
+.home_filter {
+    display: flex;
+    z-index: -5;
+    height: 100%;
+    width: 100%;
+    background-color: #ffffffa0;
+    border-radius: 10px;
+}
+.header_bar {
+    display: flex;
+    text-align: center;
+    /* border: 1px solid red; */
+    position: fixed;
+    top: 70px;
+    right: 7%;
+    width: 140px;
+    height: 50px;
+
+}
+.header_block {
+    flex: 1;
+    cursor: pointer;
+    /* display: flex; */
+    /* flex-direction: column; */
+}
+
+.header_block:hover{
+    font-weight: 400;
+    font-size: 13px;
+}
+.greeting {
+    position: fixed;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-left: 300px;
+    margin-top: 70px;
+    color: #333;
+    text-shadow: 0 0 20px #ffdf2bc8, 0 0 30px #FFDF2Bc8, 0 0 30px #FFDF2Bc8;
+
+}
+.subtitle_comedy {
+    margin-left: 30px;
+    margin-top: 10px;
+    color: #333;
+    font-size: 1.7rem;
+    font-weight: 800;
+}
+.subtitle_comedy img {
+    margin-top: 5px;
+    margin-left: 10px;
+    width: 17px;
+    cursor: pointer;
+}
+.subtitle_schedule {
+    color: #333;
+    font-size: 1.7rem;
+    font-weight: 800;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.box_comedy {
+    /* position: fixed;
+    margin-left: 300px;
+    margin-top: 170px; */
+    display: flex;
+    flex-direction: column;
+    vertical-align: middle;
+    /* border: 1px solid red; */
+    width: 65vh;
+    height: 250px;
+    border-radius: 15px;
+    background-color: #ffffff6d;
+}
+.box_outline {
+    margin: auto;
+    border: 2px solid rgba(78, 110, 78, 0.737);
+    border-radius: 10px;
+    width: 90%;
+    height: 20vh;
+}
+.box_schedule {
+    /* position: fixed;
+    bottom: 10%;
+    right: 10%; */
+    width: 60vh;
+    height: 170px;
+    border-radius: 15px;
+    background-color: #ffffff6d;
+    /* margin-left: 850px;
+    margin-top: 460px;
+    height: 170px; */
+}
+.content_comedy {
+    border: none;
+    text-shadow: 1px 1px 1px rgb(183, 183, 183);
+    resize: none;
+    outline: none;
+    font-size: 15px;
+    font-weight: 700;
+    color: #4c6564;
+    display: block;
+    margin: auto;
+    background-color: transparent;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 1.3rem;
+    height: 125px;
+    width: 75%;
+    /* overflow-y: scroll; */
+}
+.content_writer {
+    color: #555;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+}
+.content {
+    /* position: relative; */
+    margin-top: 40px;
+    /* border: 3px solid pink; */
+    text-align: center;
+    font-size: 1.3rem;
+    line-height: 190px;
+    height: 125px;
+    overflow-y: scroll;
+
+}
+.schedule_wrap {
+    display: flex;
+    /* align-items: center; */
+    /* vertical-align: middle; */
+    border: 2px solid #555;
+    width: 80%;
+    margin: auto;
+    height: 55px;
+    border-radius: 8px;
+    margin-bottom: 3px;
+}
+.time_info {
+    flex: 1;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    height: 50px;
+    font-size: 12px;
+}
+.from_to {
+    margin-top: 5px;
+    margin-left: 40px;
+    align-self: center;
+    line-height: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    width: 140px;
+    display: flex;
+}
+.from_to img {
+    width: 20px;
+    margin-left: 3px;
+    margin-right: 3px;
+    /* padding-top: 3px; */
+}
+.duration {
+    line-height: 20px;
+    align-self: center;
+    
+}
+.timer_wrap {
+    margin-right: 10px;
+    align-self: center;
+    flex: 1;
+    display: block;
+    height: 40px;
+    background-color: #FFDF2B;
+    border-radius: 10px;
+    line-height: 40px;
+}
+.timer_text {
+    display: block;
+    height: 30px;
+    font-weight: bold;
+    font-size: 14px;
+}

@@ -1,0 +1,70 @@
+/* timer.css */
+.box_timer {box-shadow: 0 15px 40px rgba(0,0,0,0.12); padding: 10px 20px; border-radius: 10px; background-color: #00000040;}
+.timer_container {display: flex; align-items: center;}
+.subtitle_timer {
+    display: inline-block;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #fff;
+  }
+  .custom_progress_bar {
+    text-shadow: 0 0 20px #b9ea16, 0 0 30px #b9ea16, 0 0 30px #b9ea16;
+  }
+.progress_bar_container {flex: 1;}
+  .controller {
+    display: flex;
+    flex: 1.25;
+    flex-direction: column;
+    margin-left: 10px;
+  }
+  .timer_inputs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 10px;
+    justify-content: left; /* Align inputs to the right */
+  }
+  
+  .timer_inputs input {
+    font-size: 1.3rem;
+    width: 50px;
+    padding: 5px;
+    text-align: center;
+    margin-left: 5px; /* Adjust margin to create space between inputs */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .timer_inputs span {
+    color: #fff;
+    font-size: 1.3rem;
+    margin-left: 5px; /* Adjust margin to create space between inputs and labels */
+  }
+  
+  .timer_buttons {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content:left; /* Align buttons to the right */
+  }
+  
+  .timer_buttons button {
+    font-size: 1.2rem;
+    margin-left: 5px; /* Adjust margin to create space between buttons */
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #b9ea16;
+    color: #000;
+  }
+  
+  .timer_buttons button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .timer_buttons button:hover {
+    background-color: #9ec718;
+  }
+  

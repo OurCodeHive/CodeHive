@@ -1,0 +1,3 @@
+.welcome_page{width: 100%; height: 100vh; position: relative;}
+.video {object-fit: cover;cursor: default; height: 100%; width: 100%;}
+.enter_login{cursor: pointer; position: absolute; bottom: 7vh; left: 50%; z-index: 1; display: block; background-color: transparent; width: 50%; height: 4vh; border: none; transform: translateX(-50%);}
