@@ -87,7 +87,7 @@ function CalendarCRUD(props:calendarInStudyMainProps) {
   
 function getCalendar():Promise<Schedule[]> {
     return new Promise<Schedule[]>((resolve, reject) => {
-        authHttp.get<Schedule[]>(`/study/meeting/${studyinfo_id}`)
+        authHttp.get<Schedule[]>(`/study/meeting/${studyinfoId}`)
             .then((response: AxiosResponse<Schedule[]>) => {
                 const calendar = response.data;
                 if (calendar) {
@@ -112,7 +112,7 @@ function getCalendar():Promise<Schedule[]> {
   const deleteSchedule = async () => {
     await new Promise<void>( (resolve, reject) => {
       try {
-        void authHttp.delete(`/study/${studyinfo_id}/meeting/${CurIdx}`);
+        void authHttp.delete(`/study/${studyinfoId}/meeting/${CurIdx}`);
         setSelectedDateInfo(prevSelectedDateInfo =>
           prevSelectedDateInfo.filter(schedule => schedule.id !== CurIdx)
         );
@@ -186,7 +186,7 @@ function getCalendar():Promise<Schedule[]> {
     };
 
     try {
-      await authHttp.post(`/study/meeting/${studyinfo_id}`, newStudy);
+      await authHttp.post(`/study/meeting/${studyinfoId}`, newStudy);
       const newData = await getCalendar();
  
       const maxId = Math.max(...newData.map(schedule => schedule.id as number));
@@ -271,7 +271,7 @@ function getCalendar():Promise<Schedule[]> {
     }
 
     try {
-      await authHttp.put(`/study/${studyinfo_id}/meeting/${editSchedule?.id as number}`, newStudy); ///study/{studyinfo_id}/meeting/{appointment_id}
+      await authHttp.put(`/study/${studyinfoId}/meeting/${editSchedule?.id as number}`, newStudy); ///study/{studyinfo_id}/meeting/{appointment_id}
   
     // 캘린더 데이터 업데이트
     setData((prevData)=> {
