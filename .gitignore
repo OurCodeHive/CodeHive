@@ -3,7 +3,8 @@
 # FRONT
 # dependencies
 FE/node_modules
-
+FE/server/node_modules
+dist
 # testing
 FE/coverage
 
@@ -23,7 +24,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # BACK
-.github
 .idea
 build
 *.iws

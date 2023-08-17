@@ -1,0 +1,20 @@
+.chat_con {display: flex; flex-wrap: nowrap; flex-direction: column; border-radius: 10px; max-width: 380px;}
+.chat_box{background-color: #00000040; overflow: hidden; border-top-left-radius: 10px; border-top-right-radius: 10px;}
+.chat_list_con{min-height:150px; max-height: 200px; overflow-y: auto;}
+.chat_list_con::-webkit-scrollbar {width: 10px;}
+.chat_list_con::-webkit-scrollbar-thumb {background-color: #2f3542; border-radius: 10px; background-clip: padding-box; border: 2px solid transparent;}
+.chat_list_con::-webkit-scrollbar-track {background-color: grey; border-radius: 10px; box-shadow: inset 0px 0px 5px white;}
+.chat_list{font-size: 0; line-height: 0;}
+.chat_list > li{margin-bottom: 10px; padding-left: 10px; padding-right: 10px;}
+.chat_list > li:last-child{padding-bottom: 10px; margin-bottom: 0;}
+.chat_list > li > .chat_info{display: flex; margin-bottom: 2px; padding-left: 0px; font-size: 15px; font-size: 1.25rem; line-height: 21px; line-height: 2.1rem; font-weight: 300; letter-spacing: -0.02em; color: #fff;}
+.chat_list > li > .chat_info > .chat_name{margin-right: 5px; font-weight: 500;}
+.chat_list > li.talk_my{text-align: right;}
+.chat_list > li.talk_my > .chat_info{flex-direction: row-reverse;}
+.chat_list > li.talk_my > .chat_info > .chat_name{margin-right: 0; margin-left: 5px;}
+.chat_list > li.talk_my .chat_contents {background-color: #ffdf2ba2;}
+.chat_list > li > .chat_contents{display: inline-block; font-size: 15px; font-size: 1.4rem; line-height: 21px; line-height: 2.1rem; font-weight: 400; letter-spacing: -0.02em; color: #fff; background-color: #ffffff70; word-break: break-all; padding: 5px 7px; border-radius: 7px;}
+.input_box{padding: 7px 10px; display: flex; align-items: center; background-color: #00000070; backdrop-filter: blur(10px); border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;}
+.input_box > input{background-color: transparent; border: 1px solid #ffdf2b; padding: 7px 10px; flex-grow: 1; border-radius: 5px; outline: none; margin-right: 10px; color: #fff;}
+.input_box > button{cursor:pointer; font-size: 0; line-height: 0; background: none; border: none;}
+.input_box > button > img{width: 20px;}
