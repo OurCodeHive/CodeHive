@@ -1,9 +1,6 @@
 package com.spoon.sok.domain.study.repository;
 
-import com.spoon.sok.domain.study.dto.queryDTO.PreCheckUserStudyDto;
-import com.spoon.sok.domain.study.dto.queryDTO.StudyAppointmentDTO;
-import com.spoon.sok.domain.study.dto.queryDTO.StudyInfoDetailDto;
-import com.spoon.sok.domain.study.dto.queryDTO.StudyInfoDto;
+import com.spoon.sok.domain.study.dto.queryDTO.*;
 import com.spoon.sok.domain.study.entity.StudyInfo;
 import com.spoon.sok.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,19 +26,17 @@ public interface StudyRepository extends JpaRepository<StudyInfo, Long> {
             "WHERE u.users_id = :userId", nativeQuery = true)
     List<StudyAppointmentDTO> findByUserIdStudyMeetingsQuery(@Param("userId") String userId);
 
-
-    @Query(value = "SELECT sa.start_time as startTime, " +
+    @Query(value = "SELECT sa.study_appointment_id as studyappointmentId, " +
+            "sa.study_appointment_title as title," +
+            "sa.studyinfo_id as studyinfoId, " +
+            "sa.start_time as startTime, " +
             "sa.end_time as endTime, " +
-            "sa.meeting_at as meetingAt, " +
-            "sa.study_appointment_title as title, " +
-            "sa.study_appointment_id as studyappointmentId, " +
-            "sa.studyinfo_id as studyinfoId " +
-            "FROM users u " +
-            "JOIN study_info si ON u.users_id = :userId " +
-            "JOIN study_appointment sa ON si.studyinfo_id = sa.studyinfo_id " +
-            "WHERE u.users_id = :userId AND DATE(sa.meeting_at) = DATE(:today) " +
-            "ORDER BY sa.start_time ASC", nativeQuery = true)
-    List<StudyAppointmentDTO> findByTodayStudyMeetingsQuery(@Param("today") Date today, @Param("userId") String userId);
+            "sa.meeting_at as meetingAt " +
+            " FROM study_appointment sa " +
+            "INNER JOIN (SELECT us.studyinfo_id FROM user_study us WHERE us.users_id = :userId and us.status = 'ACCEPT') s ON sa.studyinfo_id = s.studyinfo_id " +
+            "WHERE DATE(sa.meeting_at) = :today " +
+            "ORDER BY sa.start_time ASC ", nativeQuery = true)
+    List<FixStudyAppointmentDto> findByTodayStudyMeetingsQuery(@Param("today") Date today, @Param("userId") String userId);
 
 
     @Query(value = "SELECT si.studyinfo_id as studyinfoId, " +
