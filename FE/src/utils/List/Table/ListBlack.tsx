@@ -9,7 +9,7 @@ const TableList = ({WidGroup, ListTitle, ListContents, NoDataText} : {WidGroup :
             <colgroup>{WidGroup.map((item, index) => <col key={index} width={item}/>)}</colgroup>
             <thead><tr>{ListTitle.map((item, index) => <th key={index}>{item}</th>)}</tr>
             </thead>
-            <tbody>
+            <tbody style={{cursor:"pointer"}}>
               {ListContents.length > 0 ? ListContents.map((item) => item) : <tr className={`${TableListStyle.no_data}`}><td colSpan={tdLength}>{NoDataText}</td></tr>}
             </tbody>
         </table>
