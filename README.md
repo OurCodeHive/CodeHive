@@ -108,7 +108,7 @@
 
 - SpringBoot 3.1.1
 - Spring Data JPA
-- Speing Security
+- Spring Security
 - STOMP
 - Openvidu
 
